@@ -23,7 +23,7 @@ The actual **observer UI** from a real run (against **OWASP Juice Shop**), expor
 
 #### ▶ [Open the sample UI](https://vvts-alpha.github.io/verdict-pub/sample-ui.html) 
 
-#### ▶ Demonstration
+#### ▶ Demonstration (Youtube Movie)
 [!['VERDICT Login Scanning Demonstration'](http://img.youtube.com/vi/3QHlHdktLdE/0.jpg)](https://youtu.be/3QHlHdktLdE?si=oZWi5gPmnPgqDURR)
 
 <sub>Served via GitHub Pages. It's a ~14 MB single file (screenshots + evidence bundled inline) — give it a second to load.</sub>
