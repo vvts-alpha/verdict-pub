@@ -21,7 +21,10 @@ You give it one URL. It runs the whole assessment — recon → methodology → 
 
 The actual **observer UI** from a real run (against **OWASP Juice Shop**), exported to a single self-contained page — site tree · findings · APIs · per-screen evidence, fully interactive and **offline**:
 
-### ▶ [Open the sample UI](https://vvts-alpha.github.io/verdict-pub/sample-ui.html) &nbsp;·&nbsp; [download](sample-ui.html)
+#### ▶ [Open the sample UI](https://vvts-alpha.github.io/verdict-pub/sample-ui.html) 
+
+#### ▶ Demonstration
+[!['VERDICT Login Scanning Demonstration']('./assets/verdict-main.png')]('https://youtu.be/3QHlHdktLdE?si=oZWi5gPmnPgqDURR')
 
 <sub>Served via GitHub Pages. It's a ~14 MB single file (screenshots + evidence bundled inline) — give it a second to load.</sub>
 
@@ -64,6 +67,3 @@ Every benchmark folder ships the full per-run reports with the raw request/respo
 
 The agent itself — the autonomous exploration loop, the evidence engine, the tooling — is kept private for now. These benchmarks are published as the **reproducible proof of what it can do.** Findings against live bug-bounty targets exist but are withheld under coordinated disclosure.
 
-## License
-
-The contents of this repository (reports, analysis, charts) are released under [CC BY 4.0](LICENSE). Target applications named here (OWASP Juice Shop, PortSwigger Web Security Academy, XBOW XBEN-24) belong to their respective owners and were assessed as authorized, deliberately vulnerable benchmark targets.
