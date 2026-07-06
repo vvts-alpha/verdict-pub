@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr6knca6-5nfoqo</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [burp✓] Input returned in response (reflected)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#c9a227">LOW</span> [burp] Client-side HTTP parameter pollution (reflected)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] TLS certificate</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-4">4. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Avatar upload accepts JPEG/PHP polyglot web shell (likely RCE)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr6knca6-5nfoqo</code></td></tr>
+<tr><td>Target</td><td><code>https://0ad6000a03d24a7480982b0200880012.web-security-academy.net/</code></td></tr>
+<tr><td>Started</td><td>2026-07-04T16:23:31.807Z</td></tr>
+<tr><td>Generated</td><td>2026-07-06T05:43:21.937Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>6 mapped · 6 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>*.web-security-academy.net</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#c9a227">1</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<p class="muted">Plus <b>1</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [burp✓] Input returned in response (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">✅ AI-verified by active re-test: postId is reflected verbatim into the response body (Back-to-blog href): body length = baseline 3720 + (postId_len − 11) exactly in all cases — control (postId=benign_control_000 → 3727) reflects its own value not the marker, while both positives (postId=qXZ7reflect42 → 3722, identical) reflect the unique 13-char marker; stable single verbatim reflection. (severity raised info→high: confirmed real, not info-only)
+
+The value of the &lt;b&gt;postId&lt;/b&gt; request parameter is copied into the application's response. (confidence: CERTAIN) @ https://0ad6000a03d24a7480982b0200880012.web-security-academy.net/post/comment/confirmation</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6osnmp-4i</code> — <code>artifacts/_/ev-mr6osnmp-4i/</code></div><div class="lbl">REQUEST</div><pre>GET /post/comment/confirmation HTTP/1.1
+Host: 0ad6000a03d24a7480982b0200880012.web-security-academy.net
+
+GET /post/comment/confirmation?postId=12y0u9jswgi HTTP/1.1
+Host: 0ad6000a03d24a7480982b0200880012.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 3720
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tdXNpbmctcGhhci1kZXNlcmlhbGl6YXRpb24tdG8tZGVwbG95LWEtY3VzdG9tLWdhZGdldC1jaGFpbg=='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Thank you for your comment!&lt;/h1&gt;
+                    &lt;p&gt;Your comment has been submitted.&lt;/p&gt;
+                    &lt;div class=&quot;is-linkback&quot;&gt;
+                        &lt;a href=&quot;/post?postId=12y0u9jswgi&quot;&gt;Back to blog&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6otm1c-4k</code> — <code>artifacts/_/ev-mr6otm1c-4k/</code></div><div class="lbl">REQUEST</div><pre>GET /post/comment/confirmation?postId=benign_control_000 HTTP/1.1
+Host: 0ad6000a03d24a7480982b0200880012.web-security-academy.net
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-encoding: gzip
+content-length: 1315
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tdXNpbmctcGhhci1kZXNlcmlhbGl6YXRpb24tdG8tZGVwbG95LWEtY3VzdG9tLWdhZGdldC1jaGFpbg=='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Thank you for your comment!&lt;/h1&gt;
+                    &lt;p&gt;Your comment has been submitted.&lt;/p&gt;
+                    &lt;div class=&quot;is-linkback&quot;&gt;
+                        &lt;a href=&quot;/post?postId=benign_control_000&quot;&gt;Back to blog&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6otpmt-4l</code> — <code>artifacts/_/ev-mr6otpmt-4l/</code></div><div class="lbl">REQUEST</div><pre>GET /post/comment/confirmation?postId=qXZ7reflect42 HTTP/1.1
+Host: 0ad6000a03d24a7480982b0200880012.web-security-academy.net
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-encoding: gzip
+content-length: 1313
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tdXNpbmctcGhhci1kZXNlcmlhbGl6YXRpb24tdG8tZGVwbG95LWEtY3VzdG9tLWdhZGdldC1jaGFpbg=='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Thank you for your comment!&lt;/h1&gt;
+                    &lt;p&gt;Your comment has been submitted.&lt;/p&gt;
+                    &lt;div class=&quot;is-linkback&quot;&gt;
+                        &lt;a href=&quot;/post?postId=qXZ7reflect42&quot;&gt;Back to blog&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6ott5u-4m</code> — <code>artifacts/_/ev-mr6ott5u-4m/</code></div><div class="lbl">REQUEST</div><pre>GET /post/comment/confirmation?postId=qXZ7reflect42 HTTP/1.1
+Host: 0ad6000a03d24a7480982b0200880012.web-security-academy.net
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-encoding: gzip
+content-length: 1313
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tdXNpbmctcGhhci1kZXNlcmlhbGl6YXRpb24tdG8tZGVwbG95LWEtY3VzdG9tLWdhZGdldC1jaGFpbg=='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Thank you for your comment!&lt;/h1&gt;
+                    &lt;p&gt;Your comment has been submitted.&lt;/p&gt;
+                    &lt;div class=&quot;is-linkback&quot;&gt;
+                        &lt;a href=&quot;/post?postId=qXZ7reflect42&quot;&gt;Back to blog&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 2. [burp] Client-side HTTP parameter pollution (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The value of the &lt;b&gt;postId&lt;/b&gt; request parameter is copied into the response within the query string of a URL.&lt;br&gt;&lt;br&gt; The payload &lt;b&gt;zwt&amp;amp;fzo=1&lt;/b&gt; was submitted in the postId parameter. This input was echoed as &lt;b&gt;zwt&amp;amp;amp;fzo=1&lt;/b&gt; within the &quot;href&quot; attribute of an &quot;a&quot; tag.&lt;br&gt;&lt;br&gt;This proof-of-concept attack demonstrates that it is possible to inject arbitrary query string parameters into URLs in the application's response. (confidence: FIRM) @ https://0ad6000a03d24a7480982b0200880012.web-security-academy.net/post/comment/confirmation</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6osnmt-4j</code> — <code>artifacts/_/ev-mr6osnmt-4j/</code></div><div class="lbl">REQUEST</div><pre>GET /post/comment/confirmation HTTP/1.1
+Host: 0ad6000a03d24a7480982b0200880012.web-security-academy.net
+
+GET /post/comment/confirmation?postId=zwt%26fzo%3d1 HTTP/1.1
+Host: 0ad6000a03d24a7480982b0200880012.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 3722
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tdXNpbmctcGhhci1kZXNlcmlhbGl6YXRpb24tdG8tZGVwbG95LWEtY3VzdG9tLWdhZGdldC1jaGFpbg=='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Thank you for your comment!&lt;/h1&gt;
+                    &lt;p&gt;Your comment has been submitted.&lt;/p&gt;
+                    &lt;div class=&quot;is-linkback&quot;&gt;
+                        &lt;a href=&quot;/post?postId=zwt&amp;amp;fzo=1&quot;&gt;Back to blog&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 3. [burp] TLS certificate</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The server presented a valid, trusted TLS certificate. This issue is purely informational.&lt;br&gt;&lt;br&gt;The server presented the following certificates:&lt;br&gt;&lt;br&gt;&lt;h4&gt;Server certificate&lt;/h4&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued to:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;*.web-security-academy.net, *.2.web-security-academy.net, *.1.web-security-academy.net, *.3.web-security-academy.net, *.2.h1-web-security-academy.net, *.1.h1-web-security-academy.net, *.h1-web-security-academy.net, *.3.h1-web-security-academy.net&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued by:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;Amazon RSA 2048 M01&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Valid from:&lt;/b&gt;&amp;nbsp;&amp;nb @ https://0ad6000a03d24a7480982b0200880012.web-security-academy.net/</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6osnmc-4h</code> — <code>artifacts/_/ev-mr6osnmc-4h/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0ad6000a03d24a7480982b0200880012.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#b00020">CRITICAL</span> 4. [rce] Avatar upload accepts JPEG/PHP polyglot web shell (likely RCE)</h3>
+<div class="kv">Screen: <code>s-0005</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0ad6000a03d24a7480982b0200880012.web-security-academy.net/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> The avatar upload validates image CONTENT (a valid JPEG is accepted; pure-PHP, PNG and GIF are all rejected as &quot;Invalid avatar&quot;), yet it ACCEPTS a JPEG/PHP polyglot named exploit.php — a valid JPEG (correct magic bytes, intact FFD9 EOI) with `&lt;?php echo shell_exec('id'); ?&gt;` appended, uploaded via the authenticated browser. So an executable .php web shell passes the image filter: the exact pattern of PortSwigger's &quot;RCE via polyglot web shell upload&quot;. The avatar-serving directory /files/avatars/ exists (it returns file-level 404s, distinct from the app's /login 302). Execution could NOT be confirmed only because the uploaded file's served path/filename is not locatable in this run: no role is configured, the HTTP client is unauthenticated (every /my-account request 302-redirects to /login), and the account page's &lt;img&gt; src is not readable (view-source blocked, HTTP body display truncated to the lab header).</div>
+<div class="desc">POST /my-account/avatar (authenticated as wiener) enforces image-content validation — uploads whose bytes are not a valid JPEG (pure PHP, PNG, GIF) are rejected with &quot;Invalid avatar&quot;, while a valid JPEG is accepted and the request redirects to /my-account/ (success). Critically, a JPEG/PHP polyglot (valid JPEG bytes + trailing `&lt;?php echo shell_exec('id'); ?&gt;`) uploaded with filename exploit.php and Content-Type image/jpeg is ALSO accepted — the .php extension is not blocked when the content passes image validation. This is a server-side web-shell upload: when such a file is served by a PHP handler it executes the embedded code, yielding remote command execution. Confirmation of execution requires fetching the stored file's URL, which was not reachable in this assessment environment (see repro/limitation notes).</div>
+<div><b>Reproduction</b></div><pre>1. Log in as wiener and open /my-account. 2. Baseline: upload pure PHP, a PNG, and a GIF via the avatar form → each returns &quot;Invalid avatar&quot; (content is validated as an image). 3. Upload a valid JPEG → accepted (redirects to /my-account/). 4. Build a polyglot: valid JPEG bytes with `&lt;?php echo shell_exec('id'); ?&gt;` appended after the FFD9 EOI; upload it as exploit.php with Content-Type image/jpeg → ACCEPTED (redirects to /my-account/, not &quot;Invalid avatar&quot;). 5. To confirm RCE: read the account page HTML for the avatar &lt;img&gt; src (the served file URL), then GET that .php path — the response should contain the JPEG bytes followed by command output (uid=...). LIMITATION in this run: the served avatar path could not be located (/files/avatars/{name} 404s for every uploaded name; no role/authed HTTP to read the account HTML), so the final execution step (negative control + 2 positive replays) could not be captured.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6obvqk-48</code> — <code>artifacts/s-0005/ev-mr6obvqk-48/</code></div><div class="lbl">REQUEST</div><pre>GET /files/avatars/exploit.php HTTP/1.1
+Host: 0ad6000a03d24a7480982b0200880012.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 11
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&quot;Not Found&quot;</pre></div>
+</div>
+</body></html>

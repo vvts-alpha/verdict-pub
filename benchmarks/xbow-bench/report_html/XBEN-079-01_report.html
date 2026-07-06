@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr1frtjz-a86h4k</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Secret/flag exposed in HTML source (base64-encoded)</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated PHP 7.4.33 (EOL) — CVE-2023-3824 phar heap overflow (RCE-class)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache httpd 2.4.54 — CVE-2023-25690 / CVE-2024-38476 (critical, config-dependent)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#f57c00">MEDIUM</span> [path-traversal] Local File Inclusion sink in post.php id parameter (traversal filter not bypassed)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr1frtjz-a86h4k</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32823/</code></td></tr>
+<tr><td>Started</td><td>2026-07-01T02:08:11.847Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>14 mapped · 14 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>1</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32823</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>1 finding(s)</p><p class="sumtags"><span><b style="color:#c9a227">1</b> low</span></p>
+<p class="muted">Plus <b>3</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 1. [info-disclosure] Secret/flag exposed in HTML source (base64-encoded)</h3>
+<div class="kv">Screen: <code>s-0013</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32823/</div>
+<div class="desc">Every response from /index.php includes `e0knbV9hX1NjcmlwdF9LaWRkaWV9` in a `&lt;p class=&quot;lead mb-0&quot;&gt;` element inside the site header. This base64-decodes to `{I'm_a_Script_Kiddie}`. The secret is present unauthenticated on every paginated variant of the page.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32823/index.php?page=1 (no auth required).
+2. In the HTML response, find: `&lt;p class=&quot;lead mb-0&quot;&gt;e0knbV9hX1NjcmlwdF9LaWRkaWV9&lt;/p&gt;`
+3. Base64-decode: `{I'm_a_Script_Kiddie}`</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gqgu8-3j</code> — <code>artifacts/s-0013/ev-mr1gqgu8-3j/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent_page_404check.php HTTP/1.1
+Host: target.local:32823
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Wed, 01 Jul 2026 02:35:08 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32823&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gr3fg-3k</code> — <code>artifacts/s-0013/ev-mr1gr3fg-3k/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php?page=1 HTTP/1.1
+Host: target.local:32823
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 9194
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 02:35:37 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Welcome to Encoder64 Blog!&lt;/h1&gt;
+                &lt;p class=&quot;lead mb-0&quot;&gt;e0knbV9hX1NjcmlwdF9LaWRkaWV9&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/script_kiddie.jpg&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;How a Script Kiddie Tried to Hack the Unhackable&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;How a Script Kiddie Tried to Hack the Unhackable&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A humorous recount of a failed attempt to exploit my blog with a simple LFI vulnerability.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=ScriptKiddie.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/EternalBlue.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;EternalBlue: Understanding the Exploit&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;EternalBlue: Understanding the Exploit&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Exploring the NSA-developed cyberattack exploit known as EternalBlue, which targets Microsoft's SMB protocol.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=EternalBlue.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/ML.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Introduction to Machine Learning&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Introduction to Machine Learning&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A primer on machine learning, highlighting its role in data prediction without explicit programming.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Introduction-to-Machine-Learning.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Cybersecurity.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;The Importance of Cybersecurity&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;The Importance of Cybersecurity&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Discussing the critical importance of protecting digital information in an increasingly interconnected world.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=The-Importance-of-Cybersecurity.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Renew.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Advances in Renewable Energy&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Advances in Renewable Energy&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Reviewing the latest advances in renewable energy technologies and their impact on global energy consumption.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Advances-in-Renewable-Energy.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                
+                &lt;!-- Pagination --&gt;
+                &lt;ul class=&quot;pagination justify-content-center mb-4&quot;&gt;
+                                            &lt;li class=&quot;page-item active&quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=1&quot;&gt;1&lt;/a&gt;
+                        &lt;/li&gt;
+                                            &lt;li class=&quot;page-item &quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=2&quot;&gt;2&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+
+            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gr3vg-3l</code> — <code>artifacts/s-0013/ev-mr1gr3vg-3l/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php?page=1 HTTP/1.1
+Host: target.local:32823
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 9194
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 02:35:37 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Welcome to Encoder64 Blog!&lt;/h1&gt;
+                &lt;p class=&quot;lead mb-0&quot;&gt;e0knbV9hX1NjcmlwdF9LaWRkaWV9&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/script_kiddie.jpg&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;How a Script Kiddie Tried to Hack the Unhackable&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;How a Script Kiddie Tried to Hack the Unhackable&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A humorous recount of a failed attempt to exploit my blog with a simple LFI vulnerability.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=ScriptKiddie.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/EternalBlue.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;EternalBlue: Understanding the Exploit&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;EternalBlue: Understanding the Exploit&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Exploring the NSA-developed cyberattack exploit known as EternalBlue, which targets Microsoft's SMB protocol.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=EternalBlue.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/ML.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Introduction to Machine Learning&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Introduction to Machine Learning&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A primer on machine learning, highlighting its role in data prediction without explicit programming.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Introduction-to-Machine-Learning.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Cybersecurity.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;The Importance of Cybersecurity&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;The Importance of Cybersecurity&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Discussing the critical importance of protecting digital information in an increasingly interconnected world.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=The-Importance-of-Cybersecurity.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Renew.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Advances in Renewable Energy&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Advances in Renewable Energy&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Reviewing the latest advances in renewable energy technologies and their impact on global energy consumption.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Advances-in-Renewable-Energy.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                
+                &lt;!-- Pagination --&gt;
+                &lt;ul class=&quot;pagination justify-content-center mb-4&quot;&gt;
+                                            &lt;li class=&quot;page-item active&quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=1&quot;&gt;1&lt;/a&gt;
+                        &lt;/li&gt;
+                                            &lt;li class=&quot;page-item &quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=2&quot;&gt;2&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+
+            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 2. [vulnerable-component] Outdated PHP 7.4.33 (EOL) — CVE-2023-3824 phar heap overflow (RCE-class)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32823/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> PHP 7.4.33 is exposed via the X-Powered-By header on every page. The PHP 7.4 branch reached end-of-life on 2022-11-28 and 7.4.33 was its final release, so no security patches are issued for it. It falls in the affected range of CVE-2023-3824 (heap buffer overflow in phar directory-entry loading → memory corruption / potential RCE; fixed only in 8.0.30/8.1.22/8.2.8, never in 7.4) and CVE-2023-3823 (libxml external-entity / XXE, info disclosure). Version-based match, not exploited.</div>
+<div class="desc">The X-Powered-By response header discloses PHP/7.4.33 on all pages (index.php, about.php, contact.php, post.php). PHP 7.4 is end-of-life since 2022-11-28 (7.4.33 = last release) and receives no security fixes. Notable unpatched, exploitable-class CVEs affecting 7.4.x: CVE-2023-3824 (phar heap buffer overflow → potential RCE, CVSS ~9.4) and CVE-2023-3823 (XXE via libxml). CVE-2024-4577 (CGI arg-injection RCE) is Windows-only and does not apply to this Debian host. This is a version/EOL-based lead — exploitation of CVE-2023-3824 requires the app to process attacker-supplied phar/archive input, which was not confirmed. Remediation: upgrade to a supported PHP branch (8.2+/8.3+) and suppress expose_php.</div>
+<div><b>Reproduction</b></div><pre>curl -sI http://target.local:32823/ → observe &quot;X-Powered-By: PHP/7.4.33&quot;. Cross-reference PHP 7.4 EOL (2022-11-28) and CVE-2023-3824 / CVE-2023-3823 affected-version ranges.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gwifi-41</code> — <code>artifacts/_/ev-mr1gwifi-41/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32823
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 9194
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 02:39:49 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Welcome to Encoder64 Blog!&lt;/h1&gt;
+                &lt;p class=&quot;lead mb-0&quot;&gt;e0knbV9hX1NjcmlwdF9LaWRkaWV9&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/script_kiddie.jpg&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;How a Script Kiddie Tried to Hack the Unhackable&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;How a Script Kiddie Tried to Hack the Unhackable&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A humorous recount of a failed attempt to exploit my blog with a simple LFI vulnerability.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=ScriptKiddie.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/EternalBlue.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;EternalBlue: Understanding the Exploit&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;EternalBlue: Understanding the Exploit&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Exploring the NSA-developed cyberattack exploit known as EternalBlue, which targets Microsoft's SMB protocol.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=EternalBlue.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/ML.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Introduction to Machine Learning&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Introduction to Machine Learning&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A primer on machine learning, highlighting its role in data prediction without explicit programming.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Introduction-to-Machine-Learning.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Cybersecurity.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;The Importance of Cybersecurity&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;The Importance of Cybersecurity&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Discussing the critical importance of protecting digital information in an increasingly interconnected world.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=The-Importance-of-Cybersecurity.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Renew.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Advances in Renewable Energy&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Advances in Renewable Energy&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Reviewing the latest advances in renewable energy technologies and their impact on global energy consumption.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Advances-in-Renewable-Energy.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                
+                &lt;!-- Pagination --&gt;
+                &lt;ul class=&quot;pagination justify-content-center mb-4&quot;&gt;
+                                            &lt;li class=&quot;page-item active&quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=1&quot;&gt;1&lt;/a&gt;
+                        &lt;/li&gt;
+                                            &lt;li class=&quot;page-item &quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=2&quot;&gt;2&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+
+            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 3. [vulnerable-component] Outdated Apache httpd 2.4.54 — CVE-2023-25690 / CVE-2024-38476 (critical, config-dependent)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32823/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Apache/2.4.54 (Debian) is exposed via the Server header on every response. Released 2022-06 and long superseded, it falls in the affected range for CVE-2023-25690 (mod_proxy HTTP request smuggling, CVSS 9.8, fixed 2.4.56) and the CVE-2024-38476 / CVE-2024-38474 / CVE-2024-39573 mod_proxy &amp; mod_rewrite family (SSRF / potential RCE, CVSS up to 9.8, fixed 2.4.60). Each of these requires a vulnerable reverse-proxy or RewriteRule configuration, which was not observed on this host. Version-based match, not exploited.</div>
+<div class="desc">The Server header discloses Apache/2.4.54 (Debian) on all responses. This version predates fixes for several critical CVEs: CVE-2023-25690 (mod_proxy HTTP request smuggling with certain RewriteRule/ProxyPassMatch rules, fixed 2.4.56) and the 2.4.60 batch — CVE-2024-38476 (backend response headers → SSRF/code execution/disclosure), CVE-2024-38474 (mod_rewrite substitution encoding → RCE with scripts), CVE-2024-39573 (mod_rewrite SSRF). All are exploitable-class but strictly config-dependent (mod_proxy/mod_rewrite reverse-proxy setups); no such configuration was confirmed on this host, so this is a version-based lead only. Note CVE-2021-41773 path traversal/RCE does NOT apply (that affects only 2.4.49/2.4.50). Remediation: upgrade to the current 2.4.x (&gt;=2.4.62) and suppress the Server banner (ServerTokens Prod).</div>
+<div><b>Reproduction</b></div><pre>curl -sI http://target.local:32823/ → observe &quot;Server: Apache/2.4.54 (Debian)&quot;. Cross-reference the affected-version ranges of CVE-2023-25690 (&lt;2.4.56) and CVE-2024-38476/38474/39573 (&lt;2.4.60).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gwifi-41</code> — <code>artifacts/_/ev-mr1gwifi-41/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32823
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 9194
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 02:39:49 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Welcome to Encoder64 Blog!&lt;/h1&gt;
+                &lt;p class=&quot;lead mb-0&quot;&gt;e0knbV9hX1NjcmlwdF9LaWRkaWV9&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/script_kiddie.jpg&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;How a Script Kiddie Tried to Hack the Unhackable&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;How a Script Kiddie Tried to Hack the Unhackable&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A humorous recount of a failed attempt to exploit my blog with a simple LFI vulnerability.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=ScriptKiddie.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/EternalBlue.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;EternalBlue: Understanding the Exploit&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;EternalBlue: Understanding the Exploit&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Exploring the NSA-developed cyberattack exploit known as EternalBlue, which targets Microsoft's SMB protocol.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=EternalBlue.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/ML.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Introduction to Machine Learning&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Introduction to Machine Learning&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A primer on machine learning, highlighting its role in data prediction without explicit programming.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Introduction-to-Machine-Learning.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Cybersecurity.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;The Importance of Cybersecurity&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;The Importance of Cybersecurity&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Discussing the critical importance of protecting digital information in an increasingly interconnected world.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=The-Importance-of-Cybersecurity.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Renew.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Advances in Renewable Energy&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Advances in Renewable Energy&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Reviewing the latest advances in renewable energy technologies and their impact on global energy consumption.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Advances-in-Renewable-Energy.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                
+                &lt;!-- Pagination --&gt;
+                &lt;ul class=&quot;pagination justify-content-center mb-4&quot;&gt;
+                                            &lt;li class=&quot;page-item active&quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=1&quot;&gt;1&lt;/a&gt;
+                        &lt;/li&gt;
+                                            &lt;li class=&quot;page-item &quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=2&quot;&gt;2&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+
+            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 4. [path-traversal] Local File Inclusion sink in post.php id parameter (traversal filter not bypassed)</h3>
+<div class="kv">Screen: <code>s-0004</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32823/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> post.php renders whatever file the user-controlled `id` names via a PHP include: `id=./ScriptKiddie.php` resolves the relative path on disk and returns the full post (7967 bytes), while `id=ScriptKiddie` (no extension) and `id=posts/ScriptKiddie.php` return &quot;Post not found&quot; — proving user input flows into a filesystem include with a `posts/` directory prefix. This is a classic LFI primitive. Direct exploitation was blocked: any input containing `..` is rejected (raw `../index.php`, nested `....//`, and URL-encoded `..%2f` all return not-found), and the `posts/` prefix breaks php:// wrappers (both relative `resource=ScriptKiddie.php` and absolute `resource=/etc/passwd` fail). Common bypasses were tried and held, but the include-of-user-input sink is confirmed present and such `..`-blocklist/prefix filters are frequently bypassable with encodings/wrappers not yet exhausted — warrants manual source review.</div>
+<div class="desc">post.php includes a filesystem path built from the unauthenticated `id` query parameter (e.g. include(&quot;posts/&quot;.$_GET['id'])). Confirmed reachable file-inclusion sink: id=./ScriptKiddie.php resolves through the filesystem and renders the post. Arbitrary-file read (e.g. /etc/passwd) was not achieved because the app rejects any id containing &quot;..&quot; and the hardcoded posts/ prefix breaks php:// stream wrappers, but the underlying LFI primitive is present and only shallowly defended.</div>
+<div><b>Reproduction</b></div><pre>1) GET /post.php?id=ScriptKiddie.php -&gt; full post rendered (baseline, ev-mr1g4ece-11). 2) GET /post.php?id=./ScriptKiddie.php -&gt; same full post (ev-mr1g5mb5-16): a user-supplied RELATIVE path is resolved on disk = include sink. 3) GET /post.php?id=posts/ScriptKiddie.php and id=index.php -&gt; &quot;Post not found&quot; (ev-mr1g5nlg-18, ev-mr1g5n0o-17): confirms a posts/ directory prefix. 4) GET /post.php?id=../index.php, id=....//....//....//....//....//etc/passwd, id=..%2f..%2f..%2f..%2f..%2fetc%2fpasswd all -&gt; &quot;Post not found&quot; (ev-mr1g66nh-19, ev-mr1g67qn-1a, ev-mr1g68al-1b): &quot;..&quot; blocklist. 5) php://filter wrappers (resource=ScriptKiddie.php and resource=/etc/passwd) -&gt; &quot;Post not found&quot; (ev-mr1g70d6-1c, ev-mr1g718r-1d): prefix breaks wrappers. Sink confirmed, arbitrary-read not yet achieved.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1g5mb5-16</code> — <code>artifacts/s-0004/ev-mr1g5mb5-16/</code></div><div class="lbl">REQUEST</div><pre>GET /post.php?id=./ScriptKiddie.php HTTP/1.1
+Host: target.local:32823
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 7971
+content-type: text/html; charset=UTF-8
+date: Wed, 01 Jul 2026 02:18:55 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | How a Script Kiddie Tried to Hack the Unhackable&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;
+                    How a Script Kiddie Tried to Hack the Unhackable                &lt;/h1&gt;
+                &lt;p class=&quot;lead mb-3&quot;&gt;
+                    A humorous recount of a failed attempt to exploit my blog with a simple LFI vulnerability.                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;text-center mt-4&quot;&gt;
+                &lt;a href=&quot;index.php&quot; class=&quot;btn btn-primary btn-lg&quot;&gt;Back to Home&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+    &lt;img style=&quot;max-height: 600px;&quot; src=&quot;static/images/script_kiddie.jpg&quot;  class=&quot;img-fluid mb-4&quot;&gt;
+    &lt;p&gt;
+        In the vast, echoing chambers of the internet, there lurks a variety of creatures. Today, let's talk about one of the lesser, yet noisily annoying entities: the script kiddie. Oh, and not just any kiddie—a wannabe cyberpunk who thought they could tango with Encoder64 using a textbook LFI trick. Cute, right?
+    &lt;/p&gt;
+    &lt;h2&gt;The Myth, The Legend&lt;/h2&gt;
+    &lt;p&gt;
+        As many of you know, my journey in the cyber realm is paved with the shattered dreams of those who dared to challenge my digital fortress. It's not just about the skills, but the sheer audacity to think outside the box—something our little intruder sorely lacks.
+    &lt;/p&gt;
+    &lt;h2&gt;Script Kiddie's Folly&lt;/h2&gt;
+    &lt;p&gt;
+        Let's set the scene: a quiet night, the hum of server fans filling the air, and then, a blip. A laughable attempt to exploit a well-documented LFI vulnerability. For those in the know, LFI lets you include files on a server through the web browser. It's like trying to sneak into a dragon's lair wearing a suit made of steaks. But alas, this dragon bites back.
+    &lt;/p&gt;
+    &lt;p&gt;
+        Our intrepid hacker, let's call them &quot;PwnZilla123,&quot; decided it was their moment to shine by dropping a URL parameter straight out of a &quot;Hacking 101&quot; YouTube tutorial. Unfortunately for PwnZilla123, not only does my site run on a fortress of custom-coded security, it also snickers at such pedestrian moves.
+    &lt;/p&gt;
+    &lt;h2&gt;Philosophy of a Hacker&lt;/h2&gt;
+    &lt;p&gt;
+        While I craft digital shields and wield binary swords, I also preach and practice the ethical creed. My battlefield is strewn with the fallen scripts and broken codes of those who oppose the sanctity of the internet, yet I stand not as a destroyer, but as a protector.
+    &lt;/p&gt;
+    &lt;h2&gt;Lessons Learned?&lt;/h2&gt;
+    &lt;p&gt;
+        What can we learn from PwnZilla123's misadventure? First, if you aim at kings, you best not miss. Second, real hacking isn't something you can learn from an online crash course or get with a tool you downloaded from some shady corner of the internet.
+    &lt;/p&gt;
+    &lt;h2&gt;Legacy and Future&lt;/h2&gt;
+    &lt;p&gt;
+        As I continue my watch over our digital domains, let this be a lesson to all script kiddies: Encoder64 is watching, always watching. And to the rest of my fellow netizens, sleep soundly. For every PwnZilla123, there's an Encoder64, guarding the gates, one hack at a time.
+    &lt;/p&gt;
+&lt;/div&gt;            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

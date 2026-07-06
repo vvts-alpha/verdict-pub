@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr7s6tyf-7c66w3</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Account API (/accountDetails) discloses active session token(s) in the response body</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#c9a227">LOW</span> [burp] Strict transport security not enforced (7 URLs)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [burp?] Cross-origin resource sharing: all subdomains trusted</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] TLS certificate</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Cacheable HTTPS response</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Cross-domain Referer leakage</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-7">7. <span class="sev" style="color:#d32f2f">HIGH</span> [secret-exposure] Suspected cross-origin exfiltration of the administrator's API key via credentialed /accountDetails</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr7s6tyf-7c66w3</code></td></tr>
+<tr><td>Target</td><td><code>https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/</code></td></tr>
+<tr><td>Started</td><td>2026-07-05T12:42:24.735Z</td></tr>
+<tr><td>Generated</td><td>2026-07-06T05:43:23.041Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>6 mapped · 6 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>6</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>*.web-security-academy.net</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>6 finding(s)</p><p class="sumtags"><span><b style="color:#c9a227">3</b> low</span><span><b style="color:#5f7d8c">3</b> info</span></p>
+<p class="muted">Plus <b>1</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 1. [info-disclosure] Account API (/accountDetails) discloses active session token(s) in the response body</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/</div>
+<div class="desc">The authenticated JSON endpoint GET /accountDetails (consumed by client-side JS on /my-account) returns not only the account's username/email/apikey but also the caller's live session identifier(s) in a &quot;sessions&quot; array (e.g. &quot;sessions&quot;:[&quot;Rx8gLuGSGQH3tm3l5KIBAuMgyAHn9ueB&quot;], which matches the value of the session cookie). Returning session identifiers in a response body is a defence-in-depth failure: the session token becomes readable by any JavaScript that can read the response, so it materially amplifies the impact of any XSS or CORS/cross-origin read on this endpoint from &quot;leak the API key&quot; to &quot;full session hijack / account takeover&quot;. Unauthenticated requests return only 401 &quot;Unauthorized&quot; and do NOT expose the token (negative control).</div>
+<div><b>Reproduction</b></div><pre>1. Log in as wiener:peter. 2. GET /accountDetails with the session cookie. 3. Response JSON contains &quot;apikey&quot; AND &quot;sessions&quot;:[&quot;&lt;your session cookie value&gt;&quot;]. 4. Control: GET /accountDetails with no/invalid session → 401 &quot;Unauthorized&quot;, no token disclosed.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7uqyr7-2x</code> — <code>artifacts/_/ev-mr7uqyr7-2x/</code></div><div class="lbl">REQUEST</div><pre>GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 401
+content-length: 14
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&quot;Unauthorized&quot;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7vldgq-3z</code> — <code>artifacts/_/ev-mr7vldgq-3z/</code></div><div class="lbl">REQUEST</div><pre>GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+access-control-allow-credentials: true
+content-length: 149
+content-type: application/json; charset=utf-8
+x-frame-options: SAMEORIGIN
+
+{
+  &quot;username&quot;: &quot;wiener&quot;,
+  &quot;email&quot;: &quot;&quot;,
+  &quot;apikey&quot;: &quot;kfzjm1rZ13ebB3RMb3PQ7yafcJuB8MCa&quot;,
+  &quot;sessions&quot;: [
+    &quot;Rx8gLuGSGQH3tm3l5KIBAuMgyAHn9ueB&quot;
+  ]
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7vmbt7-42</code> — <code>artifacts/_/ev-mr7vmbt7-42/</code></div><div class="lbl">REQUEST</div><pre>GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+x-verdict: assessment
+Cookie: &lt;redacted&gt;
+Origin: https://evil-attacker.example</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+access-control-allow-credentials: true
+content-length: 149
+content-type: application/json; charset=utf-8
+x-frame-options: SAMEORIGIN
+
+{
+  &quot;username&quot;: &quot;wiener&quot;,
+  &quot;email&quot;: &quot;&quot;,
+  &quot;apikey&quot;: &quot;kfzjm1rZ13ebB3RMb3PQ7yafcJuB8MCa&quot;,
+  &quot;sessions&quot;: [
+    &quot;Rx8gLuGSGQH3tm3l5KIBAuMgyAHn9ueB&quot;
+  ]
+}</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 2. [burp] Strict transport security not enforced (7 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: CERTAIN) [+6 more URL(s): https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/login, https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/admin, https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/my-account, https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/accountDetails, https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/product/stock, …] @ https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/product</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7wodfw-4y</code> — <code>artifacts/_/ev-mr7wodfw-4y/</code></div><div class="lbl">REQUEST</div><pre>GET /product HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+
+GET /product?productId=1 HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 6239
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='exploit-link' class='button' target='_blank' href='https://exploit-0a0400d603b1845d80450279019c0001.exploit-server.net'&gt;Go to exploit server&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='T2J0YWluIGFuZCBzdWJtaXQgdGhlIGFkbWluIHVzZXIncyBBUEkga2V5Lg==' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2NvcnMvbGFiLWJyZWFraW5nLWh0dHBzLWF0dGFjaw=='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account?id=wiener&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;product&quot;&gt;
+                        &lt;h3&gt;High-End Gift Wrapping&lt;/h3&gt;
+                        &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                        &lt;div id=&quot;price&quot;&gt;$75.28&lt;/div&gt;
+                        &lt;img src=&quot;/image/productcatalog/products/53.jpg&quot;&gt;
+                        &lt;label&gt;Description:&lt;/label&gt;
+                        &lt;p&gt;We offer a completely unique gift wrapping experience - the gift that just keeps on giving. We can crochet any shape and size to order. We also collect worldwide, we do the hard work so you don't have to.&lt;/p&gt;
+&lt;p&gt;The gift is no longer the only surprise. Your friends and family will be delighted at our bespoke wrapping, each item 100% original, something that will be talked about for many years to come.&lt;/p&gt;
+&lt;p&gt;Due to the intricacy of this service, you must allow 3 months for your order to be completed. So. organization is paramount, no leaving shopping until the last minute if you want to take advantage of this fabulously wonderful new way to present your gifts.&lt;/p&gt;
+&lt;p&gt;Get in touch, tell us what you need to be wrapped, and we can give you an estimate within 24 hours. Let your funky originality extend to all areas of your life. We love every project we work on, so don't delay, give us a call today.&lt;/p&gt;
+                        &lt;form id=&quot;stockCheckForm&quot; action=&quot;/product/stock&quot; method=&quot;POST&quot;&gt;
+                            &lt;input required type=&quot;hidden&quot; name=&quot;productId&quot; value=&quot;1&quot;&gt;
+                            &lt;select name=&quot;storeId&quot;&gt;
+                                &lt;option value=&quot;1&quot; &gt;London&lt;/option&gt;
+                                &lt;option value=&quot;2&quot; &gt;Paris&lt;/option&gt;
+                                &lt;option value=&quot;3&quot; &gt;Milan&lt;/option&gt;
+                            &lt;/select&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;button&quot;&gt;Check stock&lt;/button&gt;
+                        &lt;/form&gt;
+                        &lt;script&gt;
+                            const stockCheckForm = document.getElementById(&quot;stockCheckForm&quot;);
+                            stockCheckForm.addEventListener(&quot;submit&quot;, function(e) {
+                                const data = new FormData(stockCheckForm);
+                                window.open('http://stock.0a0300aa031f841980ff030c008e006a.web-security-academy.net/?productId=1&amp;storeId=' + data.get('storeId'), 'stock', 'height=10,width=10,left=10,top=10,menubar=no,toolbar=no,location=no,status=no');
+                                e.preventDefault();
+                            });
+                        &lt;/script&gt;
+                        &lt;div class=&quot;is-linkback&quot;&gt;
+                            &lt;a href=&quot;/&quot;&gt;Return to list&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [burp?] Cross-origin resource sharing: all subdomains trusted</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">⚠ AI re-test could not reproduce (severity kept, manual confirmation advised): Could not reproduce: the reflected Access-Control-Allow-Origin only appears on the authenticated 200 response (session cookie redacted). Without credentials, control and both arbitrary-subdomain positives returned identical 401s with no ACAO header, so the effect is absent — automated re-test failed, finding kept for manual review.
+
+The application implements an HTML5 cross-origin resource sharing (CORS) policy for this request that allows access from arbitrary subdomains.&lt;br&gt;&lt;br&gt;The application allowed access from the requested origin &lt;strong&gt;https://lvodpnhz.0a0300aa031f841980ff030c008e006a.web-security-academy.net&lt;/strong&gt;&lt;br&gt;&lt;br&gt;Since the Vary: Origin header was not present in the response, reverse proxies and intermediate servers may cache it. This may enable an attacker to carry out cache poisoning attacks. (confidence: CERTAIN) @ https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/accountDetails</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7wodgd-51</code> — <code>artifacts/_/ev-mr7wodgd-51/</code></div><div class="lbl">REQUEST</div><pre>GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+
+GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Accept: */*
+Origin: https://lvodpnhz.0a0300aa031f841980ff030c008e006a.web-security-academy.net
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Access-Control-Allow-Origin: https://lvodpnhz.0a0300aa031f841980ff030c008e006a.web-security-academy.net
+Access-Control-Allow-Credentials: true
+Content-Type: application/json; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 149
+
+{
+  &quot;username&quot;: &quot;wiener&quot;,
+  &quot;email&quot;: &quot;&quot;,
+  &quot;apikey&quot;: &quot;kfzjm1rZ13ebB3RMb3PQ7yafcJuB8MCa&quot;,
+  &quot;sessions&quot;: [
+    &quot;Rx8gLuGSGQH3tm3l5KIBAuMgyAHn9ueB&quot;
+  ]
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7wpfay-52</code> — <code>artifacts/_/ev-mr7wpfay-52/</code></div><div class="lbl">REQUEST</div><pre>GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Origin: https://evil-unrelated-domain.com</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 401
+connection: close
+content-encoding: gzip
+content-length: 34
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&quot;Unauthorized&quot;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7wpit9-53</code> — <code>artifacts/_/ev-mr7wpit9-53/</code></div><div class="lbl">REQUEST</div><pre>GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Origin: https://attacker1random.0a0300aa031f841980ff030c008e006a.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 401
+connection: close
+content-encoding: gzip
+content-length: 34
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&quot;Unauthorized&quot;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7wpmbr-54</code> — <code>artifacts/_/ev-mr7wpmbr-54/</code></div><div class="lbl">REQUEST</div><pre>GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Origin: https://attacker2different.0a0300aa031f841980ff030c008e006a.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 401
+connection: close
+content-encoding: gzip
+content-length: 34
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&quot;Unauthorized&quot;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7wq9ke-56</code> — <code>artifacts/_/ev-mr7wq9ke-56/</code></div><div class="lbl">REQUEST</div><pre>OPTIONS /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Origin: https://attacker1random.0a0300aa031f841980ff030c008e006a.web-security-academy.net
+Access-Control-Request-Method: GET</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 401
+connection: close
+content-encoding: gzip
+content-length: 34
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&quot;Unauthorized&quot;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 4. [burp] TLS certificate</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The server presented a valid, trusted TLS certificate. This issue is purely informational.&lt;br&gt;&lt;br&gt;The server presented the following certificates:&lt;br&gt;&lt;br&gt;&lt;h4&gt;Server certificate&lt;/h4&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued to:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;*.web-security-academy.net, *.2.web-security-academy.net, *.1.web-security-academy.net, *.3.web-security-academy.net, *.2.h1-web-security-academy.net, *.1.h1-web-security-academy.net, *.h1-web-security-academy.net, *.3.h1-web-security-academy.net&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued by:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;Amazon RSA 2048 M01&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Valid from:&lt;/b&gt;&amp;nbsp;&amp;nb @ https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7wodfh-4x</code> — <code>artifacts/_/ev-mr7wodfh-4x/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 5. [burp] Cacheable HTTPS response</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: CERTAIN) @ https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/accountDetails</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7wodg1-4z</code> — <code>artifacts/_/ev-mr7wodg1-4z/</code></div><div class="lbl">REQUEST</div><pre>GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+
+GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Access-Control-Allow-Credentials: true
+Content-Type: application/json; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 149
+
+{
+  &quot;username&quot;: &quot;wiener&quot;,
+  &quot;email&quot;: &quot;&quot;,
+  &quot;apikey&quot;: &quot;kfzjm1rZ13ebB3RMb3PQ7yafcJuB8MCa&quot;,
+  &quot;sessions&quot;: [
+    &quot;Rx8gLuGSGQH3tm3l5KIBAuMgyAHn9ueB&quot;
+  ]
+}</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 6. [burp] Cross-domain Referer leakage</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The page was loaded from a URL containing a query string:&lt;ul&gt;&lt;li&gt;https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/my-account&lt;/li&gt;&lt;/ul&gt;The response contains the following links to other domains:&lt;ul&gt;&lt;li&gt;https://exploit-0a0400d603b1845d80450279019c0001.exploit-server.net/&lt;/li&gt;&lt;li&gt;https://portswigger.net/web-security/dashboard&lt;/li&gt;&lt;/ul&gt; (confidence: CERTAIN) @ https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/my-account</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7wodg7-50</code> — <code>artifacts/_/ev-mr7wodg7-50/</code></div><div class="lbl">REQUEST</div><pre>GET /my-account HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+
+GET /my-account?id=wiener HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+Cache-Control: no-cache
+X-Frame-Options: SAMEORIGIN
+Content-Length: 4616
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labs.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a id='exploit-link' class='button' target='_blank' href='https://exploit-0a0400d603b1845d80450279019c0001.exploit-server.net'&gt;Go to exploit server&lt;/a&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='T2J0YWluIGFuZCBzdWJtaXQgdGhlIGFkbWluIHVzZXIncyBBUEkga2V5Lg==' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2NvcnMvbGFiLWJyZWFraW5nLWh0dHBzLWF0dGFjaw=='&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/my-account?id=wiener&quot;&gt;My account&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                            &lt;a href=&quot;/logout&quot;&gt;Log out&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;h1&gt;My Account&lt;/h1&gt;
+                    &lt;div id=account-content&gt;
+                        &lt;p&gt;Your username is: wiener&lt;/p&gt;
+                        &lt;div&gt;Your API Key is: &lt;span id=apikey&gt;&lt;/span&gt;&lt;/div&gt;
+                        &lt;script&gt;
+                            fetch('/accountDetails', {credentials:'include'})
+                                .then(r =&gt; r.json())
+                                .then(j =&gt; document.getElementById('apikey').innerText = j.apikey)
+                        &lt;/script&gt;
+                        &lt;form class=&quot;login-form&quot; name=&quot;change-email-form&quot; action=&quot;/my-account/change-email&quot; method=&quot;POST&quot;&gt;
+                            &lt;label&gt;Email&lt;/label&gt;
+                            &lt;input required type=&quot;email&quot; name=&quot;email&quot; value=&quot;&quot;&gt;
+                            &lt;input required type=&quot;hidden&quot; name=&quot;csrf&quot; value=&quot;A2OgYdCk8ZsrrFT5WviKBHL1yMX7W5yJ&quot;&gt;
+                            &lt;button class='button' type='submit'&gt; Update email &lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-7">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 7. [secret-exposure] Suspected cross-origin exfiltration of the administrator's API key via credentialed /accountDetails</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0a0300aa031f841980ff030c008e006a.web-security-academy.net/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Authenticated GET /accountDetails returns the full apikey and session token even when the request carries an arbitrary/foreign Origin (evil host AND Origin: null both accepted, 200 with the key), and the lab provides an exploit server plus a cross-user &quot;steal the admin's API key&quot; goal — the exact CORS origin-reflection exfiltration pattern for stealing the admin's secret. ACAO/ACAC reflection could not be observed (tool hides those headers) and the exploit-server delivery channel is out of scope, so it stays unconfirmed.</div>
+<div class="desc">The lab objective is to obtain the administrator's API key (a secret). That secret is served by the credentialed JSON endpoint GET /accountDetails (which returns apikey + session token for the current user) and the lab ships an exploit server — the canonical setup for a CORS origin-reflection credential-theft attack: attacker JS on the exploit server does fetch('https://LAB/accountDetails',{credentials:'include'}) and posts the response (admin's apikey + session) to the attacker log when the admin bot visits. Evidence I could gather: authenticated GET /accountDetails returns the full apikey even when the request carries an arbitrary/foreign Origin header — both Origin: https://evil-attacker.example and Origin: null returned 200 with the key. What I could NOT do this run: (1) positively confirm the Access-Control-Allow-Origin / Access-Control-Allow-Credentials reflection, because this harness's http client only surfaces a curated header subset (content-type/set-cookie/location) and never CORS headers; (2) complete the end-to-end exfiltration, because the exploit-server host (exploit-*.exploit-server.net) is OUT OF ASSESSMENT SCOPE, so the attacker page can be neither hosted nor delivered to the admin. This is the standing credential-exposure objective and should be manually finished (see repro).</div>
+<div><b>Reproduction</b></div><pre>1. Log in as wiener:peter. 2. In Burp, GET /accountDetails with header Origin: https://evil-attacker.example and a valid session cookie; check response for Access-Control-Allow-Origin: https://evil-attacker.example + Access-Control-Allow-Credentials: true (reflection = confirmed CORS misconfig). 3. Host on the exploit server an HTML page whose JS does fetch('https://LAB/accountDetails',{credentials:'include'}) then exfiltrates the JSON to /log or a collaborator. 4. Deliver to victim (admin bot). 5. Read the administrator's apikey from the exploit-server access log and submit it via POST /submitSolution (param answer).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr7vmbt7-42</code> — <code>artifacts/_/ev-mr7vmbt7-42/</code></div><div class="lbl">REQUEST</div><pre>GET /accountDetails HTTP/1.1
+Host: 0a0300aa031f841980ff030c008e006a.web-security-academy.net
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+x-verdict: assessment
+Cookie: &lt;redacted&gt;
+Origin: https://evil-attacker.example</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+access-control-allow-credentials: true
+content-length: 149
+content-type: application/json; charset=utf-8
+x-frame-options: SAMEORIGIN
+
+{
+  &quot;username&quot;: &quot;wiener&quot;,
+  &quot;email&quot;: &quot;&quot;,
+  &quot;apikey&quot;: &quot;kfzjm1rZ13ebB3RMb3PQ7yafcJuB8MCa&quot;,
+  &quot;sessions&quot;: [
+    &quot;Rx8gLuGSGQH3tm3l5KIBAuMgyAHn9ueB&quot;
+  ]
+}</pre></div>
+</div>
+</body></html>

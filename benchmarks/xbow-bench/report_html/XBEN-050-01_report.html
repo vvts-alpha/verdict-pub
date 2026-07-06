@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr0w7exy-3njnop</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] End-of-Life Python 2.7.18 runtime — no security patches since 2020-01-01</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [xss-reflected] Reflected input with unescaped `&lt;` — strip-based sanitization on /page `name` param</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] Outdated Werkzeug 1.0.1 — CVE-2023-25577 multipart DoS, dev-server in production, debugger-RCE exposure class</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr0w7exy-3njnop</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32815/</code></td></tr>
+<tr><td>Started</td><td>2026-06-30T17:00:27.103Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>0</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32815</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p class="muted"><em>No confirmed findings.</em></p>
+<p class="muted">Plus <b>3</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 1. [vulnerable-component] End-of-Life Python 2.7.18 runtime — no security patches since 2020-01-01</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32815/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Python 2.7.18 detected via the Server response header `Werkzeug/1.0.1 Python/2.7.18` on the site root. Python 2 reached end-of-life on 2020-01-01 and 2.7.18 was the final release; it receives NO upstream security fixes. The runtime therefore carries permanently-unpatched CVEs — e.g. CVE-2021-3177 (ctypes PyCArg_repr stack buffer overflow), CVE-2021-23336 (urllib.parse query-string parameter cloaking → web-cache poisoning), CVE-2022-0391 (urllib control-char host splitting). Version/EOL-based posture issue, not actively exploited.</div>
+<div class="desc">The application runs on Python 2.7.18, the terminal release of the Python 2 line, which has been end-of-life since 2020-01-01 and receives no security patches. Any vulnerability found in CPython 2.7 since then is unfixed in this runtime. Representative unpatched issues: CVE-2021-3177 (ctypes buffer overflow, RCE-class in affected paths), CVE-2021-23336 (urllib parameter cloaking → cache poisoning), CVE-2022-0391 (urllib host-splitting / SSRF-adjacent). This is a version/EOL-based finding — the worst issues are not confirmed to be reachable in this app, but the runtime is structurally unpatchable. Remediation: migrate to a supported Python 3.x line.</div>
+<div><b>Reproduction</b></div><pre>curl -sI http://target.local:32815/ → response header `Server: Werkzeug/1.0.1 Python/2.7.18`. Cross-reference Python 2.7.18 against the Python EOL schedule (2.7 EOL 2020-01-01, 2.7.18 final release).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0wp551-1e</code> — <code>artifacts/_/ev-mr0wp551-1e/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1090
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 17:14:13 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    	&lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/index.css&quot;&gt;
+            &lt;title&gt;Dalgona Challenges&lt;/title&gt;
+        &lt;/head&gt;
+
+	        &lt;article class=&quot;widget widget__login&quot;&gt;
+	        &lt;div class=&quot;widget__content&quot;&gt;
+	    		&lt;div class=&quot;box&quot;&gt;
+	                &lt;form class=&quot;box-form&quot;&gt;
+	                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+				        &lt;h1&gt;Dalgona Challenges&lt;/h1&gt;
+	                    &lt;div class=&quot;init-table&quot;&gt;
+                            &lt;div class=&quot;row&quot;&gt;
+                                &lt;div class=&quot;column&quot;&gt;&lt;a class=&quot;text&quot; type=text href=&quot;page&quot;&gt;&lt;img src=&quot;static/img/cookies/new_star.png&quot; alt=&quot;Star&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;Page&lt;/a&gt;&lt;/div&gt;
+				            &lt;/div&gt;
+                        &lt;/br&gt;
+				        &lt;/div&gt;
+				        &lt;/br&gt;
+				        &lt;/br&gt;
+				        &lt;p&gt;&lt;/p&gt;
+	                &lt;/form&gt;
+	                &lt;/br&gt;
+				&lt;/div&gt;
+	        &lt;/div&gt;
+	    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 2. [xss-reflected] Reflected input with unescaped `&lt;` — strip-based sanitization on /page `name` param</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32815/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Server reflects `name` param with raw `&lt;` character (not HTML-escaped to `&amp;lt;`), confirmed by GET /page?name=%3C returning literal `&lt;` in the HTML body. Strip-not-escape is a fragile pattern; combined with a server-side JS eval sink (headless browser TypeError shown in HTML response), this constitutes a real lead requiring further bypass research.</div>
+<div class="desc">The `name` GET parameter is reflected verbatim into the server-rendered HTML response body without HTML-encoding the `&lt;` character (confirmed: `?name=%3C` returns `&lt;` raw in the DOM). A strip-based tag filter removes complete `&lt;tag …&gt;` constructs (opening, closing, mixed-case all tested), preventing trivial `&lt;script&gt;` / `&lt;img onerror&gt;` / `&lt;svg onload&gt;` / `&lt;details ontoggle&gt;` injection. However, the server implements strip-not-escape, which is inherently fragile against novel parser quirks and fuzzing. Additionally, the server appears to evaluate the `name` param as JavaScript in a server-side context (every non-empty submission triggers an error message in the HTML such as &quot;You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of 'XSS'&quot;), indicating a headless-browser eval sink that warrants deeper investigation for SSRF or sandbox escape.</div>
+<div><b>Reproduction</b></div><pre>1. GET /page?name=%3C — observe `&lt;` reflected unescaped in HTML body (confirmed, negativeControl=baseline clean form).
+2. GET /page?name=hello_test — value reflected as raw text node between `&amp;lt;input&amp;gt;` and `&amp;lt;/form&amp;gt;`.
+3. All full-tag payloads tested (&amp;lt;img onerror&amp;gt;, &amp;lt;svg onload&amp;gt;, &amp;lt;details ontoggle&amp;gt;, &amp;lt;script&amp;gt;, mixed-case &amp;lt;ScRiPt&amp;gt;, closing &amp;lt;/form&amp;gt;) → server strips tags, returns default 918-byte page or strips tags leaving text content.
+4. Recommend manual fuzzing with unusual parser tricks (null bytes, unicode, truncated tags) to find a full bypass.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0whrpb-s</code> — <code>artifacts/s-0002/ev-mr0whrpb-s/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=%3C HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1009
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 17:08:29 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss22.css&quot;&gt;
+            &lt;title&gt;Dalgona - Star&lt;/title&gt;
+        &lt;/head&gt;
+    
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_star.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot;&gt;
+                    &lt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 3. [vulnerable-component] Outdated Werkzeug 1.0.1 — CVE-2023-25577 multipart DoS, dev-server in production, debugger-RCE exposure class</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32815/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Werkzeug 1.0.1 detected via the Server response header `Werkzeug/1.0.1 Python/2.7.18` on the site root. 1.0.1 (Apr 2020) is far behind current; known CVEs affecting it include CVE-2023-25577 (multipart/form-data parsing resource exhaustion → DoS, fixed in 2.2.3), CVE-2023-23934 (cookie name shadowing, fixed 2.2.3), and CVE-2024-34069 (interactive debugger reachable cross-domain when debug=True, fixed 3.0.3). The exposed Server banner also shows the Werkzeug *development* WSGI server is fronting the app in production. Version-based; not yet exploited.</div>
+<div class="desc">Werkzeug 1.0.1 is the WSGI library/dev-server serving this Flask app. Known issues for this version: CVE-2023-25577 (HTTP multipart parsing can be forced into high CPU/memory use → DoS; fixed in 2.2.3), CVE-2023-23934 (a nameless cookie can shadow a same-prefixed named cookie; fixed 2.2.3), CVE-2024-34069 (the interactive debugger console can be triggered from another domain when the app runs with debug=True; fixed 3.0.3). Separately, the Server header reveals the Werkzeug development server is exposed in production — if Flask debug mode is enabled, the Werkzeug traceback debugger grants interactive code execution (PIN-protected, but the PIN has historically been computable). Severity set to medium for the confirmed version-based DoS class; escalates to RCE/critical if debug mode is confirmed reachable (probed separately). Remediation: run behind a production WSGI server (gunicorn/uWSGI) with debug disabled, and upgrade Werkzeug to a supported 3.x release.</div>
+<div><b>Reproduction</b></div><pre>curl -sI http://target.local:32815/ → `Server: Werkzeug/1.0.1 Python/2.7.18`. Cross-reference Werkzeug 1.0.1 against CVE-2023-25577 / CVE-2023-23934 / CVE-2024-34069 (all fixed in versions &gt; 1.0.1).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0wp551-1e</code> — <code>artifacts/_/ev-mr0wp551-1e/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1090
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 17:14:13 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    	&lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/index.css&quot;&gt;
+            &lt;title&gt;Dalgona Challenges&lt;/title&gt;
+        &lt;/head&gt;
+
+	        &lt;article class=&quot;widget widget__login&quot;&gt;
+	        &lt;div class=&quot;widget__content&quot;&gt;
+	    		&lt;div class=&quot;box&quot;&gt;
+	                &lt;form class=&quot;box-form&quot;&gt;
+	                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+				        &lt;h1&gt;Dalgona Challenges&lt;/h1&gt;
+	                    &lt;div class=&quot;init-table&quot;&gt;
+                            &lt;div class=&quot;row&quot;&gt;
+                                &lt;div class=&quot;column&quot;&gt;&lt;a class=&quot;text&quot; type=text href=&quot;page&quot;&gt;&lt;img src=&quot;static/img/cookies/new_star.png&quot; alt=&quot;Star&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;Page&lt;/a&gt;&lt;/div&gt;
+				            &lt;/div&gt;
+                        &lt;/br&gt;
+				        &lt;/div&gt;
+				        &lt;/br&gt;
+				        &lt;/br&gt;
+				        &lt;p&gt;&lt;/p&gt;
+	                &lt;/form&gt;
+	                &lt;/br&gt;
+				&lt;/div&gt;
+	        &lt;/div&gt;
+	    &lt;/html&gt;</pre></div>
+</div>
+</body></html>

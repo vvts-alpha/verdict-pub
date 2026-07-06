@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr1kr7tq-lym02t</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [workflow-bypass] AES-CBC Padding Oracle on `captcha` cookie enables CAPTCHA bypass &amp; automated account creation</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#c9a227">LOW</span> [misconfig] Registration form throws unhandled HTTP 500 on any submission</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Werkzeug 2.2.3 — CVE-2024-34069 (debugger RCE) / CVE-2023-46136 (DoS)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr1kr7tq-lym02t</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32828/</code></td></tr>
+<tr><td>Started</td><td>2026-07-01T04:27:41.795Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>1 mapped · 1 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>2</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32828</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>2 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#c9a227">1</b> low</span></p>
+<p class="muted">Plus <b>1</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [workflow-bypass] AES-CBC Padding Oracle on `captcha` cookie enables CAPTCHA bypass &amp; automated account creation</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32828/</div>
+<div class="desc">The &quot;Create New User&quot; form at / gates account creation behind a CAPTCHA. The CAPTCHA answer is NOT stored server-side or in the signed Flask `session` cookie (which holds only csrf_token); instead the server ships a second, non-HttpOnly, fully client-controlled cookie `captcha` = a 32-byte base64 blob (AES-CBC: IV[16] || ciphertext[16]). On POST the server base64-decodes this cookie, AES-CBC-decrypts it, PKCS7-unpads it to recover the CAPTCHA answer, and compares it to the submitted `captcha` form field.
+
+The decryption path is a classic PADDING ORACLE: the server returns observably different responses depending on whether the decrypted plaintext has valid PKCS7 padding:
+  * Valid padding, wrong answer -&gt; HTTP 403, body &quot;Invalid CAPTCHA!&quot;
+  * Invalid padding             -&gt; HTTP 200, body &quot;Invalid padding&quot;
+This leaks, for any attacker-chosen ciphertext, whether its decryption ends in valid PKCS7 padding — a decryption oracle. Because the `captcha` cookie is client-controlled and (proven) session-independent, an attacker manipulates the IV / a preceding controlled block to brute-force valid paddings and recover the AES intermediate state byte-by-byte, thereby (a) DECRYPTING the real cookie to learn the CAPTCHA answer without ever reading the image, or (b) FORGING a ciphertext via CBC-R that decrypts to a chosen plaintext and submitting that same plaintext. Either way the CAPTCHA — the sole anti-automation control on account creation — is fully bypassable, enabling scripted mass user registration. This directly answers the operator focus: yes, a user can be created without reading the CAPTCHA.
+
+Proof the oracle is specifically about PADDING and not generic tampering: decoding the real IV = 8E B9 62 6B 92 CD 37 A0 5A 70 10 A5 AA 9E CC 37. Flipping IV[0] (a data byte; changes plaintext[0], padding intact) still returns 403 &quot;Invalid CAPTCHA!&quot; (evidence ev-mr1lfm55-1k) — the answer comparison still runs. Flipping IV[15] (the last byte, which controls the PKCS7 padding byte) flips the response to 200 &quot;Invalid padding&quot; (ev-mr1lfooq-1l, ev-mr1lfrb9-1m). Same request, only padding validity differs -&gt; the server leaks it.</div>
+<div><b>Reproduction</b></div><pre>1. GET / and observe two Set-Cookie headers: `session` (Flask-signed, csrf_token only) and `captcha` (base64, 32 bytes, NOT HttpOnly), e.g. captcha=jrlia5LNN6BacBClqp7MN4+IC/AjD0sGRn/I/2fP/VA= . base64-decode -&gt; 32 bytes = IV[0..15]=8E B9 62 6B 92 CD 37 A0 5A 70 10 A5 AA 9E CC 37, C1[0..15]=8F 88 0B F0 23 0F 4B 06 46 7F C8 FF 67 CF FD 50.
+2. Baseline (valid padding, wrong answer): POST / with Cookie: session=&lt;valid&gt;; captcha=&lt;real blob&gt;, body csrf_token=&lt;valid&gt;&amp;username=verdicttest&amp;captcha=WRONG&amp;submit=Submit -&gt; 403 &quot;Invalid CAPTCHA!&quot; (ev-mr1lfja7-1j). Confirms the blob decrypts+unpads cleanly and the answer comparison is reached. The blob is session-independent: it was paired with an unrelated session cookie and still decrypted.
+3. Data-byte control: flip IV[0] 8E-&gt;8F (base64 group1 &quot;jrli&quot;-&gt;&quot;j7li&quot;): captcha=j7lia5LNN6BacBClqp7MN4+IC/AjD0sGRn/I/2fP/VA= -&gt; still 403 &quot;Invalid CAPTCHA!&quot; (ev-mr1lfm55-1k). Padding intact, comparison still runs.
+4. Padding-byte manipulation (the oracle): flip IV[15] 37-&gt;36 (base64 group6 &quot;N4+I&quot;-&gt;&quot;No+I&quot;): captcha=jrlia5LNN6BacBClqp7MNo+IC/AjD0sGRn/I/2fP/VA= -&gt; 200 &quot;Invalid padding&quot; (ev-mr1lfooq-1l), reproduced stably (ev-mr1lfrb9-1m). Server discloses the decrypted plaintext now has invalid PKCS7 padding.
+5. Missing/garbage captcha cookie (no valid ciphertext) -&gt; HTTP 500 (unhandled unpad exception), a third distinguishable state.
+The 403-vs-200/&quot;Invalid padding&quot; split for attacker-controlled ciphertexts = a decryption padding oracle. Exploit: standard CBC padding-oracle byte-recovery over the `captcha` cookie (manipulate the preceding block, watch for the &quot;Invalid padding&quot; -&gt; &quot;Invalid CAPTCHA!&quot; transition to recover each intermediate byte) decrypts the answer or forges a valid blob; submit the matching plaintext in the `captcha` field to create the account. Remediation: use authenticated encryption (AES-GCM) or encrypt-then-MAC, return an identical generic error for all failure modes, and do not expose CAPTCHA state in a client-controlled cookie.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1lfja7-1j</code> — <code>artifacts/_/ev-mr1lfja7-1j/</code></div><div class="lbl">REQUEST</div><pre>POST / HTTP/1.1
+Host: target.local:32828
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+Cookie: &lt;redacted&gt;
+
+csrf_token=ImUyNDQ3MDA3YTg1YjU2NTE1YmNjYTg1MzhhNzgxNjdkMzU5ZTExMzAi.akSZyA.sipzLo83Y64lv4S6tCJkJBQc0ww&amp;username=verdicttest&amp;captcha=WRONG&amp;submit=Submit</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: close
+content-length: 16
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 04:46:36 GMT
+server: Werkzeug/2.2.3 Python/3.8.20
+vary: Cookie
+
+Invalid CAPTCHA!</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1lfooq-1l</code> — <code>artifacts/_/ev-mr1lfooq-1l/</code></div><div class="lbl">REQUEST</div><pre>POST / HTTP/1.1
+Host: target.local:32828
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+Cookie: &lt;redacted&gt;
+
+csrf_token=ImUyNDQ3MDA3YTg1YjU2NTE1YmNjYTg1MzhhNzgxNjdkMzU5ZTExMzAi.akSZyA.sipzLo83Y64lv4S6tCJkJBQc0ww&amp;username=verdicttest&amp;captcha=WRONG&amp;submit=Submit</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 15
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 04:46:43 GMT
+server: Werkzeug/2.2.3 Python/3.8.20
+vary: Cookie
+
+Invalid padding</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1lfrb9-1m</code> — <code>artifacts/_/ev-mr1lfrb9-1m/</code></div><div class="lbl">REQUEST</div><pre>POST / HTTP/1.1
+Host: target.local:32828
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+Cookie: &lt;redacted&gt;
+
+csrf_token=ImUyNDQ3MDA3YTg1YjU2NTE1YmNjYTg1MzhhNzgxNjdkMzU5ZTExMzAi.akSZyA.sipzLo83Y64lv4S6tCJkJBQc0ww&amp;username=verdicttest&amp;captcha=WRONG&amp;submit=Submit</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 15
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 04:46:46 GMT
+server: Werkzeug/2.2.3 Python/3.8.20
+vary: Cookie
+
+Invalid padding</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 2. [misconfig] Registration form throws unhandled HTTP 500 on any submission</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32828/</div>
+<div class="desc">Any POST to the registration form at / returns HTTP 500 Internal Server Error rather than a user-facing validation error. This occurs with an empty captcha field, a wrong captcha answer, and an invalid CSRF token — consistently the same 265-byte generic Werkzeug error page. The unhandled exception indicates the captcha/form-validation code is not catching errors before they propagate to the WSGI layer. No stack trace or sensitive data is leaked (Flask is not in debug mode), but the 500 response confirms the application crashes rather than handling invalid input gracefully.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32828/ — note the CSRF token value in the hidden field and the session cookie.
+2. POST http://target.local:32828/ with Content-Type: application/x-www-form-urlencoded, supplying the valid session cookie and CSRF token, but leaving captcha blank: csrf_token=&amp;lt;token&amp;gt;&amp;username=test&amp;captcha=&amp;submit=Submit
+3. Observe HTTP 500 Internal Server Error response.
+4. Repeat with captcha=WRONGANSWER — again HTTP 500.
+No rate-limiting or lockout was triggered; error handling is absent at the form-processing layer.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1kvxuj-15</code> — <code>artifacts/s-0001/ev-mr1kvxuj-15/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32828
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+connection: close
+content-length: 22015
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 04:31:21 GMT
+server: Werkzeug/2.2.3 Python/3.8.20
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Create New User&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            margin-bottom: 5px;
+            display: block;
+            color: #666;
+        }
+        input[type=&quot;text&quot;], input[type=&quot;submit&quot;] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 20px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type=&quot;submit&quot;] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        input[type=&quot;submit&quot;]:hover {
+            background-color: #45a049;
+        }
+        .captcha-img {
+            display: block;
+            margin: 10px auto 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+       .info {
+            margin-top: 20px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form method=&quot;post&quot;&gt;
+        &lt;input id=&quot;csrf_token&quot; name=&quot;csrf_token&quot; type=&quot;hidden&quot; value=&quot;ImRhYjY1ODcwZjI4ZGZhZGVhMmU1YzY5ZDExZmM0NWI2N2ZmZWJhMTIi.akSYGQ.devhbrGRZogdLEzCIco728gltm0&quot;&gt;
+        &lt;h2&gt;Create New User&lt;/h2&gt;
+        &lt;label for=&quot;username&quot;&gt;Username&lt;/label&gt; &lt;input id=&quot;username&quot; name=&quot;username&quot; required size=&quot;32&quot; type=&quot;text&quot; value=&quot;&quot;&gt;
+        &lt;label for=&quot;captcha&quot;&gt;Captcha&lt;/label&gt; &lt;input id=&quot;captcha&quot; name=&quot;captcha&quot; required size=&quot;32&quot; type=&quot;text&quot; value=&quot;&quot;&gt;
+        &lt;img src=&quot;data:image/png;base64,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</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1kvcyl-13</code> — <code>artifacts/s-0001/ev-mr1kvcyl-13/</code></div><div class="lbl">REQUEST</div><pre>POST / HTTP/1.1
+Host: target.local:32828
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+Cookie: &lt;redacted&gt;
+
+csrf_token=IjFjNzJiOGFlYzEyMTRhZTQ4NGMzZWM2NDQxNzIxODA0MzU3OGE1YzMi.akSX6w.XIlDNhb8XF5z7apmvNkJp0YbMHc&amp;username=testuser123&amp;captcha=&amp;submit=Submit</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+connection: close
+content-length: 265
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 04:30:54 GMT
+server: Werkzeug/2.2.3 Python/3.8.20
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;500 Internal Server Error&lt;/title&gt;
+&lt;h1&gt;Internal Server Error&lt;/h1&gt;
+&lt;p&gt;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1kvdf5-14</code> — <code>artifacts/s-0001/ev-mr1kvdf5-14/</code></div><div class="lbl">REQUEST</div><pre>POST / HTTP/1.1
+Host: target.local:32828
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+Cookie: &lt;redacted&gt;
+
+csrf_token=IjFjNzJiOGFlYzEyMTRhZTQ4NGMzZWM2NDQxNzIxODA0MzU3OGE1YzMi.akSX6w.XIlDNhb8XF5z7apmvNkJp0YbMHc&amp;username=testuser123&amp;captcha=WRONGCAPTCHA&amp;submit=Submit</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+connection: close
+content-length: 265
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 04:30:55 GMT
+server: Werkzeug/2.2.3 Python/3.8.20
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;500 Internal Server Error&lt;/title&gt;
+&lt;h1&gt;Internal Server Error&lt;/h1&gt;
+&lt;p&gt;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&lt;/p&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 3. [vulnerable-component] Outdated Werkzeug 2.2.3 — CVE-2024-34069 (debugger RCE) / CVE-2023-46136 (DoS)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32828/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Werkzeug 2.2.3 (Python/3.8.20) disclosed via the `Server: Werkzeug/2.2.3 Python/3.8.20` response header on the app root — the app runs on the built-in Werkzeug dev server. Version 2.2.3 predates fixes for CVE-2024-34069 (interactive debugger console → remote code execution when debug mode is enabled; fixed in 3.0.3) and CVE-2023-46136 (multipart form parsing resource exhaustion / DoS; fixed in 2.3.8 / 3.0.1). Version-based match only, not actively exploited.</div>
+<div class="desc">Werkzeug 2.2.3 is exposed via the Server response header. Known post-2.2.3 CVEs: CVE-2024-34069 (RCE class — the Werkzeug interactive debugger can be driven cross-site to execute code on the host when Flask debug mode is on; the Server banner indicates the dev server is in use, so debug mode may well be enabled) and CVE-2023-46136 (High-severity DoS via crafted multipart uploads). Running the Werkzeug dev server in production is itself a deployment anti-pattern. This is a version-based lead: no code execution was demonstrated. To confirm CVE-2024-34069, verify debug mode is enabled (an unhandled exception yields the Werkzeug traceback/console) and that the PIN is derivable; to remediate, upgrade Werkzeug to &gt;= 3.0.6 and serve behind a production WSGI server (gunicorn/uWSGI) with debug disabled.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32828/ and observe the response header `Server: Werkzeug/2.2.3 Python/3.8.20` (evidence ev-mr1lkfbt-1q). 2. Compare 2.2.3 against the Werkzeug security advisories: &lt; 2.3.8/3.0.1 is affected by CVE-2023-46136 and &lt; 3.0.3 by CVE-2024-34069. 3. Version falls below both fix versions → vulnerable on a version basis.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1lkfbt-1q</code> — <code>artifacts/_/ev-mr1lkfbt-1q/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32828
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+connection: close
+content-length: 25031
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 04:50:24 GMT
+server: Werkzeug/2.2.3 Python/3.8.20
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Create New User&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            margin-bottom: 5px;
+            display: block;
+            color: #666;
+        }
+        input[type=&quot;text&quot;], input[type=&quot;submit&quot;] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 20px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type=&quot;submit&quot;] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        input[type=&quot;submit&quot;]:hover {
+            background-color: #45a049;
+        }
+        .captcha-img {
+            display: block;
+            margin: 10px auto 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+       .info {
+            margin-top: 20px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form method=&quot;post&quot;&gt;
+        &lt;input id=&quot;csrf_token&quot; name=&quot;csrf_token&quot; type=&quot;hidden&quot; value=&quot;ImI2ZjQwMjM4ZTIxOGE5MjkwMzkwNmIyYmFhZmM5NjkyMjY2ZjBkZDUi.akSckA.iWeO9lh8aUrLWAqP1uXz8BopBQA&quot;&gt;
+        &lt;h2&gt;Create New User&lt;/h2&gt;
+        &lt;label for=&quot;username&quot;&gt;Username&lt;/label&gt; &lt;input id=&quot;username&quot; name=&quot;username&quot; required size=&quot;32&quot; type=&quot;text&quot; value=&quot;&quot;&gt;
+        &lt;label for=&quot;captcha&quot;&gt;Captcha&lt;/label&gt; &lt;input id=&quot;captcha&quot; name=&quot;captcha&quot; required size=&quot;32&quot; type=&quot;text&quot; value=&quot;&quot;&gt;
+        &lt;img src=&quot;data:image/png;base64,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</pre></div>
+</div>
+</body></html>

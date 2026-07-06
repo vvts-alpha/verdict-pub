@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mr361en0-gsmwy4</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [secret-exposure] Valid credentials (test:test) disclosed in login page HTML comment</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#c9a227">LOW</span> [rate-limit] No rate limiting or account lockout on POST /login</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Internal proxy topology &amp; Apache version disclosed via reachable mod_status (/server-status)</a></li>
+</ul></li>
+<li><a href="#suspected">Suspected (needs manual verification)</a><ul>
+<li><a href="#finding-4">4. <span class="sev" style="color:#d32f2f">HIGH</span> [other] Probable HTTP Request Smuggling surface: multi-tier HAProxy -&gt; Apache/2.4.67 -&gt; Werkzeug proxy chain</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mr361en0-gsmwy4</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32840/</code></td></tr>
+<tr><td>Started</td><td>2026-07-02T07:11:15.299Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>5 mapped · 5 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32840</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#c9a227">2</b> low</span></p>
+<p class="muted">Plus <b>1</b> suspected lead(s) needing manual verification (listed separately, not counted above).</p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [secret-exposure] Valid credentials (test:test) disclosed in login page HTML comment</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32840/</div>
+<div class="desc">The GET/POST /login page is served to unauthenticated visitors with a leftover HTML comment at the very top of the response body: &quot;&amp;lt;!-- TODO: Delete the testing account (test:test). --&amp;gt;&quot;. This discloses a working username/password pair (test / test) to anyone who views the page source. The disclosed credentials are live: submitting them authenticates and redirects to /dashboard (see the linked auth-bypass finding). Hardcoded/leftover credentials in client-served markup are a sensitive-information exposure that hands an attacker valid login material with zero guessing.</div>
+<div><b>Reproduction</b></div><pre>1. Request GET /login unauthenticated (or POST any invalid creds). 2. Observe the first line of the HTML body: &quot;&amp;lt;!-- TODO: Delete the testing account (test:test). --&amp;gt;&quot;. The comment is present in every login-page response (evidenceIds ev-mr365sup-1, ev-mr368ghk-w — both 3168+ byte login pages containing the marker). 3. Negative control: the 302 redirect response after a successful login (ev-mr36600q-2, 207-byte &quot;Redirecting...&quot; body) does NOT contain the comment, confirming the marker is specific to the served login page, not a universal string. 4. The leaked creds work — see auth-bypass finding on /login.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr36600q-2</code> — <code>artifacts/s-0001/ev-mr36600q-2/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=test&amp;password=test</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+cache-control: public, max-age=0
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 07:14:49 GMT
+expires: 0
+location: /dashboard
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/dashboard&quot;&gt;/dashboard&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr365sup-1</code> — <code>artifacts/s-0001/ev-mr365sup-1/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=nonexistentuser123&amp;password=wrongpass456</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+content-length: 3170
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 07:14:39 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie,Accept-Encoding
+
+&lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        body {
+            background-color: #1a1a1a;
+            color: white;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        .form-group label {
+            color: white;
+        }
+        .btn-primary {
+            background-color: #ff4444;
+            border-color: #ff4444;
+        }
+        .btn-primary:hover {
+            background-color: #cc0000;
+            border-color: #cc0000;
+        }
+        .login-form {
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            border: 1px solid #ff4444;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #333333;
+        }
+        .router-logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .router-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: #ff4444;
+            margin-top: 10px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;login-form&quot;&gt;
+            &lt;svg width=&quot;80&quot; height=&quot;80&quot; fill=&quot;currentColor&quot; class=&quot;bi bi-router router-logo&quot; viewBox=&quot;0 0 16 16&quot;&gt;
+                &lt;path d=&quot;M5.525 3.025a3.5 3.5 0 0 1 4.95 0 .5.5 0 1 0 .707-.707 4.5 4.5 0 0 0-6.364 0 .5.5 0 0 0 .707.707&quot;/&gt;
+                &lt;path d=&quot;M6.94 4.44a1.5 1.5 0 0 1 2.12 0 .5.5 0 0 0 .708-.708 2.5 2.5 0 0 0-3.536 0 .5.5 0 0 0 .707.707ZM2.5 11a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m4.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2.5.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m1.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0&quot;/&gt;
+                &lt;path d=&quot;M2.974 2.342a.5.5 0 1 0-.948.316L3.806 8H1.5A1.5 1.5 0 0 0 0 9.5v2A1.5 1.5 0 0 0 1.5 13H2a.5.5 0 0 0 .5.5h2A.5.5 0 0 0 5 13h6a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5h.5a1.5 1.5 0 0 0 1.5-1.5v-2A1.5 1.5 0 0 0 14.5 8h-2.306l1.78-5.342a.5.5 0 1 0-.948-.316L11.14 8H4.86zM14.5 9a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5z&quot;/&gt;
+                &lt;path d=&quot;M8.5 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;h2 class=&quot;router-title&quot;&gt;Router XYZ&lt;/h2&gt;
+            
+                &lt;div class=&quot;error-message&quot;&gt;Invalid username.&lt;/div&gt;
+            
+            &lt;form method=&quot;POST&quot; action=&quot;/login&quot;&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;username&quot;&gt;Username&lt;/label&gt;
+                    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;
+                    &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                &lt;/div&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-block mt-3&quot;&gt;Login&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr368ghk-w</code> — <code>artifacts/s-0001/ev-mr368ghk-w/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=test&amp;password=bad1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+content-length: 3168
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 07:16:43 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie,Accept-Encoding
+
+&lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        body {
+            background-color: #1a1a1a;
+            color: white;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        .form-group label {
+            color: white;
+        }
+        .btn-primary {
+            background-color: #ff4444;
+            border-color: #ff4444;
+        }
+        .btn-primary:hover {
+            background-color: #cc0000;
+            border-color: #cc0000;
+        }
+        .login-form {
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            border: 1px solid #ff4444;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #333333;
+        }
+        .router-logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .router-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: #ff4444;
+            margin-top: 10px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;login-form&quot;&gt;
+            &lt;svg width=&quot;80&quot; height=&quot;80&quot; fill=&quot;currentColor&quot; class=&quot;bi bi-router router-logo&quot; viewBox=&quot;0 0 16 16&quot;&gt;
+                &lt;path d=&quot;M5.525 3.025a3.5 3.5 0 0 1 4.95 0 .5.5 0 1 0 .707-.707 4.5 4.5 0 0 0-6.364 0 .5.5 0 0 0 .707.707&quot;/&gt;
+                &lt;path d=&quot;M6.94 4.44a1.5 1.5 0 0 1 2.12 0 .5.5 0 0 0 .708-.708 2.5 2.5 0 0 0-3.536 0 .5.5 0 0 0 .707.707ZM2.5 11a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m4.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2.5.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m1.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0&quot;/&gt;
+                &lt;path d=&quot;M2.974 2.342a.5.5 0 1 0-.948.316L3.806 8H1.5A1.5 1.5 0 0 0 0 9.5v2A1.5 1.5 0 0 0 1.5 13H2a.5.5 0 0 0 .5.5h2A.5.5 0 0 0 5 13h6a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5h.5a1.5 1.5 0 0 0 1.5-1.5v-2A1.5 1.5 0 0 0 14.5 8h-2.306l1.78-5.342a.5.5 0 1 0-.948-.316L11.14 8H4.86zM14.5 9a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5z&quot;/&gt;
+                &lt;path d=&quot;M8.5 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;h2 class=&quot;router-title&quot;&gt;Router XYZ&lt;/h2&gt;
+            
+                &lt;div class=&quot;error-message&quot;&gt;Wrong password.&lt;/div&gt;
+            
+            &lt;form method=&quot;POST&quot; action=&quot;/login&quot;&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;username&quot;&gt;Username&lt;/label&gt;
+                    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;
+                    &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                &lt;/div&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-block mt-3&quot;&gt;Login&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 2. [rate-limit] No rate limiting or account lockout on POST /login</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32840/</div>
+<div class="desc">POST /login enforces no rate limiting, throttling, CAPTCHA, or account lockout. Ten consecutive failed login attempts for the same username (test) within ~13 seconds were all processed normally (HTTP 200, login page re-rendered) with no 429, no increasing delay, and no lockout. Immediately afterwards a valid login for the same account still succeeded (HTTP 302 -&gt; /dashboard), confirming the account was never locked. This permits unrestricted online password brute-force / credential-stuffing against the login form.</div>
+<div><b>Reproduction</b></div><pre>1. Send 10 rapid POST /login with username=test and varying wrong passwords (bad1..bad10). All return HTTP 200 with the login page, no 429/delay/lockout (9th=ev-mr368p8h-14, 10th=ev-mr368q1j-15, both processed normally). 2. Control: a valid login (test:test) immediately after the burst still returns HTTP 302 -&gt; /dashboard (ev-mr368fob-v), proving no account lockout was triggered and the failed attempts were not throttled. Remediation: add per-account/per-IP rate limiting, exponential backoff, and/or temporary lockout on repeated failures.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr368fob-v</code> — <code>artifacts/s-0001/ev-mr368fob-v/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=test&amp;password=test</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+cache-control: public, max-age=0
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 07:16:42 GMT
+expires: 0
+location: /dashboard
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/dashboard&quot;&gt;/dashboard&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr368p8h-14</code> — <code>artifacts/s-0001/ev-mr368p8h-14/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=test&amp;password=bad9</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+content-length: 3168
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 07:16:55 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie,Accept-Encoding
+
+&lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        body {
+            background-color: #1a1a1a;
+            color: white;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        .form-group label {
+            color: white;
+        }
+        .btn-primary {
+            background-color: #ff4444;
+            border-color: #ff4444;
+        }
+        .btn-primary:hover {
+            background-color: #cc0000;
+            border-color: #cc0000;
+        }
+        .login-form {
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            border: 1px solid #ff4444;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #333333;
+        }
+        .router-logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .router-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: #ff4444;
+            margin-top: 10px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;login-form&quot;&gt;
+            &lt;svg width=&quot;80&quot; height=&quot;80&quot; fill=&quot;currentColor&quot; class=&quot;bi bi-router router-logo&quot; viewBox=&quot;0 0 16 16&quot;&gt;
+                &lt;path d=&quot;M5.525 3.025a3.5 3.5 0 0 1 4.95 0 .5.5 0 1 0 .707-.707 4.5 4.5 0 0 0-6.364 0 .5.5 0 0 0 .707.707&quot;/&gt;
+                &lt;path d=&quot;M6.94 4.44a1.5 1.5 0 0 1 2.12 0 .5.5 0 0 0 .708-.708 2.5 2.5 0 0 0-3.536 0 .5.5 0 0 0 .707.707ZM2.5 11a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m4.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2.5.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m1.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0&quot;/&gt;
+                &lt;path d=&quot;M2.974 2.342a.5.5 0 1 0-.948.316L3.806 8H1.5A1.5 1.5 0 0 0 0 9.5v2A1.5 1.5 0 0 0 1.5 13H2a.5.5 0 0 0 .5.5h2A.5.5 0 0 0 5 13h6a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5h.5a1.5 1.5 0 0 0 1.5-1.5v-2A1.5 1.5 0 0 0 14.5 8h-2.306l1.78-5.342a.5.5 0 1 0-.948-.316L11.14 8H4.86zM14.5 9a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5z&quot;/&gt;
+                &lt;path d=&quot;M8.5 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;h2 class=&quot;router-title&quot;&gt;Router XYZ&lt;/h2&gt;
+            
+                &lt;div class=&quot;error-message&quot;&gt;Wrong password.&lt;/div&gt;
+            
+            &lt;form method=&quot;POST&quot; action=&quot;/login&quot;&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;username&quot;&gt;Username&lt;/label&gt;
+                    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;
+                    &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                &lt;/div&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-block mt-3&quot;&gt;Login&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr368q1j-15</code> — <code>artifacts/s-0001/ev-mr368q1j-15/</code></div><div class="lbl">REQUEST</div><pre>POST /login HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+username=test&amp;password=bad10</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+cache-control: public, max-age=0
+content-length: 3168
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 07:16:56 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie,Accept-Encoding
+
+&lt;!-- TODO: Delete the testing account (test:test). --&gt; 
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link href=&quot;/static/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        body {
+            background-color: #1a1a1a;
+            color: white;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        .form-group label {
+            color: white;
+        }
+        .btn-primary {
+            background-color: #ff4444;
+            border-color: #ff4444;
+        }
+        .btn-primary:hover {
+            background-color: #cc0000;
+            border-color: #cc0000;
+        }
+        .login-form {
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            border: 1px solid #ff4444;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #333333;
+        }
+        .router-logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .router-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: #ff4444;
+            margin-top: 10px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;login-form&quot;&gt;
+            &lt;svg width=&quot;80&quot; height=&quot;80&quot; fill=&quot;currentColor&quot; class=&quot;bi bi-router router-logo&quot; viewBox=&quot;0 0 16 16&quot;&gt;
+                &lt;path d=&quot;M5.525 3.025a3.5 3.5 0 0 1 4.95 0 .5.5 0 1 0 .707-.707 4.5 4.5 0 0 0-6.364 0 .5.5 0 0 0 .707.707&quot;/&gt;
+                &lt;path d=&quot;M6.94 4.44a1.5 1.5 0 0 1 2.12 0 .5.5 0 0 0 .708-.708 2.5 2.5 0 0 0-3.536 0 .5.5 0 0 0 .707.707ZM2.5 11a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m4.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2.5.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m1.5-.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0&quot;/&gt;
+                &lt;path d=&quot;M2.974 2.342a.5.5 0 1 0-.948.316L3.806 8H1.5A1.5 1.5 0 0 0 0 9.5v2A1.5 1.5 0 0 0 1.5 13H2a.5.5 0 0 0 .5.5h2A.5.5 0 0 0 5 13h6a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5h.5a1.5 1.5 0 0 0 1.5-1.5v-2A1.5 1.5 0 0 0 14.5 8h-2.306l1.78-5.342a.5.5 0 1 0-.948-.316L11.14 8H4.86zM14.5 9a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5z&quot;/&gt;
+                &lt;path d=&quot;M8.5 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;h2 class=&quot;router-title&quot;&gt;Router XYZ&lt;/h2&gt;
+            
+                &lt;div class=&quot;error-message&quot;&gt;Wrong password.&lt;/div&gt;
+            
+            &lt;form method=&quot;POST&quot; action=&quot;/login&quot;&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;username&quot;&gt;Username&lt;/label&gt;
+                    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;
+                    &lt;input type=&quot;password&quot; class=&quot;form-control&quot; id=&quot;password&quot; name=&quot;password&quot; required&gt;
+                &lt;/div&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-block mt-3&quot;&gt;Login&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [info-disclosure] Internal proxy topology &amp; Apache version disclosed via reachable mod_status (/server-status)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32840/</div>
+<div class="desc">The Apache mod_status handler is reachable at /server-status. Although access is restricted (HTTP 403), the Apache-generated 403 error page itself discloses the internal server architecture in its footer: &quot;Apache/2.4.67 (Debian) Server at haproxy Port 8001&quot;. This reveals (1) the exact front-tier web-server product and version (Apache httpd 2.4.67, Debian build), (2) an internal proxy hostname &quot;haproxy&quot;, and (3) the internal backend port 8001. Combined, this exposes a multi-tier reverse-proxy chain (HAProxy edge -&gt; Apache 2.4.67 -&gt; Flask/Werkzeug application, evidenced by the Werkzeug default 404/redirect pages on app routes). This is verbose-error/ServerTokens misconfiguration and directly aids an attacker in fingerprinting version-specific vulnerabilities and the desync/request-smuggling surface between tiers.</div>
+<div><b>Reproduction</b></div><pre>GET http://target.local:32840/server-status -&gt; 403 Forbidden whose body footer reads &quot;&amp;lt;address&amp;gt;Apache/2.4.67 (Debian) Server at haproxy Port 8001&amp;lt;/address&amp;gt;&quot; (Content-Type text/html; charset=iso-8859-1, i.e. an Apache error page, not the Werkzeug app). Contrast with any app route (e.g. GET /nonexistent -&gt; Werkzeug 404, no Apache banner). Stable across 3 replays.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr36yz82-37</code> — <code>artifacts/_/ev-mr36yz82-37/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent_xyzzy_404_probe HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+cache-control: public, max-age=0
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Thu, 02 Jul 2026 07:37:21 GMT
+expires: 0
+pragma: no-cache
+server: Apache/2.4.67 (Debian)
+set-cookie: &lt;redacted&gt;
+vary: Cookie
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr36xr2k-36</code> — <code>artifacts/_/ev-mr36xr2k-36/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+content-length: 314
+content-type: text/html; charset=iso-8859-1
+date: Thu, 02 Jul 2026 07:36:23 GMT
+server: Apache/2.4.67 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.67 (Debian) Server at haproxy Port 8001&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr373wlw-3i</code> — <code>artifacts/_/ev-mr373wlw-3i/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+content-length: 314
+content-type: text/html; charset=iso-8859-1
+date: Thu, 02 Jul 2026 07:41:11 GMT
+server: Apache/2.4.67 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.67 (Debian) Server at haproxy Port 8001&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr373x6n-3j</code> — <code>artifacts/_/ev-mr373x6n-3j/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+content-length: 314
+content-type: text/html; charset=iso-8859-1
+date: Thu, 02 Jul 2026 07:41:11 GMT
+server: Apache/2.4.67 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.67 (Debian) Server at haproxy Port 8001&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<h2 id="suspected">Suspected (needs manual verification)</h2>
+<p class="muted">Leads with one concrete anomaly but without control+2-replay confirmation — verify before relying on them.</p>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#8a6d00">SUSPECTED</span> <span class="badge" style="background:#d32f2f">HIGH</span> 4. [other] Probable HTTP Request Smuggling surface: multi-tier HAProxy -&gt; Apache/2.4.67 -&gt; Werkzeug proxy chain</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32840/</div>
+<div class="kv"><b>Anomaly (why this is a lead):</b> The stack is a three-tier proxy chain — HAProxy edge (listener :32840) -&gt; Apache/2.4.67 (Debian) internal (ServerName &quot;haproxy&quot;, backend Port 8001, per the /server-status 403 banner) -&gt; Flask/Werkzeug app (default Werkzeug 302/404 pages). Chained heterogeneous HTTP parsers (HAProxy + Apache + Werkzeug), each with independent Content-Length/Transfer-Encoding handling, are the textbook precondition for request smuggling / desync (CL.TE, TE.CL, TE.TE header-obfuscation, and HAProxy's CVE-2021-40346-class 0-length-header integer-overflow desync if the edge HAProxy is unpatched). This is exactly the &quot;outdated proxy / complicated stack&quot; HRS surface the operator flagged. Mechanical confirmation was ATTEMPTED and is blocked by tooling, NOT by safety: (1) sending conflicting Content-Length + Transfer-Encoding via http_request is rejected by the tool's normalizing undici client (&quot;fetch failed&quot; — it refuses to emit ambiguous framing); (2) a CL.0-style desync via probe_scenario (smuggled GET /dashboard inside a POST body to a GET-route, then a follow-up read) came back not-confirmed because the client sets a correct Content-Length and Werkzeug consumes the full body. Confirming HRS here requires raw byte-level socket control (Burp Repeater/Turbo Intruder with &quot;Update Content-Length&quot; off, or the http-request-smuggler / smuggler.py tooling) to send deliberately ambiguous framing across the HAProxy/Apache boundary — recommended as manual follow-up.</div>
+<div class="desc">The target front-ends a Flask/Werkzeug application behind at least two reverse proxies (an HAProxy edge and an internal Apache/2.4.67). Multi-tier proxy chains that mix distinct HTTP/1.1 parser implementations are the primary condition for HTTP Request Smuggling (request desynchronisation), which can enable bypassing front-end access controls (e.g. reaching the 403-restricted /server-status or other internal-only paths on the backend), request/response queue poisoning affecting other users, and credential/session capture. The specific versions in play (HAProxy edge of unknown but likely fixed-or-not build, Apache 2.4.67) and the confirmed heterogeneous parser chain make this a high-probability lead. It could not be mechanically confirmed because the assessment HTTP client normalises framing headers and will not transmit the ambiguous Content-Length/Transfer-Encoding combinations smuggling requires; a CL.0 attempt through probe_scenario was also negative for the same reason.</div>
+<div><b>Reproduction</b></div><pre>1. Fingerprint the chain: GET /server-status -&gt; Apache 403 banner &quot;Apache/2.4.67 (Debian) Server at haproxy Port 8001&quot;; app routes return Werkzeug default pages -&gt; chain = HAProxy -&gt; Apache 2.4.67 -&gt; Werkzeug. 2. Manual HRS test (not possible via this toolset's normalizing client): using a raw-socket tool (Burp Repeater with Content-Length auto-update disabled, Turbo Intruder, or smuggler.py) send CL.TE / TE.CL / TE.TE and HAProxy 0-length-header (CVE-2021-40346-style) probes to POST / and other routes; measure timeout/desync differentials and attempt to smuggle a request to the front-end-restricted /server-status expecting a 200 mod_status page instead of 403. 3. Note attempted here: conflicting CL+TE via http_request -&gt; client refused (&quot;fetch failed&quot;); CL.0 via probe_scenario (smuggled GET /dashboard in POST /dashboard body + follow-up GET /) -&gt; not confirmed.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mr36xr2k-36</code> — <code>artifacts/_/ev-mr36xr2k-36/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32840
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+content-length: 314
+content-type: text/html; charset=iso-8859-1
+date: Thu, 02 Jul 2026 07:36:23 GMT
+server: Apache/2.4.67 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.67 (Debian) Server at haproxy Port 8001&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+</body></html>

