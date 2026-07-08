@@ -66,5 +66,5 @@ Every benchmark folder ships the full per-run reports with the raw request/respo
 
 ## A note on the source
 
-The agent itself — the autonomous exploration loop, the evidence engine, the tooling — is kept private for now. These benchmarks are published as the **reproducible proof of what it can do.** Findings against live bug-bounty targets exist but are withheld under coordinated disclosure.
+The agent itself — the autonomous exploration loop, the evidence engine, the tooling — is kept private for now. These benchmarks are published as the **reproducible proof of what it can do.**
 
