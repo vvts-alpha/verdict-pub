@@ -22,11 +22,11 @@ You give it one URL. It runs the whole assessment — recon → methodology → 
 The actual **observer UI** from a real run (against **OWASP Juice Shop**), exported to a single self-contained page — site tree · findings · APIs · per-screen evidence, fully interactive and **offline**:
 
 #### ▶ [Open the sample UI](https://vvts-alpha.github.io/verdict-pub/sample-ui.html) 
+<sub>Served via GitHub Pages. It's a ~14 MB single file (screenshots + evidence bundled inline) — give it a second to load.</sub>
 
 #### ▶ Demonstration (Youtube Movie)
 [!['VERDICT Login Scanning Demonstration'](http://img.youtube.com/vi/3QHlHdktLdE/0.jpg)](https://youtu.be/3QHlHdktLdE?si=oZWi5gPmnPgqDURR)
-
-<sub>Served via GitHub Pages. It's a ~14 MB single file (screenshots + evidence bundled inline) — give it a second to load.</sub>
+The amount of tokens displayed is incorrect (it's actually about 1/10 of that).
 
 ---
 
