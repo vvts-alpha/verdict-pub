@@ -26,6 +26,7 @@ The actual **observer UI** from a real run (against **OWASP Juice Shop**), expor
 
 #### ▶ Demonstration (Youtube Movie)
 [!['VERDICT Login Scanning Demonstration'](http://img.youtube.com/vi/3QHlHdktLdE/0.jpg)](https://youtu.be/3QHlHdktLdE?si=oZWi5gPmnPgqDURR)
+
 The amount of tokens displayed is incorrect (it's actually about 1/10 of that).
 
 ---
