@@ -1,2 +1,18 @@
 .DS_Store
 Thumbs.db
+
+# Private inputs and local build outputs
+node_modules/
+.env
+runs/
+runs-public/
+browser-profiles/
+profiles/
+projects/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-journal
+vault.json
+/decks/
+/dist/

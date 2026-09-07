@@ -13,7 +13,7 @@ You give it one URL. It runs the whole assessment — recon → methodology → 
 </p>
 
 > **This repository is the reproducible evidence — the benchmark reports and analysis.**
-> The agent's source code is not public at this time; what's here is every finding's recorded proof.
+> The desktop app and assessment engine are maintained in [vvts-alpha/VERDICT](https://github.com/vvts-alpha/VERDICT).
 
 ---
 
@@ -49,6 +49,12 @@ Not "the model thinks so." A finding is marked **`confirmed`** only when a **neg
 ✓  positive replay 2  same payload → 200, admin — stable, reproduced
 ```
 
+## September 2026 desktop evaluation
+
+The latest [Juice Shop desktop evaluation](benchmarks/juice-shop/desktop-2026-09.md) records 154 mapped screens, reviewed finding counts, and operator-reported model costs. The counts are report entries, not independent validation of every finding.
+
+[Read Markdown](benchmarks/juice-shop/desktop-2026-09/report.md) · [Download PDF](benchmarks/juice-shop/desktop-2026-09/report.pdf) · [Download HTML](https://github.com/vvts-alpha/verdict-pub/raw/refs/heads/main/benchmarks/juice-shop/desktop-2026-09/report.html)
+
 ## Benchmarks — two axes
 
 VERDICT is measured on two different skills. Full cross-benchmark write-up: **[benchmarks/](benchmarks/)**.
@@ -64,7 +70,6 @@ VERDICT is measured on two different skills. Full cross-benchmark write-up: **[b
 
 Every benchmark folder ships the full per-run reports with the raw request/response evidence embedded — nothing here rests on a screenshot or a claim.
 
-## A note on the source
+## Source and benchmark tooling
 
-The agent itself — the autonomous exploration loop, the evidence engine, the tooling — is kept private for now. These benchmarks are published as the **reproducible proof of what it can do.**
-
+The desktop app and engine live in [vvts-alpha/VERDICT](https://github.com/vvts-alpha/VERDICT). This repository holds benchmark publications and the [scripts used to generate and score them](scripts/README.md).

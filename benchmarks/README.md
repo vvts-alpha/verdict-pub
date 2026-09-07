@@ -1,5 +1,7 @@
 # VERDICT — Benchmarks & results analysis
 
+Latest desktop evaluation: [September 2026 review, reports, and model cost](juice-shop/desktop-2026-09.md).
+
 VERDICT is an autonomous web/API pentest agent: you hand it **one top URL** and it runs the whole loop — recon → methodology → diagnosis → evidence → report — with no human in the loop and no seed endpoint list. Measuring that honestly takes **two different axes**, because "find a vulnerability" and "drive an assessment by yourself" are not the same skill.
 
 [![XBOW-Bench](https://img.shields.io/badge/XBOW--Bench-92%25%20(100%2F109)-2ea043?style=flat-square)](xbow-bench) [![Web Security Academy](https://img.shields.io/badge/PortSwigger%20WSA-16%2F20%20detected-2ea043?style=flat-square)](web-security-academy) [![Juice Shop](https://img.shields.io/badge/OWASP%20Juice%20Shop-38%20confirmed-c0392b?style=flat-square)](juice-shop)

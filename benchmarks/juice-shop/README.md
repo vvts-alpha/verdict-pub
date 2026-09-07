@@ -1,5 +1,7 @@
 # VERDICT × OWASP Juice Shop
 
+Latest desktop evaluation: [September 2026 review, reports, and model cost](desktop-2026-09.md).
+
 **One autonomous VERDICT assessment of [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/)** — the reference "most modern and sophisticated insecure web application." Every finding below is backed by the agent's recorded request/response evidence (see `report.html`).
 
 ![confirmed](https://img.shields.io/badge/confirmed-38-2ea043?style=flat-square) ![suspected](https://img.shields.io/badge/suspected-5-bb8009?style=flat-square) ![vuln classes](https://img.shields.io/badge/vuln%20classes-16-1f6feb?style=flat-square) ![critical](https://img.shields.io/badge/critical-1-c0392b?style=flat-square)
