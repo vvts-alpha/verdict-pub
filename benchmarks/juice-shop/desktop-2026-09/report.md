@@ -4,11 +4,11 @@
 
 ## Executive summary
 
-OWASP Juice Shop 20.2.0 was assessed with the VERDICT desktop application using **OpenCodeGo / `omen-alpha`**. The scan started at `http://localhost:3000/` and used one administrator account and two customer accounts to test both unauthenticated access and access across account boundaries.
+I assessed OWASP Juice Shop 20.2.0 with VERDICT Desktop using **OpenCodeGo / `omen-alpha`**. I started the scan at `http://localhost:3000/` and used one administrator account and two customer accounts to test unauthenticated access and access across account boundaries.
 
-VERDICT mapped and tested **154 screens**. Its recorded model consumption was **115,116,331 tokens**, with an actual LLM usage charge of **US$9.92** reported for the assessment. The saved tests include successful login SQL injection, browser-executed DOM XSS, cross-user basket access, and an address update that transferred another customer's record to the caller.
+VERDICT mapped and tested **154 screens**. The saved model counter recorded **115,116,331 tokens**, and I paid **US$9.92** for the run. The saved tests include successful login SQL injection, browser-executed DOM XSS, cross-user basket access, and an address update that transferred another customer's record to the caller.
 
-The results below are organized into **23 test cases** so that repeated observations of the same behavior can be assessed together. Cases T01–T18 describe observed security-relevant behavior. T19–T23 identify behavior that needs an access-policy decision or additional technical verification. These case counts describe the organization of this report; they are not a count of independently validated vulnerabilities.
+I organized the results into **23 test cases** to group repeated observations of the same behavior. T01–T18 cover the observed results. T19–T23 cover cases I have left open for an access-policy decision or further technical verification. I state the supporting evidence and remaining questions in each case.
 
 [Scope and configuration](#scope-and-configuration) · [Test results](#test-results) · [Remediation plan](#remediation-plan) · [Result traceability](#result-traceability) · [HTML](report.html) · [PDF](report.pdf)
 
@@ -41,11 +41,11 @@ The timestamps cover the run and export window, including interruptions; they ar
 | LLM usage charge for the assessment | **US$9.92** |
 | Model used | **OpenCodeGo / `omen-alpha`** |
 
-Token consumption comes from VERDICT's saved assessment counter. The charge is the operator's reported actual amount. The counter does not provide the provider's billed input/output/cache breakdown. These figures describe this run; they do not establish a fixed cost or detection rate for other targets or models.
+I took the token figure from VERDICT's saved assessment counter and paid US$9.92 for this run. The saved counter has no billed input/output/cache breakdown, so I report token consumption and the actual charge separately.
 
 ### Test method and execution limits
 
-The assessment combined application exploration, direct HTTP probes, browser execution checks, and comparisons between administrator, customer, and unauthenticated sessions. For replay-based findings, a useful control must differ from the attack in the tested condition, and successful attack responses must be reproducible. Where the saved evidence does not establish those conditions, the result is qualified below.
+I combined application exploration, direct HTTP probes, browser execution checks, and comparisons between administrator, customer, and unauthenticated sessions. For replay-based findings, a useful control must differ from the attack in the tested condition, and successful attack responses must be reproducible. I identify cases where the saved evidence does not establish those conditions below.
 
 The following limits affected this run:
 
@@ -66,7 +66,7 @@ The following limits affected this run:
 | Saved reviewed output | 54 entries in the confirmed category; 5 suspected leads; 1 low-signal note |
 | Presentation in this report | 18 observed-result cases and 5 follow-up cases |
 
-The saved severity totals were 3 critical, 22 high, 15 medium, 12 low, and 2 informational entries in the confirmed category. Those are the engine's recorded classifications. This report groups overlapping entries and qualifies unsupported conclusions instead of treating each entry as a separate validated issue.
+The saved severity totals were 3 critical, 22 high, 15 medium, 12 low, and 2 informational entries in the confirmed category. I grouped overlapping entries from these engine classifications into the cases below and narrowed conclusions to what the saved evidence supports.
 
 ### T01 — SQL injection in the login endpoint
 

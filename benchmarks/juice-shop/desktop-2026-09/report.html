@@ -16,10 +16,10 @@ li{margin:8px 0}strong{font-weight:650}h2,h3{scroll-margin-top:24px}
 </style></head><body><main><h1 id="owasp-juice-shop--desktop-security-test-report">OWASP Juice Shop — Desktop Security Test Report</h1>
 <p><strong>VERDICT · September 2026 · Assessment <code>a-mtoiju1k-ajc469</code></strong></p>
 <h2 id="executive-summary">Executive summary</h2>
-<p>OWASP Juice Shop 20.2.0 was assessed with the VERDICT desktop application using <strong>OpenCodeGo / <code>omen-alpha</code></strong>. The scan started at <code>http://localhost:3000/</code> and used one administrator account and two customer accounts to test both unauthenticated access and access across account boundaries.</p>
-<p>VERDICT mapped and tested <strong>154 screens</strong>. Its recorded model consumption was <strong>115,116,331 tokens</strong>, with an actual LLM usage charge of <strong>US$9.92</strong> reported for the assessment. The saved tests include successful login SQL injection, browser-executed DOM XSS, cross-user basket access, and an address update that transferred another customer's record to the caller.</p>
-<p>The results below are organized into <strong>23 test cases</strong> so that repeated observations of the same behavior can be assessed together. Cases T01–T18 describe observed security-relevant behavior. T19–T23 identify behavior that needs an access-policy decision or additional technical verification. These case counts describe the organization of this report; they are not a count of independently validated vulnerabilities.</p>
-<p><a href="#scope-and-configuration">Scope and configuration</a> · <a href="#test-results">Test results</a> · <a href="#remediation-plan">Remediation plan</a> · <a href="#result-traceability">Result traceability</a> · <a href="https://github.com/vvts-alpha/VERDICT/blob/main/benchmarks/juice-shop/desktop-2026-09/report.html">HTML</a> · <a href="https://github.com/vvts-alpha/VERDICT/blob/main/benchmarks/juice-shop/desktop-2026-09/report.pdf">PDF</a></p>
+<p>I assessed OWASP Juice Shop 20.2.0 with VERDICT Desktop using <strong>OpenCodeGo / <code>omen-alpha</code></strong>. I started the scan at <code>http://localhost:3000/</code> and used one administrator account and two customer accounts to test unauthenticated access and access across account boundaries.</p>
+<p>VERDICT mapped and tested <strong>154 screens</strong>. The saved model counter recorded <strong>115,116,331 tokens</strong>, and I paid <strong>US$9.92</strong> for the run. The saved tests include successful login SQL injection, browser-executed DOM XSS, cross-user basket access, and an address update that transferred another customer's record to the caller.</p>
+<p>I organized the results into <strong>23 test cases</strong> to group repeated observations of the same behavior. T01–T18 cover the observed results. T19–T23 cover cases I have left open for an access-policy decision or further technical verification. I state the supporting evidence and remaining questions in each case.</p>
+<p><a href="#scope-and-configuration">Scope and configuration</a> · <a href="#test-results">Test results</a> · <a href="#remediation-plan">Remediation plan</a> · <a href="#result-traceability">Result traceability</a> · <a href="https://github.com/vvts-alpha/verdict-pub/blob/main/benchmarks/juice-shop/desktop-2026-09/report.html">HTML</a> · <a href="https://github.com/vvts-alpha/verdict-pub/blob/main/benchmarks/juice-shop/desktop-2026-09/report.pdf">PDF</a></p>
 <h2 id="scope-and-configuration">Scope and configuration</h2>
 <table>
 <thead>
@@ -111,9 +111,9 @@ li{margin:8px 0}strong{font-weight:650}h2,h3{scroll-margin-top:24px}
 </tr>
 </tbody>
 </table>
-<p>Token consumption comes from VERDICT's saved assessment counter. The charge is the operator's reported actual amount. The counter does not provide the provider's billed input/output/cache breakdown. These figures describe this run; they do not establish a fixed cost or detection rate for other targets or models.</p>
+<p>I took the token figure from VERDICT's saved assessment counter and paid US$9.92 for this run. The saved counter has no billed input/output/cache breakdown, so I report token consumption and the actual charge separately.</p>
 <h3 id="test-method-and-execution-limits">Test method and execution limits</h3>
-<p>The assessment combined application exploration, direct HTTP probes, browser execution checks, and comparisons between administrator, customer, and unauthenticated sessions. For replay-based findings, a useful control must differ from the attack in the tested condition, and successful attack responses must be reproducible. Where the saved evidence does not establish those conditions, the result is qualified below.</p>
+<p>I combined application exploration, direct HTTP probes, browser execution checks, and comparisons between administrator, customer, and unauthenticated sessions. For replay-based findings, a useful control must differ from the attack in the tested condition, and successful attack responses must be reproducible. I identify cases where the saved evidence does not establish those conditions below.</p>
 <p>The following limits affected this run:</p>
 <ul>
 <li><strong>Burp active scanning did not run.</strong> Two submission attempts were rejected with HTTP 401, <code>invalid or missing X-Scan-Token</code>; both ended with nothing submitted. Burp proxy use should not be read as successful Burp Scanner coverage.</li>
@@ -153,7 +153,7 @@ li{margin:8px 0}strong{font-weight:650}h2,h3{scroll-margin-top:24px}
 </tr>
 </tbody>
 </table>
-<p>The saved severity totals were 3 critical, 22 high, 15 medium, 12 low, and 2 informational entries in the confirmed category. Those are the engine's recorded classifications. This report groups overlapping entries and qualifies unsupported conclusions instead of treating each entry as a separate validated issue.</p>
+<p>The saved severity totals were 3 critical, 22 high, 15 medium, 12 low, and 2 informational entries in the confirmed category. I grouped overlapping entries from these engine classifications into the cases below and narrowed conclusions to what the saved evidence supports.</p>
 <h3 id="t01--sql-injection-in-the-login-endpoint">T01 — SQL injection in the login endpoint</h3>
 <p><strong>Result: authentication bypass observed.</strong> A request without an existing session obtained an administrator session through a boolean SQL injection in the login email field.</p>
 <table>
@@ -520,5 +520,5 @@ li{margin:8px 0}strong{font-weight:650}h2,h3{scroll-margin-top:24px}
 </table>
 <h2 id="report-handling">Report handling</h2>
 <p>This report describes the saved September assessment; preparing it did not initiate another target scan. Credentials and personal values are excluded, and the public package does not include raw session or traffic files. Test object IDs and evidence references belong to that local run; use dedicated accounts and objects when reproducing the tests in another authorized environment.</p>
-<p><a href="https://github.com/vvts-alpha/VERDICT/blob/main/benchmarks/juice-shop/desktop-2026-09.md">Assessment record and supporting cost image</a> · <a href="https://github.com/vvts-alpha/VERDICT/blob/main/benchmarks/juice-shop/desktop-2026-09/report.html">HTML report</a> · <a href="https://github.com/vvts-alpha/VERDICT/blob/main/benchmarks/juice-shop/desktop-2026-09/report.pdf">PDF report</a></p>
+<p><a href="https://github.com/vvts-alpha/verdict-pub/blob/main/benchmarks/juice-shop/desktop-2026-09.md">Assessment record and supporting cost image</a> · <a href="https://github.com/vvts-alpha/verdict-pub/blob/main/benchmarks/juice-shop/desktop-2026-09/report.html">HTML report</a> · <a href="https://github.com/vvts-alpha/verdict-pub/blob/main/benchmarks/juice-shop/desktop-2026-09/report.pdf">PDF report</a></p>
 </main></body></html>

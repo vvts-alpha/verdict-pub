@@ -51,7 +51,7 @@ Not "the model thinks so." A finding is marked **`confirmed`** only when a **neg
 
 ## September 2026 desktop evaluation
 
-The latest [Juice Shop desktop evaluation](benchmarks/juice-shop/desktop-2026-09.md) records 154 mapped screens, reviewed finding counts, and operator-reported model costs. The counts are report entries, not independent validation of every finding.
+I tested VERDICT Desktop against OWASP Juice Shop using OpenCodeGo / `omen-alpha`. The run covered **154 screens** and cost **US$9.92**. I reviewed the saved evidence and organized the results into **23 test cases**. The [evaluation write-up](benchmarks/juice-shop/desktop-2026-09.md) covers the setup, results, cost, and remaining verification work.
 
 [Read Markdown](benchmarks/juice-shop/desktop-2026-09/report.md) · [Download PDF](benchmarks/juice-shop/desktop-2026-09/report.pdf) · [Download HTML](https://github.com/vvts-alpha/verdict-pub/raw/refs/heads/main/benchmarks/juice-shop/desktop-2026-09/report.html)
 
@@ -68,7 +68,7 @@ VERDICT is measured on two different skills. Full cross-benchmark write-up: **[b
 
 - **[OWASP Juice Shop](benchmarks/juice-shop) — 38 confirmed findings across 16 vulnerability classes** in a single unattended run — from a **critical SQLi auth-bypass to admin** down to business-logic fraud (negative-quantity checkout, self-credit wallet), plus 5 suspected CVE leads. Nobody told it where to look.
 
-Every benchmark folder ships the full per-run reports with the raw request/response evidence embedded — nothing here rests on a screenshot or a claim.
+Each benchmark folder contains its reports and methodology. Earlier engine reports include recorded requests and responses; the September desktop report presents reviewed test cases and evidence references with private data removed.
 
 ## Source and benchmark tooling
 
